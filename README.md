@@ -13,7 +13,7 @@ yarn add @dhis2/app-service-data
 At the top-level application entry point (i.e. `index.js` in Create React App configurations)
 
 ```js
-import { Provider as DataProvider } from '@dhis2/app-service-data'
+import { DataProvider } from '@dhis2/app-service-data'
 
 export default () => (
     <DataProvider baseUrl="localhost:8080" apiVersion={32}>
@@ -25,7 +25,7 @@ export default () => (
 To request data from a
 
 ```js
-import { Request as DataRequest } from `@dhis2/app-service-data`
+import { DataRequest } from `@dhis2/app-service-data`
 
 const MyComponent = () => (
   <DataRequest resourcePath="indicators.json?pageLimit=10">
