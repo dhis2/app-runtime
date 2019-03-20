@@ -32,7 +32,7 @@ const MyComponent = () => (
     ({ error, loading, data }) => {
       if (loading) return '...'
       if (error) return `ERROR: ${error.message}`
-      return <div>{data}</div>
+      return <div>{JSON.stringify(data)}</div>
     }
   </DataRequest>
 )
