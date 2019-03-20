@@ -28,7 +28,7 @@ To request data from a
 import { Request as DataRequest } from `@dhis2/app-service-data`
 
 const MyComponent = () => (
-  <DataRequest resourcePath="user">
+  <DataRequest resourcePath="indicators.json?pageLimit=10">
     ({ error, loading, data }) => {
       if (loading) return '...'
       if (error) return `ERROR: ${error}`
