@@ -17,7 +17,7 @@ import { DataProvider } from '@dhis2/app-service-data'
 
 export default () => (
     <DataProvider baseUrl="localhost:8080" apiVersion={32}>
-        <App>
+        <App />
     </DataProvider>
 )
 ```
