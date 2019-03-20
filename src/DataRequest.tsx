@@ -1,32 +1,38 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { DataContext, DataContextType } from './DataContext'
+import React, { useState, useEffect, useContext } from "react";
+import { DataContext, DataContextType } from "./DataContext";
+import { FetchError } from "./FetchError";
 
 interface DataRequestRenderInput {
-    loading: boolean
-    error: string | undefined
-    data: Object | undefined
+  loading: boolean;
+  error: FetchError | undefined;
+  data: Object | undefined;
 }
 interface DataRequestInput {
-    path: string
-    children: (input: DataRequestRenderInput) => React.ReactNode
+  resourcePath: string;
+  children: (input: DataRequestRenderInput) => React.ReactNode;
 }
 
 export const DataRequest = ({
-    path: urlPath,
-    children,
+  resourcePath,
+  children
 }: DataRequestInput): React.ReactNode => {
-    const context = useContext(DataContext)
-    const [loading, setLoading] = useState<boolean>(true)
-    const [error, setError] = useState<string | undefined>(undefined)
-    const [data, setData] = useState<Object | undefined>(undefined)
+  const context = useContext(DataContext);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<FetchError | undefined>(undefined);
+  const [data, setData] = useState<Object | undefined>(undefined);
 
-    useEffect(() => {
-        context
-            .fetch(urlPath)
-            .then(setData)
-            .catch(() => setError(`Failed to fetch ${urlPath}`))
-            .then(() => setLoading(false))
-    }, [])
+  useEffect(() => {
+    context
+      .fetch(resourcePath)
+      .then(setData)
+      .catch(() =>
+        setError({
+          type: "unknown",
+          message: `Failed to fetch ${resourcePath}`
+        })
+      )
+      .then(() => setLoading(false));
+  }, []);
 
-    return children({ loading, error, data })
-}
+  return children({ loading, error, data });
+};
