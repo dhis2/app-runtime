@@ -31,7 +31,7 @@ const MyComponent = () => (
   <DataRequest resourcePath="indicators.json?pageLimit=10">
     ({ error, loading, data }) => {
       if (loading) return '...'
-      if (error) return `ERROR: ${error}`
+      if (error) return `ERROR: ${error.message}`
       return <div>{data}</div>
     }
   </DataRequest>
