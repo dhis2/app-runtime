@@ -8,8 +8,9 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <h3>Indicators (first 10)</h3>
-          <DataRequest path="indicators.json?order=shortName:desc&pageSize=10">
+          <DataRequest resourcePath="indicators.json?order=shortName:desc&pageSize=10">
             {({ loading, error, data }) => {
+              console.log(loading, error, data);
               if (loading) return <span>...</span>;
               if (error) return <span>{`ERROR: ${error.message}`}</span>;
               return (

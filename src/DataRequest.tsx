@@ -25,12 +25,7 @@ export const DataRequest = ({
     context
       .fetch(resourcePath)
       .then(setData)
-      .catch(() =>
-        setError({
-          type: "unknown",
-          message: `Failed to fetch ${resourcePath}`
-        })
-      )
+      .catch(setError)
       .then(() => setLoading(false));
   }, []);
 
