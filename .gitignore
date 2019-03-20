@@ -1,0 +1,6 @@
+node_modules
+.d2
+.pnp
+.pnp.js
+build
+yarn-error.log
