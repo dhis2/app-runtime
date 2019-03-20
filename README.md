@@ -13,26 +13,26 @@ yarn add @dhis2/app-service-data
 At the top-level application entry point (i.e. `index.js` in Create React App configurations)
 
 ```js
-import { Provider as DataProvider } from '@dhis2/app-service-data'
+import { DataProvider } from '@dhis2/app-service-data'
 
 export default () => (
     <DataProvider baseUrl="localhost:8080" apiVersion={32}>
-        <App>
+        <App />
     </DataProvider>
 )
 ```
 
-To request data from a
+To request data from a DHIS2 Core server anywhere in the app:
 
 ```js
-import { Request as DataRequest } from `@dhis2/app-service-data`
+import { DataRequest } from `@dhis2/app-service-data`
 
 const MyComponent = () => (
-  <DataRequest resourcePath="user">
+  <DataRequest resourcePath="indicators.json?pageLimit=10">
     ({ error, loading, data }) => {
       if (loading) return '...'
-      if (error) return `ERROR: ${error}`
-      return <div>{data}</div>
+      if (error) return `ERROR: ${error.message}`
+      return <div>{JSON.stringify(data)}</div>
     }
   </DataRequest>
 )
