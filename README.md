@@ -22,7 +22,7 @@ export default () => (
 )
 ```
 
-To request data from a
+To request data from a DHIS2 Core server anywhere in the app:
 
 ```js
 import { DataRequest } from `@dhis2/app-service-data`
