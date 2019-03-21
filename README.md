@@ -43,3 +43,4 @@ const MyComponent = () => (
 * Only GET requests are currently supported
 * `resourcePath` must be a string and cannot be split into `resource`, `query`, etc.
 * The Provider does no data caching or request de-duplication yet
+* Data should be normalized (and requested in a normalizable way) at the provider level to optimize network requests
