@@ -3,7 +3,7 @@
 ## Installation
 
 ```sh
-yarn add @dhis2/app-service-data
+yarn add @dhis2/app-service-data # ONCE THIS IS PUBLISHED, IT'S NOT YET
 ```
 
 **NB** Please ensure that all webpack bundles reference the same Context, you can do this by adding `@dhis2/app-service-data` to `peerDependencies` (rather than `dependencies`) and webpack `externals` for _library_ builds. Top-level apps should be able to include the dependency directly
