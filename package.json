@@ -8,6 +8,9 @@
     "author": "Austin McGee <austin@dhis2.org>",
     "license": "BSD-3-Clause",
     "private": true,
+    "files": [
+        "build/**"
+    ],
     "devDependencies": {
         "@babel/cli": "^7.2.3",
         "@babel/core": "^7.4.0",

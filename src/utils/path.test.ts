@@ -1,4 +1,4 @@
-import { joinPath } from './utils'
+import { joinPath } from './path'
 
 describe('Utils', () => {
     describe('pathJoin', () => {

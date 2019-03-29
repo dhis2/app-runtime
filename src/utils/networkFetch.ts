@@ -1,4 +1,4 @@
-import { FetchError } from './FetchError'
+import { FetchError } from '../types/FetchError'
 
 export function fetchData(
     url: string,
