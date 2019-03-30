@@ -13,11 +13,11 @@ export function fetchData(
         },
     })
         .catch(err => {
-            throw new FetchError(
-                'network',
-                'An unknown network error occurred',
-                err
-            )
+            throw new FetchError({
+                type: 'network',
+                message: 'An unknown network error occurred',
+                details: err,
+            })
         })
         .then(response => {
             if (
@@ -25,16 +25,20 @@ export function fetchData(
                 response.status === 403 ||
                 response.status === 409
             ) {
-                throw new FetchError('access', response.statusText, response)
+                throw new FetchError({
+                    type: 'access',
+                    message: response.statusText,
+                    details: response,
+                })
             }
             if (response.status < 200 || response.status >= 400) {
-                throw new FetchError(
-                    'unknown',
-                    `An unknown error occurred - ${response.statusText} (${
-                        response.status
-                    })`,
-                    response
-                )
+                throw new FetchError({
+                    type: 'unknown',
+                    message: `An unknown error occurred - ${
+                        response.statusText
+                    } (${response.status})`,
+                    details: response,
+                })
             }
             return response
         })

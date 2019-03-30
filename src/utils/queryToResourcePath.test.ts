@@ -62,4 +62,11 @@ describe('queryToResourcePath', () => {
         }
         expect(() => queryToResourcePath(query)).toThrow()
     })
+    it('should throw if passed something crazy like a function', () => {
+        const query: QueryDefinition = {
+            resource: 'test',
+            key: ((a: any) => a) as any,
+        }
+        expect(() => queryToResourcePath(query)).toThrow()
+    })
 })

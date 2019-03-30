@@ -1,3 +1,5 @@
+import { FetchError } from './FetchError'
+
 export type QueryParameterSingularValue = string | number
 export type QueryParameterAliasedValue = {
     [name: string]: QueryParameterSingularValue
@@ -20,4 +22,12 @@ export interface QueryDefinition extends QueryParameters {
     resource: string
 }
 
-export type QueryResult = JSON
+export interface QueryState {
+    loading: boolean
+    error?: FetchError
+    data?: Object
+}
+
+export type QueryRenderInput = QueryState
+
+export type QueryResult = any

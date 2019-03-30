@@ -1,8 +1,8 @@
 import { ContextType, FetchFunction } from '../types/Context'
 
-const uninitializedFetch: FetchFunction = path => {
+const uninitializedFetch: FetchFunction = async path => {
     throw new Error(
-        'DHIS2 data context is must be initialized, please ensure that you include a <DataProvider> in your application'
+        'DHIS2 data context must be initialized, please ensure that you include a <DataProvider> in your application'
     )
 }
 

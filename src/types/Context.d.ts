@@ -16,9 +16,3 @@ export interface ContextInput {
     baseUrl: string
     apiVersion: number
 }
-
-export interface MockContextInput {
-    mockData: {
-        [resourceName: string]: object
-    }
-}

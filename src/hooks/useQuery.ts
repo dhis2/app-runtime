@@ -1,24 +1,18 @@
 import { useState, useContext, useEffect } from 'react'
-import { Context } from '../components/context'
-import { FetchError } from '../types/FetchError'
-import { QueryDefinition } from '../types/Query'
+import { Context } from '../components/Context'
+import { QueryDefinition, QueryState } from '../types/Query'
 
-export const useQuery = (
-    query: QueryDefinition
-): [boolean, FetchError | undefined, Object | undefined] => {
+export const useQuery = (query: QueryDefinition): QueryState => {
     const context = useContext(Context)
 
-    const [loading, setLoading] = useState<boolean>(true)
-    const [error, setError] = useState<FetchError | undefined>(undefined)
-    const [data, setData] = useState<Object | undefined>(undefined)
+    const [state, setState] = useState<QueryState>({ loading: true })
 
     useEffect(() => {
         context
             .fetch(query)
-            .then(setData)
-            .catch(setError)
-            .then(() => setLoading(false))
+            .then(data => setState({ loading: false, data }))
+            .catch(error => setState({ loading: false, error }))
     }, [])
 
-    return [loading, error, data]
+    return state
 }
