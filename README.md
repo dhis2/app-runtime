@@ -8,6 +8,8 @@ yarn add @dhis2/app-service-data # ONCE THIS IS PUBLISHED, IT'S NOT YET
 
 **NB** Please ensure that all webpack bundles reference the same Context, you can do this by adding `@dhis2/app-service-data` to `peerDependencies` (rather than `dependencies`) and webpack `externals` for _library_ builds. Top-level apps should be able to include the dependency directly
 
+This library uses the official React Context API (introduced in 16.3) and React Hooks (introduced in 16.8), so **React >= 16.8 is required** to use it 
+
 ## Usage
 
 At the top-level application entry point (i.e. `index.js` in Create React App configurations)
@@ -29,6 +31,7 @@ import { Query } from `@dhis2/app-service-data`
 
 const MyComponent = () => (
   <Query query={{
+    me: { resource: 'me' },
     indicators: { resource: 'indicators.json', pageSize: 10 }
   }}>
     ({ error, loading, data }) => {
@@ -47,6 +50,7 @@ import { useQuery } from '@dhis2/app-service-data'
 
 const MyComponent = () => {
   const { loading, error, data } = useQuery({
+    me: { resource: 'me' },
     indicators: { resource: 'indicators.json', pageSize: 10 }
   })
   if (loading) return '...'
@@ -58,6 +62,6 @@ const MyComponent = () => {
 ## Known limitations
 
 * Only GET requests are currently supported
-~* `resourcePath` must be a string and cannot be split into `resource`, `query`, etc.~
+* ~`resourcePath` must be a string and cannot be split into `resource`, `query`, etc.~
 * The Provider does no data caching or request de-duplication yet
-* Data should be normalized (and requested in a normalizable way) at the provider level to optimize network requests
+* Data should be normalized (~and requested in a normalizable way~) at the provider level to optimize network requests
