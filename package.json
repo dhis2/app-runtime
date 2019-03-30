@@ -52,6 +52,7 @@
         "type-check": "tsc --noEmit --allowJs --checkJs",
         "type-check:watch": "yarn type-check --watch",
         "test": "jest",
+        "coverage": "jest --coverage",
         "prepublishOnly": "yarn build",
         "format": "d2-style js apply --all --no-stage"
     },
