@@ -4,3 +4,4 @@ node_modules
 .pnp.js
 build
 yarn-error.log
+coverage

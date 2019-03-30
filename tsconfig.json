@@ -17,6 +17,9 @@
         // Import non-ES modules as default imports.
         "esModuleInterop": true,
         "jsx": "react"
+
+        // This caused some NASTY bugs with Context usage (different imports = different instances)
+        // "forceConsistentCasingInFileNames": true
     },
     "include": ["src"]
 }

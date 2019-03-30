@@ -1,3 +1,5 @@
-export { DataRequest } from './DataRequest'
-export { DataProvider } from './DataProvider'
-export { DataContext } from './DataContext'
+export { Query } from './components/Query'
+export { Provider } from './components/Provider'
+export { MockProvider } from './components/MockProvider'
+export { Context } from './components/Context'
+export { useQuery } from './hooks/useQuery'
