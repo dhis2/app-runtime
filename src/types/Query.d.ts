@@ -22,6 +22,10 @@ export interface QueryDefinition extends QueryParameters {
     resource: string
 }
 
+export type QueryMap = {
+    [key: string]: QueryDefinition
+}
+
 export interface QueryState {
     loading: boolean
     error?: FetchError

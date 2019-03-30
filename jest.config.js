@@ -7,7 +7,6 @@ module.exports = {
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
     unmockedModulePathPatterns: ['<rootDir>/src/__tests__'],
 
-    // Setup Enzyme
-    snapshotSerializers: ['enzyme-to-json/serializer'],
+    // Setup react-testing-library
     setupFilesAfterEnv: ['<rootDir>/src/setupRTL.ts'],
 }

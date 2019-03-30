@@ -1,10 +1,8 @@
-import React from 'react'
-import { FetchError } from '../types/FetchError'
 import { useQuery } from '../hooks/useQuery'
-import { QueryDefinition, QueryRenderInput } from '../types/Query'
+import { QueryRenderInput, QueryMap } from '../types/Query'
 
 interface QueryInput {
-    query: QueryDefinition
+    query: QueryMap
     children: (input: QueryRenderInput) => any
 }
 

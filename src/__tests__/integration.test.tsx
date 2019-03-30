@@ -21,7 +21,9 @@ describe('Testing mock data provider and useQuery hook', () => {
 
         const { getByText } = render(
             <MockProvider mockData={mockData}>
-                <Query query={{ resource: 'answer' }}>{renderFunction}</Query>
+                <Query query={{ answer: { resource: 'answer' } }}>
+                    {renderFunction}
+                </Query>
             </MockProvider>
         )
 
@@ -54,7 +56,9 @@ describe('Testing mock data provider and useQuery hook', () => {
 
         const { getByText } = render(
             <MockProvider mockData={mockData}>
-                <Query query={{ resource: 'test' }}>{renderFunction}</Query>
+                <Query query={{ test: { resource: 'test' } }}>
+                    {renderFunction}
+                </Query>
             </MockProvider>
         )
 
