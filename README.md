@@ -13,34 +13,51 @@ yarn add @dhis2/app-service-data # ONCE THIS IS PUBLISHED, IT'S NOT YET
 At the top-level application entry point (i.e. `index.js` in Create React App configurations)
 
 ```js
-import { DataProvider } from '@dhis2/app-service-data'
+import { Provider } from '@dhis2/app-service-data'
 
 export default () => (
-    <DataProvider baseUrl="localhost:8080" apiVersion={32}>
+    <Provider baseUrl="localhost:8080" apiVersion={32}>
         <App />
-    </DataProvider>
+    </Provider>
 )
 ```
 
 To request data from a DHIS2 Core server anywhere in the app:
 
 ```js
-import { DataRequest } from `@dhis2/app-service-data`
+import { Query } from `@dhis2/app-service-data`
 
 const MyComponent = () => (
-  <DataRequest resourcePath="indicators.json?pageLimit=10">
+  <Query query={{
+    indicators: { resource: 'indicators.json', pageSize: 10 }
+  }}>
     ({ error, loading, data }) => {
       if (loading) return '...'
       if (error) return `ERROR: ${error.message}`
       return <div>{JSON.stringify(data)}</div>
     }
-  </DataRequest>
+  </Query>
 )
 ```
+
+You can also use the cleaner React hooks api:
+
+```js
+import { useQuery } from '@dhis2/app-service-data'
+
+const MyComponent = () => {
+  const { loading, error, data } = useQuery({
+    indicators: { resource: 'indicators.json', pageSize: 10 }
+  })
+  if (loading) return '...'
+  if (error) return `ERROR: ${error.message}`
+  return <div>{JSON.stringify(data)}</div>
+}
+``` 
 
 ## Known limitations
 
 * Only GET requests are currently supported
-* `resourcePath` must be a string and cannot be split into `resource`, `query`, etc.
+~* `resourcePath` must be a string and cannot be split into `resource`, `query`, etc.~
 * The Provider does no data caching or request de-duplication yet
 * Data should be normalized (and requested in a normalizable way) at the provider level to optimize network requests
