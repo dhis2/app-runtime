@@ -16,7 +16,7 @@ export const useQuery = (query: QueryMap): QueryState => {
                 responses.reduce((out, response, idx) => ({
                     ...out,
                     [names[idx]]: response,
-                }))
+                }), [])
             )
             .then(data => setState({ loading: false, data }))
             .catch(error => setState({ loading: false, error }))

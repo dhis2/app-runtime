@@ -26,11 +26,27 @@ export type QueryMap = {
     [key: string]: QueryDefinition
 }
 
-export interface QueryState {
+export type QueryState = {
     loading: boolean
     error?: FetchError
-    data?: Object
+    data?: any
 }
+
+/*
+// TODO: Use Union type for better static typeguards in consumer
+export interface QueryStateLoading {
+    loading: true
+}
+export interface QueryStateError {
+    loading: false
+    error: FetchError
+}
+export interface QueryStateData {
+    loading: false
+    data: any
+}
+export type QueryState = QueryStateLoading | QueryStateError | QueryStateData
+*/
 
 export type QueryRenderInput = QueryState
 
