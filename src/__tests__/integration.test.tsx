@@ -15,7 +15,7 @@ describe('Testing mock data provider and useQuery hook', () => {
             ({ loading, error, data }: QueryRenderInput) => {
                 if (loading) return 'loading'
                 if (error) return <div>error: {error.message}</div>
-                return <div>data: {data}</div>
+                return <div>data: {data.answer}</div>
             }
         )
 
@@ -36,7 +36,7 @@ describe('Testing mock data provider and useQuery hook', () => {
         expect(renderFunction).toHaveBeenCalledTimes(2)
         expect(renderFunction).toHaveBeenLastCalledWith({
             loading: false,
-            data: mockData.answer,
+            data: mockData,
         })
         expect(getByText(/data: /i)).toHaveTextContent(
             `data: ${mockData.answer}`
