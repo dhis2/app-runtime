@@ -20,7 +20,7 @@ export const useQuery = (query: QueryMap): QueryState => {
             )
             .then(data => setState({ loading: false, data }))
             .catch(error => setState({ loading: false, error }))
-    })
+    }, [])
 
     return state
 }
