@@ -13,10 +13,13 @@ export const useQuery = (query: QueryMap): QueryState => {
     useEffect(() => {
         Promise.all(requests.map(q => context.fetch(q)))
             .then(responses =>
-                responses.reduce((out, response, idx) => ({
-                    ...out,
-                    [names[idx]]: response,
-                }), [])
+                responses.reduce(
+                    (out, response, idx) => ({
+                        ...out,
+                        [names[idx]]: response,
+                    }),
+                    []
+                )
             )
             .then(data => setState({ loading: false, data }))
             .catch(error => setState({ loading: false, error }))
