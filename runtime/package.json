@@ -8,6 +8,9 @@
     "repository": "https://github.com/dhis2/app-runtime.git",
     "author": "Austin McGee <austin@dhis2.org>",
     "license": "BSD-3-Clause",
+    "publishConfig": {
+        "access": "public"
+    },
     "files": [
         "build/**"
     ],
