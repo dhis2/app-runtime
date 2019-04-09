@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './App.css'
-import { Query } from '@dhis2/app-runtime'
+import { DataQuery } from '@dhis2/app-runtime'
 
 class App extends Component {
     render() {
@@ -8,7 +8,7 @@ class App extends Component {
             <div className="App">
                 <header className="App-header">
                     <h3>Indicators (first 10)</h3>
-                    <Query
+                    <DataQuery
                         query={{
                             indicators: {
                                 resource: 'indicators.json',
@@ -30,7 +30,7 @@ class App extends Component {
                                 </pre>
                             )
                         }}
-                    </Query>
+                    </DataQuery>
                 </header>
             </div>
         )
