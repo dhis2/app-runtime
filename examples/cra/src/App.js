@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './App.css'
-import { Query } from '@dhis2/app-service-data'
+import { Query } from '@dhis2/app-runtime'
 
 class App extends Component {
     render() {
@@ -10,9 +10,11 @@ class App extends Component {
                     <h3>Indicators (first 10)</h3>
                     <Query
                         query={{
-                            resource: 'indicators.json',
-                            order: 'shortName:desc',
-                            pageSize: 10,
+                            indicators: {
+                                resource: 'indicators.json',
+                                order: 'shortName:desc',
+                                pageSize: 10,
+                            },
                         }}
                     >
                         {({ loading, error, data }) => {
@@ -22,7 +24,7 @@ class App extends Component {
                                 return <span>{`ERROR: ${error.message}`}</span>
                             return (
                                 <pre>
-                                    {data.indicators
+                                    {data.indicators.indicators
                                         .map(ind => ind.displayName)
                                         .join('\n')}
                                 </pre>
