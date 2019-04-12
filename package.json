@@ -29,5 +29,6 @@
             "commit-msg": "d2-style commit check",
             "pre-commit": "d2-style js apply"
         }
-    }
+    },
+    "version": "1.0.0"
 }
