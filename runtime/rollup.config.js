@@ -6,9 +6,12 @@ import pkg from './package.json'
 const externals = Object.keys(pkg.peerDependencies || {})
 
 const bundle = ({ format }) => ({
-    input: 'src/index.js',
+    input: {
+        index: 'src/index.js',
+        mocks: 'src/mocks.js',
+    },
     output: {
-        file: `build/${format}/index.js`,
+        dir: `${format}`,
         format,
     },
     external: externals,
