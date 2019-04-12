@@ -62,9 +62,7 @@ export const makeOfflineContext = (
         if (!offlineResource) {
             if (failOnMiss) {
                 throw new Error(
-                    `No offline data provided for resource type ${
-                        query.resource
-                    }!`
+                    `No data provided for resource type ${query.resource}!`
                 )
             }
             return Promise.resolve({})
