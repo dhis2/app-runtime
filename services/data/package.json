@@ -1,6 +1,6 @@
 {
     "name": "@dhis2/app-service-data",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "main": "build/cjs/index.js",
     "module": "build/es/index.js",
     "repository": "https://github.com/dhis2/app-runtime.git",
