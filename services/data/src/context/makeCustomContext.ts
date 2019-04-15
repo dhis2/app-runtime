@@ -7,40 +7,40 @@ import { FetchErrorPayload } from '../types/FetchError'
 const baseUrl = 'https://example.com'
 const apiVersion = 42
 
-export type OfflineResourceLiteral =
+export type CustomResourceLiteral =
     | string
     | number
     | boolean
     | object
     | FetchErrorPayload
-export type OfflineResourceFactory = (
+export type CustomResourceFactory = (
     query: QueryDefinition
-) => Promise<OfflineResourceLiteral>
-export type OfflineResource = OfflineResourceLiteral | OfflineResourceFactory
-export interface OfflineContextData {
-    [resourceName: string]: OfflineResource
+) => Promise<CustomResourceLiteral>
+export type CustomResource = CustomResourceLiteral | CustomResourceFactory
+export interface CustomContextData {
+    [resourceName: string]: CustomResource
 }
-export type OfflineContextOptions = {
+export type CustomContextOptions = {
     failOnMiss?: boolean
 }
 
-const resolveOffline = async (
-    offlineResource: OfflineResource,
+const resolveCustom = async (
+    customResource: CustomResource,
     query: QueryDefinition,
-    { failOnMiss }: OfflineContextOptions
-): Promise<OfflineResource> => {
-    switch (typeof offlineResource) {
+    { failOnMiss }: CustomContextOptions
+): Promise<CustomResource> => {
+    switch (typeof customResource) {
         case 'string':
         case 'number':
         case 'boolean':
         case 'object':
-            return offlineResource
+            return customResource
         case 'function':
             // function
-            const result = await offlineResource(query)
+            const result = await customResource(query)
             if (!result && failOnMiss) {
                 throw new Error(
-                    `The offline function for resource ${
+                    `The custom function for resource ${
                         query.resource
                     } must always return a value but returned ${result}`
                 )
@@ -48,18 +48,18 @@ const resolveOffline = async (
             return result || {}
         default:
             // should be unreachable
-            throw new Error(`Unknown resource type ${typeof offlineResource}`)
+            throw new Error(`Unknown resource type ${typeof customResource}`)
     }
 }
 
-export const makeOfflineContext = (
-    offlineData: OfflineContextData,
-    { failOnMiss = true }: OfflineContextOptions = {}
+export const makeCustomContext = (
+    customData: CustomContextData,
+    { failOnMiss = true }: CustomContextOptions = {}
 ): ContextType => {
     const apiUrl = joinPath(baseUrl, 'api', String(apiVersion))
-    const offlineFetch: FetchFunction = async query => {
-        const offlineResource = offlineData[query.resource]
-        if (!offlineResource) {
+    const customFetch: FetchFunction = async query => {
+        const customResource = customData[query.resource]
+        if (!customResource) {
             if (failOnMiss) {
                 throw new Error(
                     `No data provided for resource type ${query.resource}!`
@@ -68,13 +68,13 @@ export const makeOfflineContext = (
             return Promise.resolve({})
         }
 
-        return await resolveOffline(offlineResource, query, { failOnMiss })
+        return await resolveCustom(customResource, query, { failOnMiss })
     }
     const context = {
         baseUrl,
         apiVersion,
         apiUrl,
-        fetch: offlineFetch,
+        fetch: customFetch,
     }
     return context
 }

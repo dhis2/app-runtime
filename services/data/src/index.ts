@@ -1,5 +1,5 @@
 export { Query } from './components/Query'
 export { Provider } from './components/Provider'
-export { OfflineProvider } from './components/OfflineProvider'
+export { CustomProvider } from './components/CustomProvider'
 export { Context } from './components/Context'
 export { useQuery } from './hooks/useQuery'
