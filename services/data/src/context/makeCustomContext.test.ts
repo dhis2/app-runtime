@@ -17,8 +17,12 @@ describe('makeCustomContext', () => {
             user: { id: 42 },
         }
         const context = makeCustomContext(customData)
-        expect(await context.fetch({ resource: 'test' })).toEqual(customData.test)
-        expect(await context.fetch({ resource: 'user' })).toEqual(customData.user)
+        expect(await context.fetch({ resource: 'test' })).toEqual(
+            customData.test
+        )
+        expect(await context.fetch({ resource: 'user' })).toEqual(
+            customData.user
+        )
     })
     it('Should resolve custom resource with function', async () => {
         const customData = {
@@ -26,8 +30,12 @@ describe('makeCustomContext', () => {
             user: { id: 42 },
         }
         const context = makeCustomContext(customData)
-        expect(await context.fetch({ resource: 'test' })).toEqual(customData.test)
-        expect(await context.fetch({ resource: 'user' })).toEqual(customData.user)
+        expect(await context.fetch({ resource: 'test' })).toEqual(
+            customData.test
+        )
+        expect(await context.fetch({ resource: 'user' })).toEqual(
+            customData.user
+        )
     })
     it('Should throw if resolver returns undefined', async () => {
         const customData = {

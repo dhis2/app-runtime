@@ -24,7 +24,7 @@ export type CustomContextOptions = {
     failOnMiss?: boolean
 }
 
-const resolveCustom = async (
+const resolveCustomResource = async (
     customResource: CustomResource,
     query: QueryDefinition,
     { failOnMiss }: CustomContextOptions
@@ -68,7 +68,9 @@ export const makeCustomContext = (
             return Promise.resolve({})
         }
 
-        return await resolveCustom(customResource, query, { failOnMiss })
+        return await resolveCustomResource(customResource, query, {
+            failOnMiss,
+        })
     }
     const context = {
         baseUrl,
