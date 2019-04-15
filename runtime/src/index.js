@@ -1,4 +1,5 @@
 export {
+    CustomProvider as CustomDataProvider,
     Provider as DataProvider,
     Query as DataQuery,
     useQuery as useDataQuery,

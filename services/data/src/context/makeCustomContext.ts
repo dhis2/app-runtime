@@ -7,40 +7,40 @@ import { FetchErrorPayload } from '../types/FetchError'
 const baseUrl = 'https://example.com'
 const apiVersion = 42
 
-export type MockResourceLiteral =
+export type CustomResourceLiteral =
     | string
     | number
     | boolean
     | object
     | FetchErrorPayload
-export type MockResourceFactory = (
+export type CustomResourceFactory = (
     query: QueryDefinition
-) => Promise<MockResourceLiteral>
-export type MockResource = MockResourceLiteral | MockResourceFactory
-export interface MockContextData {
-    [resourceName: string]: MockResource
+) => Promise<CustomResourceLiteral>
+export type CustomResource = CustomResourceLiteral | CustomResourceFactory
+export interface CustomContextData {
+    [resourceName: string]: CustomResource
 }
-export type MockContextOptions = {
+export type CustomContextOptions = {
     failOnMiss?: boolean
 }
 
-const resolveMock = async (
-    mockResource: MockResource,
+const resolveCustomResource = async (
+    customResource: CustomResource,
     query: QueryDefinition,
-    { failOnMiss }: MockContextOptions
-): Promise<MockResource> => {
-    switch (typeof mockResource) {
+    { failOnMiss }: CustomContextOptions
+): Promise<CustomResource> => {
+    switch (typeof customResource) {
         case 'string':
         case 'number':
         case 'boolean':
         case 'object':
-            return mockResource
+            return customResource
         case 'function':
             // function
-            const result = await mockResource(query)
+            const result = await customResource(query)
             if (!result && failOnMiss) {
                 throw new Error(
-                    `The mock function for resource ${
+                    `The custom function for resource ${
                         query.resource
                     } must always return a value but returned ${result}`
                 )
@@ -48,33 +48,35 @@ const resolveMock = async (
             return result || {}
         default:
             // should be unreachable
-            throw new Error(`Unknown mock type ${typeof mockResource}`)
+            throw new Error(`Unknown resource type ${typeof customResource}`)
     }
 }
 
-export const makeMockContext = (
-    mockData: MockContextData,
-    { failOnMiss = true }: MockContextOptions = {}
+export const makeCustomContext = (
+    customData: CustomContextData,
+    { failOnMiss = true }: CustomContextOptions = {}
 ): ContextType => {
     const apiUrl = joinPath(baseUrl, 'api', String(apiVersion))
-    const mockFetch: FetchFunction = async query => {
-        const mockResource = mockData[query.resource]
-        if (!mockResource) {
+    const customFetch: FetchFunction = async query => {
+        const customResource = customData[query.resource]
+        if (!customResource) {
             if (failOnMiss) {
                 throw new Error(
-                    `No mock provided for resource type ${query.resource}!`
+                    `No data provided for resource type ${query.resource}!`
                 )
             }
             return Promise.resolve({})
         }
 
-        return await resolveMock(mockResource, query, { failOnMiss })
+        return await resolveCustomResource(customResource, query, {
+            failOnMiss,
+        })
     }
     const context = {
         baseUrl,
         apiVersion,
         apiUrl,
-        fetch: mockFetch,
+        fetch: customFetch,
     }
     return context
 }

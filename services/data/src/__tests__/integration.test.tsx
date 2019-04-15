@@ -1,15 +1,15 @@
 import React from 'react'
 import { useQuery } from '..'
 import { render, waitForElement } from 'react-testing-library'
-import { MockProvider } from '../components/MockProvider'
+import { CustomProvider } from '../components/CustomProvider'
 import { Query } from '../components/Query'
 import { QueryRenderInput } from '../types/Query'
 
-const mockData = {
+const customData = {
     answer: 42,
 }
 
-describe('Testing mock data provider and useQuery hook', () => {
+describe('Testing custom data provider and useQuery hook', () => {
     it('Should render without failing', async () => {
         const renderFunction = jest.fn(
             ({ loading, error, data }: QueryRenderInput) => {
@@ -20,11 +20,11 @@ describe('Testing mock data provider and useQuery hook', () => {
         )
 
         const { getByText } = render(
-            <MockProvider mockData={mockData}>
+            <CustomProvider data={customData}>
                 <Query query={{ answer: { resource: 'answer' } }}>
                     {renderFunction}
                 </Query>
-            </MockProvider>
+            </CustomProvider>
         )
 
         expect(getByText(/loading/i)).not.toBeUndefined()
@@ -36,15 +36,15 @@ describe('Testing mock data provider and useQuery hook', () => {
         expect(renderFunction).toHaveBeenCalledTimes(2)
         expect(renderFunction).toHaveBeenLastCalledWith({
             loading: false,
-            data: mockData,
+            data: customData,
         })
         expect(getByText(/data: /i)).toHaveTextContent(
-            `data: ${mockData.answer}`
+            `data: ${customData.answer}`
         )
     })
 })
 
-describe('Testing mock data provider and useQuery hook', () => {
+describe('Testing custom data provider and useQuery hook', () => {
     it('Should render an error', async () => {
         const renderFunction = jest.fn(
             ({ loading, error, data }: QueryRenderInput) => {
@@ -55,11 +55,11 @@ describe('Testing mock data provider and useQuery hook', () => {
         )
 
         const { getByText } = render(
-            <MockProvider mockData={mockData}>
+            <CustomProvider data={customData}>
                 <Query query={{ test: { resource: 'test' } }}>
                     {renderFunction}
                 </Query>
-            </MockProvider>
+            </CustomProvider>
         )
 
         expect(getByText(/loading/i)).not.toBeUndefined()
@@ -70,10 +70,10 @@ describe('Testing mock data provider and useQuery hook', () => {
         await waitForElement(() => getByText(/error: /i))
         expect(renderFunction).toHaveBeenCalledTimes(2)
         expect(String(renderFunction.mock.calls[1][0].error)).toBe(
-            'Error: No mock provided for resource type test!'
+            'Error: No data provided for resource type test!'
         )
         // expect(getByText(/data: /i)).toHaveTextContent(
-        //     `data: ${mockData.answer}`
+        //     `data: ${customData.answer}`
         // )
     })
 })
