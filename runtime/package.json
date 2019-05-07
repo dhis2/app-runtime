@@ -31,5 +31,7 @@
         "build": "rollup -c",
         "test": "echo \"No tests yet!\""
     },
-    "dependencies": {}
+    "dependencies": {
+        "styled-jsx": "^3.2.1"
+    }
 }
