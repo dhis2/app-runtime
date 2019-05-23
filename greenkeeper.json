@@ -1,0 +1,12 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "examples/cra/package.json",
+        "package.json",
+        "runtime/package.json",
+        "services/data/package.json"
+      ]
+    }
+  }
+}
