@@ -1,5 +1,7 @@
 # DHIS2 Application Runtime
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/dhis2/app-runtime.svg)](https://greenkeeper.io/)
+
 See [@dhis2/app-runtime](./runtime) in the `./runtime` directory for installation and usage.
 
 ## Development
