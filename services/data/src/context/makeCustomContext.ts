@@ -21,6 +21,7 @@ export interface CustomContextData {
     [resourceName: string]: CustomResource
 }
 export type CustomContextOptions = {
+    loadForever?: boolean
     failOnMiss?: boolean
 }
 
@@ -54,7 +55,7 @@ const resolveCustomResource = async (
 
 export const makeCustomContext = (
     customData: CustomContextData,
-    { failOnMiss = true }: CustomContextOptions = {}
+    { failOnMiss = true, loadForever = false }: CustomContextOptions = {}
 ): ContextType => {
     const apiUrl = joinPath(baseUrl, 'api', String(apiVersion))
     const customFetch: FetchFunction = async query => {
@@ -72,11 +73,14 @@ export const makeCustomContext = (
             failOnMiss,
         })
     }
+    const foreverLoadingFetch: FetchFunction = async query => {
+        return new Promise(() => {}) // Load forever
+    }
     const context = {
         baseUrl,
         apiVersion,
         apiUrl,
-        fetch: customFetch,
+        fetch: loadForever ? foreverLoadingFetch : customFetch,
     }
     return context
 }
