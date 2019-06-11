@@ -1,0 +1,47 @@
+{
+    "name": "@dhis2/app-service-i18n",
+    "version": "1.2.0",
+    "main": "build/cjs/index.js",
+    "module": "build/es/index.js",
+    "repository": "https://github.com/dhis2/app-runtime.git",
+    "author": "Austin McGee <austin@dhis2.org>",
+    "license": "BSD-3-Clause",
+    "private": true,
+    "files": [
+        "build/**"
+    ],
+    "dependencies": {
+        "i18next": "^17.0.3",
+        "react-i18next": "^10.11.0"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.4.4",
+        "@babel/core": "^7.4.5",
+        "@babel/plugin-proposal-class-properties": "^7.4.4",
+        "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+        "@babel/plugin-transform-runtime": "^7.4.4",
+        "@babel/preset-env": "^7.4.5",
+        "@babel/preset-react": "^7.0.0",
+        "@babel/runtime": "^7.4.5",
+        "jest": "^24.8.0",
+        "jest-dom": "^3.4.0",
+        "react": "^16.8.6",
+        "react-dom": "^16.8.6",
+        "react-testing-library": "^8.0.1",
+        "rimraf": "^2.6.3"
+    },
+    "peerDependencies": {
+        "react": "^16.8.6",
+        "react-dom": "^16.8.6"
+    },
+    "scripts": {
+        "clean": "rimraf ./build/*",
+        "build:commonjs": "BABEL_ENV=commonjs babel src/ --out-dir ./build/cjs --source-maps inline --verbose",
+        "build:modules": "BABEL_ENV=modules babel src/ --out-dir ./build/es --source-maps inline --verbose",
+        "build": "NODE_ENV=production yarn clean && concurrently -n cjs,es \"yarn build:commonjs\" \"yarn build:modules\"",
+        "watch": "NODE_ENV=development yarn clean && concurrently -n cjs,es \"yarn build:commonjs --watch\" \"yarn build:modules --watch\"",
+        "test": "jest",
+        "coverage": "jest --coverage",
+        "prepublishOnly": "yarn build"
+    }
+}
