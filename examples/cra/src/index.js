@@ -3,12 +3,17 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
-import { DataProvider } from '@dhis2/app-runtime'
+import { Provider } from '@dhis2/app-runtime'
 
 ReactDOM.render(
-    <DataProvider baseUrl="https://play.dhis2.org/dev" apiVersion={32}>
+    <Provider
+        config={{
+            baseUrl: 'https://play.dhis2.org/dev',
+            apiVersion: 32,
+        }}
+    >
         <App />
-    </DataProvider>,
+    </Provider>,
     document.getElementById('root')
 )
 

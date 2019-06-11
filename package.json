@@ -13,13 +13,16 @@
         "husky": "^2.3.0"
     },
     "scripts": {
-        "build:services": "loop \"yarn build\" --cwd ./services",
+        "install:examples": "loop \"yarn install --check-files\" --cwd ./examples",
+        "build:config": "cd services/config && yarn build",
+        "build:services": "yarn build:config && loop \"yarn build\" --cwd ./services --exclude config",
         "build:runtime": "cd runtime && yarn build",
-        "build": "yarn build:services && yarn build:runtime",
+        "build": "yarn build:services && yarn build:runtime && yarn install:examples",
         "test:services": "loop \"yarn test\" --cwd ./services",
         "test:runtime": "cd runtime && yarn test",
         "test": "yarn test:services && yarn test:runtime",
-        "format": "d2-style js apply --all --no-stage"
+        "format": "d2-style js apply --all --no-stage",
+        "start": "yarn build && cd examples/cra && yarn start"
     },
     "husky": {
         "hooks": {
