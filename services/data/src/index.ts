@@ -1,4 +1,4 @@
-export { Query, test } from './components/Query'
+export { Query } from './components/Query'
 export { Provider } from './components/Provider'
 export { CustomProvider } from './components/CustomProvider'
 export { Context } from './components/Context'

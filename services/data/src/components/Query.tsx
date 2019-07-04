@@ -11,5 +11,3 @@ export const Query = ({ query, children }: QueryInput) => {
 
     return children({ loading, error, data })
 }
-
-export const test = 42
