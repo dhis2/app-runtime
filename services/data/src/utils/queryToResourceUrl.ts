@@ -4,6 +4,7 @@ import {
     QueryParameterValue,
 } from '../types/Query'
 import { ContextInput, ContextType } from '../types/Context'
+import path from 'path'
 
 const encodeQueryParameter = (param: QueryParameterValue): string => {
     if (Array.isArray(param)) {
@@ -35,7 +36,11 @@ const actionPrefix = 'action::'
 
 const isAction = (resource: string) => resource.startsWith(actionPrefix)
 const makeActionURL = (baseUrl: string, resource: string) =>
-    `${baseUrl}/dhis-web-commons/${resource.substr(actionPrefix.length)}.action`
+    path.join(
+        baseUrl,
+        'dhis-web-commons',
+        `${resource.substr(actionPrefix.length)}.action`
+    )
 
 export const queryToResourceUrl = (
     { resource, ...params }: QueryDefinition,
@@ -43,7 +48,7 @@ export const queryToResourceUrl = (
 ): string => {
     const base = isAction(resource)
         ? makeActionURL(baseUrl, resource)
-        : `${apiUrl}/${resource}`
+        : path.join(apiUrl, resource)
 
     if (Object.keys(params).length) {
         return `${base}?${queryParametersToQueryString(params)}`

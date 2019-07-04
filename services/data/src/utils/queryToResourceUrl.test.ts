@@ -12,14 +12,36 @@ const context: ContextType = {
     fetch: async () => ({}),
 }
 
+const actionPrefix = `${baseUrl}/dhis-web-commons/`
+const actionPostfix = '.action'
+
 describe('queryToResourceUrl', () => {
-    it('should return resource name with now querystring if not query parameters are passed', () => {
+    describe('action', () => {
+        it('should return action URL with no querystring if not query parameters are passed', () => {
+            const query: QueryDefinition = {
+                resource: 'action::test',
+            }
+            expect(queryToResourceUrl(query, context)).toBe(
+                `${actionPrefix}test${actionPostfix}`
+            )
+        })
+        it('should return action URL with a simple querystring if query parameters are passed', () => {
+            const query: QueryDefinition = {
+                resource: 'action::test',
+                key: 'value',
+            }
+            expect(queryToResourceUrl(query, context)).toBe(
+                `${actionPrefix}test${actionPostfix}?key=value`
+            )
+        })
+    })
+    it('should return resource url with no querystring if not query parameters are passed', () => {
         const query: QueryDefinition = {
             resource: 'test',
         }
         expect(queryToResourceUrl(query, context)).toBe(`${apiUrl}/test`)
     })
-    it('should return resource name and singular parameter separated by ?', () => {
+    it('should return resource url and singular parameter separated by ?', () => {
         const query: QueryDefinition = {
             resource: 'test',
             key: 'value',
@@ -28,7 +50,7 @@ describe('queryToResourceUrl', () => {
             `${apiUrl}/test?key=value`
         )
     })
-    it('should return resource name and multiple parameters separated by ? and &', () => {
+    it('should return resource url and multiple parameters separated by ? and &', () => {
         const query: QueryDefinition = {
             resource: 'test',
             key: 'value',
