@@ -3,6 +3,8 @@ import {
     QueryParameters,
     QueryParameterValue,
 } from '../types/Query'
+import { ContextInput, ContextType } from '../types/Context'
+import { joinPath } from './path'
 
 const encodeQueryParameter = (param: QueryParameterValue): string => {
     if (Array.isArray(param)) {
@@ -30,12 +32,26 @@ const queryParametersToQueryString = (params: QueryParameters) =>
         )
         .join('&')
 
-export const queryToResourcePath = ({
-    resource,
-    ...params
-}: QueryDefinition): string => {
+const actionPrefix = 'action::'
+
+const isAction = (resource: string) => resource.startsWith(actionPrefix)
+const makeActionURL = (baseUrl: string, resource: string) =>
+    joinPath(
+        baseUrl,
+        'dhis-web-commons',
+        `${resource.substr(actionPrefix.length)}.action`
+    )
+
+export const queryToResourceUrl = (
+    { resource, ...params }: QueryDefinition,
+    { baseUrl, apiUrl }: ContextType
+): string => {
+    const base = isAction(resource)
+        ? makeActionURL(baseUrl, resource)
+        : joinPath(apiUrl, resource)
+
     if (Object.keys(params).length) {
-        return `${resource}?${queryParametersToQueryString(params)}`
+        return `${base}?${queryParametersToQueryString(params)}`
     }
-    return resource
+    return base
 }
