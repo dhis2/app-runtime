@@ -1,8 +1,8 @@
 import React from 'react'
-import { useQuery } from '..'
+import { useDataQuery } from '../hooks/useDataQuery'
 import { render, waitForElement } from '@testing-library/react'
-import { CustomProvider } from '../components/CustomProvider'
-import { Query } from '../components/Query'
+import { CustomDataProvider } from '../components/CustomDataProvider'
+import { DataQuery } from '../components/DataQuery'
 import { QueryRenderInput } from '../types/Query'
 
 const customData = {
@@ -20,11 +20,11 @@ describe('Testing custom data provider and useQuery hook', () => {
         )
 
         const { getByText } = render(
-            <CustomProvider data={customData}>
-                <Query query={{ answer: { resource: 'answer' } }}>
+            <CustomDataProvider data={customData}>
+                <DataQuery query={{ answer: { resource: 'answer' } }}>
                     {renderFunction}
-                </Query>
-            </CustomProvider>
+                </DataQuery>
+            </CustomDataProvider>
         )
 
         expect(getByText(/loading/i)).not.toBeUndefined()
@@ -55,11 +55,11 @@ describe('Testing custom data provider and useQuery hook', () => {
         )
 
         const { getByText } = render(
-            <CustomProvider data={customData}>
-                <Query query={{ test: { resource: 'test' } }}>
+            <CustomDataProvider data={customData}>
+                <DataQuery query={{ test: { resource: 'test' } }}>
                     {renderFunction}
-                </Query>
-            </CustomProvider>
+                </DataQuery>
+            </CustomDataProvider>
         )
 
         expect(getByText(/loading/i)).not.toBeUndefined()

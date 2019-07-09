@@ -1,2 +1,2 @@
 export { useConfig } from './useConfig'
-export { Provider } from './Provider'
+export { ConfigProvider } from './ConfigProvider'

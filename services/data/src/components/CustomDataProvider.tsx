@@ -4,18 +4,20 @@ import {
     CustomContextData,
     CustomContextOptions,
 } from '../context/makeCustomContext'
-import { Context } from './Context'
+import { DataContext } from './DataContext'
 
 interface CustomProviderInput {
     children: React.ReactNode
     data: CustomContextData
     options?: CustomContextOptions
 }
-export const CustomProvider = ({
+export const CustomDataProvider = ({
     children,
     data,
     options,
 }: CustomProviderInput) => {
     const context = makeCustomContext(data, options)
-    return <Context.Provider value={context}>{children}</Context.Provider>
+    return (
+        <DataContext.Provider value={context}>{children}</DataContext.Provider>
+    )
 }

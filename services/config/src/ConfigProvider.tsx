@@ -1,15 +1,17 @@
 import React from 'react'
-import { Context } from './Context'
+import { ConfigContext } from './ConfigContext'
 import { Config } from './types'
 
 const makeContext = (config: Config) => config
 
-export const Provider = ({
+export const ConfigProvider = ({
     config,
     children,
 }: {
     config: Config
     children: React.ReactNode
 }) => (
-    <Context.Provider value={makeContext(config)}>{children}</Context.Provider>
+    <ConfigContext.Provider value={makeContext(config)}>
+        {children}
+    </ConfigContext.Provider>
 )

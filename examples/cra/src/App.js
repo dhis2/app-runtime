@@ -1,9 +1,9 @@
 import React from 'react'
 import './App.css'
-import { useAppConfig, useDataQuery } from '@dhis2/app-runtime'
+import { useConfig, useDataQuery } from '@dhis2/app-runtime'
 
 const App = () => {
-    const config = useAppConfig()
+    const config = useConfig()
     const { loading, error, data } = useDataQuery({
         indicators: {
             resource: 'indicators.json',

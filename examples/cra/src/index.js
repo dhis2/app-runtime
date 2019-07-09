@@ -3,17 +3,17 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
-import { Provider } from '@dhis2/app-runtime'
+import { DHIS2RuntimeProvider } from '@dhis2/app-runtime'
 
 ReactDOM.render(
-    <Provider
+    <DHIS2RuntimeProvider
         config={{
             baseUrl: 'https://play.dhis2.org/dev',
             apiVersion: 32,
         }}
     >
         <App />
-    </Provider>,
+    </DHIS2RuntimeProvider>,
     document.getElementById('root')
 )
 

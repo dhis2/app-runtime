@@ -1,9 +1,9 @@
 export {
-    CustomProvider as CustomDataProvider,
-    Query as DataQuery,
-    useQuery as useDataQuery,
+    CustomDataProvider,
+    DataQuery,
+    useDataQuery,
 } from '@dhis2/app-service-data'
 
-export { useConfig as useAppConfig } from '@dhis2/app-service-config'
+export { useConfig } from '@dhis2/app-service-config'
 
-export { Provider } from './Provider'
+export { DHIS2RuntimeProvider } from './Provider'

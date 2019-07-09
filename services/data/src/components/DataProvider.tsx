@@ -1,6 +1,6 @@
 import React from 'react'
 import { useConfig } from '@dhis2/app-service-config'
-import { Context } from './Context'
+import { DataContext } from './DataContext'
 import { makeContext } from '../context/makeContext'
 
 export interface ProviderInput {
@@ -8,15 +8,15 @@ export interface ProviderInput {
     apiVersion: number
     children: React.ReactNode
 }
-export const Provider = (props: ProviderInput) => {
+export const DataProvider = (props: ProviderInput) => {
     const config = {
         ...useConfig(),
         props,
     }
 
     return (
-        <Context.Provider value={makeContext(config)}>
+        <DataContext.Provider value={makeContext(config)}>
             {props.children}
-        </Context.Provider>
+        </DataContext.Provider>
     )
 }
