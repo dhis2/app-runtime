@@ -9,7 +9,7 @@
         "services/*"
     ],
     "devDependencies": {
-        "@dhis2/cli-style": "^3.0.1",
+        "@dhis2/cli-style": "^4.0.0",
         "husky": "^3.0.0"
     },
     "scripts": {
