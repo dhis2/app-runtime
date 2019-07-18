@@ -15,9 +15,6 @@
         "eject": "react-scripts eject",
         "preinstall": "echo \"Run yarn install with --check-files to update local dependency!\""
     },
-    "eslintConfig": {
-        "extends": "react-app"
-    },
     "browserslist": [
         ">0.2%",
         "not dead",

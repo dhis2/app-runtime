@@ -1,6 +1,4 @@
 import { makeCustomContext } from './makeCustomContext'
-import { QueryDefinition } from '../types/Query'
-import { bigIntLiteral } from '@babel/types'
 
 describe('makeCustomContext', () => {
     it('Should throw if requested custom resource is not provided', () => {

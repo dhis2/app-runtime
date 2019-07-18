@@ -3,7 +3,7 @@ import {
     QueryParameters,
     QueryParameterValue,
 } from '../types/Query'
-import { ContextInput, ContextType } from '../types/Context'
+import { ContextType } from '../types/Context'
 import { joinPath } from './path'
 
 const encodeQueryParameter = (param: QueryParameterValue): string => {
