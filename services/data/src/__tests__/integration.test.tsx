@@ -1,6 +1,6 @@
 import React from 'react'
 import { useQuery } from '..'
-import { render, waitForElement } from 'react-testing-library'
+import { render, waitForElement } from '@testing-library/react'
 import { CustomProvider } from '../components/CustomProvider'
 import { Query } from '../components/Query'
 import { QueryRenderInput } from '../types/Query'

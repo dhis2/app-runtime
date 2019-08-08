@@ -1,5 +1,5 @@
 import 'jest-dom/extend-expect'
-import 'react-testing-library/cleanup-after-each'
+import '@testing-library/react/cleanup-after-each'
 
 process.on('unhandledRejection', err => {
     throw err
