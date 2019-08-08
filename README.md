@@ -1,6 +1,9 @@
 # DHIS2 Application Runtime
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/dhis2/app-runtime.svg)](https://greenkeeper.io/)
+[![npm](https://img.shields.io/npm/v/@dhis2/app-runtime.svg)](https://www.npmjs.com/package/@dhis2/app-runtime)
+[![build](https://img.shields.io/travis/dhis2/app-runtime.svg)](https://travis-ci.com/dhis2/app-runtime)
+![Dependabot](https://badgen.net/dependabot/dhis2/app-runtime/?icon=dependabot)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 See [@dhis2/app-runtime](./runtime) in the `./runtime` directory for installation and usage.
 
