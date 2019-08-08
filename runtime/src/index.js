@@ -1,5 +1,6 @@
 export {
     CustomDataProvider,
+    DataProvider,
     DataQuery,
     useDataQuery,
 } from '@dhis2/app-service-data'
