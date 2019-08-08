@@ -1,4 +1,3 @@
-import { fetchData } from '../utils/networkFetch'
 import { joinPath } from '../utils/path'
 import { ContextType, FetchFunction } from '../types/Context'
 import { QueryDefinition } from '../types/Query'
@@ -20,7 +19,7 @@ export type CustomResource = CustomResourceLiteral | CustomResourceFactory
 export interface CustomContextData {
     [resourceName: string]: CustomResource
 }
-export type CustomContextOptions = {
+export interface CustomContextOptions {
     loadForever?: boolean
     failOnMiss?: boolean
 }
@@ -41,9 +40,7 @@ const resolveCustomResource = async (
             const result = await customResource(query)
             if (!result && failOnMiss) {
                 throw new Error(
-                    `The custom function for resource ${
-                        query.resource
-                    } must always return a value but returned ${result}`
+                    `The custom function for resource ${query.resource} must always return a value but returned ${result}`
                 )
             }
             return result || {}
@@ -73,7 +70,7 @@ export const makeCustomContext = (
             failOnMiss,
         })
     }
-    const foreverLoadingFetch: FetchFunction = async query => {
+    const foreverLoadingFetch: FetchFunction = async () => {
         return new Promise(() => {}) // Load forever
     }
     const context = {

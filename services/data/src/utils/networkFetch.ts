@@ -3,7 +3,7 @@ import { FetchError } from '../types/FetchError'
 export function fetchData(
     url: string,
     options: RequestInit = {}
-): Promise<Object> {
+): Promise<object> {
     return fetch(url, {
         ...options,
         credentials: 'include',
@@ -35,9 +35,7 @@ export function fetchData(
             if (response.status < 200 || response.status >= 400) {
                 throw new FetchError({
                     type: 'unknown',
-                    message: `An unknown error occurred - ${
-                        response.statusText
-                    } (${response.status})`,
+                    message: `An unknown error occurred - ${response.statusText} (${response.status})`,
                     details: response,
                 })
             }

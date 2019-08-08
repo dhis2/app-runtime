@@ -1,40 +1,35 @@
-import React, { Component } from 'react'
+import React from 'react'
 import './App.css'
-import { DataQuery } from '@dhis2/app-runtime'
+import { useConfig, useDataQuery } from '@dhis2/app-runtime'
 
-class App extends Component {
-    render() {
-        return (
-            <div className="App">
-                <header className="App-header">
-                    <h3>Indicators (first 10)</h3>
-                    <DataQuery
-                        query={{
-                            indicators: {
-                                resource: 'indicators.json',
-                                order: 'shortName:desc',
-                                pageSize: 10,
-                            },
-                        }}
-                    >
-                        {({ loading, error, data }) => {
-                            console.log(loading, error, data)
-                            if (loading) return <span>...</span>
-                            if (error)
-                                return <span>{`ERROR: ${error.message}`}</span>
-                            return (
-                                <pre>
-                                    {data.indicators.indicators
-                                        .map(ind => ind.displayName)
-                                        .join('\n')}
-                                </pre>
-                            )
-                        }}
-                    </DataQuery>
-                </header>
-            </div>
-        )
-    }
+const App = () => {
+    const config = useConfig()
+    const { loading, error, data } = useDataQuery({
+        indicators: {
+            resource: 'indicators.json',
+            order: 'shortName:desc',
+            pageSize: 10,
+        },
+    })
+    return (
+        <div className="App">
+            <header className="App-header">
+                <span>
+                    <strong>Base url:</strong> {config.baseUrl}
+                </span>
+                <h3>Indicators (first 10)</h3>
+                {loading && <span>...</span>}
+                {error && <span>{`ERROR: ${error.message}`}</span>}
+                {data && (
+                    <pre>
+                        {data.indicators.indicators
+                            .map(ind => ind.displayName)
+                            .join('\n')}
+                    </pre>
+                )}
+            </header>
+        </div>
+    )
 }
 
 export default App

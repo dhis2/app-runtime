@@ -1,12 +1,15 @@
 import { FetchError } from './FetchError'
 
 export type QueryParameterSingularValue = string | number
-export type QueryParameterAliasedValue = {
+export interface QueryParameterAliasedValue {
     [name: string]: QueryParameterSingularValue
 }
-export type QueryParameterMultipleValue = Array<
-    QueryParameterSingularValue | QueryParameterAliasedValue
->
+export type QueryParameterSingularOrAliasedValue =
+    | QueryParameterSingularValue
+    | QueryParameterAliasedValue
+
+export type QueryParameterMultipleValue = QueryParameterSingularOrAliasedValue[]
+
 export type QueryParameterValue =
     | QueryParameterSingularValue
     | QueryParameterAliasedValue
@@ -22,11 +25,9 @@ export interface QueryDefinition extends QueryParameters {
     resource: string
 }
 
-export type QueryMap = {
-    [key: string]: QueryDefinition
-}
+export type QueryMap = Record<string, QueryDefinition>
 
-export type QueryState = {
+export interface QueryState {
     loading: boolean
     error?: FetchError
     data?: any

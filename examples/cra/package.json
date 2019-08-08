@@ -6,7 +6,7 @@
         "@dhis2/app-runtime": "file:../../runtime",
         "react": "^16.8.4",
         "react-dom": "^16.8.4",
-        "react-scripts": "3.0.1"
+        "react-scripts": "^3.0.1"
     },
     "scripts": {
         "start": "react-scripts start",
@@ -14,9 +14,6 @@
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "preinstall": "echo \"Run yarn install with --check-files to update local dependency!\""
-    },
-    "eslintConfig": {
-        "extends": "react-app"
     },
     "browserslist": [
         ">0.2%",
