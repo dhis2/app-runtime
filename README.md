@@ -13,14 +13,9 @@ See [@dhis2/app-runtime](./runtime) in the `./runtime` directory for installatio
 
 ## Example
 
-A `create-react-app` example is available at [./examples/cra](./examples/cra). Be sure to run `yarn build` in _this_ directory before installing in the example directory:'
+A `create-react-app` example is available at [./examples/cra](./examples/cra). If running `yarn install` locally in the example directory, be sure to run it with `yarn install --force --check-files` so that it pulls in the runtime (specified as a `file:` dependency).
 
-```sh
-> yarn build
-> cd examples/cra && yarn start
-# visit http://localhost:3000
-# login to https://play.dhis2.org/dev to allow the example to retrieve data
-```
+Running `yarn build` at root will automatically update the example app's copy, and running `yarn start` will build the runtime and then start the example.
 
 ## Release
 
