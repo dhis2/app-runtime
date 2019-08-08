@@ -15,7 +15,7 @@
         "eslint-config-prettier": "^6.0.0"
     },
     "scripts": {
-        "install:examples": "loop \"yarn install --check-files\" --cwd ./examples",
+        "install:examples": "loop \"yarn install --force --check-files\" --cwd ./examples",
         "build:config": "cd services/config && yarn build",
         "build:services": "yarn build:config && loop \"yarn build\" --cwd ./services --exclude config",
         "build:runtime": "cd runtime && yarn build",

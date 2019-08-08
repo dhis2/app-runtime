@@ -6,4 +6,4 @@ export {
 
 export { useConfig } from '@dhis2/app-service-config'
 
-export { DHIS2RuntimeProvider } from './Provider'
+export { Provider } from './Provider'
