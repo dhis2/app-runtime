@@ -30,7 +30,7 @@
         "concurrently": "^4.1.0",
         "jest": "^24.5.0",
         "jest-dom": "^4.0.0",
-        "react": "^16.8.6",
+        "react": "^16.9.0",
         "react-dom": "^16.8.6",
         "rimraf": "^2.6.3",
         "ts-jest": "^24.0.0",
