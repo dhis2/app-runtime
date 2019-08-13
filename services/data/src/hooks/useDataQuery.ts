@@ -1,9 +1,14 @@
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext, useEffect, useCallback } from 'react'
 import { DataContext } from '../components/DataContext'
-import { QueryState, QueryMap } from '../types/Query'
+import {
+    QueryState,
+    QueryMap,
+    RefetchCallback,
+    QueryRenderInput,
+} from '../types/Query'
 import { ContextType } from '../types/Context'
 
-const reduceRepsonses = (responses: any[], names: string[]) =>
+const reduceResponses = (responses: any[], names: string[]) =>
     responses.reduce(
         (out, response, idx) => ({
             ...out,
@@ -27,26 +32,35 @@ const fetchData = (
     )
 
     return Promise.all(requestPromises).then(responses =>
-        reduceRepsonses(responses, names)
+        reduceResponses(responses, names)
     )
 }
 
-export const useDataQuery = (query: QueryMap): QueryState => {
+export const useDataQuery = (query: QueryMap): QueryRenderInput => {
     const context = useContext(DataContext)
-    const [state, setState] = useState<QueryState>({
-        loading: true,
-    })
+    const [state, setState] = useState<QueryState>({ loading: true })
+    const [refetchCount, setRefetchCount] = useState(0)
+    const refetch: RefetchCallback = useCallback(
+        () => setRefetchCount(count => count + 1),
+        []
+    )
 
     useEffect(() => {
         const controller = new AbortController()
         const abort = () => controller.abort()
 
         fetchData(context, query, controller.signal)
-            .then(data => setState({ loading: false, data }))
-            .catch(error => setState({ loading: false, error }))
+            .then(data => {
+                !controller.signal.aborted && setState({ loading: false, data })
+            })
+            .catch(error => {
+                !controller.signal.aborted &&
+                    setState({ loading: false, error })
+            })
 
+        // Cleanup inflight requests
         return abort
-    }, [context, query])
+    }, [context, query, refetchCount])
 
-    return state
+    return { refetch, ...state }
 }

@@ -13,7 +13,8 @@ export type CustomResourceLiteral =
     | object
     | FetchErrorPayload
 export type CustomResourceFactory = (
-    query: QueryDefinition
+    query: QueryDefinition,
+    options?: RequestInit
 ) => Promise<CustomResourceLiteral>
 export type CustomResource = CustomResourceLiteral | CustomResourceFactory
 export interface CustomContextData {
@@ -22,12 +23,13 @@ export interface CustomContextData {
 export interface CustomContextOptions {
     loadForever?: boolean
     failOnMiss?: boolean
+    options?: RequestInit
 }
 
 const resolveCustomResource = async (
     customResource: CustomResource,
     query: QueryDefinition,
-    { failOnMiss }: CustomContextOptions
+    { failOnMiss, options }: CustomContextOptions
 ): Promise<CustomResource> => {
     switch (typeof customResource) {
         case 'string':
@@ -37,7 +39,7 @@ const resolveCustomResource = async (
             return customResource
         case 'function':
             // function
-            const result = await customResource(query)
+            const result = await customResource(query, options)
             if (!result && failOnMiss) {
                 throw new Error(
                     `The custom function for resource ${query.resource} must always return a value but returned ${result}`
@@ -55,7 +57,7 @@ export const makeCustomContext = (
     { failOnMiss = true, loadForever = false }: CustomContextOptions = {}
 ): ContextType => {
     const apiUrl = joinPath(baseUrl, 'api', String(apiVersion))
-    const customFetch: FetchFunction = async query => {
+    const customFetch: FetchFunction = async (query, options) => {
         const customResource = customData[query.resource]
         if (!customResource) {
             if (failOnMiss) {
@@ -68,6 +70,7 @@ export const makeCustomContext = (
 
         return await resolveCustomResource(customResource, query, {
             failOnMiss,
+            options,
         })
     }
     const foreverLoadingFetch: FetchFunction = async () => {
