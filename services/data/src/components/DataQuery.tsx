@@ -7,7 +7,7 @@ interface QueryInput {
 }
 
 export const DataQuery = ({ query, children }: QueryInput) => {
-    const { loading, error, data } = useDataQuery(query)
+    const queryState = useDataQuery(query)
 
-    return children({ loading, error, data })
+    return children(queryState)
 }
