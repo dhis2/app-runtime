@@ -1,6 +1,6 @@
 {
     "name": "@dhis2/app-service-config",
-    "version": "1.4.1",
+    "version": "1.4.2",
     "main": "build/cjs/index.js",
     "module": "build/es/index.js",
     "types": "build/types/index.d.ts",
@@ -13,11 +13,11 @@
     ],
     "devDependencies": {
         "@babel/cli": "^7.5.5",
-        "@babel/core": "^7.4.0",
-        "@babel/plugin-proposal-class-properties": "^7.4.0",
-        "@babel/plugin-proposal-object-rest-spread": "^7.4.0",
+        "@babel/core": "^7.5.5",
+        "@babel/plugin-proposal-class-properties": "^7.5.5",
+        "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
         "@babel/plugin-transform-runtime": "^7.5.5",
-        "@babel/preset-env": "^7.4.1",
+        "@babel/preset-env": "^7.5.5",
         "@babel/preset-react": "^7.0.0",
         "@babel/preset-typescript": "^7.3.3",
         "@babel/runtime": "^7.5.5",
