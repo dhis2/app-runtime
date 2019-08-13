@@ -4,16 +4,18 @@
     "private": true,
     "dependencies": {
         "@dhis2/app-runtime": "file:../../runtime",
-        "react": "^16.8.4",
-        "react-dom": "^16.8.4",
-        "react-scripts": "^3.0.1"
+        "prop-types": "^15.7.2",
+        "react": "~16.8.6",
+        "react-dom": "~16.8.6",
+        "react-scripts": "^3.1.0"
     },
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
-        "preinstall": "echo \"Run yarn install with --check-files to update local dependency!\""
+        "preinstall": "echo \"Run yarn install with --force --check-files to update local dependency!\"",
+        "analyze": "source-map-explorer 'build/static/js/*.js'"
     },
     "browserslist": [
         ">0.2%",
@@ -22,6 +24,8 @@
         "not op_mini all"
     ],
     "devDependencies": {
-        "babel-jest": "24.8.0"
+        "eslint": "^5",
+        "source-map-explorer": "^2.0.1",
+        "typescript": "^3.5.3"
     }
 }
