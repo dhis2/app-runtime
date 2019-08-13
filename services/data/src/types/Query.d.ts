@@ -31,7 +31,6 @@ export interface QueryState {
     loading: boolean
     error?: FetchError
     data?: any
-    abort: () => void
 }
 
 /*
