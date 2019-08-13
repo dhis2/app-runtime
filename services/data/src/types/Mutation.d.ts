@@ -22,12 +22,7 @@ export interface DeleteMutation extends BaseMutation {
     id: string
 }
 
-export type MutationDefinition =
-    | CreateMutation
-    | UpdateMutation
-    | DeleteMutation
-
-export type Mutation = Record<string, MutationDefinition>
+export type Mutation = CreateMutation | UpdateMutation | DeleteMutation
 
 export interface MutationState extends QueryState {
     called: boolean

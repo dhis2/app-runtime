@@ -1,32 +1,18 @@
-import {
-    MutationDefinition,
-    MutationState,
-    Mutation,
-    MutationRenderInput,
-} from '../types/Mutation'
+import { MutationState, Mutation, MutationRenderInput } from '../types/Mutation'
 import { useContext, useState, useEffect, useCallback, useRef } from 'react'
 import { DataContext } from '../components/DataContext'
 import { ContextType } from '../types/Context'
 import { QueryDefinition } from '../types/Query'
 import { joinPath } from '../utils/path'
 
-const reduceResponses = (responses: any[], names: string[]) =>
-    responses.reduce(
-        (out, response, idx) => ({
-            ...out,
-            [names[idx]]: response,
-        }),
-        {}
-    )
-
-const mutationDefToQueryDef = (m: MutationDefinition): QueryDefinition => ({
+const mutationToQueryDef = (m: Mutation): QueryDefinition => ({
     resource: joinPath(
         m.resource,
         m.type === 'update' || m.type === 'delete' ? m.id : ''
     ),
 })
 
-const mutationToMethod = (m: MutationDefinition): string => {
+const mutationToMethod = (m: Mutation): string => {
     switch (m.type) {
         case 'create':
             return 'POST'
@@ -41,7 +27,7 @@ const mutationToMethod = (m: MutationDefinition): string => {
     }
 }
 
-const mutationToPayload = (m: MutationDefinition): string | null => {
+const mutationToPayload = (m: Mutation): string | null => {
     if (m.type === 'delete') {
         return null
     }
@@ -53,24 +39,16 @@ const fetchData = (
     mutation: Mutation,
     signal: AbortSignal
 ) => {
-    const names = Object.keys(mutation)
-    const requests = names.map(name => mutation[name])
+    const q = mutationToQueryDef(mutation)
 
-    const requestPromises = requests.map(m => {
-        const q = mutationDefToQueryDef(m)
-        context.fetch(q, {
-            method: mutationToMethod(m),
-            body: mutationToPayload(m),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            signal: signal,
-        })
+    return context.fetch(q, {
+        method: mutationToMethod(mutation),
+        body: mutationToPayload(mutation),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        signal: signal,
     })
-
-    return Promise.all(requestPromises).then(responses =>
-        reduceResponses(responses, names)
-    )
 }
 
 export const useDataMutation = (mutation: Mutation): MutationRenderInput => {
