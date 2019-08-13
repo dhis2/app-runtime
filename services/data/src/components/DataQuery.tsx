@@ -1,8 +1,8 @@
 import { useDataQuery } from '../hooks/useDataQuery'
-import { QueryRenderInput, QueryMap } from '../types/Query'
+import { QueryRenderInput, Query } from '../types/Query'
 
 interface QueryInput {
-    query: QueryMap
+    query: Query
     children: (input: QueryRenderInput) => any
 }
 

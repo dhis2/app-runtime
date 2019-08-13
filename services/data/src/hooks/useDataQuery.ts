@@ -2,7 +2,7 @@ import { useState, useContext, useEffect, useCallback } from 'react'
 import { DataContext } from '../components/DataContext'
 import {
     QueryState,
-    QueryMap,
+    Query,
     RefetchCallback,
     QueryRenderInput,
 } from '../types/Query'
@@ -17,11 +17,7 @@ const reduceResponses = (responses: any[], names: string[]) =>
         {}
     )
 
-const fetchData = (
-    context: ContextType,
-    query: QueryMap,
-    signal: AbortSignal
-) => {
+const fetchData = (context: ContextType, query: Query, signal: AbortSignal) => {
     const names = Object.keys(query)
     const requests = names.map(name => query[name])
 
@@ -36,7 +32,7 @@ const fetchData = (
     )
 }
 
-export const useDataQuery = (query: QueryMap): QueryRenderInput => {
+export const useDataQuery = (query: Query): QueryRenderInput => {
     const context = useContext(DataContext)
     const [state, setState] = useState<QueryState>({ loading: true })
     const [refetchCount, setRefetchCount] = useState(0)

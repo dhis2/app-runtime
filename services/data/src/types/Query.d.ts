@@ -21,11 +21,14 @@ export interface QueryParameters {
     [key: string]: QueryParameterValue
 }
 
-export interface QueryDefinition extends QueryParameters {
+export interface ResourceQuery {
     resource: string
 }
+export interface QueryDefinition extends QueryParameters, ResourceQuery {
+    // Future
+}
 
-export type QueryMap = Record<string, QueryDefinition>
+export type Query = Record<string, QueryDefinition>
 
 export type RefetchCallback = () => void
 
