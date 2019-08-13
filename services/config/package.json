@@ -11,15 +11,10 @@
     "files": [
         "build/**"
     ],
-    "devDependencies": {
-        "prop-types": "^15.7.2",
-        "react": "^16.8",
-        "react-dom": "^16.8"
-    },
     "peerDependencies": {
         "prop-types": "^15.7.2",
-        "react": "^16.8",
-        "react-dom": "^16.8"
+        "react": "^16.8.6",
+        "react-dom": "^16.8.6"
     },
     "scripts": {
         "clean": "rimraf ./build/*",

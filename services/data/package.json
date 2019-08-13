@@ -11,12 +11,6 @@
     "files": [
         "build/**"
     ],
-    "devDependencies": {
-        "@dhis2/app-service-config": "1.4.2",
-        "prop-types": "^15.7.2",
-        "react": "^16.8",
-        "react-dom": "^16.8"
-    },
     "peerDependencies": {
         "@dhis2/app-service-config": "1.4.2",
         "prop-types": "^15.7.2",
