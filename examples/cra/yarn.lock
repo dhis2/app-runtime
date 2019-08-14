@@ -815,7 +815,7 @@
   integrity sha512-6It2EVfGskxZCQhuykrfnALg7oVeiI6KclWSmGDqB0AiInVrTGB9Jp9i4/Ad21u9Jde/voVQz6eFX/eSg/UsPA==
 
 "@dhis2/app-runtime@file:../../runtime":
-  version "1.4.3"
+  version "1.4.2"
 
 "@hapi/address@2.x.x":
   version "2.0.0"
