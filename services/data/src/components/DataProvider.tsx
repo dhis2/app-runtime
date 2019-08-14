@@ -11,7 +11,7 @@ export interface ProviderInput {
 export const DataProvider = (props: ProviderInput) => {
     const config = {
         ...useConfig(),
-        props,
+        ...props,
     }
 
     return (
