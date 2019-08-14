@@ -11,7 +11,7 @@ See [@dhis2/app-runtime](./runtime) in the `./runtime` directory for installatio
 
 ```sh
 > yarn test # runs yarn test on each directory under ./services, and also in ./runtime
-> yarn build # runs yarn test on each directory under ./services, and then in ./runtime
+> yarn build # runs yarn build on each directory under ./services (starting with `config`), and then in ./runtime
 ```
 
 ## Example
