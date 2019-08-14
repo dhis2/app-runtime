@@ -5,7 +5,11 @@
     "main": "build/cjs/index.js",
     "module": "build/es/index.js",
     "types": "build/types/index.d.ts",
-    "repository": "https://github.com/dhis2/app-runtime.git",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dhis2/app-runtime.git",
+        "directory": "runtime"
+    },
     "author": "Austin McGee <austin@dhis2.org>",
     "license": "BSD-3-Clause",
     "publishConfig": {
