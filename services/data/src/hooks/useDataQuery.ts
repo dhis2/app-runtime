@@ -9,13 +9,9 @@ import {
 import { ContextType } from '../types/Context'
 
 const reduceResponses = (responses: any[], names: string[]) =>
-    responses.reduce(
-        (out, response, idx) => ({
-            ...out,
-            [names[idx]]: response,
-        }),
-        {}
-    )
+    responses.reduce((out, response, idx) => {
+        out[names[idx]] = response
+    }, {})
 
 const fetchData = (
     context: ContextType,
