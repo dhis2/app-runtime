@@ -1,34 +1,27 @@
 import React from 'react'
 import './App.css'
-import { useConfig, useDataQuery } from '@dhis2/app-runtime'
+import { SwitchableProvider } from './components/SwitchableProvider'
+import { ConfigConsumer } from './components/ConfigConsumer'
+import { IndicatorList } from './components/IndicatorList'
 
 const App = () => {
-    const config = useConfig()
-    const { loading, error, data } = useDataQuery({
-        indicators: {
-            resource: 'indicators.json',
-            order: 'shortName:desc',
-            pageSize: 10,
-        },
-    })
+    const config = {
+        baseUrl:
+            process.env.REACT_APP_D2_BASE_URL || 'https://play.dhis2.org/dev',
+        apiVersion: process.env.REACT_APP_D2_API_VERSION || 33,
+    }
+    const providerType = (
+        process.env.REACT_APP_D2_PROVIDER_TYPE || 'runtime'
+    ).toLowerCase()
     return (
-        <div className="App">
-            <header className="App-header">
-                <span>
-                    <strong>Base url:</strong> {config.baseUrl}
-                </span>
-                <h3>Indicators (first 10)</h3>
-                {loading && <span>...</span>}
-                {error && <span>{`ERROR: ${error.message}`}</span>}
-                {data && (
-                    <pre>
-                        {data.indicators.indicators
-                            .map(ind => ind.displayName)
-                            .join('\n')}
-                    </pre>
-                )}
-            </header>
-        </div>
+        <SwitchableProvider type={providerType} config={config}>
+            <div className="App">
+                <header className="App-header">
+                    <ConfigConsumer />
+                    <IndicatorList />
+                </header>
+            </div>
+        </SwitchableProvider>
     )
 }
 
