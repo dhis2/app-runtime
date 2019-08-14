@@ -6,10 +6,10 @@ import { QueryDefinition } from '../types/Query'
 import { joinPath } from '../utils/path'
 
 const mutationToQueryDef = (m: Mutation): QueryDefinition => ({
-    resource: joinPath(
-        m.resource,
-        m.type === 'update' || m.type === 'delete' ? m.id : ''
-    ),
+    resource:
+        m.type === 'update' || m.type === 'delete'
+            ? joinPath(m.resource, m.id)
+            : m.resource,
 })
 
 const mutationToMethod = (m: Mutation): string => {
