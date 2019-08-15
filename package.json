@@ -56,5 +56,5 @@
         "format": "d2-style js apply --all --no-stage",
         "start": "yarn build && cd examples/cra && yarn start"
     },
-    "version": "1.4.2"
+    "version": "1.4.3"
 }

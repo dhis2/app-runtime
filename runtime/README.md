@@ -25,4 +25,5 @@ The following must be polyfilled to support older and non-compliant browsers (i.
 
 The `@dhis2/app-runtime` library is a thin wrapper around application services. See each service's README for usage instructions. Currently, the included services are:
 
+-   [config](../services/config) - contextualized application configuration
 -   [data](../services/data) - declarative data fetching for DHIS2 api queries

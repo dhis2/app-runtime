@@ -1,11 +1,15 @@
 {
     "name": "@dhis2/app-runtime",
     "description": "A singular runtime dependency for applications on the DHIS2 platform",
-    "version": "1.4.2",
+    "version": "1.4.3",
     "main": "build/cjs/index.js",
     "module": "build/es/index.js",
     "types": "build/types/index.d.ts",
-    "repository": "https://github.com/dhis2/app-runtime.git",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dhis2/app-runtime.git",
+        "directory": "runtime"
+    },
     "author": "Austin McGee <austin@dhis2.org>",
     "license": "BSD-3-Clause",
     "publishConfig": {
@@ -15,8 +19,8 @@
         "build/**"
     ],
     "devDependencies": {
-        "@dhis2/app-service-config": "1.4.2",
-        "@dhis2/app-service-data": "1.4.2"
+        "@dhis2/app-service-config": "1.4.3",
+        "@dhis2/app-service-data": "1.4.3"
     },
     "peerDependencies": {
         "prop-types": "^15.7.2",
