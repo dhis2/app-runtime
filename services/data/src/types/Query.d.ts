@@ -27,10 +27,16 @@ export interface QueryDefinition extends QueryParameters {
 
 export type QueryMap = Record<string, QueryDefinition>
 
+export type RefetchCallback = () => void
+
 export interface QueryState {
     loading: boolean
     error?: FetchError
     data?: any
+}
+
+export interface QueryRenderInput extends QueryState {
+    refetch: RefetchCallback
 }
 
 /*
@@ -48,7 +54,5 @@ export interface QueryStateData {
 }
 export type QueryState = QueryStateLoading | QueryStateError | QueryStateData
 */
-
-export type QueryRenderInput = QueryState
 
 export type QueryResult = any

@@ -12,6 +12,15 @@ yarn add @dhis2/app-runtime
 
 This library uses the official React Context API (introduced in 16.3) and React Hooks (introduced in 16.8), so **React >= 16.8 is required** to use it
 
+## Required Polyfills
+
+The following must be polyfilled to support older and non-compliant browsers (i.e. IE11):
+
+* es6.promise (i.e. [core-js/features/promise](https://github.com/zloirock/core-js))
+* window.fetch (i.e. [whatwg-fetch](https://github.com/github/fetch))
+* AbortController / AbortSignal (i.e. [abortcontroller-polyfill](https://www.npmjs.com/package/abortcontroller-polyfill))
+
+
 ## Usage
 
 The `@dhis2/app-runtime` library is a thin wrapper around application services. See each service's README for usage instructions. Currently, the included services are:
