@@ -45,12 +45,12 @@
         "typescript": "^3.5.3"
     },
     "scripts": {
-        "install:examples": "loop \"yarn install --force --check-files\" --cwd ./examples",
+        "install:examples": "loop \"yarn install --force --check-files\" --cwd ./examples --exit-on-aggregate-error",
         "build:config": "cd services/config && yarn build",
-        "build:services": "yarn build:config && loop \"yarn build\" --cwd ./services --exclude config",
+        "build:services": "yarn build:config && loop \"yarn build\" --cwd ./services --exclude config --exit-on-error",
         "build:runtime": "cd runtime && yarn build",
         "build": "yarn build:services && yarn build:runtime && yarn install:examples",
-        "test:services": "loop \"yarn test\" --cwd ./services",
+        "test:services": "loop \"yarn test\" --cwd ./services --exit-on-error",
         "test:runtime": "cd runtime && yarn test",
         "test": "yarn test:services && yarn test:runtime",
         "format": "d2-style js apply --all --no-stage",
