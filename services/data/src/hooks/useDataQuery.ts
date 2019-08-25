@@ -9,13 +9,10 @@ import {
 import { ContextType } from '../types/Context'
 
 const reduceResponses = (responses: any[], names: string[]) =>
-    responses.reduce(
-        (out, response, idx) => ({
-            ...out,
-            [names[idx]]: response,
-        }),
-        {}
-    )
+    responses.reduce((out, response, idx) => {
+        out[names[idx]] = response
+        return out
+    }, {})
 
 const fetchData = (context: ContextType, query: Query, signal: AbortSignal) => {
     const names = Object.keys(query)
@@ -56,7 +53,7 @@ export const useDataQuery = (query: Query): QueryRenderInput => {
 
         // Cleanup inflight requests
         return abort
-    }, [context, query, refetchCount])
+    }, [context, refetchCount]) // eslint-disable-line react-hooks/exhaustive-deps
 
     return { refetch, ...state }
 }
