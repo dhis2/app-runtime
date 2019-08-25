@@ -57,7 +57,7 @@ export const useDataQuery = (query: QueryMap): QueryRenderInput => {
 
         // Cleanup inflight requests
         return abort
-    }, [context, query, refetchCount])
+    }, [context, refetchCount]) // eslint-disable-line react-hooks/exhaustive-deps
 
     return { refetch, ...state }
 }
