@@ -5,7 +5,7 @@
     - [useDataQuery](hooks/useDataQuery.md)
 - [**Components**](components/)
     - [DataQuery](components/DataQuery.md)
-- [**Types**](types/)
+- **Types**
     - [Config](types/Config.md)
     - [Query](types/Query.md)
 
