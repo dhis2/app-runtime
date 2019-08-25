@@ -32,8 +32,6 @@ export type Query = Record<string, QueryDefinition>
 
 export type RefetchCallback = () => void
 
-export type RefetchCallback = () => void
-
 export interface QueryState {
     loading: boolean
     error?: FetchError
