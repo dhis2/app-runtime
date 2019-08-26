@@ -5,7 +5,7 @@
 ![Dependabot](https://badgen.net/dependabot/dhis2/app-runtime/?icon=dependabot)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
-See [@dhis2/app-runtime](./runtime) in the `./runtime` directory for installation and usage.
+Docs are available at [runtime.dhis2.nu](https://runtime.dhis2.nu).
 
 ## Development
 
