@@ -21,7 +21,11 @@ export interface QueryParameters {
     [key: string]: QueryParameterValue
 }
 
-export interface QueryDefinition extends QueryParameters {
+export interface QueryMeta {
+    headers?: Record<string, string>
+}
+
+export interface QueryDefinition extends QueryParameters, QueryMeta {
     resource: string
 }
 

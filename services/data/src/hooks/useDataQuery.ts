@@ -22,10 +22,8 @@ const fetchData = (
     const names = Object.keys(query)
     const requests = names.map(name => query[name])
 
-    const requestPromises = requests.map(q =>
-        context.fetch(q, {
-            signal: signal,
-        })
+    const requestPromises = requests.map(({ headers = {}, ...q }) =>
+        context.fetch(q, { headers, signal })
     )
 
     return Promise.all(requestPromises).then(responses =>
