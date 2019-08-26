@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, useCallback, useRef } from 'react'
+import { useState, useContext, useEffect, useCallback } from 'react'
 import { DataContext } from '../components/DataContext'
 import {
     QueryState,
@@ -35,13 +35,16 @@ const fetchData = (
 
 export const useDataQuery = (initialQuery: QueryMap): QueryRenderInput => {
     const context = useContext(DataContext)
-    const query = useRef<QueryMap>(initialQuery)
+    const [query, setQuery] = useState<QueryMap>(initialQuery)
     const [state, setState] = useState<QueryState>({ loading: true })
     const [refetchCount, setRefetchCount] = useState(0)
     const refetch: RefetchCallback = useCallback(
         (newQuery: QueryMap | undefined) => {
-            if (newQuery) query.current = newQuery
-            setRefetchCount(count => count + 1)
+            if (newQuery) {
+                setQuery(newQuery)
+            } else {
+                setRefetchCount(count => count + 1)
+            }
         },
         []
     )
@@ -50,7 +53,7 @@ export const useDataQuery = (initialQuery: QueryMap): QueryRenderInput => {
         const controller = new AbortController()
         const abort = () => controller.abort()
 
-        fetchData(context, query.current, controller.signal)
+        fetchData(context, query, controller.signal)
             .then(data => {
                 !controller.signal.aborted && setState({ loading: false, data })
             })
