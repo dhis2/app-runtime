@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, useCallback } from 'react'
+import { useState, useContext, useEffect, useCallback, useRef } from 'react'
 import { DataContext } from '../components/DataContext'
 import {
     QueryState,
@@ -33,12 +33,16 @@ const fetchData = (
     )
 }
 
-export const useDataQuery = (query: QueryMap): QueryRenderInput => {
+export const useDataQuery = (initialQuery: QueryMap): QueryRenderInput => {
     const context = useContext(DataContext)
+    const query = useRef<QueryMap>(initialQuery)
     const [state, setState] = useState<QueryState>({ loading: true })
     const [refetchCount, setRefetchCount] = useState(0)
     const refetch: RefetchCallback = useCallback(
-        () => setRefetchCount(count => count + 1),
+        (newQuery: QueryMap | undefined) => {
+            if (newQuery) query.current = newQuery
+            setRefetchCount(count => count + 1)
+        },
         []
     )
 
@@ -46,7 +50,7 @@ export const useDataQuery = (query: QueryMap): QueryRenderInput => {
         const controller = new AbortController()
         const abort = () => controller.abort()
 
-        fetchData(context, query, controller.signal)
+        fetchData(context, query.current, controller.signal)
             .then(data => {
                 !controller.signal.aborted && setState({ loading: false, data })
             })
@@ -57,7 +61,7 @@ export const useDataQuery = (query: QueryMap): QueryRenderInput => {
 
         // Cleanup inflight requests
         return abort
-    }, [context, refetchCount]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [context, query, refetchCount])
 
     return { refetch, ...state }
 }

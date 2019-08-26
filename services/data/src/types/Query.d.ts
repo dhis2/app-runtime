@@ -27,7 +27,7 @@ export interface QueryDefinition extends QueryParameters {
 
 export type QueryMap = Record<string, QueryDefinition>
 
-export type RefetchCallback = () => void
+export type RefetchCallback = (newQuery?: QueryMap) => void
 
 export interface QueryState {
     loading: boolean
