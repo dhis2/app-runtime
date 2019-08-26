@@ -13,9 +13,6 @@ const Test = () => {
 
     const { loading, error, data } = useDataQuery(query)
 
-    if (loading) return <div>Loading...</div>
-    if (error) return <div>error: {error}</div>
-
     return (
         <div>
             Query:<br />
@@ -25,10 +22,22 @@ const Test = () => {
 
             <hr />
 
-            Data:<br />
-            <code><pre>
-                {JSON.stringify(data, null, 2)}
-            </pre></code>
+            {
+                loading
+                    ? 'Loading: true'
+
+                : error
+                    ? `Error: ${error}`
+
+                : (
+                    <>
+                        Data:<br />
+                        <code><pre>
+                        {JSON.stringify(data, null, 2)}
+                        </pre></code>
+                    </>
+                )
+            }
         </div>
     )
 }
