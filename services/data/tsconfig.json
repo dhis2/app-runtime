@@ -15,10 +15,12 @@
         // "isolatedModules": true,
         // Import non-ES modules as default imports.
         "esModuleInterop": true,
-        "jsx": "react"
+        "jsx": "react",
 
         // This caused some NASTY bugs with Context usage (different imports = different instances)
-        // "forceConsistentCasingInFileNames": true
+        // "forceConsistentCasingInFileNames": true,
+
+        "rootDirs": ["src", "stories"]
     },
     "include": ["src"]
 }
