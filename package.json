@@ -54,7 +54,9 @@
         "test:runtime": "cd runtime && yarn test",
         "test": "yarn test:services && yarn test:runtime",
         "format": "d2-style js apply --all --no-stage",
-        "start": "yarn build && cd examples/cra && yarn start"
+        "start": "yarn build && cd examples/cra && yarn start",
+        "docs:build": "cp -f CHANGELOG.md docs/",
+        "docs:start": "yarn docs:build && npx serve docs"
     },
     "version": "1.5.1"
 }

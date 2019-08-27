@@ -8,7 +8,7 @@
 
 ## Example
 
-```js
+```jsx
 import { Provider } from '@dhis2/app-runtime'
 
 const appConfig = {

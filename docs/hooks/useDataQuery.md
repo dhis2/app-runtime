@@ -4,7 +4,7 @@ Declaratively define data dependencies and respond to `loading` / `error` / `dat
 
 ## Basic Usage:
 
-```js
+```jsx
 import { useDataQuery } from '@dhis2/app-runtime'
 
 // Within a functional component body
@@ -28,7 +28,7 @@ const { loading, error, data, refetch } = useDataQuery(query)
 
 ## Example
 
-```js
+```jsx
 import React from 'react'
 import { useDataQuery } from '@dhis2/app-runtime'
 

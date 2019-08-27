@@ -4,7 +4,7 @@ Access the application configuration passed to the top-level [Provider](provider
 
 ## Basic Usage:
 
-```js
+```jsx
 import { useConfig } from '@dhis2/app-runtime'
 
 // Within a functional component body
@@ -21,7 +21,7 @@ This hook returns an object of type [Config](types/Config.md).
 
 ## Example
 
-```js
+```jsx
 import React from 'react'
 import { useConfig } from '@dhis2/app-runtime'
 

@@ -14,3 +14,7 @@
 - **Advanced**
     - [Services](advanced/services.md)
     - [CustomDataProvider](advanced/CustomDataProvider.md)
+
+- &nbsp;
+
+- [Changelog](CHANGELOG.md)
