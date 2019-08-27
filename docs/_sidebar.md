@@ -11,10 +11,10 @@
 
 - &nbsp;
 
-- [Changelog](CHANGELOG.md)
-
-- &nbsp;
-
 - **Advanced**
     - [Services](advanced/services.md)
     - [CustomDataProvider](advanced/CustomDataProvider.md)
+
+- &nbsp;
+
+- [Changelog](CHANGELOG.md)
