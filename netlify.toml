@@ -1,0 +1,5 @@
+[build]
+  publish = "docs"
+
+  # Default build command.
+  command = "yarn docs:build"
