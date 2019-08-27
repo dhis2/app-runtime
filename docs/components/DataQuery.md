@@ -4,7 +4,7 @@ A thin wrapper around the [useDataQuery](hooks/useDataQuery.md) hook
 
 ## Basic Usage
 
-```js
+```jsx
 import { DataQuery } from '@dhis2/app-runtime'
 
 // within a React component's JSX render tree
@@ -32,7 +32,7 @@ import { DataQuery } from '@dhis2/app-runtime'
 
 ## Example
 
-```js
+```jsx
 import React from 'react'
 import { useDataQuery } from '@dhis2/app-runtime'
 
