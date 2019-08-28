@@ -1,20 +1,22 @@
-- [**Getting Started**](README.md)
-- [**Provider**](provider.md)
-- [**Hooks**](hooks/)
-    - [useConfig](hooks/useConfig.md)
-    - [useDataQuery](hooks/useDataQuery.md)
-- [**Components**](components/)
-    - [DataQuery](components/DataQuery.md)
-- **Types**
-    - [Config](types/Config.md)
-    - [Query](types/Query.md)
+-   [**Getting Started**](getting-started)
+-   [**Provider**](provider)
+-   [**Hooks**](hooks/)
+    -   [useConfig](hooks/useConfig)
+    -   [useDataQuery](hooks/useDataQuery)
+-   [**Components**](components/)
+    -   [DataQuery](components/DataQuery)
+-   **Types**
 
-- &nbsp;
+    -   [Config](types/Config)
+    -   [Query](types/Query)
 
-- **Advanced**
-    - [Services](advanced/services.md)
-    - [CustomDataProvider](advanced/CustomDataProvider.md)
+-   &nbsp;
 
-- &nbsp;
+-   **Advanced**
 
-- [Changelog](CHANGELOG.md)
+    -   [Services](advanced/services)
+    -   [CustomDataProvider](advanced/CustomDataProvider)
+
+-   &nbsp;
+
+-   [Changelog](CHANGELOG.md)
