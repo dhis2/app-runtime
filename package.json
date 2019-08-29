@@ -19,6 +19,7 @@
         "@babel/preset-typescript": "^7.3.3",
         "@babel/runtime": "^7.5.5",
         "@dhis2/cli-style": "^4.1.1",
+        "@dhis2/cli-utils-docsite": "^1.0.3",
         "@testing-library/jest-dom": "^4.1.0",
         "@testing-library/react": "^9.1.3",
         "@types/jest": "^24.0.18",
@@ -55,8 +56,14 @@
         "test": "yarn test:services && yarn test:runtime",
         "format": "d2-style js apply --all --no-stage",
         "start": "yarn build && cd examples/cra && yarn start",
-        "docs:build": "cp -f CHANGELOG.md docs/",
-        "docs:start": "yarn docs:build && npx serve docs"
+        "docs:build": "d2-utils-docsite build ./docs -o ./dist",
+        "docs:serve": "d2-utils-docsite serve ./docs -o ./dist"
+    },
+    "d2": {
+        "docsite": {
+            "name": "@dhis2/app-runtime",
+            "description": "A singular runtime dependency for applications on the [DHIS2 platform](https://platform.dhis2.nu)"
+        }
     },
     "version": "1.5.1"
 }

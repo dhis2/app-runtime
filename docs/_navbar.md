@@ -1,2 +1,0 @@
--   [Platform](https://platform.dhis2.nu)
--   [**Runtime**](/)
