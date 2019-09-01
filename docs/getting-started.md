@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/@dhis2/app-runtime.svg)](https://www.npmjs.com/package/@dhis2/app-runtime)
 
-A singular runtime dependency for applications on the DHIS2 platform
+The DHIS2 application runtime provides a common, consistent, single-dependency runtime dependency for DHIS2 applications. It is published as `@dhis2/app-runtime` on [NPM](https://www.npmjs.com/package/@dhis2/app-runtime)
 
 ## Installation
 
@@ -22,6 +22,6 @@ This library uses the official React Context API (introduced in 16.3) and React 
 
 The following must be polyfilled to support older and non-compliant browsers (i.e. IE11):
 
-* es6.promise (i.e. [core-js/features/promise](https://github.com/zloirock/core-js))
-* window.fetch (i.e. [whatwg-fetch](https://github.com/github/fetch))
-* AbortController / AbortSignal (i.e. [abortcontroller-polyfill](https://www.npmjs.com/package/abortcontroller-polyfill))
+-   es6.promise (i.e. [core-js/features/promise](https://github.com/zloirock/core-js))
+-   window.fetch (i.e. [whatwg-fetch](https://github.com/github/fetch))
+-   AbortController / AbortSignal (i.e. [abortcontroller-polyfill](https://www.npmjs.com/package/abortcontroller-polyfill))

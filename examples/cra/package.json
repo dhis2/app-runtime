@@ -26,6 +26,6 @@
     "devDependencies": {
         "eslint": "^5",
         "source-map-explorer": "^2.0.1",
-        "typescript": "^3.5.3"
+        "typescript": "^3.6.2"
     }
 }
