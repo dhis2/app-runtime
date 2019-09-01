@@ -1,10 +1,28 @@
-import { MutationState, Mutation, MutationRenderInput } from '../types/Mutation'
 import { useContext, useState, useEffect, useCallback, useRef } from 'react'
 import { DataContext } from '../components/DataContext'
+import {
+    MutationState,
+    Mutation,
+    MutationRenderInput,
+    MutationOptions,
+    DynamicMutation,
+    MutationVariables,
+    MutationFunction,
+} from '../types/Mutation'
 import { ContextType } from '../types/Context'
 import { QueryDefinition } from '../types/Query'
 import { joinPath } from '../utils/path'
 
+const resolveMutation = (
+    m: Mutation | DynamicMutation,
+    variables: MutationVariables
+): Mutation => {
+    if (typeof m === 'function') {
+        return m(variables)
+    }
+    // TODO: Support variables in static mutations
+    return m
+}
 const mutationToQueryDef = (m: Mutation): QueryDefinition => ({
     resource:
         m.type === 'update' || m.type === 'delete'
@@ -34,16 +52,25 @@ const mutationToPayload = (m: Mutation): string | null => {
     return JSON.stringify(m.data)
 }
 
-const fetchData = (
-    context: ContextType,
-    mutation: Mutation,
+interface FetchDataInput {
+    context: ContextType
+    mutation: Mutation | DynamicMutation
     signal: AbortSignal
-) => {
-    const q = mutationToQueryDef(mutation)
+    variables: MutationVariables
+}
+
+const fetchData = ({
+    context,
+    mutation,
+    signal,
+    variables = {},
+}: FetchDataInput) => {
+    const m = resolveMutation(mutation, variables)
+    const q = mutationToQueryDef(m)
 
     return context.fetch(q, {
-        method: mutationToMethod(mutation),
-        body: mutationToPayload(mutation),
+        method: mutationToMethod(m),
+        body: mutationToPayload(m),
         headers: {
             'Content-Type': 'application/json',
         },
@@ -51,8 +78,21 @@ const fetchData = (
     })
 }
 
-export const useDataMutation = (mutation: Mutation): MutationRenderInput => {
+export const useDataMutation = (
+    mutation: Mutation,
+    {
+        onError,
+        onCompleted,
+        variables: defaultVariables = {},
+    }: MutationOptions = {}
+): MutationRenderInput => {
     const context = useContext(DataContext)
+    const [theMutation] = useState(() => mutation)
+    if (mutation !== theMutation) {
+        console.warn(
+            "Mutation definitions should be static, don't create the mutation within the render loop!"
+        )
+    }
     const [state, setState] = useState<MutationState>({
         loading: false,
         called: false,
@@ -63,29 +103,46 @@ export const useDataMutation = (mutation: Mutation): MutationRenderInput => {
         controller.current && controller.current.abort()
     }
 
-    const mutate = useCallback(() => {
-        if (controller.current) {
-            // Only ever mutate once!
-            return
-        }
-        controller.current = new AbortController()
+    const mutate: MutationFunction = useCallback(
+        async (variables: MutationVariables = {}) => {
+            abort()
+            const theController = (controller.current = new AbortController())
 
-        setState({ called: true, loading: true })
-        fetchData(context, mutation, controller.current.signal)
-            .then(data => {
-                controller.current &&
-                    !controller.current.signal.aborted &&
-                    setState({ called: true, loading: false, data })
+            setState({ called: true, loading: true })
+            return new Promise<any>(async resolve => {
+                try {
+                    const data = await fetchData({
+                        context,
+                        mutation,
+                        signal: theController.signal,
+                        variables: {
+                            ...defaultVariables,
+                            ...variables,
+                        },
+                    })
+                    if (!theController.signal.aborted) {
+                        setState({ called: true, loading: false, data })
+                        if (onCompleted) {
+                            onCompleted(data)
+                        }
+                        resolve(data)
+                    }
+                } catch (error) {
+                    if (!theController.signal.aborted) {
+                        setState({ called: true, loading: false, error })
+                        if (onError) {
+                            onError(error)
+                        }
+                        // Don't reject the promise - we don't want to unnecessarily bubble up uncaught errors
+                    }
+                }
             })
-            .catch(error => {
-                controller.current &&
-                    !controller.current.signal.aborted &&
-                    setState({ called: true, loading: false, error })
-            })
-    }, [context, mutation]) // Allow these updates before mutation has been initialized
+        },
+        [context, defaultVariables, mutation, onCompleted, onError]
+    )
 
     useEffect(() => {
-        // Cleanup inflight requests
+        // Cleanup inflight request
         return abort
     }, [])
 

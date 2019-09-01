@@ -1,9 +1,10 @@
 import { ContextType, FetchFunction } from '../types/Context'
 
+const errorMessage =
+    'DHIS2 data context must be initialized, please ensure that you include a <DataProvider> in your application'
 const uninitializedFetch: FetchFunction = async () => {
-    throw new Error(
-        'DHIS2 data context must be initialized, please ensure that you include a <DataProvider> in your application'
-    )
+    console.error(errorMessage)
+    throw new Error(errorMessage)
 }
 
 export const defaultContext: ContextType = {

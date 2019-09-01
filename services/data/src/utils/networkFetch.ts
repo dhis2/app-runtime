@@ -20,7 +20,7 @@ export function fetchData(
                 details: err,
             })
         })
-        .then(response => {
+        .then(async response => {
             if (
                 response.status === 401 ||
                 response.status === 403 ||
@@ -28,7 +28,14 @@ export function fetchData(
             ) {
                 throw new FetchError({
                     type: 'access',
-                    message: response.statusText,
+                    message: await response
+                        .json()
+                        .then(body => body.message)
+                        .catch(() =>
+                            response.status === 401
+                                ? 'Unauthorized'
+                                : 'Forbidden'
+                        ),
                     details: response,
                 })
             }
@@ -41,5 +48,7 @@ export function fetchData(
             }
             return response
         })
-        .then(response => response.json())
+        .then(async response => {
+            return await response.json().catch(() => null)
+        })
 }

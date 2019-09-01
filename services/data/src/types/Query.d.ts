@@ -30,7 +30,15 @@ export interface QueryDefinition extends QueryParameters, ResourceQuery {
 
 export type Query = Record<string, QueryDefinition>
 
-export type RefetchCallback = () => void
+export type QueryVariables = Record<string, any>
+export type DynamicQuery = (variables: QueryVariables) => Query
+
+export interface RefetchOptions {
+    variables?: QueryVariables
+    skipLoadingState?: boolean
+}
+
+export type RefetchCallback = (variables?: QueryVariables) => void
 
 export interface QueryState {
     loading: boolean
@@ -59,3 +67,9 @@ export type QueryState = QueryStateLoading | QueryStateError | QueryStateData
 */
 
 export type QueryResult = any
+
+export interface QueryOptions {
+    variables?: QueryVariables
+    onCompleted?: (data: QueryResult) => any
+    onError?: (error: FetchError) => any
+}
