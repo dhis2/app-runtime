@@ -3,15 +3,14 @@ import { useDataQuery } from '@dhis2/app-runtime'
 import { Indicator } from './Indicator'
 import { AddButton } from './AddButton'
 
-const query = ({ page = 1 }) => ({
+const query = {
     indicators: {
-        resource: 'indicators.json',
+        resource: 'indicators',
         order: 'displayName:asc',
-        fields: '*',
-        page,
+        page: ({ page }) => page,
         pageSize: 10,
     },
-})
+}
 
 export const IndicatorList = () => {
     const { loading, error, data, refetch } = useDataQuery(query)

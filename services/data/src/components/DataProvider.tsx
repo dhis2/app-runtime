@@ -4,8 +4,8 @@ import { DataContext } from './DataContext'
 import { makeContext } from '../context/makeContext'
 
 export interface ProviderInput {
-    baseUrl: string
-    apiVersion: number
+    baseUrl?: string
+    apiVersion?: number
     children: React.ReactNode
 }
 export const DataProvider = (props: ProviderInput) => {

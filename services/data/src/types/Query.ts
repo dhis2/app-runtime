@@ -1,4 +1,5 @@
 import { FetchError } from './FetchError'
+import { JsonValue } from './JsonValue'
 
 export type QueryParameterSingularValue = string | number
 export interface QueryParameterAliasedValue {
@@ -38,12 +39,12 @@ export interface RefetchOptions {
     skipLoadingState?: boolean
 }
 
-export type RefetchCallback = (variables?: QueryVariables) => void
+export type RefetchCallback = (variables?: QueryVariables) => Promise<JsonValue>
 
 export interface QueryState {
     loading: boolean
     error?: FetchError
-    data?: any
+    data?: JsonValue
 }
 
 export interface QueryRenderInput extends QueryState {
@@ -70,6 +71,6 @@ export type QueryResult = any
 
 export interface QueryOptions {
     variables?: QueryVariables
-    onCompleted?: (data: QueryResult) => any
-    onError?: (error: FetchError) => any
+    onCompleted?: (data: QueryResult) => void
+    onError?: (error: FetchError) => void
 }

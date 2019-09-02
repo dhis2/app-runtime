@@ -1,9 +1,10 @@
 import { QueryDefinition } from './Query'
+import { JsonValue } from './JsonValue'
 
 export type FetchFunction = (
     query: QueryDefinition,
     options?: RequestInit
-) => Promise<any>
+) => Promise<JsonValue>
 
 export interface ContextType {
     baseUrl: string

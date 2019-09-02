@@ -1,8 +1,13 @@
 import React from 'react'
 import { ConfigProvider } from '@dhis2/app-service-config'
 import { DataProvider } from '@dhis2/app-service-data'
+import { Config } from '@dhis2/app-service-config/build/types/types'
 
-export const Provider = ({ config, children }) => (
+type ProviderInput = {
+    config: Config
+    children: any
+}
+export const Provider = ({ config, children }: ProviderInput) => (
     <ConfigProvider config={config}>
         <DataProvider>{children}</DataProvider>
     </ConfigProvider>

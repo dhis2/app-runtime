@@ -1,30 +1,35 @@
 import React from 'react'
-import { MutationRenderInput, Mutation, MutationFunction } from '../types/Mutation'
+import {
+    MutationRenderInput,
+    Mutation,
+    MutationFunction,
+} from '../types/Mutation'
 import { CustomDataProvider } from '../components/CustomDataProvider'
 import { DataMutation } from '../components/DataMutation'
 import { render, act, waitForElement } from '@testing-library/react'
-import { QueryDefinition } from '../types/Query';
+import { QueryDefinition } from '../types/Query'
 
 const mockBackend = {
     target: jest.fn((querydef: QueryDefinition, options: RequestInit) => {
         expect(querydef.resource).toBe('target')
         expect(options.method).toBe('POST')
         expect(options.body).toBe(JSON.stringify({ question: '?' }))
-        expect(options.headers && (options.headers as any)['Content-Type']).toBe('application/json')
+        expect(
+            options.headers && (options.headers as any)['Content-Type']
+        ).toBe('application/json')
         return Promise.resolve({ answer: 42 })
     }),
 }
 
 describe('Test mutations', () => {
     it('Should call the mock callback', async () => {
-        let doMutation: MutationFunction | undefined;
+        let doMutation: MutationFunction | undefined
         const renderFunction = jest.fn(
-            ([mutate, { called, loading, error, data }]: MutationRenderInput) => {
-                if (!doMutation) {
-                    doMutation = mutate;
-                } else {
-                    expect(mutate).toBe(doMutation) // the callback should have a stable reference
-                }
+            ([
+                mutate,
+                { called, loading, error, data },
+            ]: MutationRenderInput) => {
+                doMutation = mutate
 
                 if (!called) return 'uncalled'
                 if (loading) return 'loading'
@@ -37,8 +42,8 @@ describe('Test mutations', () => {
             resource: 'target',
             type: 'create',
             data: {
-                question: '?'
-            }
+                question: '?',
+            },
         }
         const { getByText } = render(
             <CustomDataProvider data={mockBackend}>
@@ -56,7 +61,7 @@ describe('Test mutations', () => {
             {
                 called: false,
                 loading: false,
-            }
+            },
         ])
         expect(doMutation).not.toBeUndefined()
         act(() => {
@@ -68,7 +73,7 @@ describe('Test mutations', () => {
             {
                 called: true,
                 loading: true,
-            }
+            },
         ])
         expect(mockBackend.target).toHaveBeenCalledTimes(1)
 
@@ -80,10 +85,8 @@ describe('Test mutations', () => {
                 called: true,
                 loading: false,
                 data: { answer: 42 },
-            }
+            },
         ])
-        expect(getByText(/data: /i)).toHaveTextContent(
-            `data: 42`
-        )
+        expect(getByText(/data: /i)).toHaveTextContent(`data: 42`)
     })
 })

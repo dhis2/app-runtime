@@ -2,18 +2,16 @@ import React, { useState, useRef } from 'react'
 import { useDataMutation } from '@dhis2/app-runtime'
 import { DeleteButton } from './DeleteButton'
 
-const mutation = vars => {
-    const { id, name } = vars
-    return {
-        resource: 'indicators',
-        id,
-        type: 'update',
-        partial: true,
-        data: {
-            name,
-        },
-    }
+const mutation = {
+    resource: 'indicators',
+    id: ({ id }) => id,
+    type: 'update',
+    partial: true,
+    data: ({ name }) => ({
+        name,
+    }),
 }
+
 export const Indicator = ({ indicator, onChange }) => {
     const [editing, setEditing] = useState(false)
     const [mutate, { loading, error }] = useDataMutation(mutation)
