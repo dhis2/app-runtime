@@ -98,10 +98,8 @@ export const useDataFetcher = ({
 
     const refetch: RefetchFunction = useCallback(
         newVariables => {
-            if (!immediate) {
-                setCalled(true)
-                setLoading(true)
-            }
+            setCalled(true)
+            setLoading(true)
 
             if (singular) {
                 abort() // Cleanup any in-progress fetches
@@ -144,15 +142,7 @@ export const useDataFetcher = ({
                     return new Promise<JsonValue>(() => {})
                 })
         },
-        [
-            context,
-            details,
-            immediate,
-            onCompleted,
-            onError,
-            singular,
-            transformData,
-        ]
+        [context, details, onCompleted, onError, singular, transformData]
     )
 
     useEffect(() => {
