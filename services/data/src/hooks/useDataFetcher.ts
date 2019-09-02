@@ -116,7 +116,12 @@ export const useDataFetcher = ({
 
             return Promise.all(
                 details.map(d =>
-                    fetchData(context, d, variables.current, controller.signal)
+                    fetchData({
+                        context,
+                        details: d,
+                        variables: variables.current,
+                        signal: controller.signal,
+                    })
                 )
             )
                 .then((data: JsonValue[]) => {
