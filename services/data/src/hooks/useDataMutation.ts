@@ -16,7 +16,7 @@ export const useDataMutation = (
     mutation: Mutation,
     { onCompleted, onError, variables = empty }: QueryOptions = {}
 ): MutationRenderInput => {
-    const [theMutation] = useStaticInput<Mutation>(mutation, 'mutations')
+    const [theMutation] = useStaticInput<Mutation>(mutation, 'mutation')
     const { refetch: mutate, called, loading, error, data } = useDataFetcher({
         details: [
             {
