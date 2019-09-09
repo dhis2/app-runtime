@@ -1,41 +1,27 @@
-import { Query, QueryOptions, QueryRenderInput } from '../types/Query'
-import { useDataFetcher } from './useDataFetcher'
-import { JsonValue } from '../types/JsonValue'
+import { Query, QueryOptions } from '../engine/types/Query'
+import { QueryRenderInput } from '../types'
+
+import { useQueryExecutor } from './useQueryExecutor'
 import { useStaticInput } from './useStaticInput'
-import { FetchDetails } from '../types/DataFetcher'
-
-const reduceResponses = (responses: any[], names: string[]) =>
-    responses.reduce((out, response, idx) => {
-        out[names[idx]] = response
-        return out
-    }, {})
-
-const makeFetchDetails = (query: Query): FetchDetails[] =>
-    Object.values(query).reduce<FetchDetails[]>(
-        (details, { resource, ...params }) => {
-            details.push({
-                type: 'read',
-                resource: resource,
-                params,
-            })
-            return details
-        },
-        []
-    )
+import { useDataEngine } from './useDataEngine'
+import { useCallback } from 'react'
 
 const empty = {}
 export const useDataQuery = (
     query: Query,
     { onCompleted, onError, variables = empty }: QueryOptions = {}
 ): QueryRenderInput => {
+    const engine = useDataEngine()
     const [theQuery] = useStaticInput<Query>(query, 'query')
-    const { refetch, loading, error, data } = useDataFetcher({
-        details: makeFetchDetails(theQuery),
+    const execute = useCallback(options => engine.query(theQuery, options), [
+        engine,
+        theQuery,
+    ])
+    const { refetch, loading, error, data } = useQueryExecutor({
+        execute,
         variables,
         singular: true,
         immediate: true,
-        transformData: (responses: JsonValue[]) =>
-            reduceResponses(responses, Object.keys(theQuery)),
         onCompleted,
         onError,
     })

@@ -1,5 +1,5 @@
-import { FetchError } from '../types/FetchError'
-import { JsonValue } from '../types/JsonValue'
+import { FetchError } from '../../../types/FetchError'
+import { JsonValue } from '../../../types/JsonValue'
 
 export function fetchData(
     url: string,

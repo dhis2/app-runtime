@@ -1,5 +1,6 @@
 import { useDataMutation } from '../hooks/useDataMutation'
-import { MutationRenderInput, Mutation } from '../types/Mutation'
+import { Mutation } from '../engine/types/Mutation'
+import { MutationRenderInput } from '../types'
 
 interface MutationInput {
     mutation: Mutation

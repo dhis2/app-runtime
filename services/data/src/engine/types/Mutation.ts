@@ -1,5 +1,6 @@
-import { QueryState, ResourceQuery, QueryVariables } from './Query'
+import { ResourceQuery, QueryVariables } from './Query'
 import { FetchError } from './FetchError'
+import { FetchType } from './ExecuteOptions'
 
 export type MutationType = 'create' | 'update' | 'delete'
 export interface MutationData {
@@ -25,17 +26,15 @@ export interface DeleteMutation extends BaseMutation {
 
 export type Mutation = CreateMutation | UpdateMutation | DeleteMutation
 
-export type MutationVariables = Record<string, any>
-export type DynamicMutation = (variables: MutationVariables) => Mutation
-
-export interface MutationState extends QueryState {
-    called: boolean
-}
-export type MutationFunction = (variables?: MutationVariables) => Promise<any>
-export type MutationRenderInput = [MutationFunction, MutationState]
-
 export interface MutationOptions {
     variables?: QueryVariables
     onError?: (error: FetchError) => any
     onCompleted?: (data: any) => any
 }
+
+export const getFetchType = (mutation: Mutation): FetchType =>
+    mutation.type === 'update'
+        ? mutation.partial
+            ? 'update'
+            : 'replace'
+        : mutation.type

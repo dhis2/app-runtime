@@ -1,5 +1,6 @@
 import { useDataQuery } from '../hooks/useDataQuery'
-import { QueryRenderInput, Query } from '../types/Query'
+import { Query } from '../engine/types/Query'
+import { QueryRenderInput } from '../types'
 
 interface QueryInput {
     query: Query

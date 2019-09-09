@@ -1,39 +1,28 @@
-import { QueryOptions } from '../types/Query'
-import { useDataFetcher } from './useDataFetcher'
-import { Mutation, MutationRenderInput } from '../types/Mutation'
-import { useStaticInput } from './useStaticInput'
-import { FetchType } from '../types/DataFetcher'
+import { QueryOptions } from '../engine/types/Query'
+import { Mutation } from '../engine/types/Mutation'
+import { MutationRenderInput } from '../types'
 
-const getFetchType = (mutation: Mutation): FetchType =>
-    mutation.type === 'update'
-        ? mutation.partial
-            ? 'update'
-            : 'replace'
-        : mutation.type
+import { useQueryExecutor } from './useQueryExecutor'
+import { useStaticInput } from './useStaticInput'
+import { useDataEngine } from './useDataEngine'
+import { useCallback } from 'react'
 
 const empty = {}
 export const useDataMutation = (
     mutation: Mutation,
     { onCompleted, onError, variables = empty }: QueryOptions = {}
 ): MutationRenderInput => {
+    const engine = useDataEngine()
     const [theMutation] = useStaticInput<Mutation>(mutation, 'mutation')
-    const { refetch: mutate, called, loading, error, data } = useDataFetcher({
-        details: [
-            {
-                type: getFetchType(theMutation),
-                id: theMutation.type !== 'create' ? theMutation.id : undefined,
-                resource: theMutation.resource,
-                body:
-                    theMutation.type !== 'delete'
-                        ? theMutation.data
-                        : undefined,
-                params: {},
-            },
-        ],
+    const execute = useCallback(
+        options => engine.mutate(theMutation, options),
+        [engine, theMutation]
+    )
+    const { refetch: mutate, called, loading, error, data } = useQueryExecutor({
+        execute,
         variables,
         singular: false,
         immediate: false,
-        transformData: data => data[0],
         onCompleted,
         onError,
     })

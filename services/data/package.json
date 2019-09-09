@@ -29,5 +29,9 @@
         "test": "jest",
         "coverage": "jest --coverage",
         "prepublishOnly": "yarn build"
+    },
+    "devDependencies": {
+        "@testing-library/react-hooks": "^2.0.1",
+        "react-test-renderer": "^16.8"
     }
 }

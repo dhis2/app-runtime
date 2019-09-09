@@ -1,22 +1,18 @@
 import React from 'react'
-import {
-    MutationRenderInput,
-    Mutation,
-    MutationFunction,
-} from '../types/Mutation'
+import { Mutation } from '../engine/types/Mutation'
 import { CustomDataProvider } from '../components/CustomDataProvider'
 import { DataMutation } from '../components/DataMutation'
 import { render, act, waitForElement } from '@testing-library/react'
-import { QueryDefinition } from '../types/Query'
+import { MutationFunction, MutationRenderInput } from '../types'
+import { FetchType } from '../engine/types/ExecuteOptions'
+import { ResolvedResourceQuery } from '../engine/types/Query'
+import { JsonMap } from '../engine/types/JsonValue'
 
 const mockBackend = {
-    target: jest.fn((querydef: QueryDefinition, options: RequestInit) => {
-        expect(querydef.resource).toBe('target')
-        expect(options.method).toBe('POST')
-        expect(options.body).toBe(JSON.stringify({ question: '?' }))
-        expect(
-            options.headers && (options.headers as any)['Content-Type']
-        ).toBe('application/json')
+    target: jest.fn((type: FetchType, query: ResolvedResourceQuery) => {
+        expect(query.resource).toBe('target')
+        expect(type).toBe('create')
+        expect(query.data).toMatchObject({ question: '?' })
         return Promise.resolve({ answer: 42 })
     }),
 }
@@ -29,12 +25,13 @@ describe('Test mutations', () => {
                 mutate,
                 { called, loading, error, data },
             ]: MutationRenderInput) => {
+                console.log(called, loading, error, data)
                 doMutation = mutate
 
                 if (!called) return 'uncalled'
                 if (loading) return 'loading'
                 if (error) return <div>error: {error.message}</div>
-                if (data) return <div>data: {data.answer}</div>
+                if (data) return <div>data: {(data as JsonMap).answer}</div>
             }
         )
 
