@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { useDataQuery } from './usedataquery'
+import { useDataQuery } from './useDataQuery'
 import { renderHook, act } from '@testing-library/react-hooks'
 import { CustomDataProvider } from '../components/CustomDataProvider'
 
