@@ -21,5 +21,11 @@
         // This caused some NASTY bugs with Context usage (different imports = different instances)
         // "forceConsistentCasingInFileNames": true
     },
-    "include": ["src"]
+    "include": ["src"],
+    "exclude": [
+        "src/setupRTL.ts",
+        "src/__tests__",
+        "**/*.test.ts",
+        "**/*.test.tsx"
+    ]
 }

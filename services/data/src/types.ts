@@ -49,10 +49,12 @@ export interface QueryState {
 }
 
 export interface QueryRenderInput extends QueryState {
+    engine: DataEngine
     refetch: QueryRefetchFunction
 }
 
 export interface MutationState {
+    engine: DataEngine
     called: boolean
     loading: boolean
     error?: FetchError

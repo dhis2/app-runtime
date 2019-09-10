@@ -29,5 +29,5 @@ export const useDataQuery = (
         onError,
     })
 
-    return { refetch, loading, error, data }
+    return { engine, refetch, loading, error, data }
 }
