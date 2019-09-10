@@ -13,7 +13,10 @@ export const useDataMutation = (
     { onCompleted, onError, variables = empty }: QueryOptions = {}
 ): MutationRenderInput => {
     const engine = useDataEngine()
-    const [theMutation] = useStaticInput<Mutation>(mutation, 'mutation')
+    const [theMutation] = useStaticInput<Mutation>(mutation, {
+        warn: true,
+        name: 'mutation',
+    })
     const execute = useCallback(
         options => engine.mutate(theMutation, options),
         [engine, theMutation]

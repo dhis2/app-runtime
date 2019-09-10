@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react'
 import { useDataQuery } from './usedataquery'
-import { renderHook, act, RenderHookResult } from '@testing-library/react-hooks'
-import { QueryRenderInput } from '../types'
+import { renderHook, act } from '@testing-library/react-hooks'
 import { CustomDataProvider } from '../components/CustomDataProvider'
 
 const customData = {

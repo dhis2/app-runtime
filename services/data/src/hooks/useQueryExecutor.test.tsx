@@ -113,4 +113,37 @@ describe('useQueryExecutor', () => {
             error: testError,
         })
     })
+
+    // it('Should respect abort signal', async () => {
+    //     const { result, waitForNextUpdate } = renderHook(() =>
+    //         useQueryExecutor({
+    //             execute,
+    //             immediate: false,
+    //             singular: true,
+    //             variables: {},
+    //         })
+    //     )
+
+    //     expect(result.current).toMatchObject({
+    //         called: false,
+    //         loading: false,
+    //     })
+
+    //     act(() => {
+    //         result.current.refetch()
+    //         result.current.abort()
+    //     })
+
+    //     expect(result.current).toMatchObject({
+    //         called: true,
+    //         loading: true,
+    //     })
+
+    //     await waitForNextUpdate()
+    //     expect(result.current).toMatchObject({
+    //         called: true,
+    //         loading: false,
+    //         error: testError,
+    //     })
+    // })
 })

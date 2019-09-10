@@ -1,9 +1,10 @@
 import { Query } from './types/Query'
 import { resolveDynamicQuery } from './helpers/resolveDynamicQuery'
-import { Mutation, getFetchType } from './types/Mutation'
+import { Mutation } from './types/Mutation'
 import { QueryExecuteOptions } from './types/ExecuteOptions'
 import { JsonValue, JsonMap } from './types/JsonValue'
 import { DataEngineLink } from './types/DataEngineLink'
+import { getMutationFetchType } from './helpers/getMutationFetchType'
 
 const reduceResponses = (responses: JsonValue[], names: string[]) =>
     responses.reduce<JsonMap>((out, response, idx) => {
@@ -58,7 +59,7 @@ export class DataEngine {
     ): Promise<JsonValue> {
         const query = resolveDynamicQuery(mutation, variables)
         const result = this.link.executeResourceQuery(
-            getFetchType(mutation),
+            getMutationFetchType(mutation),
             query,
             {
                 signal,

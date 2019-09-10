@@ -25,7 +25,6 @@ describe('Test mutations', () => {
                 mutate,
                 { called, loading, error, data },
             ]: MutationRenderInput) => {
-                console.log(called, loading, error, data)
                 doMutation = mutate
 
                 if (!called) return 'uncalled'

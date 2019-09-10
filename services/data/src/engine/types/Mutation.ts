@@ -1,6 +1,5 @@
 import { ResourceQuery, QueryVariables } from './Query'
 import { FetchError } from './FetchError'
-import { FetchType } from './ExecuteOptions'
 
 export type MutationType = 'create' | 'update' | 'delete'
 export interface MutationData {
@@ -31,10 +30,3 @@ export interface MutationOptions {
     onError?: (error: FetchError) => any
     onCompleted?: (data: any) => any
 }
-
-export const getFetchType = (mutation: Mutation): FetchType =>
-    mutation.type === 'update'
-        ? mutation.partial
-            ? 'update'
-            : 'replace'
-        : mutation.type

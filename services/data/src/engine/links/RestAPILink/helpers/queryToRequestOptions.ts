@@ -10,7 +10,7 @@ const getMethod = (type: FetchType): string => {
         case 'update':
             return 'PATCH'
         case 'replace':
-            return 'POST'
+            return 'PUT'
         case 'delete':
             return 'DELETE'
     }
@@ -22,7 +22,7 @@ export const queryToRequestOptions = (
     signal?: AbortSignal
 ): RequestInit => ({
     method: getMethod(type),
-    body: data ? JSON.stringify(data) : null,
+    body: data ? JSON.stringify(data) : undefined,
     headers: data
         ? {
               'Content-Type': 'application/json',

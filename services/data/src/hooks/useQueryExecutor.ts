@@ -12,16 +12,15 @@ interface StateType<T> {
     data?: T
 }
 
-const empty = {}
 export const useQueryExecutor = <ReturnType>({
     execute,
-    variables: initialVariables = empty,
-    singular = false,
-    immediate = false,
+    variables: initialVariables,
+    singular,
+    immediate,
     onCompleted,
     onError,
 }: ExecuteHookInput<ReturnType>): ExecuteHookResult<ReturnType> => {
-    const [theExecute] = useStaticInput(execute, 'execute function')
+    const [theExecute] = useStaticInput(execute)
     const [state, setState] = useState<StateType<ReturnType>>({
         called: !!immediate,
         loading: !!immediate,

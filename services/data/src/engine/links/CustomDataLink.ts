@@ -10,7 +10,7 @@ export type CustomResourceFactory = (
     type: FetchType,
     query: ResolvedResourceQuery,
     options?: DataEngineLinkExecuteOptions
-) => Promise<JsonValue>
+) => Promise<JsonValue | undefined>
 export type CustomResource = JsonValue | CustomResourceFactory
 export interface CustomData {
     [resourceName: string]: CustomResource
@@ -59,22 +59,13 @@ export class CustomDataLink implements DataEngineLink {
             case 'object':
                 return customResource
             case 'function':
-                try {
-                    const result = await customResource(type, query, options)
-                    if (!result && this.failOnMiss) {
-                        throw new Error(
-                            `The custom function for resource ${query.resource} must always return a value but returned ${result}`
-                        )
-                    }
-                    return result || {}
-                } catch (e) {
-                    throw e
+                const result = await customResource(type, query, options)
+                if (typeof result === 'undefined' && this.failOnMiss) {
+                    throw new Error(
+                        `The custom function for resource ${query.resource} must always return a value but returned ${result}`
+                    )
                 }
-            default:
-                // should be unreachable
-                throw new Error(
-                    `Unknown resource type ${typeof customResource}`
-                )
+                return result || null
         }
     }
 }

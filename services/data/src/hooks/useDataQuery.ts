@@ -12,7 +12,10 @@ export const useDataQuery = (
     { onCompleted, onError, variables = empty }: QueryOptions = {}
 ): QueryRenderInput => {
     const engine = useDataEngine()
-    const [theQuery] = useStaticInput<Query>(query, 'query')
+    const [theQuery] = useStaticInput<Query>(query, {
+        warn: true,
+        name: 'query',
+    })
     const execute = useCallback(options => engine.query(theQuery, options), [
         engine,
         theQuery,
