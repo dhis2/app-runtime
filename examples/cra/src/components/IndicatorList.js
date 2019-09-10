@@ -6,9 +6,11 @@ import { AddButton } from './AddButton'
 const query = {
     indicators: {
         resource: 'indicators',
-        order: 'displayName:asc',
-        page: ({ page }) => page,
-        pageSize: 10,
+        params: ({ page }) => ({
+            order: 'displayName:asc',
+            page,
+            pageSize: 10,
+        }),
     },
 }
 

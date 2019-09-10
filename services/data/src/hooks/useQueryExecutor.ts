@@ -2,8 +2,15 @@ import { useState, useCallback, useRef, useEffect } from 'react'
 
 import { FetchError } from '../engine/types/FetchError'
 import { QueryExecuteOptions } from '../engine/types/ExecuteOptions'
-import { ExecuteHookInput, ExecuteHookResult, ExecuteFunction } from '../types'
+import { ExecuteHookInput, ExecuteHookResult } from '../types'
 import { useStaticInput } from './useStaticInput'
+
+interface StateType<T> {
+    called: boolean
+    loading: boolean
+    error?: FetchError
+    data?: T
+}
 
 const empty = {}
 export const useQueryExecutor = <ReturnType>({
@@ -14,28 +21,27 @@ export const useQueryExecutor = <ReturnType>({
     onCompleted,
     onError,
 }: ExecuteHookInput<ReturnType>): ExecuteHookResult<ReturnType> => {
-    const [theExecute] = useStaticInput<ExecuteFunction<ReturnType>>(
-        execute,
-        'execute function'
-    )
-    const [called, setCalled] = useState(immediate ? true : false)
-    const [loading, setLoading] = useState(immediate ? true : false)
-    const [error, setError] = useState<FetchError | undefined>(undefined)
-    const [data, setData] = useState<any>(undefined)
+    const [theExecute] = useStaticInput(execute, 'execute function')
+    const [state, setState] = useState<StateType<ReturnType>>({
+        called: !!immediate,
+        loading: !!immediate,
+    })
 
     const variables = useRef(initialVariables)
 
     const abortControllersRef = useRef<AbortController[]>([])
     const abort = () => {
-        console.error('ABORTED', abortControllersRef.current)
         abortControllersRef.current.forEach(controller => controller.abort())
         abortControllersRef.current = []
     }
 
     const refetch = useCallback(
         (newVariables = {}) => {
-            setCalled(true)
-            setLoading(true)
+            setState(state =>
+                !state.called || !state.loading
+                    ? { called: true, loading: true }
+                    : state
+            )
 
             if (singular) {
                 abort() // Cleanup any in-progress fetches
@@ -55,26 +61,19 @@ export const useQueryExecutor = <ReturnType>({
                 onError,
             }
 
-            const promise = theExecute(options)
-
-            return promise
+            return theExecute(options)
                 .then((data: ReturnType) => {
-                    console.log('return', data, controller.signal.aborted)
                     if (!controller.signal.aborted) {
-                        setLoading(false)
-                        setData(data)
+                        setState({ called: true, loading: false, data })
                         return data
                     }
                     return new Promise<ReturnType>(() => {})
                 })
                 .catch((error: FetchError) => {
-                    console.log('error', error)
                     if (!controller.signal.aborted) {
-                        setLoading(false)
-                        setError(error)
-                        console.warn('Ignored fetch error', error)
+                        setState({ called: true, loading: false, error })
                     }
-                    return new Promise<ReturnType>(() => {})
+                    return new Promise<ReturnType>(() => {}) // Don't throw errors in refetch promises, wait forever
                 })
         },
         [onCompleted, onError, singular, theExecute]
@@ -87,5 +86,5 @@ export const useQueryExecutor = <ReturnType>({
         return abort
     }, [immediate, refetch])
 
-    return { refetch, abort, called, loading, error, data }
+    return { refetch, abort, ...state }
 }

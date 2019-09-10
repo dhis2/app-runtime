@@ -1,16 +1,16 @@
-import React from 'react'
 import { useQueryExecutor } from './useQueryExecutor'
-import { ExecuteHookInput, ExecuteHookResult } from '../types'
-import {
-    renderHook,
-    act,
-    RenderHookResult,
-    HookResult,
-} from '@testing-library/react-hooks'
+import { renderHook, act } from '@testing-library/react-hooks'
 
-const execute = jest.fn(async () => null)
+const testError = new Error('TEST ERROR')
+const execute = jest.fn(async () => 42)
+const failingExecute = jest.fn(async () => {
+    throw testError
+})
 
 describe('useQueryExecutor', () => {
+    afterAll(() => {
+        jest.clearAllMocks()
+    })
     it('When not immediate, should start with called false and loading false', () => {
         const { result } = renderHook(() =>
             useQueryExecutor({
@@ -31,6 +31,29 @@ describe('useQueryExecutor', () => {
         const { result, waitForNextUpdate } = renderHook(() =>
             useQueryExecutor({
                 execute,
+                immediate: true,
+                singular: true,
+                variables: {},
+            })
+        )
+
+        expect(result.current).toMatchObject({
+            called: true,
+            loading: true,
+        })
+
+        await waitForNextUpdate()
+        expect(result.current).toMatchObject({
+            called: true,
+            loading: false,
+            data: 42,
+        })
+    })
+
+    it('Should start when refetch called (if not immediate)', async () => {
+        const { result, waitForNextUpdate } = renderHook(() =>
+            useQueryExecutor({
+                execute,
                 immediate: false,
                 singular: true,
                 variables: {},
@@ -45,21 +68,49 @@ describe('useQueryExecutor', () => {
         act(() => {
             result.current.refetch()
         })
-        await waitForNextUpdate()
-        expect(result.current).toMatchObject({
-            called: true,
-            loading: false,
-        })
-        await waitForNextUpdate()
+
         expect(result.current).toMatchObject({
             called: true,
             loading: true,
         })
+
         await waitForNextUpdate()
         expect(result.current).toMatchObject({
             called: true,
             loading: false,
-            data: null,
+            data: 42,
+        })
+    })
+
+    it('Should report an error when execute fails', async () => {
+        const { result, waitForNextUpdate } = renderHook(() =>
+            useQueryExecutor({
+                execute: failingExecute,
+                immediate: false,
+                singular: true,
+                variables: {},
+            })
+        )
+
+        expect(result.current).toMatchObject({
+            called: false,
+            loading: false,
+        })
+
+        act(() => {
+            result.current.refetch()
+        })
+
+        expect(result.current).toMatchObject({
+            called: true,
+            loading: true,
+        })
+
+        await waitForNextUpdate()
+        expect(result.current).toMatchObject({
+            called: true,
+            loading: false,
+            error: testError,
         })
     })
 })

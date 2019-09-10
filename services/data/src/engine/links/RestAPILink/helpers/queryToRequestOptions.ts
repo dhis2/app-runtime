@@ -20,9 +20,9 @@ export const queryToRequestOptions = (
     type: FetchType,
     { data }: ResolvedResourceQuery,
     signal?: AbortSignal
-) => ({
+): RequestInit => ({
     method: getMethod(type),
-    data: data ? JSON.stringify(data) : null,
+    body: data ? JSON.stringify(data) : null,
     headers: data
         ? {
               'Content-Type': 'application/json',

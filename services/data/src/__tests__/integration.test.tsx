@@ -11,10 +11,10 @@ const customData = {
     answer: 42,
 }
 
-describe.skip('Testing custom data provider and useQuery hook', () => {
+describe('Testing custom data provider and useQuery hook', () => {
     it('Should render without failing', async () => {
         const renderFunction = jest.fn(
-            ({ loading, error, data }: QueryRenderInput) => {
+            ({ loading, error, data, refetch }: QueryRenderInput) => {
                 if (loading) return 'loading'
                 if (error) return <div>error: {error.message}</div>
                 return <div>data: {data && data.answer}</div>
@@ -122,7 +122,7 @@ describe.skip('Testing custom data provider and useQuery hook', () => {
     })
 
     it('Should abort the fetch when refetching', async () => {
-        let refetch: QueryRefetchFunction | undefined
+        let refetch: any
         const renderFunction = jest.fn(
             ({ loading, error, data, refetch: _refetch }: QueryRenderInput) => {
                 refetch = _refetch
@@ -132,7 +132,7 @@ describe.skip('Testing custom data provider and useQuery hook', () => {
             }
         )
 
-        let signal: AbortSignal | null | undefined
+        let signal: any
         const mockData = {
             factory: jest.fn(
                 async (
@@ -148,7 +148,7 @@ describe.skip('Testing custom data provider and useQuery hook', () => {
             ),
         }
 
-        render(
+        const { getByText } = render(
             <CustomDataProvider data={mockData}>
                 <DataQuery query={{ test: { resource: 'factory' } }}>
                     {renderFunction}
@@ -159,16 +159,16 @@ describe.skip('Testing custom data provider and useQuery hook', () => {
         expect(renderFunction).toHaveBeenCalledTimes(1)
         expect(mockData.factory).toHaveBeenCalledTimes(1)
 
+        expect(signal.aborted).toBe(false)
         expect(refetch).not.toBeUndefined()
         act(() => {
-            if (!refetch) {
-                throw 'help'
-            }
             refetch()
         })
 
+        expect(signal.aborted).toBe(true)
+        await waitForElement(() => getByText(/data: /i))
+
         expect(renderFunction).toHaveBeenCalledTimes(2)
         expect(mockData.factory).toHaveBeenCalledTimes(2)
-        expect(signal && signal.aborted).toBe(true)
     })
 })
