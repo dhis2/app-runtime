@@ -57,6 +57,7 @@ describe('Test mutations', () => {
             {
                 called: false,
                 loading: false,
+                engine: expect.any(Object),
             },
         ])
         expect(doMutation).not.toBeUndefined()
@@ -69,6 +70,7 @@ describe('Test mutations', () => {
             {
                 called: true,
                 loading: true,
+                engine: expect.any(Object),
             },
         ])
         expect(mockBackend.target).toHaveBeenCalledTimes(1)
@@ -81,6 +83,7 @@ describe('Test mutations', () => {
                 called: true,
                 loading: false,
                 data: { answer: 42 },
+                engine: expect.any(Object),
             },
         ])
         expect(getByText(/data: /i)).toHaveTextContent(`data: 42`)

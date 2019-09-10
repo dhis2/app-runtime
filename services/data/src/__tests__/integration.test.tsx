@@ -2,7 +2,7 @@ import React from 'react'
 import { render, waitForElement, act } from '@testing-library/react'
 import { CustomDataProvider } from '../components/CustomDataProvider'
 import { DataQuery } from '../components/DataQuery'
-import { QueryRenderInput, QueryRefetchFunction } from '../types'
+import { QueryRenderInput } from '../types'
 import { DataEngineLinkExecuteOptions } from '../engine/types/DataEngineLink'
 import { ResolvedResourceQuery } from '../engine/types/Query'
 import { FetchType } from '../engine/types/ExecuteOptions'
@@ -14,7 +14,7 @@ const customData = {
 describe('Testing custom data provider and useQuery hook', () => {
     it('Should render without failing', async () => {
         const renderFunction = jest.fn(
-            ({ loading, error, data, refetch }: QueryRenderInput) => {
+            ({ loading, error, data }: QueryRenderInput) => {
                 if (loading) return 'loading'
                 if (error) return <div>error: {error.message}</div>
                 return <div>data: {data && data.answer}</div>
@@ -34,6 +34,7 @@ describe('Testing custom data provider and useQuery hook', () => {
         expect(renderFunction).toHaveBeenLastCalledWith({
             loading: true,
             refetch: expect.any(Function),
+            engine: expect.any(Object),
         })
         await waitForElement(() => getByText(/data: /i))
         expect(renderFunction).toHaveBeenCalledTimes(2)
@@ -41,6 +42,7 @@ describe('Testing custom data provider and useQuery hook', () => {
             loading: false,
             data: customData,
             refetch: expect.any(Function),
+            engine: expect.any(Object),
         })
         expect(getByText(/data: /i)).toHaveTextContent(
             `data: ${customData.answer}`
@@ -69,6 +71,7 @@ describe('Testing custom data provider and useQuery hook', () => {
         expect(renderFunction).toHaveBeenLastCalledWith({
             loading: true,
             refetch: expect.any(Function),
+            engine: expect.any(Object),
         })
         await waitForElement(() => getByText(/error: /i))
         expect(renderFunction).toHaveBeenCalledTimes(2)
