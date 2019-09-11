@@ -5092,10 +5092,10 @@ log-update@^2.3.0:
     cli-cursor "^2.0.0"
     wrap-ansi "^3.0.1"
 
-loop@^3.3.2:
-  version "3.3.2"
-  resolved "https://registry.yarnpkg.com/loop/-/loop-3.3.2.tgz#11baab5ba1177e6fb74235dcc834b2eb38d30f4c"
-  integrity sha512-JGghbIENFMrR7nfVG5G1qPR64FgLBl2KGaIEeje+6HFZIO3ASHROIcRX9Le4ws9IFkQOgoSelM0eBrd0FaX5lg==
+loop@^3.3.3:
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/loop/-/loop-3.3.3.tgz#9e0ff8decf24396d14ce95006184a2cfc9531547"
+  integrity sha512-YDIFD1eXm5yVr8xup01NOygk63WjP8/3ZmCcfyH88IYvremaHjla0OfBwO8jvsSBQMagAKrfcBAgn0E2smFmTw==
   dependencies:
     async "^3.0.0"
     chalk "^2.4.1"
@@ -5103,7 +5103,7 @@ loop@^3.3.2:
     lodash "^4.17.2"
     meta-exec "^1.4.1"
     should "^13.2.3"
-    yargs "^13.0.0"
+    yargs "^14.0.0"
 
 loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.4.0:
   version "1.4.0"
@@ -7942,12 +7942,29 @@ yargs@^12.0.5:
     y18n "^3.2.1 || ^4.0.0"
     yargs-parser "^11.1.1"
 
-yargs@^13.0.0, yargs@^13.1.0, yargs@^13.3.0:
+yargs@^13.1.0, yargs@^13.3.0:
   version "13.3.0"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-13.3.0.tgz#4c657a55e07e5f2cf947f8a366567c04a0dedc83"
   integrity sha512-2eehun/8ALW8TLoIl7MVaRUrg+yCnenu8B4kBlRxj3GJGDKU1Og7sMXPNm1BYyM1DOJmTZ4YeN/Nwxv+8XJsUA==
   dependencies:
     cliui "^5.0.0"
+    find-up "^3.0.0"
+    get-caller-file "^2.0.1"
+    require-directory "^2.1.1"
+    require-main-filename "^2.0.0"
+    set-blocking "^2.0.0"
+    string-width "^3.0.0"
+    which-module "^2.0.0"
+    y18n "^4.0.0"
+    yargs-parser "^13.1.1"
+
+yargs@^14.0.0:
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-14.0.0.tgz#ba4cacc802b3c0b3e36a9e791723763d57a85066"
+  integrity sha512-ssa5JuRjMeZEUjg7bEL99AwpitxU/zWGAGpdj0di41pOEmJti8NR6kyUIJBkR78DTYNPZOU08luUo0GTHuB+ow==
+  dependencies:
+    cliui "^5.0.0"
+    decamelize "^1.2.0"
     find-up "^3.0.0"
     get-caller-file "^2.0.1"
     require-directory "^2.1.1"
