@@ -9,7 +9,7 @@ import { useCallback } from 'react'
 const empty = {}
 export const useDataQuery = (
     query: Query,
-    { onCompleted, onError, variables = empty }: QueryOptions = {}
+    { onComplete, onError, variables = empty }: QueryOptions = {}
 ): QueryRenderInput => {
     const engine = useDataEngine()
     const [theQuery] = useStaticInput<Query>(query, {
@@ -25,7 +25,7 @@ export const useDataQuery = (
         variables,
         singular: true,
         immediate: true,
-        onCompleted,
+        onComplete,
         onError,
     })
 

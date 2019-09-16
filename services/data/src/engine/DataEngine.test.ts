@@ -106,9 +106,9 @@ describe('DataEngine', () => {
         })
     })
 
-    it('Should call onCompleted callback only once for multiple-query method', async () => {
+    it('Should call onComplete callback only once for multiple-query method', async () => {
         const options = {
-            onCompleted: jest.fn(),
+            onComplete: jest.fn(),
         }
         const engine = new DataEngine(mockLink)
         await engine.query(
@@ -120,12 +120,12 @@ describe('DataEngine', () => {
             options
         )
         expect(mockLink.executeResourceQuery).toHaveBeenCalledTimes(3)
-        expect(options.onCompleted).toHaveBeenCalledTimes(1)
+        expect(options.onComplete).toHaveBeenCalledTimes(1)
     })
 
-    it('Should call onCompleted callback only once for multiple-query method', async () => {
+    it('Should call onComplete callback only once for multiple-query method', async () => {
         const options = {
-            onCompleted: jest.fn(),
+            onComplete: jest.fn(),
             onError: jest.fn(),
         }
         const engine = new DataEngine(mockLink)
@@ -139,21 +139,21 @@ describe('DataEngine', () => {
                 options
             )
         ).rejects.toBeTruthy()
-        expect(options.onCompleted).toHaveBeenCalledTimes(0)
+        expect(options.onComplete).toHaveBeenCalledTimes(0)
         expect(options.onError).toHaveBeenCalledTimes(1)
     })
 
-    it('Should call onCompleted callback after mutation', async () => {
+    it('Should call onComplete callback after mutation', async () => {
         const options = {
-            onCompleted: jest.fn(),
+            onComplete: jest.fn(),
         }
         const engine = new DataEngine(mockLink)
         await engine.mutate(mockMutation, options)
-        expect(options.onCompleted).toHaveBeenCalledTimes(1)
+        expect(options.onComplete).toHaveBeenCalledTimes(1)
     })
     it('Should call onError callback after failed mutation', async () => {
         const options = {
-            onCompleted: jest.fn(),
+            onComplete: jest.fn(),
             onError: jest.fn(),
         }
         const engine = new DataEngine(mockLink)
@@ -163,7 +163,7 @@ describe('DataEngine', () => {
                 options
             )
         ).rejects.toBeTruthy()
-        expect(options.onCompleted).toHaveBeenCalledTimes(0)
+        expect(options.onComplete).toHaveBeenCalledTimes(0)
         expect(options.onError).toHaveBeenCalledTimes(1)
     })
 })

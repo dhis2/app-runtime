@@ -28,5 +28,5 @@ export type Mutation = CreateMutation | UpdateMutation | DeleteMutation
 export interface MutationOptions {
     variables?: QueryVariables
     onError?: (error: FetchError) => any
-    onCompleted?: (data: any) => any
+    onComplete?: (data: any) => any
 }

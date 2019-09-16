@@ -17,7 +17,7 @@ const mutation = {
 
 export const AddButton = ({ onCreate }) => {
     const [mutate] = useDataMutation(mutation, {
-        onCompleted: onCreate,
+        onComplete: onCreate,
         variables: {
             name: 'A NEW INDICATOR',
         },

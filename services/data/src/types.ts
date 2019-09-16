@@ -29,7 +29,7 @@ export interface ExecuteHookInput<ReturnType> {
     singular: boolean
     immediate: boolean
     transformData?: (data: JsonValue[]) => JsonValue
-    onCompleted?: (data: any) => void
+    onComplete?: (data: any) => void
     onError?: (error: FetchError) => void
 }
 

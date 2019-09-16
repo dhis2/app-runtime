@@ -17,7 +17,7 @@ export const useQueryExecutor = <ReturnType>({
     variables: initialVariables,
     singular,
     immediate,
-    onCompleted,
+    onComplete,
     onError,
 }: ExecuteHookInput<ReturnType>): ExecuteHookResult<ReturnType> => {
     const [theExecute] = useStaticInput(execute)
@@ -56,7 +56,7 @@ export const useQueryExecutor = <ReturnType>({
             const options: QueryExecuteOptions = {
                 variables: variables.current,
                 signal: controller.signal,
-                onCompleted,
+                onComplete,
                 onError,
             }
 
@@ -75,7 +75,7 @@ export const useQueryExecutor = <ReturnType>({
                     return new Promise<ReturnType>(() => {}) // Don't throw errors in refetch promises, wait forever
                 })
         },
-        [onCompleted, onError, singular, theExecute]
+        [onComplete, onError, singular, theExecute]
     )
 
     useEffect(() => {

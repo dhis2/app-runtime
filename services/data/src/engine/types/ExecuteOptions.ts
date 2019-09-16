@@ -5,6 +5,6 @@ export type FetchType = 'create' | 'read' | 'update' | 'replace' | 'delete'
 export interface QueryExecuteOptions {
     variables?: QueryVariables
     signal?: AbortSignal
-    onCompleted?: (data: any) => void
+    onComplete?: (data: any) => void
     onError?: (error: FetchError) => void
 }

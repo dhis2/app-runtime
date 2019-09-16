@@ -9,13 +9,13 @@ interface QueryInput extends QueryOptions {
 
 export const DataQuery = ({
     query,
-    onCompleted,
+    onComplete,
     onError,
     variables,
     children,
 }: QueryInput) => {
     const queryState = useDataQuery(query, {
-        onCompleted,
+        onComplete,
         onError,
         variables,
     })

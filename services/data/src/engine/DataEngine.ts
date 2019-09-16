@@ -23,7 +23,7 @@ export class DataEngine {
         {
             variables = {},
             signal,
-            onCompleted,
+            onComplete,
             onError,
         }: QueryExecuteOptions = {}
     ): Promise<JsonMap> {
@@ -39,7 +39,7 @@ export class DataEngine {
         )
             .then(results => {
                 const data = reduceResponses(results, names)
-                onCompleted && onCompleted(data)
+                onComplete && onComplete(data)
                 return data
             })
             .catch(error => {
@@ -53,7 +53,7 @@ export class DataEngine {
         {
             variables = {},
             signal,
-            onCompleted,
+            onComplete,
             onError,
         }: QueryExecuteOptions = {}
     ): Promise<JsonValue> {
@@ -67,7 +67,7 @@ export class DataEngine {
         )
         return result
             .then(data => {
-                onCompleted && onCompleted(data)
+                onComplete && onComplete(data)
                 return data
             })
             .catch(error => {

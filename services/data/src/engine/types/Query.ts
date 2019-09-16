@@ -23,6 +23,6 @@ export type QueryResult = JsonMap
 
 export interface QueryOptions {
     variables?: QueryVariables
-    onCompleted?: (data: QueryResult) => void
+    onComplete?: (data: QueryResult) => void
     onError?: (error: FetchError) => void
 }

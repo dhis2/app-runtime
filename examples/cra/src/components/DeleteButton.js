@@ -9,7 +9,7 @@ const mutation = {
 
 export const DeleteButton = ({ indicatorId, onDelete }) => {
     const [mutate] = useDataMutation(mutation, {
-        onCompleted: onDelete,
+        onComplete: onDelete,
         variables: {
             id: indicatorId,
         },

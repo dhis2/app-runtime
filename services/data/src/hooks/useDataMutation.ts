@@ -10,7 +10,7 @@ import { useCallback } from 'react'
 const empty = {}
 export const useDataMutation = (
     mutation: Mutation,
-    { onCompleted, onError, variables = empty }: QueryOptions = {}
+    { onComplete, onError, variables = empty }: QueryOptions = {}
 ): MutationRenderInput => {
     const engine = useDataEngine()
     const [theMutation] = useStaticInput<Mutation>(mutation, {
@@ -26,7 +26,7 @@ export const useDataMutation = (
         variables,
         singular: false,
         immediate: false,
-        onCompleted,
+        onComplete,
         onError,
     })
 

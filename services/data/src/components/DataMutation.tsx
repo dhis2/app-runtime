@@ -9,13 +9,13 @@ interface MutationInput extends MutationOptions {
 
 export const DataMutation = ({
     mutation,
-    onCompleted,
+    onComplete,
     onError,
     variables,
     children,
 }: MutationInput) => {
     const mutationState = useDataMutation(mutation, {
-        onCompleted,
+        onComplete,
         onError,
         variables,
     })
