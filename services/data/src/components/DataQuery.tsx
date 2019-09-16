@@ -1,13 +1,24 @@
 import { useDataQuery } from '../hooks/useDataQuery'
-import { QueryRenderInput, QueryMap } from '../types/Query'
+import { Query, QueryOptions } from '../engine/types/Query'
+import { QueryRenderInput } from '../types'
 
-interface QueryInput {
-    query: QueryMap
+interface QueryInput extends QueryOptions {
+    query: Query
     children: (input: QueryRenderInput) => any
 }
 
-export const DataQuery = ({ query, children }: QueryInput) => {
-    const queryState = useDataQuery(query)
+export const DataQuery = ({
+    query,
+    onComplete,
+    onError,
+    variables,
+    children,
+}: QueryInput) => {
+    const queryState = useDataQuery(query, {
+        onComplete,
+        onError,
+        variables,
+    })
 
     return children(queryState)
 }

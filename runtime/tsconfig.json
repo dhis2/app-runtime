@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "baseUrl": "src",
         // Target latest version of ECMAScript.
         "target": "esnext",
         "declaration": true,
@@ -15,16 +16,17 @@
         // "isolatedModules": true,
         // Import non-ES modules as default imports.
         "esModuleInterop": true,
-        "jsx": "react"
+        "jsx": "react",
+        "declarationDir": "build/types",
 
         // This caused some NASTY bugs with Context usage (different imports = different instances)
         // "forceConsistentCasingInFileNames": true
+
+        "paths": {
+            "@dhis2/*": ["../../services/*"]
+        }
     },
-    "include": ["src"],
-    "exclude": [
-        "src/setupRTL.ts",
-        "src/__tests__",
-        "**/*.test.ts",
-        "**/*.test.tsx"
-    ]
+    "files": ["src/index.ts"],
+    "include": ["src/**/*", "../services/**/*", "../node_modules/@dhis2/**/*"],
+    "exclure": []
 }

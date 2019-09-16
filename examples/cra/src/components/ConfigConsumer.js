@@ -6,6 +6,8 @@ export const ConfigConsumer = () => {
     return (
         <span>
             <strong>Base url:</strong> {config.baseUrl}
+            <br />
+            <strong>API version:</strong> {config.apiVersion}
         </span>
     )
 }

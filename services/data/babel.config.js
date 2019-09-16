@@ -23,5 +23,12 @@ module.exports = function(api) {
                 plugins: ['@babel/plugin-transform-runtime'],
             },
         },
+        ignore: [
+            '**/*.d.ts',
+            '**/*.test.ts',
+            '**/*.test.tsx',
+            'src/__tests__',
+            'src/setupRTL.ts',
+        ],
     }
 }
