@@ -1,7 +1,43 @@
-import { parseStatus, fetchData } from './networkFetch'
+import { parseStatus, fetchData, parseContentType } from './networkFetch'
 import { FetchError } from '../../../types/FetchError'
 
 describe('networkFetch', () => {
+    describe('parseContentType', () => {
+        it('should pass through simple content-types', () => {
+            expect(parseContentType('text/html')).toBe('text/html')
+            expect(parseContentType('text/plain')).toBe('text/plain')
+            expect(parseContentType('application/vnd.api+json')).toBe(
+                'application/vnd.api+json'
+            )
+        })
+
+        it('should strip parameters', () => {
+            expect(parseContentType('text/svg+xml;charset=utf-8')).toBe(
+                'text/svg+xml'
+            )
+            expect(parseContentType('text/html;testing123')).toBe('text/html')
+        })
+
+        it('should trim type', () => {
+            expect(parseContentType('   text/xml ')).toBe('text/xml')
+            expect(
+                parseContentType(' application/json ; charset = utf-8')
+            ).toBe('application/json')
+        })
+
+        it('should convert to lower-case', () => {
+            expect(parseContentType('  Text/XML ')).toBe('text/xml')
+            expect(parseContentType('application/JSON ; charset = UTF-8')).toBe(
+                'application/json'
+            )
+        })
+
+        it('should correctly parse application/json with charset param', () => {
+            expect(parseContentType('application/json;charset=UTF-8')).toBe(
+                'application/json'
+            )
+        })
+    })
     describe('parseStatus', () => {
         it('should pass through the response for a success status code', async () => {
             const response: any = {

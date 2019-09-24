@@ -1,6 +1,15 @@
 import { FetchError } from '../../../types/FetchError'
 import { JsonValue } from '../../../types/JsonValue'
 
+export const parseContentType = (contentType: string | null) => {
+    return contentType
+        ? contentType
+              .split(';')[0]
+              .trim()
+              .toLowerCase()
+        : null
+}
+
 export const parseStatus = async (response: Response) => {
     if (
         response.status === 401 ||
@@ -54,7 +63,10 @@ export function fetchData(
         })
         .then(parseStatus)
         .then(async response => {
-            if (response.headers.get('Content-Type') === 'application/json') {
+            if (
+                parseContentType(response.headers.get('Content-Type')) ===
+                'application/json'
+            ) {
                 return await response.json() // Will throw if invalid JSON!
             }
             return await response.text()
