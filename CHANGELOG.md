@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/dhis2/app-runtime/compare/v1.6.0...v1.7.0) (2019-09-24)
+
+
+### Features
+
+* trigger 2.0 release ([0d79c16](https://github.com/dhis2/app-runtime/commit/0d79c16))
+
 # [1.6.0](https://github.com/dhis2/app-runtime/compare/v1.5.1...v1.6.0) (2019-09-24)
 
 

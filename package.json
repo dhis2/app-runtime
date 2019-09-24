@@ -68,5 +68,5 @@
             "description": "A singular runtime dependency for applications on the [DHIS2 platform](https://platform.dhis2.nu)"
         }
     },
-    "version": "1.6.0"
+    "version": "1.7.0"
 }
