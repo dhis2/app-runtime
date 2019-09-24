@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/dhis2/app-runtime/compare/v1.5.1...v1.6.0) (2019-09-24)
+
+
+### Features
+
+* mutations, dynamic queries, engine refactor ([#127](https://github.com/dhis2/app-runtime/issues/127)) ([8677972](https://github.com/dhis2/app-runtime/commit/8677972)), closes [#115](https://github.com/dhis2/app-runtime/issues/115)
+
 ## [1.5.1](https://github.com/dhis2/app-runtime/compare/v1.5.0...v1.5.1) (2019-08-25)
 
 
