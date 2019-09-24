@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/dhis2/app-runtime/compare/v1.7.0...v2.0.0) (2019-09-24)
+
+
+### Features
+
+* actually trigger v2.0 ([de4a6b2](https://github.com/dhis2/app-runtime/commit/de4a6b2))
+
+
+### BREAKING CHANGES
+
+* semantic release is hard. We should make it more difficult to accidentally publish breaking changes as non-breaking versions.
+
 # [1.7.0](https://github.com/dhis2/app-runtime/compare/v1.6.0...v1.7.0) (2019-09-24)
 
 
