@@ -28,7 +28,7 @@
         "react-dom": "^16.8.6"
     },
     "scripts": {
-        "build": "rollup -c",
+        "build": "rimraf build && rollup -c",
         "test": "echo \"No tests yet!\""
     }
 }

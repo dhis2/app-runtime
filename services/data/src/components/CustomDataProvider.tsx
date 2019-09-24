@@ -1,22 +1,23 @@
 import React from 'react'
-import {
-    makeCustomContext,
-    CustomContextData,
-    CustomContextOptions,
-} from '../context/makeCustomContext'
-import { DataContext } from './DataContext'
+import { CustomData, CustomLinkOptions } from '../engine/links/CustomDataLink'
+import { DataContext } from '../context/DataContext'
+import { DataEngine } from '../engine'
+import { CustomDataLink } from '../engine/links/CustomDataLink'
 
 interface CustomProviderInput {
     children: React.ReactNode
-    data: CustomContextData
-    options?: CustomContextOptions
+    data: CustomData
+    options?: CustomLinkOptions
 }
 export const CustomDataProvider = ({
     children,
     data,
     options,
 }: CustomProviderInput) => {
-    const context = makeCustomContext(data, options)
+    const link = new CustomDataLink(data, options)
+    const engine = new DataEngine(link)
+
+    const context = { engine }
     return (
         <DataContext.Provider value={context}>{children}</DataContext.Provider>
     )

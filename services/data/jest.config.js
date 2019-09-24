@@ -7,7 +7,7 @@ module.exports = {
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
     unmockedModulePathPatterns: ['<rootDir>/src/__tests__'],
 
-    collectCoverageFrom: ['src/**/*.(js|jsx|ts|tsx)'],
+    collectCoverageFrom: ['src/**/*.(js|jsx|ts|tsx)', '!src/index.ts'],
 
     // Setup react-testing-library
     setupFilesAfterEnv: ['<rootDir>/src/setupRTL.ts'],
