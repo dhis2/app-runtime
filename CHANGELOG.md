@@ -1,26 +1,7 @@
-# [2.0.0](https://github.com/dhis2/app-runtime/compare/v1.7.0...v2.0.0) (2019-09-24)
-
-
-### Features
-
-* actually trigger v2.0 ([de4a6b2](https://github.com/dhis2/app-runtime/commit/de4a6b2))
+# [2.0.0](https://github.com/dhis2/app-runtime/compare/v1.5.1...v2.0.0) (2019-09-24)
 
 
 ### BREAKING CHANGES
-
-* semantic release is hard. We should make it more difficult to accidentally publish breaking changes as non-breaking versions.
-
-# [1.7.0](https://github.com/dhis2/app-runtime/compare/v1.6.0...v1.7.0) (2019-09-24)
-
-
-### Features
-
-* trigger 2.0 release ([0d79c16](https://github.com/dhis2/app-runtime/commit/0d79c16))
-
-# [1.6.0](https://github.com/dhis2/app-runtime/compare/v1.5.1...v1.6.0) (2019-09-24)
-
-
-### Features
 
 * mutations, dynamic queries, engine refactor ([#127](https://github.com/dhis2/app-runtime/issues/127)) ([8677972](https://github.com/dhis2/app-runtime/commit/8677972)), closes [#115](https://github.com/dhis2/app-runtime/issues/115)
 
