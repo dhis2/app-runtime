@@ -12,6 +12,7 @@ Docs are available at [runtime.dhis2.nu](https://runtime.dhis2.nu).
 ```sh
 > yarn test # runs yarn test on each directory under ./services, and also in ./runtime
 > yarn build # runs yarn build on each directory under ./services, and then in ./runtime
+> yarn start # builds all services, builds the runtime, and starts the exampl app dev server
 ```
 
 ## Example
