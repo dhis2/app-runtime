@@ -20,7 +20,8 @@ const query = {
 
 | Property | Type |  | Description |
 |:--------:|:----:|--|-------------|
-| **resource** | *string* | **required**| The path to the resource being requested, i.e. `indicators` or `indicators/1234`. |
-| **\*** | *any* | | Any additional properties are translated into querystring parameters when the data is fetched |
+| **resource** | *string* | **required**| The path to the resource being requested, i.e. `indicators`. |
+| **id** | *string* **or** *() => string* | | Optional, when specified indicates that a particular **instance** of a collection will be requested |
+| **params** | *Object* **or** *() => Object* | | A dictionary of properties which are translated into querystring parameters when the data is fetched |
 
 > See the [Query type definition](https://github.com/dhis2/app-runtime/blob/master/services/data/src/types/Query.d.ts) for more information
