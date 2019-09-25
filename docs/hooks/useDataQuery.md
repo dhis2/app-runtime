@@ -35,8 +35,10 @@ import { useDataQuery } from '@dhis2/app-runtime'
 const query = {
     indicators: {
         resource: 'indicators.json',
-        order: 'shortName:desc',
-        pageSize: 10,
+        params: {
+            order: 'shortName:desc',
+            pageSize: 10,
+        }
     },
 }
 export const IndicatorList = () => {
