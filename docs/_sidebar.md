@@ -3,12 +3,15 @@
 -   [**Hooks**](hooks/)
     -   [useConfig](hooks/useConfig)
     -   [useDataQuery](hooks/useDataQuery)
+    -   [useDataMutation](hooks/useDataMutation)
+    -   [useDataEngine](hooks/useDataEngine)
 -   [**Components**](components/)
     -   [DataQuery](components/DataQuery)
 -   **Types**
 
     -   [Config](types/Config)
     -   [Query](types/Query)
+    -   [Mutation](types/Query)
 
 -   &nbsp;
 
