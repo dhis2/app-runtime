@@ -17,13 +17,23 @@ const query = {
     },
 }
 describe('useDataQuery', () => {
+    const originalError = console.error
+
+    afterEach(() => {
+        console.error = originalError
+    })
+
     it('Should render without failing', async () => {
         let hookState: any
+
+        console.error = jest.fn()
+
         act(() => {
             hookState = renderHook(() => useDataQuery(query), {
                 wrapper,
             })
         })
+
         expect(hookState.result.current).toMatchObject({ loading: true })
     })
 })
