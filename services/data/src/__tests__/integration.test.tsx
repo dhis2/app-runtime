@@ -1,11 +1,13 @@
-import React from 'react'
 import { render, waitForElement, act } from '@testing-library/react'
-import { CustomDataProvider } from '../components/CustomDataProvider'
-import { DataQuery } from '../components/DataQuery'
+import React from 'react'
+
+import {
+    FetchType,
+    DataEngineLinkExecuteOptions,
+    ResolvedResourceQuery,
+} from '../engine'
+import { CustomDataProvider, DataQuery } from '../react'
 import { QueryRenderInput } from '../types'
-import { DataEngineLinkExecuteOptions } from '../engine/types/DataEngineLink'
-import { ResolvedResourceQuery } from '../engine/types/Query'
-import { FetchType } from '../engine/types/ExecuteOptions'
 
 const customData = {
     answer: 42,
