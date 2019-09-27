@@ -1,12 +1,10 @@
 import { Query } from './types/Query'
-import { resolveDynamicQuery, getMutationFetchType } from './helpers'
-import {
-    DataEngineLink,
-    Mutation,
-    QueryExecuteOptions,
-    JsonValue,
-    JsonMap,
-} from './types'
+import { getMutationFetchType } from './helpers/getMutationFetchType'
+import { resolveDynamicQuery } from './helpers/resolveDynamicQuery'
+import { Mutation } from './types/Mutation'
+import { QueryExecuteOptions } from './types/ExecuteOptions'
+import { DataEngineLink } from './types/DataEngineLink'
+import { JsonMap, JsonValue } from './types/JsonValue'
 
 const reduceResponses = (responses: JsonValue[], names: string[]) =>
     responses.reduce<JsonMap>((out, response, idx) => {

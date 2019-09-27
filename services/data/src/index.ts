@@ -3,6 +3,6 @@ export {
     DataMutation,
     DataProvider,
     CustomDataProvider,
-} from './react/components'
+} from './react'
 
-export { useDataEngine, useDataQuery, useDataMutation } from './react/hooks'
+export { useDataEngine, useDataQuery, useDataMutation } from './react'

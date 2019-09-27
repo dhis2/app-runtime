@@ -1,11 +1,8 @@
 import { DataEngine } from './DataEngine'
-import {
-    DataEngineLink,
-    FetchType,
-    Mutation,
-    Query,
-    ResolvedResourceQuery,
-} from './types'
+import { DataEngineLink } from './types/DataEngineLink'
+import { FetchType } from './types/ExecuteOptions'
+import { Mutation } from './types/Mutation'
+import { Query, ResolvedResourceQuery } from './types/Query'
 
 const mockQuery: Query = {
     test: {

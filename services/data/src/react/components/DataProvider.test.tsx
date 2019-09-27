@@ -3,7 +3,7 @@ import { render } from '@testing-library/react'
 import { DataProvider } from './DataProvider'
 import { DataEngine } from '../../engine'
 import { RestAPILink } from '../../links'
-import { DataContext } from '../context'
+import { DataContext } from '../context/DataContext'
 
 describe('DataProvider', () => {
     it('Should pass a new engine and RestAPILink to consumers', () => {

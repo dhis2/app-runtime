@@ -1,4 +1,8 @@
-import { QueryVariables, ResourceQuery, ResolvedResourceQuery } from '../types'
+import {
+    QueryVariables,
+    ResourceQuery,
+    ResolvedResourceQuery,
+} from '../types/Query'
 
 export const resolveDynamicQuery = (
     { resource, id, data, params }: ResourceQuery,

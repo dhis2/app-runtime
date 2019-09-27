@@ -5,12 +5,10 @@ import {
     JsonValue,
     ResolvedResourceQuery,
 } from '../engine/'
-import {
-    fetchData,
-    joinPath,
-    queryToRequestOptions,
-    queryToResourcePath,
-} from './RestAPILink/index'
+import { fetchData } from './RestAPILink/fetchData'
+import { joinPath } from './RestAPILink/path'
+import { queryToRequestOptions } from './RestAPILink/queryToRequestOptions'
+import { queryToResourcePath } from './RestAPILink/queryToResourcePath'
 
 export interface RestAPILinkInput {
     baseUrl: string

@@ -5,7 +5,7 @@ import {
     CustomData,
     CustomLinkOptions,
 } from '../../links'
-import { DataContext } from '../context'
+import { DataContext } from '../context/DataContext'
 
 interface CustomProviderInput {
     children: React.ReactNode
