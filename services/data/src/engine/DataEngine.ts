@@ -1,6 +1,10 @@
 import { Query } from './types/Query'
 import { getMutationFetchType } from './helpers/getMutationFetchType'
 import { resolveDynamicQuery } from './helpers/resolveDynamicQuery'
+import {
+    validateResourceQuery,
+    validateResourceQueries,
+} from './helpers/validate'
 import { Mutation } from './types/Mutation'
 import { QueryExecuteOptions } from './types/ExecuteOptions'
 import { DataEngineLink } from './types/DataEngineLink'
@@ -28,11 +32,15 @@ export class DataEngine {
         }: QueryExecuteOptions = {}
     ): Promise<JsonMap> {
         const names = Object.keys(query)
-        const queries = names.map(name => query[name])
+        const queries = names
+            .map(name => query[name])
+            .map(q => resolveDynamicQuery(q, variables))
+
+        validateResourceQueries(queries, names)
+
         return Promise.all(
             queries.map(q => {
-                const resolvedQuery = resolveDynamicQuery(q, variables)
-                return this.link.executeResourceQuery('read', resolvedQuery, {
+                return this.link.executeResourceQuery('read', q, {
                     signal,
                 })
             })
@@ -58,13 +66,13 @@ export class DataEngine {
         }: QueryExecuteOptions = {}
     ): Promise<JsonValue> {
         const query = resolveDynamicQuery(mutation, variables)
-        const result = this.link.executeResourceQuery(
-            getMutationFetchType(mutation),
-            query,
-            {
-                signal,
-            }
-        )
+
+        const type = getMutationFetchType(mutation)
+        validateResourceQuery(type, query)
+
+        const result = this.link.executeResourceQuery(type, query, {
+            signal,
+        })
         return result
             .then(data => {
                 onComplete && onComplete(data)
