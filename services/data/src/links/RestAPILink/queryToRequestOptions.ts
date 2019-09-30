@@ -1,5 +1,4 @@
-import { ResolvedResourceQuery } from '../../../types/Query'
-import { FetchType } from '../../../types/ExecuteOptions'
+import { ResolvedResourceQuery, FetchType } from '../../engine'
 
 const getMethod = (type: FetchType): string => {
     switch (type) {

@@ -1,10 +1,10 @@
-import { ResolvedResourceQuery } from '../types/Query'
 import {
-    DataEngineLinkExecuteOptions,
     DataEngineLink,
-} from '../types/DataEngineLink'
-import { JsonValue } from '../types/JsonValue'
-import { FetchType } from '../types/ExecuteOptions'
+    DataEngineLinkExecuteOptions,
+    FetchType,
+    JsonValue,
+    ResolvedResourceQuery,
+} from '../engine'
 
 export type CustomResourceFactory = (
     type: FetchType,

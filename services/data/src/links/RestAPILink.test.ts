@@ -1,9 +1,9 @@
 import { RestAPILink } from '.'
+import { fetchData } from './RestAPILink/fetchData'
 
-jest.mock('./helpers/networkFetch', () => ({
+jest.mock('./RestAPILink/fetchData', () => ({
     fetchData: jest.fn(async () => null),
 }))
-import { fetchData } from './helpers/networkFetch'
 
 describe('RestAPILink', () => {
     it('should call fetch with the expected URL', async () => {

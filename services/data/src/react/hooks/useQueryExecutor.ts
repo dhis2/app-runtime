@@ -1,8 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
 
-import { FetchError } from '../engine/types/FetchError'
-import { QueryExecuteOptions } from '../engine/types/ExecuteOptions'
-import { ExecuteHookInput, ExecuteHookResult } from '../types'
+import { FetchError, QueryExecuteOptions } from '../../engine'
+import { ExecuteHookInput, ExecuteHookResult } from '../../types'
 import { useStaticInput } from './useStaticInput'
 
 interface StateType<T> {

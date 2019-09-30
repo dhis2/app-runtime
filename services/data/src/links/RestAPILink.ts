@@ -1,14 +1,14 @@
-import { queryToResourcePath } from './helpers/queryToResourcePath'
-import { queryToRequestOptions } from './helpers/queryToRequestOptions'
-import { ResolvedResourceQuery } from '../../types/Query'
-import { FetchType } from '../../types/ExecuteOptions'
-import { JsonValue } from '../../types/JsonValue'
 import {
     DataEngineLink,
     DataEngineLinkExecuteOptions,
-} from '../../types/DataEngineLink'
-import { joinPath } from './helpers/path'
-import { fetchData } from './helpers/networkFetch'
+    FetchType,
+    JsonValue,
+    ResolvedResourceQuery,
+} from '../engine/'
+import { fetchData } from './RestAPILink/fetchData'
+import { joinPath } from './RestAPILink/path'
+import { queryToRequestOptions } from './RestAPILink/queryToRequestOptions'
+import { queryToResourcePath } from './RestAPILink/queryToResourcePath'
 
 export interface RestAPILinkInput {
     baseUrl: string

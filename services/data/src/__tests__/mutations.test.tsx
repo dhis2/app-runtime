@@ -1,12 +1,14 @@
-import React from 'react'
-import { Mutation } from '../engine/types/Mutation'
-import { CustomDataProvider } from '../components/CustomDataProvider'
-import { DataMutation } from '../components/DataMutation'
 import { render, act, waitForElement } from '@testing-library/react'
+import React from 'react'
+
+import {
+    Mutation,
+    FetchType,
+    ResolvedResourceQuery,
+    JsonMap,
+} from '../engine'
+import { CustomDataProvider, DataMutation } from '../react'
 import { MutationFunction, MutationRenderInput } from '../types'
-import { FetchType } from '../engine/types/ExecuteOptions'
-import { ResolvedResourceQuery } from '../engine/types/Query'
-import { JsonMap } from '../engine/types/JsonValue'
 
 const mockBackend = {
     target: jest.fn((type: FetchType, query: ResolvedResourceQuery) => {

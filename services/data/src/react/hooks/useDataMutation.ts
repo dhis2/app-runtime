@@ -1,6 +1,5 @@
-import { QueryOptions } from '../engine/types/Query'
-import { Mutation } from '../engine/types/Mutation'
-import { MutationRenderInput } from '../types'
+import { QueryOptions, Mutation } from '../../engine'
+import { MutationRenderInput } from '../../types'
 
 import { useQueryExecutor } from './useQueryExecutor'
 import { useStaticInput } from './useStaticInput'

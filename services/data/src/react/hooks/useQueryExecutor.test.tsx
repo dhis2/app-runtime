@@ -1,5 +1,5 @@
-import { useQueryExecutor } from './useQueryExecutor'
 import { renderHook, act } from '@testing-library/react-hooks'
+import { useQueryExecutor } from './useQueryExecutor'
 
 const testError = new Error('TEST ERROR')
 const execute = jest.fn(async () => 42)

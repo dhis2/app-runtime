@@ -1,5 +1,4 @@
-import { FetchError } from '../../../types/FetchError'
-import { JsonValue } from '../../../types/JsonValue'
+import { FetchError, JsonValue } from '../../engine'
 
 export const parseContentType = (contentType: string | null) => {
     return contentType

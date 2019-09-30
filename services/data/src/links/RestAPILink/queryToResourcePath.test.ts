@@ -1,4 +1,4 @@
-import { ResolvedResourceQuery } from '../../../types/Query'
+import { ResolvedResourceQuery } from '../../engine'
 import { queryToResourcePath } from './queryToResourcePath'
 
 const apiPath = '<api>'

@@ -1,10 +1,10 @@
-import { Query, QueryOptions } from '../engine/types/Query'
-import { QueryRenderInput } from '../types'
+import { Query, QueryOptions } from '../../engine'
+import { QueryRenderInput } from '../../types'
 
+import { useCallback } from 'react'
 import { useQueryExecutor } from './useQueryExecutor'
 import { useStaticInput } from './useStaticInput'
 import { useDataEngine } from './useDataEngine'
-import { useCallback } from 'react'
 
 const empty = {}
 export const useDataQuery = (

@@ -1,9 +1,9 @@
-import { ResolvedResourceQuery } from '../../../types/Query'
-import { joinPath } from './path'
 import {
+    ResolvedResourceQuery,
     QueryParameters,
     QueryParameterValue,
-} from '../../../types/QueryParameters'
+} from '../../engine'
+import { joinPath } from './path'
 
 const encodeQueryParameter = (param: QueryParameterValue): string => {
     if (Array.isArray(param)) {

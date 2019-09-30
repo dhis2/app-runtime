@@ -1,8 +1,11 @@
 import React from 'react'
-import { CustomData, CustomLinkOptions } from '../engine/links/CustomDataLink'
+import { DataEngine } from '../../engine'
+import {
+    CustomDataLink,
+    CustomData,
+    CustomLinkOptions,
+} from '../../links'
 import { DataContext } from '../context/DataContext'
-import { DataEngine } from '../engine'
-import { CustomDataLink } from '../engine/links/CustomDataLink'
 
 interface CustomProviderInput {
     children: React.ReactNode

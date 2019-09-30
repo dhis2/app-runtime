@@ -1,4 +1,4 @@
-import { DataEngineLink } from '../types/DataEngineLink'
+import { DataEngineLink } from '../engine'
 
 export class ErrorLink implements DataEngineLink {
     private errorMessage: string
