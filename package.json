@@ -50,7 +50,7 @@
     },
     "scripts": {
         "install:examples": "loop \"yarn install --force --check-files\" --cwd ./examples --exit-on-aggregate-error",
-        "build:playground": "cd examples/query-playground && yarn && yarn build:standalone && cp -rf build/app ../../dist/playground",
+        "build:playground": "cd examples/query-playground && yarn && PUBLIC_URL=/playground yarn build:standalone && cp -rf build/app ../../dist/playground",
         "build:config": "cd services/config && yarn build",
         "build:services": "yarn build:config && loop \"yarn build\" --cwd ./services --exclude config --exit-on-error",
         "build:runtime": "cd runtime && yarn build",
