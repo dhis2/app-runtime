@@ -50,6 +50,7 @@
     },
     "scripts": {
         "install:examples": "loop \"yarn install --force --check-files\" --cwd ./examples --exit-on-aggregate-error",
+        "build:repl": "cd examples/query-playground && yarn build:standalone && cp -rf build/app ../../dist/playground",
         "build:config": "cd services/config && yarn build",
         "build:services": "yarn build:config && loop \"yarn build\" --cwd ./services --exclude config --exit-on-error",
         "build:runtime": "cd runtime && yarn build",
@@ -58,8 +59,8 @@
         "test:runtime": "cd runtime && yarn test",
         "test": "yarn test:services && yarn test:runtime",
         "format": "d2-style js apply --all --no-stage",
-        "start": "yarn build && cd examples/cra && yarn start",
-        "docs:build": "d2-utils-docsite build ./docs -o ./dist",
+        "start": "yarn build && cd examples/query-playground && yarn start",
+        "docs:build": "d2-utils-docsite build ./docs -o ./dist && yarn build:repl",
         "docs:serve": "d2-utils-docsite serve ./docs -o ./dist"
     },
     "d2": {

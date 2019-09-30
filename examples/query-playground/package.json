@@ -1,0 +1,28 @@
+{
+    "name": "query-playground",
+    "version": "1.0.0",
+    "description": "",
+    "license": "BSD-3-Clause",
+    "private": true,
+    "scripts": {
+        "override": "cd .d2/shell && yarn add --force @dhis2/app-runtime@file:../../../../runtime",
+        "build": "d2-app-scripts build --force",
+        "build:standalone": "PUBLIC_URL=. d2-app-scripts build --force --standalone",
+        "start": "yarn override && d2-app-scripts start",
+        "test": "yarn override && d2-app-scripts test"
+    },
+    "devDependencies": {
+        "@dhis2/cli-app-scripts": "^1.4.3"
+    },
+    "dependencies": {
+        "@dhis2/app-runtime": "^2.0.1",
+        "brace": "^0.11.1",
+        "react-ace": "^7.0.4"
+    },
+    "peerDependencies": {
+        "@dhis2/ui-core": "^3.11.0",
+        "react": "^16.9.0",
+        "react-dom": "^16.9.0",
+        "styled-jsx": "^3.2.2"
+    }
+}
