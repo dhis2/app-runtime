@@ -9,16 +9,16 @@ msgstr ""
 "PO-Revision-Date: 2019-09-30T12:03:32.004Z\n"
 
 msgid "Enter a query here..."
-msgstr ""
+msgstr "Écrivez une requête ici..."
 
 msgid "Query"
-msgstr ""
+msgstr "Requête"
 
 msgid "Mutation"
-msgstr ""
+msgstr "Mutation"
 
 msgid "Execute"
-msgstr ""
+msgstr "Exécuter"
 
 msgid "Results will appear here..."
-msgstr ""
+msgstr "Les résultats apparaîtront ici..."

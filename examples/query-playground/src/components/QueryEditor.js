@@ -3,6 +3,7 @@ import { Button, RadioGroup, Radio } from '@dhis2/ui-core'
 import styles from './QueryEditor.styles'
 import { useDataEngine } from '@dhis2/app-runtime'
 import { Editor } from './Editor'
+import i18n from '@dhis2/d2-i18n'
 
 const defaultQuery = {
     me: {
@@ -54,7 +55,7 @@ export const QueryEditor = ({ setResult }) => {
                 theme="monokai"
                 onChange={setQuery}
                 name="editor"
-                placeholder="Enter a query here..."
+                placeholder={i18n.t('Enter a query here...')}
                 focus={true}
             />
             {error && <span className="error">{error}</span>}
@@ -66,8 +67,8 @@ export const QueryEditor = ({ setResult }) => {
                         value={type}
                         onChange={e => setType(e.target.value)}
                         options={[
-                            { value: 'query', label: 'Query' },
-                            { value: 'mutation', label: 'Mutation' },
+                            { value: 'query', label: i18n.t('Query') },
+                            { value: 'mutation', label: i18n.t('Mutation') },
                         ]}
                     />
                 </div>
@@ -77,7 +78,7 @@ export const QueryEditor = ({ setResult }) => {
                     disabled={loading}
                     onClick={onClick}
                 >
-                    Execute
+                    {i18n.t('Execute')}
                 </Button>
             </div>
         </div>

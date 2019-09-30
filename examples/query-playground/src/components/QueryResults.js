@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styles from './QueryResults.styles'
 import { Editor } from './Editor'
+import i18n from '@dhis2/d2-i18n'
 
 export const QueryResults = ({ result }) => {
     return (
@@ -11,7 +12,7 @@ export const QueryResults = ({ result }) => {
                 theme="github"
                 readOnly={true}
                 name="results"
-                placeholder="Results will appear here..."
+                placeholder={i18n.t('Results will appear here...')}
             />
         </div>
     )
