@@ -12,7 +12,7 @@
         "test": "yarn override && d2-app-scripts test"
     },
     "devDependencies": {
-        "@dhis2/cli-app-scripts": "^1.5.0"
+        "@dhis2/cli-app-scripts": "^1.5.1"
     },
     "dependencies": {
         "@dhis2/app-runtime": "^2.0.1",
