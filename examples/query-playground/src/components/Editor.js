@@ -4,6 +4,7 @@ import AceEditor from 'react-ace'
 
 import 'brace/mode/json'
 import 'brace/theme/monokai'
+import 'brace/theme/github'
 import './Editor.css'
 
 export const Editor = props => (
