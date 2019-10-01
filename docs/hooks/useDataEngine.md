@@ -1,6 +1,6 @@
 # useDataEngine hook
 
-Get access to the [Data Engine](advanced/data/DataEngine) instance for non-React contexts.
+Get access to the [Data Engine](advanced/DataEngine) instance for non-React contexts.
 
 ## Basic Usage:
 
@@ -19,4 +19,4 @@ engine.mutate(mutation, {
 })
 ```
 
-> See [Usage with Redux](advanced/data/redux) for an advanced example
+> See [Using with Redux](advanced/redux) for an advanced example
