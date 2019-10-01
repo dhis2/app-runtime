@@ -1,4 +1,4 @@
-# Usage with Redux
+# Using with Redux
 
 The `useDataEngine` hook can be used to wrap a Redux store and pass the engine to, for example, the [Redux thunk middleware](https://github.com/reduxjs/redux-thunk).
 

@@ -23,7 +23,7 @@
     -   [Services](advanced/services)
     -   [Data Engine](advanced/DataEngine)
         -   [Links](advanced/DataEngineLinks)
-    -   [Usage with Redux](advanced/redux)
+    -   [Using with Redux](advanced/redux)
     -   [CustomDataProvider](advanced/CustomDataProvider)
 
 -   &nbsp;
