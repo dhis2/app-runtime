@@ -13,12 +13,12 @@ const { loading, error, data, refetch } = useDataQuery(query)
 
 ## Input
 
-|      Name      |          Type          |   Required    | Description                                                                                                                |
-| :------------: | :--------------------: | :-----------: | -------------------------------------------------------------------------------------------------------------------------- |
-|   **query**    | [_Query_](types/Query) | **required ** | The Query definition describing the requested data                                                                         |
-| **variables**  |        _Object_        |               | Variables to be passed to the dynamic portions of the query                                                                |
-| **onComplete** |       _Function_       |               | Callback function to be called on successfull completion of the query. Called with the response data as the only argument. |
-|  **onError**   |       _Function_       |               | Callback function to be called on failure of the query. Called with the error instance as the only argument.               |
+|      Name      |          Type          |   Required   | Description                                                                                                                |
+| :------------: | :--------------------: | :----------: | -------------------------------------------------------------------------------------------------------------------------- |
+|   **query**    | [_Query_](types/Query) | **required** | The Query definition describing the requested data                                                                         |
+| **variables**  |        _Object_        |              | Variables to be passed to the dynamic portions of the query                                                                |
+| **onComplete** |       _Function_       |              | Callback function to be called on successfull completion of the query. Called with the response data as the only argument. |
+|  **onError**   |       _Function_       |              | Callback function to be called on failure of the query. Called with the error instance as the only argument.               |
 
 ## Output
 

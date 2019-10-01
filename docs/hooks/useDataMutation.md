@@ -13,12 +13,12 @@ const [mutate, { called, loading, error, data }] = useDataMutation(mutation)
 
 ## Input
 
-|      Name      |              Type               | Description                                             |
-| :------------: | :-----------------------------: | ------------------------------------------------------- |
-|  **mutation**  | [_Mutation_](types/Mutation.md) | The Mutation definition describing the requested action |
-| **variables**  |            _Object_             |                                                         | Variables to be passed to the dynamic portions of the mutation |
-| **onComplete** |           _Function_            |                                                         | Callback function to be called on successfull completion of the mutation. Called with the response data as the only argument. |
-|  **onError**   |           _Function_            |                                                         | Callback function to be called on failure of the mutation. Called with the error instance as the only argument. |
+|      Name      |              Type               |   Required   | Description                                                                                                                   |
+| :------------: | :-----------------------------: | :----------: | ----------------------------------------------------------------------------------------------------------------------------- |
+|  **mutation**  | [_Mutation_](types/Mutation.md) | **required** | The Mutation definition describing the requested action                                                                       |
+| **variables**  |            _Object_             |              | Variables to be passed to the dynamic portions of the mutation                                                                |
+| **onComplete** |           _Function_            |              | Callback function to be called on successfull completion of the mutation. Called with the response data as the only argument. |
+|  **onError**   |           _Function_            |              | Callback function to be called on failure of the mutation. Called with the error instance as the only argument.               |
 
 ## Output
 
