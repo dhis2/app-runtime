@@ -9,17 +9,21 @@
     -   [useDataEngine](hooks/useDataEngine)
 -   [**Components**](components/)
     -   [DataQuery](components/DataQuery)
+    -   [DataMutation](components/DataMutation)
 -   **Types**
 
     -   [Config](types/Config)
     -   [Query](types/Query)
-    -   [Mutation](types/Query)
+    -   [Mutation](types/Mutation)
 
 -   &nbsp;
 
 -   **Advanced**
 
     -   [Services](advanced/services)
+    -   [Data Engine](advanced/DataEngine)
+        -   [Links](advanced/DataEngineLinks)
+    -   [Using with Redux](advanced/redux)
     -   [CustomDataProvider](advanced/CustomDataProvider)
 
 -   &nbsp;
