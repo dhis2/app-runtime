@@ -6,7 +6,7 @@ The `useDataEngine` hook can be used to wrap a Redux store and pass the engine t
 
 This is one example of how to integrate the Data Engine with Redux - some pieces of the application (like reducers, App components, etc.) are ommitted for brevity
 
-> **NB** this is a contrived example, the same can (and probably should) be achieved with just `useDataQuery` calls in a React component. This also duplicates cached data in the redux store, which could lead to stale data or bifricated logic. Chaining mutations is probably a better use-case.
+> **NB** this is a contrived example, the same can (and probably should) be achieved with just `useDataQuery` calls in a React component. This also duplicates cached data in the redux store, which could lead to stale data or bifurcated logic. Chaining mutations is probably a better use-case.
 
 ```jsx
 import React from 'react'
