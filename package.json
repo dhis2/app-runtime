@@ -46,7 +46,7 @@
         "rollup-plugin-node-resolve": "^5.0.0",
         "rollup-plugin-typescript2": "^0.24.3",
         "ts-jest": "^24.1.0",
-        "typescript": "^3.6.3"
+        "typescript": "^3.6.4"
     },
     "scripts": {
         "install:examples": "loop \"yarn install --force --check-files\" --cwd ./examples --exit-on-aggregate-error",
