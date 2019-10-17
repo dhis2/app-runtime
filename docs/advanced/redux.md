@@ -81,11 +81,12 @@ export function fetchUserOrgUnitName(id) {
     const { user } = await engine.query(userQuery)
     if (!user.organisationUnits.length) {
         dispatch(setNoOrgUnit())
+    } else {
+        const { orgUnit } = await engine.query(orgUnitQuery, {
+            variables: { id: user.organisationUnits[0].id }
+        })
+        dispatch(setOrgUnitName(orgUnit.displayName)))
     }
-    const { orgUnit } = await engine.query(orgUnitQuery, {
-        variables: { id: user.organisationUnits[0].id }
-    })
-    dispatch(setOrgUnitName(orgUnit.displayName)))
   };
 }
 ```
