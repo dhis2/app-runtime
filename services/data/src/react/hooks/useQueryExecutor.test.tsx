@@ -8,7 +8,7 @@ const failingExecute = jest.fn(async () => {
 })
 
 describe('useQueryExecutor', () => {
-    afterAll(() => {
+    afterEach(() => {
         jest.clearAllMocks()
     })
     it('When not immediate, should start with called false and loading false', () => {
@@ -112,6 +112,38 @@ describe('useQueryExecutor', () => {
             loading: false,
             error: testError,
         })
+    })
+
+    it("Shouldn't abort+refetch when inputs change on subsequent renders", async () => {
+        const { result, waitForNextUpdate, rerender } = renderHook(
+            ({ onComplete }) =>
+                useQueryExecutor({
+                    execute,
+                    immediate: true,
+                    singular: true,
+                    variables: {},
+                    onComplete,
+                }),
+            {
+                initialProps: { onComplete: () => {} },
+            }
+        )
+
+        expect(result.current).toMatchObject({
+            called: true,
+            loading: true,
+        })
+
+        rerender({ onComplete: () => {} })
+
+        await waitForNextUpdate()
+        expect(result.current).toMatchObject({
+            called: true,
+            loading: false,
+            data: 42,
+        })
+
+        expect(execute).toHaveBeenCalledTimes(1)
     })
 
     // it('Should respect abort signal', async () => {

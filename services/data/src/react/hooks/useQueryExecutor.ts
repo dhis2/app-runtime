@@ -77,12 +77,14 @@ export const useQueryExecutor = <ReturnType>({
         [onComplete, onError, singular, theExecute]
     )
 
+    // Don't include immediate or refetch as deps, otherwise unintentional refetches
+    // may be triggered by changes to input, i.e. recreating the onComplete callback
     useEffect(() => {
         if (immediate) {
             refetch()
         }
         return abort
-    }, [immediate, refetch])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     return { refetch, abort, ...state }
 }
