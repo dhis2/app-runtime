@@ -1,6 +1,8 @@
 # Config Type
 
-The Application Config type is a required input to the top-level [Provider](provider), and can be accessed from within an application with the [useConfig](hooks/useConfig) hook.
+The Application Config type is a required input to the top-level
+[Provider](provider), and can be accessed from within an application
+with the [useConfig](hooks/useConfig) hook.
 
 | Property | Type | Description |
 |:--------:|:----:|-------------|
