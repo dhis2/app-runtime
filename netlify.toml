@@ -3,4 +3,4 @@
 
   # Default build command.
   command = "yarn docs:build"
-  ignore = "git diff --quiet HEAD^ HEAD services/ runtime/src/ docs/ examples/cra/src examples/query-playground/src/"
+  ignore = "git diff --quiet HEAD^ HEAD docs/ examples/query-playground/"
