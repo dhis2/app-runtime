@@ -28,10 +28,19 @@ export const useQueryExecutor = <ReturnType>({
     const variables = useRef(initialVariables)
 
     const abortControllersRef = useRef<AbortController[]>([])
-    const abort = () => {
+    const abort = useCallback(() => {
         abortControllersRef.current.forEach(controller => controller.abort())
         abortControllersRef.current = []
-    }
+    }, [])
+
+    const manualAbort = useCallback(() => {
+        abort()
+        setState(state => ({
+            called: state.called,
+            loading: false,
+            error: new FetchError({ type: 'aborted', message: 'Aborted' }),
+        }))
+    }, [abort])
 
     const refetch = useCallback(
         (newVariables = {}) => {
@@ -74,7 +83,7 @@ export const useQueryExecutor = <ReturnType>({
                     return new Promise<ReturnType>(() => {}) // Don't throw errors in refetch promises, wait forever
                 })
         },
-        [onComplete, onError, singular, theExecute]
+        [abort, onComplete, onError, singular, theExecute]
     )
 
     // Don't include immediate or refetch as deps, otherwise unintentional refetches
@@ -86,5 +95,5 @@ export const useQueryExecutor = <ReturnType>({
         return abort
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-    return { refetch, abort, ...state }
+    return { refetch, abort: manualAbort, ...state }
 }

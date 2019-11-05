@@ -1,4 +1,4 @@
-export type FetchErrorTypeName = 'network' | 'unknown' | 'access'
+export type FetchErrorTypeName = 'network' | 'unknown' | 'access' | 'aborted'
 export type FetchErrorDetails = Response | Error
 
 export interface FetchErrorPayload {
