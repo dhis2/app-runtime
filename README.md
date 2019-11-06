@@ -15,11 +15,13 @@ Docs are available at [runtime.dhis2.nu](https://runtime.dhis2.nu).
 > yarn start # builds all services, builds the runtime, and starts the query playground server
 ```
 
-## Example
+## Examples
 
 A `create-react-app` example is available at [./examples/cra](./examples/cra). If running `yarn install` locally in the example directory, be sure to run it with `yarn install --force --check-files` so that it pulls in the runtime (specified as a `file:` dependency).
 
 Running `yarn build` at root will automatically update the example app's copy, and running `yarn start` will build the runtime and then start the example.
+
+A [`DHIS2 App Platform`](https://platform.dhis2.nu) example is available at [./examples/query-playground](./examples/query-playground).  This is a full, deployable DHIS2 application and a live standalone version is available at [runtime.dhis2.nu/playground](https://runtime.dhis2.nu/playground)
 
 ## Release
 
