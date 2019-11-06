@@ -1,6 +1,5 @@
 import { renderHook, act } from '@testing-library/react-hooks'
 import { useQueryExecutor } from './useQueryExecutor'
-import { FetchError } from '../../engine'
 
 const testError = new Error('TEST ERROR')
 let theSignal: AbortSignal | undefined
