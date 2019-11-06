@@ -2,7 +2,11 @@ import { renderHook, act } from '@testing-library/react-hooks'
 import { useQueryExecutor } from './useQueryExecutor'
 
 const testError = new Error('TEST ERROR')
-const execute = jest.fn(async () => 42)
+let theSignal: AbortSignal | undefined
+const execute = jest.fn(async ({ signal }) => {
+    theSignal = signal
+    return 42
+})
 const failingExecute = jest.fn(async () => {
     throw testError
 })
@@ -10,6 +14,7 @@ const failingExecute = jest.fn(async () => {
 describe('useQueryExecutor', () => {
     afterEach(() => {
         jest.clearAllMocks()
+        theSignal = undefined
     })
     it('When not immediate, should start with called false and loading false', () => {
         const { result } = renderHook(() =>
@@ -143,39 +148,44 @@ describe('useQueryExecutor', () => {
             data: 42,
         })
 
+        expect(theSignal && theSignal.aborted).toBe(false)
         expect(execute).toHaveBeenCalledTimes(1)
     })
 
-    // it('Should respect abort signal', async () => {
-    //     const { result, waitForNextUpdate } = renderHook(() =>
-    //         useQueryExecutor({
-    //             execute,
-    //             immediate: false,
-    //             singular: true,
-    //             variables: {},
-    //         })
-    //     )
+    it('Should respect abort signal', async () => {
+        const { result, waitForNextUpdate } = renderHook(() =>
+            useQueryExecutor({
+                execute,
+                immediate: false,
+                singular: true,
+                variables: {},
+            })
+        )
 
-    //     expect(result.current).toMatchObject({
-    //         called: false,
-    //         loading: false,
-    //     })
+        expect(result.current).toMatchObject({
+            called: false,
+            loading: false,
+        })
 
-    //     act(() => {
-    //         result.current.refetch()
-    //         result.current.abort()
-    //     })
+        act(() => {
+            result.current.refetch()
+        })
 
-    //     expect(result.current).toMatchObject({
-    //         called: true,
-    //         loading: true,
-    //     })
+        expect(result.current).toMatchObject({
+            called: true,
+            loading: true,
+        })
 
-    //     await waitForNextUpdate()
-    //     expect(result.current).toMatchObject({
-    //         called: true,
-    //         loading: false,
-    //         error: testError,
-    //     })
-    // })
+        act(() => {
+            result.current.abort()
+        })
+
+        expect(theSignal && theSignal.aborted).toBe(true)
+
+        expect(result.current).toMatchObject({
+            called: true,
+            loading: false,
+            error: { type: 'aborted', message: 'Aborted' },
+        })
+    })
 })
