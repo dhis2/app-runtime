@@ -45,10 +45,10 @@ import { DataQuery } from '@dhis2/app-runtime'
 const query = {
     indicators: {
         resource: 'indicators',
-        params: ({ count }) => {
+        params: ({ count }) => ({
             order: 'shortName:desc',
             pageSize: count,
-        }
+        })
     },
 }
 export const IndicatorList = ({ count }) => (

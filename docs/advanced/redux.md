@@ -9,7 +9,7 @@ This is one example of how to integrate the Data Engine with Redux - some pieces
 > **NB** this is a contrived example, the same can (and probably should) be achieved with just `useDataQuery` calls in a React component. This also duplicates cached data in the redux store, which could lead to stale data or bifurcated logic. Chaining mutations is probably a better use-case.
 
 ```jsx
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Provider as ReduxProvider } from 'react-redux'
 import { createStore } from 'redux'
 import ReduxThunk from 'redux-thunk'
@@ -81,11 +81,12 @@ export function fetchUserOrgUnitName(id) {
     const { user } = await engine.query(userQuery)
     if (!user.organisationUnits.length) {
         dispatch(setNoOrgUnit())
+    } else {
+        const { orgUnit } = await engine.query(orgUnitQuery, {
+            variables: { id: user.organisationUnits[0].id }
+        })
+        dispatch(setOrgUnitName(orgUnit.displayName)))
     }
-    const { orgUnit } = await engine.query(orgUnitQuery, {
-        variables: { id: user.organisationUnits[0].id }
-    })
-    dispatch(setOrgUnitName(orgUnit.displayName)))
   };
 }
 ```
