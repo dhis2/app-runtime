@@ -2,33 +2,44 @@ import {
     ResolvedResourceQuery,
     QueryParameters,
     QueryParameterValue,
+    QueryParameterSingularOrAliasedValue,
 } from '../../engine'
 import { joinPath } from './path'
 
-const encodeQueryParameter = (param: QueryParameterValue): string => {
-    if (Array.isArray(param)) {
-        return param.map(encodeQueryParameter).join(',')
+const encodeQueryParameterValue = (
+    value: QueryParameterSingularOrAliasedValue
+): string => {
+    if (typeof value === 'string') {
+        return encodeURIComponent(value)
     }
-    if (typeof param === 'string') {
-        return encodeURIComponent(param)
+    if (typeof value === 'number') {
+        return String(value)
     }
-    if (typeof param === 'number') {
-        return String(param)
-    }
-    if (typeof param === 'object') {
+    if (typeof value === 'object') {
         throw new Error('Object parameter mappings not yet implemented')
     }
     throw new Error('Unknown parameter type')
 }
+
+const encodeSingularQueryParameter = (
+    key: string,
+    value: QueryParameterSingularOrAliasedValue
+) => `${encodeURIComponent(key)}=${encodeQueryParameterValue(value)}`
+
+const encodeQueryParameter = (key: string, value: QueryParameterValue) => {
+    if (value === undefined) {
+        return undefined
+    }
+    if (Array.isArray(value)) {
+        return value.map(v => encodeSingularQueryParameter(key, v)).join('&')
+    }
+    return encodeSingularQueryParameter(key, value)
+}
+
 const queryParametersToQueryString = (params: QueryParameters) =>
     Object.keys(params)
         .filter(key => key && params[key])
-        .map(
-            key =>
-                `${encodeURIComponent(key)}=${encodeQueryParameter(
-                    params[key]
-                )}`
-        )
+        .map(key => encodeQueryParameter(key, params[key]))
         .join('&')
 
 const actionPrefix = 'action::'

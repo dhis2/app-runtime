@@ -100,7 +100,7 @@ describe('queryToResourcePath', () => {
             },
         }
         expect(queryToResourcePath(apiPath, query)).toBe(
-            `${apiPath}/test?key=asdf,123`
+            `${apiPath}/test?key=asdf&key=123`
         )
     })
     it('should NOT YET support name-aliased parameters', () => {
@@ -111,6 +111,18 @@ describe('queryToResourcePath', () => {
             },
         }
         expect(() => queryToResourcePath(apiPath, query)).toThrow()
+    })
+    it('should ignore undefined parameters', () => {
+        const query: ResolvedResourceQuery = {
+            resource: 'test',
+            params: {
+                key: 42,
+                param: undefined,
+            },
+        }
+        expect(queryToResourcePath(apiPath, query)).toBe(
+            `${apiPath}/test?key=42`
+        )
     })
     it('should throw if passed something crazy like a function', () => {
         const query: ResolvedResourceQuery = {

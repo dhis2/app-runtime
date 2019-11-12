@@ -2,7 +2,7 @@ type QueryParameterSingularValue = string | number
 interface QueryParameterAliasedValue {
     [name: string]: QueryParameterSingularValue
 }
-type QueryParameterSingularOrAliasedValue =
+export type QueryParameterSingularOrAliasedValue =
     | QueryParameterSingularValue
     | QueryParameterAliasedValue
 
