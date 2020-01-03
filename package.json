@@ -44,7 +44,7 @@
         "rollup-plugin-analyzer": "^3.2.2",
         "rollup-plugin-babel": "^4.3.3",
         "rollup-plugin-node-resolve": "^5.0.0",
-        "rollup-plugin-typescript2": "^0.25.2",
+        "rollup-plugin-typescript2": "^0.25.3",
         "ts-jest": "^24.2.0",
         "typescript": "^3.7.4"
     },
