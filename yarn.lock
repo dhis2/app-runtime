@@ -5266,13 +5266,13 @@ log-update@^2.3.0:
     cli-cursor "^2.0.0"
     wrap-ansi "^3.0.1"
 
-loop@^3.3.3:
-  version "3.3.3"
-  resolved "https://registry.yarnpkg.com/loop/-/loop-3.3.3.tgz#9e0ff8decf24396d14ce95006184a2cfc9531547"
-  integrity sha512-YDIFD1eXm5yVr8xup01NOygk63WjP8/3ZmCcfyH88IYvremaHjla0OfBwO8jvsSBQMagAKrfcBAgn0E2smFmTw==
+loop@^3.3.4:
+  version "3.3.4"
+  resolved "https://registry.yarnpkg.com/loop/-/loop-3.3.4.tgz#d9bdbefed4aa06f6d2145bc10e9ddbbaa4e107fd"
+  integrity sha512-P/NEft7c1ouZyseLv4Q3/q23Rvu9EIB7eXfiyZrg6DmNTTpg/YVXCd0ove2LnhXpV646/XqEPVP3j8aOtr8yHA==
   dependencies:
     async "^3.0.0"
-    chalk "^2.4.1"
+    chalk "^3.0.0"
     debug "^4.1.0"
     lodash "^4.17.2"
     meta-exec "^1.4.1"
