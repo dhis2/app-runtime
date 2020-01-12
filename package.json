@@ -17,7 +17,7 @@
         "@babel/preset-env": "^7.7.7",
         "@babel/preset-react": "^7.7.4",
         "@babel/preset-typescript": "^7.7.7",
-        "@babel/runtime": "^7.7.7",
+        "@babel/runtime": "^7.8.0",
         "@dhis2/cli-style": "^4.2.0",
         "@dhis2/cli-utils-docsite": "^1.2.0",
         "@testing-library/jest-dom": "^4.2.4",
