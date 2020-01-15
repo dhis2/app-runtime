@@ -10,5 +10,6 @@ module.exports = {
             'd2-style js check --staged',
             'd2-style text check --staged',
         ]),
+        'pre-push': 'yarn test',
     },
 }
