@@ -25,4 +25,5 @@ export interface QueryOptions {
     variables?: QueryVariables
     onComplete?: (data: QueryResult) => void
     onError?: (error: FetchError) => void
+    lazy?: boolean
 }
