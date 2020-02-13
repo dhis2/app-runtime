@@ -25,11 +25,13 @@ return (
 | **variables**  |         _Object_          |              | Variables to be passed to the dynamic portions of the query                                                                |
 | **onComplete** |        _Function_         |              | Callback function to be called on successfull completion of the query. Called with the response data as the only argument. |
 |  **onError**   |        _Function_         |              | Callback function to be called on failure of the query. Called with the error instance as the only argument.               |
+| **lazy** | _boolean_ | | If true, wait until `refetch` is called before fetching data.<br/>_**Default**: `false`_ |
 
 ## Render Function Props
 
 |    Name     |                 Type                 | Description                                                                                                                                                                            |
 | :---------: | :----------------------------------: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **called** |              _boolean_               | **true** if the data request has been initiated with either `lazy: false` or `refetch()` at least once                                                                                                        |
 | **loading** |              _boolean_               | **true** if the data is not yet available and no error has yet been encountered                                                                                                        |
 |  **error**  |    _Error_<br/>or<br/>_undefined_    | **undefined** if no error has occurred, otherwise the Error which was thrown                                                                                                           |
 |  **data**   | _QueryResult_<br/>or<br/>_undefined_ | **undefined** if the data is loading or an error has occurred, otherwise a map from the name of each **QueryDefinition** defined in the **Query** to the resulting data for that query |
