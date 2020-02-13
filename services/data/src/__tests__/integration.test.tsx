@@ -34,6 +34,7 @@ describe('Testing custom data provider and useQuery hook', () => {
         expect(getByText(/loading/i)).not.toBeUndefined()
         expect(renderFunction).toHaveBeenCalledTimes(1)
         expect(renderFunction).toHaveBeenLastCalledWith({
+            called: true,
             loading: true,
             refetch: expect.any(Function),
             engine: expect.any(Object),
@@ -41,11 +42,13 @@ describe('Testing custom data provider and useQuery hook', () => {
         await waitForElement(() => getByText(/data: /i))
         expect(renderFunction).toHaveBeenCalledTimes(2)
         expect(renderFunction).toHaveBeenLastCalledWith({
+            called: true,
             loading: false,
             data: customData,
             refetch: expect.any(Function),
             engine: expect.any(Object),
         })
+
         expect(getByText(/data: /i)).toHaveTextContent(
             `data: ${customData.answer}`
         )
@@ -71,6 +74,7 @@ describe('Testing custom data provider and useQuery hook', () => {
         expect(getByText(/loading/i)).not.toBeUndefined()
         expect(renderFunction).toHaveBeenCalledTimes(1)
         expect(renderFunction).toHaveBeenLastCalledWith({
+            called: true,
             loading: true,
             refetch: expect.any(Function),
             engine: expect.any(Object),

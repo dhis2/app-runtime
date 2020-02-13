@@ -20,7 +20,7 @@ export const useDataQuery = (
         engine,
         theQuery,
     ])
-    const { refetch, loading, error, data } = useQueryExecutor({
+    const { refetch, called, loading, error, data } = useQueryExecutor({
         execute,
         variables,
         singular: true,
@@ -29,5 +29,5 @@ export const useDataQuery = (
         onError,
     })
 
-    return { engine, refetch, loading, error, data }
+    return { engine, refetch, called, loading, error, data }
 }
