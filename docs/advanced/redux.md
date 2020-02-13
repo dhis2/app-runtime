@@ -11,7 +11,7 @@ This is one example of how to integrate the Data Engine with Redux - some pieces
 ```jsx
 import React, { useMemo } from 'react'
 import { Provider as ReduxProvider } from 'react-redux'
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import ReduxThunk from 'redux-thunk'
 import { useDataEngine } from '@dhis2/app-runtime'
 

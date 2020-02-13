@@ -28,5 +28,5 @@
     },
     "files": ["src/index.ts"],
     "include": ["src/**/*", "../services/**/*", "../node_modules/@dhis2/**/*"],
-    "exclure": []
+    "exclude": []
 }

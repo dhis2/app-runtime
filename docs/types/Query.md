@@ -24,4 +24,4 @@ const query = {
 | **id** | *string* **or** *() => string* | | Optional, when specified indicates that a particular **instance** of a collection will be requested |
 | **params** | *Object* **or** *() => Object* | | A dictionary of properties which are translated into querystring parameters when the data is fetched |
 
-> See the [Query type definition](https://github.com/dhis2/app-runtime/blob/master/services/data/src/types/Query.d.ts) for more information
+> See the [Query type definition](https://github.com/dhis2/app-runtime/blob/master/services/data/src/engine/types/Query.ts) for more information
