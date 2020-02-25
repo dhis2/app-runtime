@@ -43,6 +43,7 @@ export interface ExecuteHookResult<ReturnType> {
 }
 
 export interface QueryState {
+    called: boolean
     loading: boolean
     error?: FetchError
     data?: QueryResult

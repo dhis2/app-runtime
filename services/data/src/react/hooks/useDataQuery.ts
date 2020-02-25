@@ -9,7 +9,7 @@ import { useDataEngine } from './useDataEngine'
 const empty = {}
 export const useDataQuery = (
     query: Query,
-    { onComplete, onError, variables = empty }: QueryOptions = {}
+    { onComplete, onError, variables = empty, lazy = false }: QueryOptions = {}
 ): QueryRenderInput => {
     const engine = useDataEngine()
     const [theQuery] = useStaticInput<Query>(query, {
@@ -20,14 +20,14 @@ export const useDataQuery = (
         engine,
         theQuery,
     ])
-    const { refetch, loading, error, data } = useQueryExecutor({
+    const { refetch, called, loading, error, data } = useQueryExecutor({
         execute,
         variables,
         singular: true,
-        immediate: true,
+        immediate: !lazy,
         onComplete,
         onError,
     })
 
-    return { engine, refetch, loading, error, data }
+    return { engine, refetch, called, loading, error, data }
 }

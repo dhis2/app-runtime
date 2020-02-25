@@ -12,12 +12,14 @@ export const DataQuery = ({
     onComplete,
     onError,
     variables,
+    lazy,
     children,
 }: QueryInput) => {
     const queryState = useDataQuery(query, {
         onComplete,
         onError,
         variables,
+        lazy
     })
 
     return children(queryState)

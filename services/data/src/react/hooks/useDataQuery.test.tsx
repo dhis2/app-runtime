@@ -36,4 +36,28 @@ describe('useDataQuery', () => {
 
         expect(hookState.result.current).toMatchObject({ loading: true })
     })
+
+    it('Should lazily await a refetch call', async () => {
+        let hookState: any
+
+        console.error = jest.fn()
+
+        act(() => {
+            hookState = renderHook(() => useDataQuery(query, { lazy: true }), {
+                wrapper,
+            })
+        })
+
+        expect(hookState.result.current).toMatchObject({ loading: false })
+        
+        act(() => {
+            hookState.result.current.refetch()
+        })
+
+        expect(hookState.result.current).toMatchObject({ loading: true })
+
+        await hookState.waitForNextUpdate()
+
+        expect(hookState.result.current).toMatchObject({ loading: false, data: { x: 42 } })
+    })
 })
