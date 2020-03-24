@@ -130,7 +130,7 @@ describe('useQueryExecutor', () => {
                     onComplete,
                 }),
             {
-                initialProps: { onComplete: () => {} },
+                initialProps: { onComplete: () => null },
             }
         )
 
@@ -139,7 +139,7 @@ describe('useQueryExecutor', () => {
             loading: true,
         })
 
-        rerender({ onComplete: () => {} })
+        rerender({ onComplete: () => null })
 
         await waitForNextUpdate()
         expect(result.current).toMatchObject({

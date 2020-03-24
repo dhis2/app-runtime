@@ -74,13 +74,13 @@ export const useQueryExecutor = <ReturnType>({
                         setState({ called: true, loading: false, data })
                         return data
                     }
-                    return new Promise<ReturnType>(() => {})
+                    return new Promise<ReturnType>(() => undefined) // Wait forever
                 })
                 .catch((error: FetchError) => {
                     if (!controller.signal.aborted) {
                         setState({ called: true, loading: false, error })
                     }
-                    return new Promise<ReturnType>(() => {}) // Don't throw errors in refetch promises, wait forever
+                    return new Promise<ReturnType>(() => undefined) // Don't throw errors in refetch promises, wait forever
                 })
         },
         [abort, onComplete, onError, singular, theExecute]

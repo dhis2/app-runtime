@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import styles from './QueryResults.styles'
 import { Editor } from './Editor'
 import i18n from '@dhis2/d2-i18n'
@@ -16,4 +17,8 @@ export const QueryResults = ({ result }) => {
             />
         </div>
     )
+}
+
+QueryResults.propTypes = {
+    result: PropTypes.string.isRequired,
 }

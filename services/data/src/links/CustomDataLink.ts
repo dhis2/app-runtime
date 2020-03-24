@@ -39,7 +39,7 @@ export class CustomDataLink implements DataEngineLink {
         options: DataEngineLinkExecuteOptions
     ) {
         if (this.loadForever) {
-            return new Promise<JsonValue>(() => {})
+            return new Promise<JsonValue>(() => undefined)
         }
 
         const customResource = this.data[query.resource]
@@ -58,7 +58,7 @@ export class CustomDataLink implements DataEngineLink {
             case 'boolean':
             case 'object':
                 return customResource
-            case 'function':
+            case 'function': {
                 const result = await customResource(type, query, options)
                 if (typeof result === 'undefined' && this.failOnMiss) {
                     throw new Error(
@@ -66,6 +66,7 @@ export class CustomDataLink implements DataEngineLink {
                     )
                 }
                 return result || null
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { useDataMutation } from '@dhis2/app-runtime'
 
 const mutation = {
@@ -33,4 +34,8 @@ export const AddButton = ({ onCreate }) => {
             + Add Indicator
         </button>
     )
+}
+
+AddButton.propTypes = {
+    onCreate: PropTypes.func.isRequired,
 }

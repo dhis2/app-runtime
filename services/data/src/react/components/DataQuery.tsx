@@ -19,7 +19,7 @@ export const DataQuery = ({
         onComplete,
         onError,
         variables,
-        lazy
+        lazy,
     })
 
     return children(queryState)

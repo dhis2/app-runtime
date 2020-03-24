@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { useDataMutation } from '@dhis2/app-runtime'
 
 const mutation = {
@@ -16,4 +17,9 @@ export const DeleteButton = ({ indicatorId, onDelete }) => {
     })
 
     return <button onClick={mutate}>Delete</button>
+}
+
+DeleteButton.propTypes = {
+    indicatorId: PropTypes.string.isRequired,
+    onDelete: PropTypes.func.isRequired,
 }
