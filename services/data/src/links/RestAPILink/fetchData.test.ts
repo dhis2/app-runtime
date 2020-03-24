@@ -51,7 +51,6 @@ describe('networkFetch', () => {
                 status: 401,
                 json: async () => {
                     throw new Error()
-                    return
                 },
             }
             expect(parseStatus(response)).rejects.toMatchObject({
@@ -64,7 +63,6 @@ describe('networkFetch', () => {
                 status: 403,
                 json: async () => {
                     throw new Error()
-                    return
                 },
             }
             expect(parseStatus(response3)).rejects.toMatchObject({

@@ -20,16 +20,43 @@ const encodeQueryParameter = (param: QueryParameterValue): string => {
     }
     throw new Error('Unknown parameter type')
 }
-const queryParametersToQueryString = (params: QueryParameters) =>
-    Object.keys(params)
-        .filter(key => key && params[key])
+
+type ExpandedParam = {
+    key: string
+    value: QueryParameterValue
+}
+
+const queryParametersMapToArray = (
+    params: QueryParameters
+): Array<ExpandedParam> =>
+    Object.keys(params).reduce((out, key) => {
+        const value = params[key]
+        if (key === 'filter' && Array.isArray(value)) {
+            value.forEach(item => {
+                out.push({
+                    key: 'filter',
+                    value: item,
+                })
+            })
+        } else if (params[key] !== null && params[key] !== undefined) {
+            out.push({
+                key,
+                value: params[key],
+            })
+        }
+        return out
+    }, [] as Array<ExpandedParam>)
+
+const queryParametersToQueryString = (params: QueryParameters): string => {
+    const expandedParams = queryParametersMapToArray(params)
+
+    return expandedParams
         .map(
-            key =>
-                `${encodeURIComponent(key)}=${encodeQueryParameter(
-                    params[key]
-                )}`
+            ({ key, value }) =>
+                `${encodeURIComponent(key)}=${encodeQueryParameter(value)}`
         )
         .join('&')
+}
 
 const actionPrefix = 'action::'
 

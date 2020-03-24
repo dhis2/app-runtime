@@ -15,7 +15,7 @@ const wrapper = ({ children }: { children?: ReactNode }) => (
 const mutation: CreateMutation = {
     type: 'create',
     resource: 'answer',
-    data: { answer: 42 }
+    data: { answer: 42 },
 }
 describe('useDataMustation', () => {
     const originalError = console.error
@@ -35,7 +35,7 @@ describe('useDataMustation', () => {
             })
         })
 
-        let [mutate, state] = hookState.result.current;
+        let [mutate, state] = hookState.result.current
         expect(state).toMatchObject({ called: false, loading: false })
 
         act(() => {
@@ -53,12 +53,15 @@ describe('useDataMustation', () => {
         console.error = jest.fn()
 
         act(() => {
-            hookState = renderHook(() => useDataMutation(mutation, { lazy: false }), {
-                wrapper,
-            })
+            hookState = renderHook(
+                () => useDataMutation(mutation, { lazy: false }),
+                {
+                    wrapper,
+                }
+            )
         })
 
-        let [, state] = hookState.result.current;
+        let [, state] = hookState.result.current
         expect(state).toMatchObject({ called: true, loading: true })
 
         await hookState.waitForNextUpdate()

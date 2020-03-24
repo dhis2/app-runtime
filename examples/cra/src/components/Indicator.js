@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react'
+import PropTypes from 'prop-types'
 import { useDataMutation } from '@dhis2/app-runtime'
 import { DeleteButton } from './DeleteButton'
 
@@ -59,4 +60,12 @@ export const Indicator = ({ indicator, onChange }) => {
             <DeleteButton indicatorId={indicator.id} onDelete={onChange} />
         </div>
     )
+}
+
+Indicator.propTypes = {
+    indicator: PropTypes.shape({
+        displayName: PropTypes.string.isRequired,
+        id: PropTypes.string.isRequired,
+    }).isRequired,
+    onChange: PropTypes.func.isRequired,
 }

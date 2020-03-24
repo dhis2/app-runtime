@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Button, RadioGroup, Radio } from '@dhis2/ui-core'
+import PropTypes from 'prop-types'
+import { Button, RadioGroup } from '@dhis2/ui-core'
 import styles from './QueryEditor.styles'
 import { useDataEngine } from '@dhis2/app-runtime'
 import { Editor } from './Editor'
@@ -83,4 +84,8 @@ export const QueryEditor = ({ setResult }) => {
             </div>
         </div>
     )
+}
+
+QueryEditor.propTypes = {
+    setResult: PropTypes.func.isRequired,
 }

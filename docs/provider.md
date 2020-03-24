@@ -2,9 +2,9 @@
 
 ## Input Props
 
-| Name | Type | Description |
-|:--------:|:----:|-------------|
-| **config** | [*Config*](types/Config.md) | The application configuration |
+|    Name    |            Type             | Description                   |
+| :--------: | :-------------------------: | ----------------------------- |
+| **config** | [_Config_](types/Config.md) | The application configuration |
 
 ## Example
 
@@ -17,8 +17,6 @@ const appConfig = {
 }
 
 export const App = () => (
-    <Provider config={appConfig}>
-        {/* App Contents go here */}
-    </Provider>
+    <Provider config={appConfig}>{/* App Contents go here */}</Provider>
 )
 ```

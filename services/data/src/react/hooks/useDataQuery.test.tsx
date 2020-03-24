@@ -49,7 +49,7 @@ describe('useDataQuery', () => {
         })
 
         expect(hookState.result.current).toMatchObject({ loading: false })
-        
+
         act(() => {
             hookState.result.current.refetch()
         })
@@ -58,6 +58,9 @@ describe('useDataQuery', () => {
 
         await hookState.waitForNextUpdate()
 
-        expect(hookState.result.current).toMatchObject({ loading: false, data: { x: 42 } })
+        expect(hookState.result.current).toMatchObject({
+            loading: false,
+            data: { x: 42 },
+        })
     })
 })

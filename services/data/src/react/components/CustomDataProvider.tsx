@@ -1,10 +1,6 @@
 import React from 'react'
 import { DataEngine } from '../../engine'
-import {
-    CustomDataLink,
-    CustomData,
-    CustomLinkOptions,
-} from '../../links'
+import { CustomDataLink, CustomData, CustomLinkOptions } from '../../links'
 import { DataContext } from '../context/DataContext'
 
 interface CustomProviderInput {
