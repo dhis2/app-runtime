@@ -103,6 +103,17 @@ describe('queryToResourcePath', () => {
             `${apiPath}/test?key=asdf,123`
         )
     })
+    it('should include multiple filter parameters when array of filters provided', () => {
+        const query: ResolvedResourceQuery = {
+            resource: 'test',
+            params: {
+                filter: ['asdf', 123],
+            },
+        }
+        expect(queryToResourcePath(apiPath, query)).toBe(
+            `${apiPath}/test?filter=asdf&filter=123`
+        )
+    })
     it('should NOT YET support name-aliased parameters', () => {
         const query: ResolvedResourceQuery = {
             resource: 'test',
