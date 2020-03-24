@@ -13,7 +13,7 @@ const { baseUrl, apiVersion } = useConfig()
 
 ## Input
 
-*None*
+_None_
 
 ## Output
 
@@ -28,13 +28,13 @@ import { useConfig } from '@dhis2/app-runtime'
 export const MyComponent = () => {
     const { baseUrl, apiVersion } = useConfig()
     return
-        <div>
-            <span>
-                <strong>Base URL</strong> : {baseUrl}
-            </span>
-            <span>
-                <strong>API Version</strong> : {apiVersion}
-            </span>
-        </div>
+    ;<div>
+        <span>
+            <strong>Base URL</strong> : {baseUrl}
+        </span>
+        <span>
+            <strong>API Version</strong> : {apiVersion}
+        </span>
+    </div>
 }
 ```
