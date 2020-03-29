@@ -31,7 +31,7 @@
         "@typescript-eslint/parser": "^2.17.0",
         "concurrently": "^5.0.2",
         "eslint-plugin-react-hooks": "^2.3.0",
-        "jest": "^24.9.0",
+        "jest": "^25.2.4",
         "loop": "^3.3.4",
         "prop-types": "^15.7.2",
         "react": "^16.12.0",
@@ -43,7 +43,7 @@
         "rollup-plugin-babel": "^4.3.3",
         "rollup-plugin-node-resolve": "^5.0.0",
         "rollup-plugin-typescript2": "^0.25.3",
-        "ts-jest": "^24.3.0",
+        "ts-jest": "^25.2.1",
         "typescript": "^3.7.5"
     },
     "scripts": {
