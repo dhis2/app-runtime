@@ -1,17 +1,17 @@
 export type FetchErrorTypeName = 'network' | 'unknown' | 'access' | 'aborted'
-export type FetchErrorDetails = Response | Error
+export type FetchErrorDetails = { message?: string }
 
 export interface FetchErrorPayload {
     type: FetchErrorTypeName
-    message: string
     details?: FetchErrorDetails
+    message: string
 }
 
 export class FetchError extends Error implements FetchErrorPayload {
     public type: FetchErrorTypeName
-    public details?: FetchErrorDetails
+    public details: FetchErrorDetails
 
-    public constructor({ message, type, details }: FetchErrorPayload) {
+    public constructor({ message, type, details = {} }: FetchErrorPayload) {
         super(message)
         this.type = type
         this.details = details
