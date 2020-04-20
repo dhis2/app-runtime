@@ -5,7 +5,7 @@ import { Config } from '@dhis2/app-service-config/build/types/types'
 
 type ProviderInput = {
     config: Config
-    children: any
+    children: React.ReactNode
 }
 export const Provider = ({ config, children }: ProviderInput) => (
     <ConfigProvider config={config}>

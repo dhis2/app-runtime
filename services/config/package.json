@@ -1,8 +1,8 @@
 {
     "name": "@dhis2/app-service-config",
     "version": "2.1.1",
-    "main": "build/cjs/index.js",
-    "module": "build/es/index.js",
+    "main": "build/cjs/lib.js",
+    "module": "build/es/lib.js",
     "types": "build/types/index.d.ts",
     "repository": "https://github.com/dhis2/app-runtime.git",
     "author": "Austin McGee <austin@dhis2.org>",
@@ -18,15 +18,17 @@
     },
     "scripts": {
         "clean": "rimraf ./build/*",
-        "build:commonjs": "BABEL_ENV=commonjs babel src/ --out-dir ./build/cjs --extensions \".ts,.tsx\" --source-maps inline --verbose",
-        "build:modules": "BABEL_ENV=modules babel src/ --out-dir ./build/es --extensions \".ts,.tsx\" --source-maps inline --verbose",
         "build:types": "tsc --emitDeclarationOnly --outDir ./build/types",
-        "build": "NODE_ENV=production yarn clean && concurrently -n cjs,es,types \"yarn build:commonjs\" \"yarn build:modules\" \"yarn build:types\"",
-        "watch": "NODE_ENV=development yarn clean && concurrently -n cjs,es,types \"yarn build:commonjs --watch\" \"yarn build:modules --watch\" \"yarn build:types --watch\"",
+        "build:package": "d2-app-scripts build",
+        "build": "concurrently -n build,types \"yarn build:package\" \"yarn build:types\"",
+        "watch": "NODE_ENV=development concurrently -n build,types \"yarn build:package --watch\" \"yarn build:types --watch\"",
         "type-check": "tsc --noEmit --allowJs --checkJs",
         "type-check:watch": "yarn type-check --watch",
-        "test": "jest",
-        "coverage": "jest --coverage",
+        "test": "d2-app-scripts test",
+        "coverage": "yarn test --coverage",
         "prepublishOnly": "yarn build"
+    },
+    "devDependencies": {
+        "@dhis2/cli-app-scripts": "^4.0.0"
     }
 }

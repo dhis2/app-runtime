@@ -14,9 +14,12 @@ export default css.global`
         align-items: center;
     }
 
-    .controls .group-label {
-        display: none;
+    .radio-group > div {
+        display: grid;
+        grid-auto-flow: column;
+        grid-gap: 16px;
     }
+
     .error {
         padding: 8px;
         color: white;

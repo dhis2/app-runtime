@@ -2,8 +2,8 @@
     "name": "@dhis2/app-runtime",
     "description": "A singular runtime dependency for applications on the DHIS2 platform",
     "version": "2.1.1",
-    "main": "build/cjs/index.js",
-    "module": "build/es/index.js",
+    "main": "build/cjs/lib.js",
+    "module": "build/es/lib.js",
     "types": "build/types/index.d.ts",
     "repository": {
         "type": "git",
@@ -28,7 +28,9 @@
         "react-dom": "^16.8.6"
     },
     "scripts": {
-        "build": "rimraf build && rollup -c",
+        "build:types": "tsc --emitDeclarationOnly --outDir ./build/types",
+        "build:package": "d2-app-scripts build",
+        "build": "concurrently -n build,types \"yarn build:package\" \"yarn build:types\"",
         "test": "echo \"No tests yet!\""
     }
 }

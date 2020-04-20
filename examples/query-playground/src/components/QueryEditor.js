@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { Button, RadioGroup } from '@dhis2/ui-core'
+import { Button, RadioGroup, Radio } from '@dhis2/ui-core'
 import styles from './QueryEditor.styles'
 import { useDataEngine } from '@dhis2/app-runtime'
 import { Editor } from './Editor'
@@ -61,17 +61,16 @@ export const QueryEditor = ({ setResult }) => {
             />
             {error && <span className="error">{error}</span>}
             <div className="controls">
-                <div>
+                <div className="radio-group">
                     <RadioGroup
                         name="type"
                         label="Type"
-                        value={type}
                         onChange={e => setType(e.target.value)}
-                        options={[
-                            { value: 'query', label: i18n.t('Query') },
-                            { value: 'mutation', label: i18n.t('Mutation') },
-                        ]}
-                    />
+                        value={type}
+                    >
+                        <Radio label={i18n.t('Query')} value="query" />
+                        <Radio label={i18n.t('Mutation')} value="mutation" />
+                    </RadioGroup>
                 </div>
                 <Button
                     className="execute-button"

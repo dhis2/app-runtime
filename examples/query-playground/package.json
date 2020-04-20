@@ -5,17 +5,18 @@
     "license": "BSD-3-Clause",
     "private": true,
     "scripts": {
-        "override": "cd .d2/shell && yarn add --force @dhis2/app-runtime@file:../../../../runtime",
-        "build": "d2-app-scripts build --force",
-        "build:standalone": "d2-app-scripts build --force --standalone",
-        "start": "yarn override && d2-app-scripts start",
-        "test": "yarn override && d2-app-scripts test"
+        "build": "d2-app-scripts build",
+        "build:standalone": "d2-app-scripts build --standalone",
+        "start": "d2-app-scripts start",
+        "test": "d2-app-scripts test"
     },
     "devDependencies": {
-        "@dhis2/cli-app-scripts": "^1.5.1"
+        "@dhis2/cli-app-scripts": "^4.0.0"
     },
     "dependencies": {
-        "@dhis2/app-runtime": "^2.0.1",
+        "@dhis2/app-runtime": "file:../../runtime",
+        "@dhis2/app-service-config": "file:../../services/config",
+        "@dhis2/app-service-data": "file:../../services/data",
         "brace": "^0.11.1",
         "react-ace": "^7.0.4"
     },
@@ -24,5 +25,11 @@
         "react": "^16.9.0",
         "react-dom": "^16.9.0",
         "styled-jsx": "^3.2.2"
+    },
+    "resolutions": {
+        "@dhis2/app-runtime": "file:../../runtime",
+        "@dhis2/app-service-config": "file:../../services/config",
+        "@dhis2/app-service-data": "file:../../services/data",
+        "i18next": "^10.3"
     }
 }
