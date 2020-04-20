@@ -4,10 +4,16 @@
     "main": "build/cjs/lib.js",
     "module": "build/es/lib.js",
     "types": "build/types/index.d.ts",
-    "repository": "https://github.com/dhis2/app-runtime.git",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dhis2/app-runtime.git",
+        "directory": "services/data"
+    },
     "author": "Austin McGee <austin@dhis2.org>",
     "license": "BSD-3-Clause",
-    "private": true,
+    "publishConfig": {
+        "access": "public"
+    },
     "files": [
         "build/**"
     ],
@@ -27,11 +33,5 @@
         "test": "d2-app-scripts test",
         "coverage": "yarn test --coverage",
         "prepublishOnly": "yarn build"
-    },
-    "devDependencies": {
-        "@dhis2/cli-app-scripts": "^4.0.0"
-    },
-    "dependencies": {
-        "typescript": "^3.7.5"
     }
 }
