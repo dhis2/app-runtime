@@ -38,6 +38,7 @@ describe('networkFetch', () => {
             )
         })
     })
+
     describe('parseStatus', () => {
         it('should pass through the response for a success status code', async () => {
             const response: any = {
@@ -46,45 +47,48 @@ describe('networkFetch', () => {
             await expect(parseStatus(response)).resolves.toBe(response)
         })
 
-        it('should throw an access error for 401, 403, and 409 errors', async () => {
-            const response: any = {
+        it('should throw an access error for 401, 403 and 409 errors', async () => {
+            const response401: any = {
                 status: 401,
                 json: async () => {
                     throw new Error()
                 },
             }
-            expect(parseStatus(response)).rejects.toMatchObject({
-                type: 'access',
-                message: 'Unauthorized',
-                details: response,
-            })
-
-            const response3: any = {
+            const response403: any = {
                 status: 403,
                 json: async () => {
                     throw new Error()
                 },
             }
-            expect(parseStatus(response3)).rejects.toMatchObject({
-                type: 'access',
-                message: 'Forbidden',
-                details: response3,
-            })
-
-            const response9: any = {
+            const response409: any = {
                 status: 409,
                 json: async () => ({
                     message: 'An error occurred',
                 }),
             }
-            expect(parseStatus(response9)).rejects.toMatchObject({
+
+            expect(parseStatus(response401)).rejects.toMatchObject({
+                type: 'access',
+                message: 'Unauthorized',
+                details: {},
+            })
+
+            expect(parseStatus(response403)).rejects.toMatchObject({
+                type: 'access',
+                message: 'Forbidden',
+                details: {},
+            })
+
+            expect(parseStatus(response409)).rejects.toMatchObject({
                 type: 'access',
                 message: 'An error occurred',
-                details: response9,
+                details: {
+                    message: 'An error occurred',
+                },
             })
         })
 
-        it('Should throw if an unknown error occurs', () => {
+        it('should throw if an unknown error occurs', () => {
             const response: any = {
                 status: 500,
                 statusText: 'Failed',
@@ -95,7 +99,9 @@ describe('networkFetch', () => {
             expect(parseStatus(response)).rejects.toMatchObject({
                 type: 'unknown',
                 message: `An unknown error occurred - Failed (500)`,
-                details: response,
+                details: {
+                    message: 'An error occurred',
+                },
             })
         })
     })

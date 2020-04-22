@@ -1,4 +1,4 @@
-import { FetchError, JsonValue } from '../../engine'
+import { FetchError, FetchErrorDetails, JsonValue } from '../../engine'
 
 export const parseContentType = (contentType: string | null) => {
     return contentType
@@ -10,33 +10,51 @@ export const parseContentType = (contentType: string | null) => {
 }
 
 export const parseStatus = async (response: Response) => {
-    if (
+    const accessError =
         response.status === 401 ||
         response.status === 403 ||
         response.status === 409
-    ) {
-        const message = await response
-            .json()
-            .then(body => {
-                return body.message
-            })
-            .catch(() => {
-                return response.status === 401 ? 'Unauthorized' : 'Forbidden'
-            })
+
+    if (accessError) {
+        let message
+        let details: FetchErrorDetails = {}
+
+        try {
+            details = await response.json()
+            message = details.message
+        } catch (e) {
+            // Do nothing
+        }
+
+        // Set a message in case of invalid json, or json without 'message' property
+        if (!message) {
+            message = response.status === 401 ? 'Unauthorized' : 'Forbidden'
+        }
 
         throw new FetchError({
             type: 'access',
             message,
-            details: response,
+            details,
         })
     }
+
     if (response.status < 200 || response.status >= 400) {
+        const message = `An unknown error occurred - ${response.statusText} (${response.status})`
+        let details: FetchErrorDetails = {}
+
+        try {
+            details = await response.json()
+        } catch (e) {
+            // We can leave details as is if parsing fails
+        }
+
         throw new FetchError({
             type: 'unknown',
-            message: `An unknown error occurred - ${response.statusText} (${response.status})`,
-            details: response,
+            message,
+            details,
         })
     }
+
     return response
 }
 
