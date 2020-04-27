@@ -1049,13 +1049,13 @@
     moment "^2.24.0"
 
 "@dhis2/app-runtime@^2.0.4", "@dhis2/app-runtime@file:../../runtime":
-  version "2.1.1"
+  version "2.1.2"
 
 "@dhis2/app-service-config@file:../../services/config":
-  version "2.1.1"
+  version "2.1.2"
 
 "@dhis2/app-service-data@file:../../services/data":
-  version "2.1.1"
+  version "2.1.2"
 
 "@dhis2/app-shell@4.0.0":
   version "4.0.0"
@@ -1141,12 +1141,21 @@
     i18next "^10.3"
     moment "^2.24.0"
 
-"@dhis2/prop-types@^1.5", "@dhis2/prop-types@^1.5.0":
+"@dhis2/prop-types@^1.1.1", "@dhis2/prop-types@^1.5", "@dhis2/prop-types@^1.5.0":
   version "1.6.4"
   resolved "https://registry.yarnpkg.com/@dhis2/prop-types/-/prop-types-1.6.4.tgz#ec4d256c9440d4d00071524422a727c61ddaa6f6"
   integrity sha512-qkVj8OuyjDmSxzYDlCWZllvC9hIbrIImMp79/U5CVsIRbjUF0zA/tfbv4rWnsWALmwEHOQFbzl5GnO5D8RNneA==
   dependencies:
     prop-types "^15"
+
+"@dhis2/ui-core@^3.11.0":
+  version "3.12.0"
+  resolved "https://registry.yarnpkg.com/@dhis2/ui-core/-/ui-core-3.12.0.tgz#6216868b1bd76b816df8c3272c2b9200972f0858"
+  integrity sha512-9JYl0TP6Wkb2yD5OkiN4juHYxW37UYZF1egbCAxuUCx7Uox5HqUkzxaKw25bQKN+4684vDnIJgh0Z2qSTszg1g==
+  dependencies:
+    "@dhis2/prop-types" "^1.1.1"
+    classnames "^2.2.6"
+    styled-jsx "^3.2.2"
 
 "@dhis2/ui-core@^4.6.1":
   version "4.16.0"
@@ -9633,7 +9642,7 @@ react-dev-utils@^10.2.1:
     strip-ansi "6.0.0"
     text-table "0.2.0"
 
-react-dom@^16.8.6:
+react-dom@^16.8.6, react-dom@^16.9.0:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.13.1.tgz#c1bd37331a0486c078ee54c4740720993b2e0e7f"
   integrity sha512-81PIMmVLnCNLO/fFOQxdQkvEq/+Hfpv24XNJfpyZhTRfO0QcmQIF/PgCa1zCOj2w1hrn12MFLyaJ/G0+Mxtfag==
@@ -9713,7 +9722,7 @@ react-scripts@^3.3.0:
   optionalDependencies:
     fsevents "2.1.2"
 
-react@^16.8.6:
+react@^16.8.6, react@^16.9.0:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react/-/react-16.13.1.tgz#2e818822f1a9743122c063d6410d85c1e3afe48e"
   integrity sha512-YMZQQq32xHLX0bz5Mnibv1/LHb3Sqzngu7xstSM+vrkE5Kzr9xE0yMByK5kMoTK30YVJE61WfbxIFFvfeDKT1w==
