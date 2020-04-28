@@ -28,7 +28,6 @@
     "resolutions": {
         "@dhis2/app-runtime": "file:../../runtime",
         "@dhis2/app-service-config": "file:../../services/config",
-        "@dhis2/app-service-data": "file:../../services/data",
-        "i18next": "^10.3"
+        "@dhis2/app-service-data": "file:../../services/data"
     }
 }
