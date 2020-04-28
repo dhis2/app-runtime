@@ -29,6 +29,7 @@
         "@types/react-dom": "^16.9.5",
         "@typescript-eslint/eslint-plugin": "^2.17.0",
         "@typescript-eslint/parser": "^2.17.0",
+        "babel-loader": "^8.1.0",
         "concurrently": "^5.0.2",
         "eslint-plugin-react-hooks": "^2.3.0",
         "jest": "^24.9.0",
@@ -59,7 +60,9 @@
         "format": "d2-style js apply --all --no-stage",
         "start": "yarn build && cd examples/query-playground && yarn start",
         "docs:build": "d2-utils-docsite build ./docs -o ./dist && yarn build:playground",
-        "docs:serve": "d2-utils-docsite serve ./docs -o ./dist"
+        "docs:serve": "d2-utils-docsite serve ./docs -o ./dist",
+        "cypress:storybook": "cd services/data && yarn cypress:storybook",
+        "cypress:open": "cd services/data && yarn cypress:open"
     },
     "d2": {
         "docsite": {

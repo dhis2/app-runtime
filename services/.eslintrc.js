@@ -7,4 +7,8 @@ module.exports = {
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
     },
+    globals: {
+        cy: 'readonly',
+        Cypress: 'readonly',
+    }
 }

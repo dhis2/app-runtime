@@ -17,6 +17,12 @@
         "react": "^16.8",
         "react-dom": "^16.8"
     },
+    "devDependencies": {
+        "@dhis2/app-runtime": "file:../../runtime/",
+        "@storybook/react": "^5.3.18",
+        "@dhis2/cli-utils-cypress": "^2.0.0",
+        "@storybook/csf": "^0.0.1"
+    },
     "scripts": {
         "clean": "rimraf ./build/*",
         "build:commonjs": "BABEL_ENV=commonjs babel src/ --out-dir ./build/cjs --extensions \".ts,.tsx\" --source-maps inline --verbose",
@@ -28,6 +34,9 @@
         "type-check:watch": "yarn type-check --watch",
         "test": "jest",
         "coverage": "jest --coverage",
-        "prepublishOnly": "yarn build"
+        "prepublishOnly": "yarn build",
+
+        "cypress:storybook": "start-storybook --port 5001 --ci",
+        "cypress:open": "d2-utils-cypress open"
     }
 }
