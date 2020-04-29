@@ -27,7 +27,11 @@
         "type-check": "tsc --noEmit --allowJs --checkJs",
         "type-check:watch": "yarn type-check --watch",
         "test": "jest",
+        "test:integration": "jest --config jest.integration.config.js",
         "coverage": "jest --coverage",
         "prepublishOnly": "yarn build"
+    },
+    "devDependencies": {
+        "jest-cucumber": "^2.0.11"
     }
 }
