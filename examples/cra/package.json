@@ -11,6 +11,11 @@
         "react-dom": "~16.8.6",
         "react-scripts": "^3.3.0"
     },
+    "resolutions": {
+        "@dhis2/app-runtime": "file:../../runtime",
+        "@dhis2/app-service-config": "file:../../services/config",
+        "@dhis2/app-service-data": "file:../../services/data"
+    },
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
