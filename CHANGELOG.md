@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/dhis2/app-runtime/compare/v2.1.2...v2.2.0) (2020-05-06)
+
+
+### Features
+
+* build with app platform, publish independent services ([#512](https://github.com/dhis2/app-runtime/issues/512)) ([70aa726](https://github.com/dhis2/app-runtime/commit/70aa726d6ddf8c69b94b161dbbbd26c8a0fde089))
+
 ## [2.1.2](https://github.com/dhis2/app-runtime/compare/v2.1.1...v2.1.2) (2020-04-22)
 
 
