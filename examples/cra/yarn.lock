@@ -1531,16 +1531,16 @@
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
 "@dhis2/app-runtime@*", "@dhis2/app-runtime@file:../../runtime":
-  version "2.2.0"
+  version "2.2.1"
   dependencies:
-    "@dhis2/app-service-config" "2.2.0"
-    "@dhis2/app-service-data" "2.2.0"
+    "@dhis2/app-service-config" "2.2.1"
+    "@dhis2/app-service-data" "2.2.1"
 
-"@dhis2/app-service-config@2.2.0", "@dhis2/app-service-config@file:../../services/config":
-  version "2.2.0"
+"@dhis2/app-service-config@2.2.1", "@dhis2/app-service-config@file:../../services/config":
+  version "2.2.1"
 
-"@dhis2/app-service-data@2.2.0", "@dhis2/app-service-data@file:../../services/data":
-  version "2.2.0"
+"@dhis2/app-service-data@2.2.1", "@dhis2/app-service-data@file:../../services/data":
+  version "2.2.1"
 
 "@hapi/address@2.x.x":
   version "2.0.0"
@@ -10815,10 +10815,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@^3.7.5:
-  version "3.7.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.7.5.tgz#0692e21f65fd4108b9330238aac11dd2e177a1ae"
-  integrity sha512-/P5lkRXkWHNAbcJIiHPfRoKqyd7bsyCma1hZNUGfn20qm64T6ZBlrzprymeu918H+mB/0rIg2gGK/BXkhhYgBw==
+typescript@^3.8.3:
+  version "3.8.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.3.tgz#409eb8544ea0335711205869ec458ab109ee1061"
+  integrity sha512-MYlEfn5VrLNsgudQTVJeNaQFUAI7DkhnOjdpAp4T+ku1TfQClewlbSuTVHiA+8skNBgaf02TL/kLOvig4y3G8w==
 
 uglify-js@3.4.x:
   version "3.4.10"
