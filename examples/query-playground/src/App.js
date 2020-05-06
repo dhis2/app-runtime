@@ -4,6 +4,8 @@ import styles from './App.styles'
 import { QueryEditor } from './components/QueryEditor'
 import { QueryResults } from './components/QueryResults'
 
+import './locales'
+
 const QueryRepl = () => {
     const [result, setResult] = useState()
 
