@@ -1,3 +1,10 @@
+## [2.2.1](https://github.com/dhis2/app-runtime/compare/v2.2.0...v2.2.1) (2020-05-06)
+
+
+### Bug Fixes
+
+* declare services as runtime dependencies ([76a55c7](https://github.com/dhis2/app-runtime/commit/76a55c754f11d4a4088ca088575622549b0adebb))
+
 # [2.2.0](https://github.com/dhis2/app-runtime/compare/v2.1.2...v2.2.0) (2020-05-06)
 
 
