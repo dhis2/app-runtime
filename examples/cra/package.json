@@ -3,9 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
-        "@dhis2/app-runtime": "file:../../runtime",
-        "@dhis2/app-service-config": "file:../../services/config",
-        "@dhis2/app-service-data": "file:../../services/data",
+        "@dhis2/app-runtime": "*",
         "prop-types": "^15.7.2",
         "react": "~16.8.6",
         "react-dom": "~16.8.6",

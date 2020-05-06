@@ -1048,14 +1048,17 @@
     "@dhis2/ui-widgets" "^2.0.4"
     moment "^2.24.0"
 
-"@dhis2/app-runtime@^2.0.4", "@dhis2/app-runtime@file:../../runtime":
-  version "2.1.2"
+"@dhis2/app-runtime@*", "@dhis2/app-runtime@^2.0.4", "@dhis2/app-runtime@file:../../runtime":
+  version "2.2.0"
+  dependencies:
+    "@dhis2/app-service-config" "2.2.0"
+    "@dhis2/app-service-data" "2.2.0"
 
-"@dhis2/app-service-config@file:../../services/config":
-  version "2.1.2"
+"@dhis2/app-service-config@2.2.0", "@dhis2/app-service-config@file:../../services/config":
+  version "2.2.0"
 
-"@dhis2/app-service-data@file:../../services/data":
-  version "2.1.2"
+"@dhis2/app-service-data@2.2.0", "@dhis2/app-service-data@file:../../services/data":
+  version "2.2.0"
 
 "@dhis2/app-shell@4.0.0":
   version "4.0.0"
