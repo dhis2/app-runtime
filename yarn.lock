@@ -1170,20 +1170,20 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-10.1.0.tgz#f0950bba18819512d42f7197e56c518aa491cf18"
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
-"@dhis2/app-adapter@4.0.2":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@dhis2/app-adapter/-/app-adapter-4.0.2.tgz#6bef89300466fbc47f5169d71af4461f0eda0c0a"
-  integrity sha512-JtSvVPdQwOf5QdxYp11zBNlxFeAZ+41WgOCichmSNeUdOaLd8pVPg2gV4YfeCavcU6+y9BHYSs7G75ETiyxkLQ==
+"@dhis2/app-adapter@4.0.6":
+  version "4.0.6"
+  resolved "https://registry.yarnpkg.com/@dhis2/app-adapter/-/app-adapter-4.0.6.tgz#f405c1c693325f452e9fc33c0e330fc148546084"
+  integrity sha512-7NNMNV/yOgUs1TvAWrloccE9ubrRyapLXmKa6fr2P0DNiaqXNX1FtCvTsMZNuX5PLGwZ3D8RjTIQGEBuO+x38Q==
   dependencies:
-    "@dhis2/ui-widgets" "^2.0.4"
+    "@dhis2/ui-widgets" "^2.1.1"
     moment "^2.24.0"
 
-"@dhis2/app-shell@4.0.2":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@dhis2/app-shell/-/app-shell-4.0.2.tgz#1bb18787ccf5fa1352a26372bdbd4ebad6bd6762"
-  integrity sha512-fL+/9JxhILspIdTuzDbCIgxiVxIQIfrPyIBxcEDrs5+WWd0LySKqp+fqBk2ZsY76l+BqTijBY/DH+49kDj28wA==
+"@dhis2/app-shell@4.0.6":
+  version "4.0.6"
+  resolved "https://registry.yarnpkg.com/@dhis2/app-shell/-/app-shell-4.0.6.tgz#7bca937e81cf95bec56c104caf7f5deb29d76ffd"
+  integrity sha512-nGCSQyiBc049MmmsRVDERuVSX0fQaUh6jl4Q0bcviEp03S/bG990cIVYV0NYWqJT+J7UcwGVaGzU2JUixY/SEg==
   dependencies:
-    "@dhis2/app-adapter" "4.0.2"
+    "@dhis2/app-adapter" "4.0.6"
     "@dhis2/app-runtime" "^2.0.4"
     "@dhis2/d2-i18n" "^1.0.5"
     "@dhis2/ui-core" "^4.6.1"
@@ -1198,10 +1198,10 @@
     typeface-roboto "^0.0.75"
     typescript "^3.6.3"
 
-"@dhis2/cli-app-scripts@^4.0.2":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@dhis2/cli-app-scripts/-/cli-app-scripts-4.0.2.tgz#dfbc9221d77f5fa4e0b64d5aca1c96216d3e8556"
-  integrity sha512-6fIiupJGtKy+9vrBIMQ+Oai0lM98+NhO6vk5w2HK+SHJbZtAIJp/tRugy3UvKuE4520NoeEHsK88+TMW/tYujg==
+"@dhis2/cli-app-scripts@^4.0.6":
+  version "4.0.6"
+  resolved "https://registry.yarnpkg.com/@dhis2/cli-app-scripts/-/cli-app-scripts-4.0.6.tgz#2864cd4815530c6fe50d718de8c40ced8df5c24a"
+  integrity sha512-wZY3bslJpUtkgp2KcW5YKwYmeWTrX2IFqh+lHCopx4Oe8ChZoifkPv+roDtLhO3gekKSrRJrZEZXR/KPFYMU2Q==
   dependencies:
     "@babel/core" "^7.6.2"
     "@babel/plugin-proposal-class-properties" "^7.8.3"
@@ -1214,7 +1214,7 @@
     "@babel/preset-env" "^7.6.2"
     "@babel/preset-react" "^7.0.0"
     "@babel/preset-typescript" "^7.6.0"
-    "@dhis2/app-shell" "4.0.2"
+    "@dhis2/app-shell" "4.0.6"
     "@dhis2/cli-helpers-engine" "^1.5.0"
     archiver "^3.1.1"
     babel-jest "^24.9.0"
@@ -1308,7 +1308,7 @@
     i18next "^10.3"
     moment "^2.24.0"
 
-"@dhis2/prop-types@^1.5", "@dhis2/prop-types@^1.5.0":
+"@dhis2/prop-types@^1.5.0", "@dhis2/prop-types@^1.6":
   version "1.6.4"
   resolved "https://registry.yarnpkg.com/@dhis2/prop-types/-/prop-types-1.6.4.tgz#ec4d256c9440d4d00071524422a727c61ddaa6f6"
   integrity sha512-qkVj8OuyjDmSxzYDlCWZllvC9hIbrIImMp79/U5CVsIRbjUF0zA/tfbv4rWnsWALmwEHOQFbzl5GnO5D8RNneA==
@@ -1324,12 +1324,12 @@
     "@popperjs/core" "^2.1.0"
     classnames "^2.2.6"
 
-"@dhis2/ui-widgets@^2.0.4":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@dhis2/ui-widgets/-/ui-widgets-2.1.0.tgz#2accfdfea4c9564d7d35f8748ff7e113cac14032"
-  integrity sha512-S/vs7UrJxKcFO0TQhXx0jkKP9MqRGA48vkuBMVston+aZneIpVjLUtPvwP4P87uyK97DvHPkZm4gzniN6Beazg==
+"@dhis2/ui-widgets@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@dhis2/ui-widgets/-/ui-widgets-2.1.1.tgz#23b1887c0190e83bb7a41e6b570dfd41ba99d838"
+  integrity sha512-tLLXgQ2x0IDVcCg2AdK4J8B0Zj6DHOimI/5xTtp/xoaLDYDwJN3VDIJU0TSh5YIEZPzUmh2nqmdmNHDUXereFw==
   dependencies:
-    "@dhis2/prop-types" "^1.5"
+    "@dhis2/prop-types" "^1.6"
     classnames "^2.2.6"
 
 "@hapi/address@2.x.x":
