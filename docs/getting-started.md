@@ -10,7 +10,7 @@ The DHIS2 application runtime provides a common, consistent, single-dependency r
 > yarn add @dhis2/app-runtime
 ```
 
-> Please ensure that all webpack bundles reference the same Context, you can do this by adding `@dhis2/app-runtime` to `peerDependencies` (rather than `dependencies`) and webpack `externals` for _library_ builds. Top-level web applications should be able to include the dependency directly
+> Please ensure that all webpack bundles reference the same instance of `@dhis2/app-runtime`.  We recommmend running `npx yarn-deduplicate --packages @dhis2/app-runtime`.  Libraries should include `@dhis2/app-runtime` as a `peerDependency`.
 
 ## Requirements
 
