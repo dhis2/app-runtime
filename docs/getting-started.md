@@ -16,7 +16,7 @@ The DHIS2 application runtime provides a common, consistent, single-dependency r
 
 ### React >= 16.8
 
-This library uses the official React Context API (introduced in 16.3) and React Hooks (introduced in 16.8), so **React >= 16.8 is required** to use it
+This library uses the official React Context API (introduced in 16.3) and React Hooks (introduced in 16.8), so **React >= 16.8 is required** to use it.  Visit [reactjs.org](https://reactjs.org) to learn about React development.
 
 ### Polyfills
 
