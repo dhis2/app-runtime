@@ -1,4 +1,4 @@
-type QueryParameterSingularValue = string | number
+type QueryParameterSingularValue = string | number | boolean
 interface QueryParameterAliasedValue {
     [name: string]: QueryParameterSingularValue
 }

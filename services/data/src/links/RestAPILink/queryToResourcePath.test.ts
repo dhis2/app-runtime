@@ -92,6 +92,18 @@ describe('queryToResourcePath', () => {
             `${apiPath}/test?key=42&param=193.75`
         )
     })
+    it('should support boolean parameters', () => {
+        const query: ResolvedResourceQuery = {
+            resource: 'test',
+            params: {
+                key: 42,
+                someflag: true,
+            },
+        }
+        expect(queryToResourcePath(apiPath, query)).toBe(
+            `${apiPath}/test?key=42&someflag=true`
+        )
+    })
     it('should join array parameters with commas', () => {
         const query: ResolvedResourceQuery = {
             resource: 'test',
