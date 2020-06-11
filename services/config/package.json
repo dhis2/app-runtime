@@ -1,6 +1,6 @@
 {
     "name": "@dhis2/app-service-config",
-    "version": "2.2.1",
+    "version": "2.2.2",
     "main": "build/cjs/lib.js",
     "module": "build/es/lib.js",
     "types": "build/types/index.d.ts",

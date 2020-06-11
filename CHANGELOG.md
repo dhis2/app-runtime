@@ -1,3 +1,10 @@
+## [2.2.2](https://github.com/dhis2/app-runtime/compare/v2.2.1...v2.2.2) (2020-06-11)
+
+
+### Bug Fixes
+
+* support boolean values for query parameters ([#582](https://github.com/dhis2/app-runtime/issues/582)) ([039e77e](https://github.com/dhis2/app-runtime/commit/039e77e60828257153653da4b21c2630734a22a2))
+
 ## [2.2.1](https://github.com/dhis2/app-runtime/compare/v2.2.0...v2.2.1) (2020-05-06)
 
 
