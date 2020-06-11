@@ -12,7 +12,7 @@ const encodeQueryParameter = (param: QueryParameterValue): string => {
     if (typeof param === 'string') {
         return encodeURIComponent(param)
     }
-    if (typeof param === 'number') {
+    if (typeof param === 'number' || typeof param === 'boolean') {
         return String(param)
     }
     if (typeof param === 'object') {
