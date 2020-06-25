@@ -10,13 +10,13 @@ The DHIS2 application runtime provides a common, consistent, single-dependency r
 > yarn add @dhis2/app-runtime
 ```
 
-> Please ensure that all webpack bundles reference the same instance of `@dhis2/app-runtime`.  We recommmend running `npx yarn-deduplicate --packages @dhis2/app-runtime`.  Libraries should include `@dhis2/app-runtime` as a `peerDependency`.
+> Please ensure that all webpack bundles reference the same instance of `@dhis2/app-runtime`. We recommmend running `npx yarn-deduplicate --packages @dhis2/app-runtime`. Libraries should include `@dhis2/app-runtime` as a `peerDependency`.
 
 ## Requirements
 
 ### React >= 16.8
 
-This library uses the official React Context API (introduced in 16.3) and React Hooks (introduced in 16.8), so **React >= 16.8 is required** to use it.  Visit [reactjs.org](https://reactjs.org) to learn about React development.
+This library uses the official React Context API (introduced in 16.3) and React Hooks (introduced in 16.8), so **React >= 16.8 is required** to use it. Visit [reactjs.org](https://reactjs.org) to learn about React development.
 
 ### Polyfills
 

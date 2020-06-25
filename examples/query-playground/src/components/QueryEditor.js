@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Button, RadioGroup, Radio } from '@dhis2/ui-core'
 import styles from './QueryEditor.styles'
@@ -9,6 +9,17 @@ import i18n from '@dhis2/d2-i18n'
 const defaultQuery = {
     me: {
         resource: 'me',
+        params: {
+            fields: ['id', 'name', 'email', 'introduction'],
+        },
+    },
+}
+
+const defaultMutation = {
+    resource: 'me',
+    type: 'update',
+    data: {
+        introduction: 'Hello, World!',
     },
 }
 
@@ -16,10 +27,28 @@ const stringify = obj => JSON.stringify(obj, undefined, 2)
 
 export const QueryEditor = ({ setResult }) => {
     const [type, setType] = useState('query')
-    const [query, setQuery] = useState(stringify(defaultQuery))
+    const [query, setQuery] = useState('')
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(false)
     const engine = useDataEngine()
+
+    const [lastQuery, setLastQuery] = useState(stringify(defaultQuery))
+    const [lastMutation, setLastMutation] = useState(stringify(defaultMutation))
+
+    useEffect(() => {
+        setResult()
+        if (type === 'query') {
+            if (query) {
+                setLastMutation(query)
+            }
+            setQuery(lastQuery)
+        } else {
+            if (query) {
+                setLastQuery(query)
+            }
+            setQuery(lastMutation)
+        }
+    }, [type]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const onClick = () => {
         setLoading(true)
@@ -65,7 +94,9 @@ export const QueryEditor = ({ setResult }) => {
                     <RadioGroup
                         name="type"
                         label="Type"
-                        onChange={e => setType(e.target.value)}
+                        onChange={({ value }) =>
+                            console.log(value) || setType(value)
+                        }
                         value={type}
                     >
                         <Radio label={i18n.t('Query')} value="query" />
