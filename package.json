@@ -14,7 +14,7 @@
         "@dhis2/cli-style": "^6.0.0",
         "@dhis2/cli-utils-docsite": "^2.0.2",
         "@testing-library/jest-dom": "^5.0.2",
-        "@testing-library/react": "^9.4.0",
+        "@testing-library/react": "^10.4.2",
         "@testing-library/react-hooks": "^3.2.1",
         "@types/jest": "^24.9.0",
         "@types/node": "^13.1.8",
