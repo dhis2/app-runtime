@@ -2,10 +2,11 @@ import css from 'styled-jsx/css'
 
 export default css.global`
     .editor {
-        width: 50%;
+        height: 100%;
         display: flex;
         flex-direction: column;
     }
+
     .controls {
         display: flex;
         flex-direction: row;

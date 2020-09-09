@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { Button, RadioGroup, Radio } from '@dhis2/ui-core'
+import { Button, FieldGroup, Radio } from '@dhis2/ui'
 import styles from './QueryEditor.styles'
 import { useDataEngine } from '@dhis2/app-runtime'
 import { Editor } from './Editor'
@@ -23,41 +23,29 @@ const defaultMutation = {
     },
 }
 
+const getDefaultQueryByType = type =>
+    JSON.stringify(type === 'query' ? defaultQuery : defaultMutation, null, 4)
+
 const stringify = obj => JSON.stringify(obj, undefined, 2)
 
-export const QueryEditor = ({ setResult }) => {
+export const QueryEditor = ({ query, setQuery, setResult }) => {
     const [type, setType] = useState('query')
-    const [query, setQuery] = useState('')
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(false)
     const engine = useDataEngine()
-
-    const [lastQuery, setLastQuery] = useState(stringify(defaultQuery))
-    const [lastMutation, setLastMutation] = useState(stringify(defaultMutation))
-
-    useEffect(() => {
-        setResult()
-        if (type === 'query') {
-            if (query) {
-                setLastMutation(query)
-            }
-            setQuery(lastQuery)
-        } else {
-            if (query) {
-                setLastQuery(query)
-            }
-            setQuery(lastMutation)
-        }
-    }, [type]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const onClick = () => {
         setLoading(true)
         setResult('...')
         setError(null)
+
         try {
-            const parsed = JSON.parse(query)
+            const parsed = JSON.parse(
+                query === null ? getDefaultQueryByType(type) : query
+            )
             const promise =
                 type === 'query' ? engine.query(parsed) : engine.mutate(parsed)
+
             promise
                 .then(result => {
                     setLoading(false)
@@ -77,11 +65,14 @@ export const QueryEditor = ({ setResult }) => {
         }
     }
 
+    const currentQuery =
+        typeof query === 'string' ? query : getDefaultQueryByType(type)
+
     return (
         <div className="editor">
             <style jsx>{styles}</style>
             <Editor
-                value={query}
+                value={currentQuery}
                 theme="monokai"
                 onChange={setQuery}
                 name="editor"
@@ -91,7 +82,7 @@ export const QueryEditor = ({ setResult }) => {
             {error && <span className="error">{error}</span>}
             <div className="controls">
                 <div className="radio-group">
-                    <RadioGroup
+                    <FieldGroup
                         name="type"
                         label="Type"
                         onChange={({ value }) =>
@@ -101,7 +92,7 @@ export const QueryEditor = ({ setResult }) => {
                     >
                         <Radio label={i18n.t('Query')} value="query" />
                         <Radio label={i18n.t('Mutation')} value="mutation" />
-                    </RadioGroup>
+                    </FieldGroup>
                 </div>
                 <Button
                     className="execute-button"
@@ -117,5 +108,7 @@ export const QueryEditor = ({ setResult }) => {
 }
 
 QueryEditor.propTypes = {
+    setQuery: PropTypes.func.isRequired,
     setResult: PropTypes.func.isRequired,
+    query: PropTypes.string,
 }

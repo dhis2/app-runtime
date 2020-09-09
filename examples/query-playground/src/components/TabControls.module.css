@@ -1,0 +1,14 @@
+.editButton {
+    display: inline-block;
+    border: 1px solid var(--colors-grey500);
+    border-radius: 3px;
+    padding: 0 8px;
+    margin-left: 8px;
+    background: var(--colors-grey200);
+    color: black;
+}
+
+.editButton:hover {
+    background: var(--colors-white);
+    box-shadow: inset 1px 1px 1px rgba(0,0,0,0.4);
+}

@@ -1,0 +1,19 @@
+.container {
+    display: flex;
+    position: absolute;
+    top: 48px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    display: flex;
+    flex-direction: column;
+    font-size: 1rem;
+}
+
+.tabControls {
+    flex-shrink: 1;
+}
+
+.tabs {
+    flex-grow: 1;
+}

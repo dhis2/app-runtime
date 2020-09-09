@@ -22,4 +22,22 @@ export default css`
         width: 100%;
         height: 100%;
     }
+
+    .editor {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .tabs {
+        flex-shrink: 1;
+    }
+
+    .currentTab {
+        flex-grow: 1;
+    }
+
+    .results {
+        width: 50%;
+    }
 `
