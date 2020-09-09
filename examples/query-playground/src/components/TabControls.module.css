@@ -3,7 +3,7 @@
     border: 1px solid var(--colors-grey500);
     border-radius: 3px;
     padding: 0 8px;
-    margin-left: 8px;
+    margin-left: 2px;
     background: var(--colors-grey200);
     color: black;
 }

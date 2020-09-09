@@ -9,7 +9,9 @@ import styles from './QueryRepl.module.css'
 import './locales'
 
 const QueryRepl = () => {
-    const { tabs, setActiveTab, addTab } = useTabs()
+    const { tabs, setActiveTab, addTab, setQuery, setResult } = useTabs()
+    const activeTabIndex = tabs.findIndex(({ active }) => active)
+    const activeTab = tabs[activeTabIndex]
 
     return (
         <div className={styles.container}>
@@ -17,16 +19,20 @@ const QueryRepl = () => {
 
             <div className={styles.tabControls}>
                 <TabControls
-                    tabs={tabs}
+                    tabs={tabs.map(({ active }) => active)}
                     onAddTab={addTab}
                     onTabClick={setActiveTab}
                 />
             </div>
 
             <div className={styles.tabs}>
-                {tabs.map((active, index) => (
-                    <QueryTab tabNo={index} active={active} key={index} />
-                ))}
+                <QueryTab
+                    query={activeTab.query}
+                    result={activeTab.result}
+                    active={activeTab.active}
+                    setQuery={setQuery(activeTabIndex)}
+                    setResult={setResult(activeTabIndex)}
+                />
             </div>
         </div>
     )
