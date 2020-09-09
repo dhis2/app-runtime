@@ -14,7 +14,9 @@ const QueryRepl = () => {
     const { loading, execute } = useExecuteQuery()
     const {
         addTab,
+        removeTab,
         setActiveTab,
+        setName,
         setQuery,
         setResult,
         setType,
@@ -31,8 +33,10 @@ const QueryRepl = () => {
 
             <div className={styles.tabControls}>
                 <TabControls
-                    tabs={tabs.map(({ active }) => active)}
+                    tabs={tabs}
                     onAddTab={addTab}
+                    onNameChange={setName}
+                    onRemoveTab={removeTab}
                     onTabClick={setActiveTab}
                 />
             </div>

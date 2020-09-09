@@ -17,15 +17,18 @@ const TabControl = ({
     active,
     edit,
     index,
+    isOnly,
+    name,
     onClick,
     onEditClick,
     onEditDoneClick,
+    onNameChange,
+    onRemoveTab,
 }) => {
-    const [name, setName] = useState(`Tab ${index}`)
     const [editName, setEditName] = useState(name)
 
     const save = () => {
-        setName(editName)
+        onNameChange(editName)
         onEditDoneClick()
     }
 
@@ -39,13 +42,28 @@ const TabControl = ({
         onEditClick()
     }
 
+    const onRemoveIconClick = event => {
+        event.stopPropagation()
+        onRemoveTab()
+    }
+
     return (
         <Tab selected={active} key={index} onClick={onClick}>
             <>
                 {`${name} `}
+
                 <span onClick={onEditIconClick} className={styles.editButton}>
                     edit
                 </span>
+
+                {!isOnly && (
+                    <span
+                        onClick={onRemoveIconClick}
+                        className={styles.editButton}
+                    >
+                        x
+                    </span>
+                )}
 
                 {edit && (
                     <div onClick={e => e.stopPropagation()}>
@@ -84,25 +102,39 @@ TabControl.propTypes = {
     active: PropTypes.bool.isRequired,
     edit: PropTypes.bool.isRequired,
     index: PropTypes.number.isRequired,
+    isOnly: PropTypes.bool.isRequired,
+    name: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
     onEditClick: PropTypes.func.isRequired,
     onEditDoneClick: PropTypes.func.isRequired,
+    onNameChange: PropTypes.func.isRequired,
+    onRemoveTab: PropTypes.func.isRequired,
 }
 
-export const TabControls = ({ tabs, onAddTab, onTabClick }) => {
+export const TabControls = ({
+    tabs,
+    onAddTab,
+    onRemoveTab,
+    onTabClick,
+    onNameChange,
+}) => {
     const [edit, setEdit] = useState(-1)
 
     return (
         <TabBar>
-            {tabs.map((active, index) => (
+            {tabs.map(({ active, id, name }, index) => (
                 <TabControl
+                    key={id}
                     active={active}
-                    index={index}
-                    key={index}
                     edit={index === edit}
+                    index={index}
+                    isOnly={tabs.length === 1}
+                    name={name}
+                    onNameChange={onNameChange(index)}
                     onClick={() => onTabClick(index)}
                     onEditClick={() => setEdit(index)}
                     onEditDoneClick={() => setEdit(-1)}
+                    onRemoveTab={() => onRemoveTab(index)}
                 />
             ))}
 
@@ -112,7 +144,15 @@ export const TabControls = ({ tabs, onAddTab, onTabClick }) => {
 }
 
 TabControls.propTypes = {
-    tabs: PropTypes.arrayOf(PropTypes.bool).isRequired,
+    tabs: PropTypes.arrayOf(
+        PropTypes.shape({
+            active: PropTypes.bool.isRequired,
+            id: PropTypes.number.isRequired,
+            name: PropTypes.string.isRequired,
+        })
+    ).isRequired,
     onAddTab: PropTypes.func.isRequired,
+    onNameChange: PropTypes.func.isRequired,
+    onRemoveTab: PropTypes.func.isRequired,
     onTabClick: PropTypes.func.isRequired,
 }
