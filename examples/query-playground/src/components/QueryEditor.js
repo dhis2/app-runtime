@@ -68,8 +68,11 @@ export const QueryEditor = ({ query, setQuery, setResult }) => {
     const currentQuery =
         typeof query === 'string' ? query : getDefaultQueryByType(type)
 
+    const onEnterPress = event =>
+        event.ctrlKey && event.key === 'Enter' && onClick()
+
     return (
-        <div className="editor">
+        <div className="editor" onKeyPress={onEnterPress}>
             <style jsx>{styles}</style>
             <Editor
                 value={currentQuery}
