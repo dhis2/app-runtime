@@ -1,8 +1,10 @@
+import { useConfig } from '@dhis2/app-runtime'
 import { useState } from 'react'
 
 const tabTemplate = {
     active: false,
     query: null,
+    type: 'query',
     result: '',
 }
 
@@ -12,29 +14,47 @@ const setActiveTab = (tabs, index) =>
         active: curIndex === index,
     }))
 
-const addTab = tabs => [...tabs, { ...tabTemplate, active: true }]
+const addTab = tabs => [
+    ...tabs.map(tab => ({ ...tab, active: false })),
+    { ...tabTemplate, active: true },
+]
+
+const setValue = ({ key, tabs, setTabs }) => index => value => {
+    const update = { ...tabs[index], [key]: value }
+
+    if (index === 0) {
+        return setTabs([update, ...tabs.slice(1)])
+    }
+
+    return setTabs([...tabs.slice(0, index), update, ...tabs.slice(index + 2)])
+}
 
 export const useTabs = () => {
-    const [tabs, setTabs] = useState(addTab([]))
+    const { baseUrl } = useConfig()
+    const storageNameSpace = `${baseUrl}-playground`
+    const [tabs, _setTabs] = useState(
+        localStorage.getItem(storageNameSpace)
+            ? JSON.parse(localStorage.getItem(storageNameSpace))
+            : addTab([])
+    )
 
-    const setQuery = index => query =>
-        setTabs([
-            ...tabs.slice(0, index),
-            { ...tabs[index], query },
-            ...tabs.slice(index + 2),
-        ])
+    const setTabs = tabs => {
+        // Don't store results
+        const storageTabs = tabs.map(tab => ({ ...tab, result: '' }))
+        localStorage.setItem(storageNameSpace, JSON.stringify(storageTabs))
 
-    const setResult = index => result =>
-        setTabs([
-            ...tabs.slice(0, index),
-            { ...tabs[index], result },
-            ...tabs.slice(index + 2),
-        ])
+        _setTabs(tabs)
+    }
+
+    const setQuery = setValue({ key: 'query', tabs, setTabs })
+    const setResult = setValue({ key: 'result', tabs, setTabs })
+    const setType = setValue({ key: 'type', tabs, setTabs })
 
     return {
         tabs,
         setQuery,
         setResult,
+        setType,
         setActiveTab: index => setTabs(setActiveTab(tabs, index)),
         addTab: () => setTabs(addTab(tabs)),
     }

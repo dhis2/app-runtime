@@ -1,10 +1,10 @@
+import { Button, FieldGroup, Radio } from '@dhis2/ui'
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { Button, FieldGroup, Radio } from '@dhis2/ui'
-import styles from './QueryEditor.styles'
-import { useDataEngine } from '@dhis2/app-runtime'
+
 import { Editor } from './Editor'
 import i18n from '@dhis2/d2-i18n'
+import styles from './QueryEditor.styles'
 
 const defaultQuery = {
     me: {
@@ -26,42 +26,27 @@ const defaultMutation = {
 const getDefaultQueryByType = type =>
     JSON.stringify(type === 'query' ? defaultQuery : defaultMutation, null, 4)
 
-const stringify = obj => JSON.stringify(obj, undefined, 2)
-
-export const QueryEditor = ({ query, setQuery, setResult }) => {
-    const [type, setType] = useState('query')
+export const QueryEditor = ({
+    query,
+    execute,
+    setQuery,
+    setResult,
+    setType,
+    type,
+}) => {
     const [error, setError] = useState(null)
-    const [loading, setLoading] = useState(false)
-    const engine = useDataEngine()
 
     const onClick = () => {
-        setLoading(true)
-        setResult('...')
-        setError(null)
-
         try {
+            setError(null)
+
             const parsed = JSON.parse(
                 query === null ? getDefaultQueryByType(type) : query
             )
-            const promise =
-                type === 'query' ? engine.query(parsed) : engine.mutate(parsed)
 
-            promise
-                .then(result => {
-                    setLoading(false)
-                    setResult(stringify(result))
-                })
-                .catch(error => {
-                    setLoading(false)
-                    setError(String(error))
-                    setResult(
-                        `ERROR: ${error.message}\n${stringify(error.details)}`
-                    )
-                })
+            execute({ query: parsed, type }).then(setResult)
         } catch (e) {
             setError(`JSON Parse Error: ${e}`)
-            setLoading(false)
-            setResult('ERROR: ')
         }
     }
 
@@ -85,24 +70,23 @@ export const QueryEditor = ({ query, setQuery, setResult }) => {
             {error && <span className="error">{error}</span>}
             <div className="controls">
                 <div className="radio-group">
-                    <FieldGroup
-                        name="type"
-                        label="Type"
-                        onChange={({ value }) =>
-                            console.log(value) || setType(value)
-                        }
-                        value={type}
-                    >
-                        <Radio label={i18n.t('Query')} value="query" />
-                        <Radio label={i18n.t('Mutation')} value="mutation" />
+                    <FieldGroup name="type" label="Type">
+                        <Radio
+                            checked={type === 'query'}
+                            label={i18n.t('Query')}
+                            value="query"
+                            onChange={({ value }) => setType(value)}
+                        />
+
+                        <Radio
+                            checked={type === 'mutation'}
+                            label={i18n.t('Mutation')}
+                            value="mutation"
+                            onChange={({ value }) => setType(value)}
+                        />
                     </FieldGroup>
                 </div>
-                <Button
-                    className="execute-button"
-                    primary
-                    disabled={loading}
-                    onClick={onClick}
-                >
+                <Button className="execute-button" primary onClick={onClick}>
                     {i18n.t('Execute')}
                 </Button>
             </div>
@@ -111,7 +95,10 @@ export const QueryEditor = ({ query, setQuery, setResult }) => {
 }
 
 QueryEditor.propTypes = {
+    execute: PropTypes.func.isRequired,
     setQuery: PropTypes.func.isRequired,
     setResult: PropTypes.func.isRequired,
+    setType: PropTypes.func.isRequired,
+    type: PropTypes.string.isRequired,
     query: PropTypes.string,
 }
