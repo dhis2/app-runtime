@@ -1,10 +1,11 @@
-import { Button, FieldGroup, Radio } from '@dhis2/ui'
+import { Button, Radio } from '@dhis2/ui'
+import { useConfig } from '@dhis2/app-runtime'
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
 import { Editor } from './Editor'
 import i18n from '@dhis2/d2-i18n'
-import styles from './QueryEditor.styles'
+import styles from './QueryEditor.module.css'
 
 const defaultQuery = {
     me: {
@@ -34,6 +35,7 @@ export const QueryEditor = ({
     setType,
     type,
 }) => {
+    const { baseUrl, apiVersion } = useConfig()
     const [error, setError] = useState(null)
 
     const onClick = () => {
@@ -57,8 +59,7 @@ export const QueryEditor = ({
         event.ctrlKey && event.key === 'Enter' && onClick()
 
     return (
-        <div className="editor" onKeyPress={onEnterPress}>
-            <style jsx>{styles}</style>
+        <div className={styles.editor} onKeyPress={onEnterPress}>
             <Editor
                 value={currentQuery}
                 theme="monokai"
@@ -67,11 +68,17 @@ export const QueryEditor = ({
                 placeholder={i18n.t('Enter a query here...')}
                 focus={true}
             />
-            {error && <span className="error">{error}</span>}
-            <div className="controls">
-                <div className="radio-group">
-                    <FieldGroup name="type" label="Type">
+
+            {error && <span className={styles.error}>{error}</span>}
+
+            <div className={styles.controls}>
+                <div className={styles.queryMetaData}>
+                    <div className={styles.radioFields}>
+                        <span className={styles.queryTypeLabel}>Type:</span>
+
                         <Radio
+                            name="type"
+                            className={styles.typeInputQuery}
                             checked={type === 'query'}
                             label={i18n.t('Query')}
                             value="query"
@@ -79,16 +86,41 @@ export const QueryEditor = ({
                         />
 
                         <Radio
+                            name="type"
                             checked={type === 'mutation'}
                             label={i18n.t('Mutation')}
                             value="mutation"
                             onChange={({ value }) => setType(value)}
                         />
-                    </FieldGroup>
+                    </div>
+
+                    <p className={styles.server}>
+                        <span className={styles.serverLabel}>Server url:</span>
+
+                        <a
+                            className={styles.serverLink}
+                            href={baseUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            {baseUrl}
+                        </a>
+
+                        <br />
+
+                        <span className={styles.apiVersionLabel}>
+                            Api version:
+                        </span>
+
+                        {apiVersion}
+                    </p>
                 </div>
-                <Button className="execute-button" primary onClick={onClick}>
-                    {i18n.t('Execute')}
-                </Button>
+
+                <div>
+                    <Button primary onClick={onClick}>
+                        {i18n.t('Execute')}
+                    </Button>
+                </div>
             </div>
         </div>
     )
