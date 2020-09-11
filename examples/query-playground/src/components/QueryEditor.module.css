@@ -1,0 +1,63 @@
+.editor {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.error {
+    padding: 8px;
+    color: white;
+    background-color: darkred;
+    width: 100%;
+    text-align: center;
+}
+
+.controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 8px;
+    align-items: top;
+}
+
+.controls :global([data-test="dhis2-uicore-field-content"]) {
+    display: flex;
+}
+
+.queryMetaData {}
+
+.radioFields {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.queryTypeLabel {
+    margin-right: 8px;
+}
+
+.typeInputQuery {
+    margin-right: 8px;
+}
+
+.server {
+    font-size: 14px;
+    margin: 0;
+}
+
+.serverLabel::after {
+    content: ' ';
+}
+
+.serverLink {
+    color: var(--colors-blue700);
+    text-decoration: none;
+}
+
+.serverLink:hover {
+    text-decoration: underline;
+}
+
+.apiVersionLabel:after {
+    content: ' ';
+}
