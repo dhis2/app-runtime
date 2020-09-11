@@ -8,6 +8,8 @@ export const useExecuteQuery = () => {
     const [loading, setLoading] = useState(false)
 
     const execute = ({ query, type }) => {
+        setLoading(true)
+
         const promise =
             type === 'query' ? engine.query(query) : engine.mutate(query)
 

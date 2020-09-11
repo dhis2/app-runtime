@@ -1,13 +1,17 @@
 .container {
-    display: flex;
-    position: absolute;
-    top: 48px;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
+    height: 100%;
+    position: relative;
+}
+
+.contentWrapper {
+    height: 100%;
     display: flex;
     flex-direction: column;
     font-size: 1rem;
+}
+
+.loading {
+    filter: blur(1px);
 }
 
 .tabControls {
