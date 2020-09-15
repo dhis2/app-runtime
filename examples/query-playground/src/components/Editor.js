@@ -13,6 +13,7 @@ export const Editor = props => (
         mode="json"
         theme="github"
         editorProps={{ $blockScrolling: true }}
+        showPrintMargin={false}
         width="100%"
         height="100%"
         {...props}

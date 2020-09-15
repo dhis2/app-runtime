@@ -1,5 +1,4 @@
 import { Button, Radio } from '@dhis2/ui'
-import { useConfig } from '@dhis2/app-runtime'
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
@@ -35,31 +34,33 @@ export const QueryEditor = ({
     setType,
     type,
 }) => {
-    const { baseUrl, apiVersion } = useConfig()
     const [error, setError] = useState(null)
-
-    const onClick = () => {
-        try {
-            setError(null)
-
-            const parsed = JSON.parse(
-                query === null ? getDefaultQueryByType(type) : query
-            )
-
-            execute({ query: parsed, type }).then(setResult)
-        } catch (e) {
-            setError(`JSON Parse Error: ${e}`)
-        }
-    }
 
     const currentQuery =
         typeof query === 'string' ? query : getDefaultQueryByType(type)
 
-    const onEnterPress = event =>
-        (event.ctrlKey || event.metaKey) && event.key === 'Enter' && onClick()
+    const onExecute = () => {
+        setError(null)
+
+        let parsed
+        try {
+            parsed = JSON.parse(currentQuery)
+        } catch (e) {
+            setError(`JSON Parse Error: ${e}`)
+            return
+        }
+        execute({ query: parsed, type }).then(setResult)
+    }
+
+    const onKeyPress = event => {
+        if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+            onExecute()
+            event.stopPropagation()
+        }
+    }
 
     return (
-        <div className={styles.editor} onKeyPress={onEnterPress}>
+        <div className={styles.editor} onKeyPress={onKeyPress}>
             <Editor
                 value={currentQuery}
                 theme="monokai"
@@ -93,31 +94,10 @@ export const QueryEditor = ({
                             onChange={({ value }) => setType(value)}
                         />
                     </div>
-
-                    <p className={styles.server}>
-                        <span className={styles.serverLabel}>Server url:</span>
-
-                        <a
-                            className={styles.serverLink}
-                            href={baseUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            {baseUrl}
-                        </a>
-
-                        <br />
-
-                        <span className={styles.apiVersionLabel}>
-                            Api version:
-                        </span>
-
-                        {apiVersion}
-                    </p>
                 </div>
 
                 <div>
-                    <Button primary onClick={onClick}>
+                    <Button primary onClick={onExecute}>
                         {i18n.t('Execute')}
                     </Button>
                 </div>

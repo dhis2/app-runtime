@@ -17,19 +17,16 @@
     flex-direction: row;
     justify-content: space-between;
     padding: 8px;
-    align-items: top;
+    align-items: center;
 }
 
 .controls :global([data-test="dhis2-uicore-field-content"]) {
     display: flex;
 }
 
-.queryMetaData {}
-
 .radioFields {
     display: flex;
     align-items: center;
-    margin-bottom: 8px;
 }
 
 .queryTypeLabel {
@@ -38,26 +35,4 @@
 
 .typeInputQuery {
     margin-right: 8px;
-}
-
-.server {
-    font-size: 14px;
-    margin: 0;
-}
-
-.serverLabel::after {
-    content: ' ';
-}
-
-.serverLink {
-    color: var(--colors-blue700);
-    text-decoration: none;
-}
-
-.serverLink:hover {
-    text-decoration: underline;
-}
-
-.apiVersionLabel:after {
-    content: ' ';
 }

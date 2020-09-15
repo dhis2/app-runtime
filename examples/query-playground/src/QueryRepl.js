@@ -9,6 +9,7 @@ import { useExecuteQuery } from './hooks/useExecuteQuery'
 import styles from './QueryRepl.module.css'
 
 import './locales'
+import { ServerDetails } from './components/ServerDetails'
 
 export const QueryRepl = () => {
     const { loading, execute } = useExecuteQuery()
@@ -20,10 +21,11 @@ export const QueryRepl = () => {
         setQuery,
         setResult,
         setType,
+        activeTab,
         tabs,
     } = useTabs()
-    const activeTabIndex = tabs.findIndex(({ active }) => active)
-    const activeTab = tabs[activeTabIndex]
+
+    const currentTab = tabs[activeTab]
 
     return (
         <div className={styles.container}>
@@ -34,25 +36,27 @@ export const QueryRepl = () => {
                     [styles.loading]: loading,
                 })}
             >
-                <div className={styles.tabControls}>
+                <div className={styles.topBar}>
                     <TabControls
+                        activeTab={activeTab}
                         tabs={tabs}
                         onAddTab={addTab}
                         onNameChange={setName}
                         onRemoveTab={removeTab}
                         onTabClick={setActiveTab}
                     />
+                    <ServerDetails />
                 </div>
 
-                <div className={styles.tabs}>
+                <div className={styles.content}>
                     <QueryTab
-                        type={activeTab.type}
-                        query={activeTab.query}
-                        result={activeTab.result}
-                        active={activeTab.active}
-                        setQuery={setQuery(activeTabIndex)}
-                        setResult={setResult(activeTabIndex)}
-                        setType={setType(activeTabIndex)}
+                        type={currentTab.type}
+                        query={currentTab.query}
+                        result={currentTab.result}
+                        active={currentTab.active}
+                        setQuery={setQuery}
+                        setResult={setResult}
+                        setType={setType}
                         execute={execute}
                     />
                 </div>

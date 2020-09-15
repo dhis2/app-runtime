@@ -7,21 +7,21 @@ export const useExecuteQuery = () => {
     const engine = useDataEngine()
     const [loading, setLoading] = useState(false)
 
-    const execute = ({ query, type }) => {
+    const execute = async ({ query, type }) => {
         setLoading(true)
 
-        const promise =
-            type === 'query' ? engine.query(query) : engine.mutate(query)
+        try {
+            const result =
+                type === 'query'
+                    ? await engine.query(query)
+                    : await engine.mutate(query)
 
-        return promise
-            .then(result => {
-                setLoading(false)
-                return stringify(result)
-            })
-            .catch(error => {
-                setLoading(false)
-                return `ERROR: ${error.message}\n${stringify(error.details)}`
-            })
+            setLoading(false)
+            return stringify(result)
+        } catch (error) {
+            setLoading(false)
+            return `ERROR: ${error.message}\n${stringify(error.details)}`
+        }
     }
 
     return { loading, execute }

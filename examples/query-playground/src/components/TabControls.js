@@ -10,6 +10,7 @@ import {
     TabBar,
     Tab,
 } from '@dhis2/ui'
+import i18n from '@dhis2/d2-i18n'
 import React, { useState } from 'react'
 import styles from './TabControls.module.css'
 
@@ -52,16 +53,21 @@ const TabControl = ({
             <>
                 {`${name} `}
 
-                <span onClick={onEditIconClick} className={styles.editButton}>
-                    edit
-                </span>
+                {active && (
+                    <span
+                        onClick={onEditIconClick}
+                        className={styles.editButton}
+                    >
+                        &#9998;
+                    </span>
+                )}
 
                 {!isOnly && (
                     <span
                         onClick={onRemoveIconClick}
                         className={styles.editButton}
                     >
-                        x
+                        &times;
                     </span>
                 )}
 
@@ -83,10 +89,12 @@ const TabControl = ({
                                 <ModalActions>
                                     <ButtonStrip>
                                         <Button primary type="submit">
-                                            Save
+                                            {i18n.t('Save')}
                                         </Button>
 
-                                        <Button onClick={cancel}>Cancel</Button>
+                                        <Button onClick={cancel}>
+                                            {i18n.t('Cancel')}
+                                        </Button>
                                     </ButtonStrip>
                                 </ModalActions>
                             </form>
@@ -112,6 +120,7 @@ TabControl.propTypes = {
 }
 
 export const TabControls = ({
+    activeTab,
     tabs,
     onAddTab,
     onRemoveTab,
@@ -122,15 +131,15 @@ export const TabControls = ({
 
     return (
         <TabBar>
-            {tabs.map(({ active, id, name }, index) => (
+            {tabs.map(({ id, name }, index) => (
                 <TabControl
                     key={id}
-                    active={active}
+                    active={index === activeTab}
                     edit={index === edit}
                     index={index}
                     isOnly={tabs.length === 1}
                     name={name}
-                    onNameChange={onNameChange(index)}
+                    onNameChange={onNameChange}
                     onClick={() => onTabClick(index)}
                     onEditClick={() => setEdit(index)}
                     onEditDoneClick={() => setEdit(-1)}
@@ -138,15 +147,15 @@ export const TabControls = ({
                 />
             ))}
 
-            <Tab onClick={onAddTab}>+ (add tab)</Tab>
+            <Tab onClick={onAddTab}>+ {i18n.t('(add tab)')}</Tab>
         </TabBar>
     )
 }
 
 TabControls.propTypes = {
+    activeTab: PropTypes.number.isRequired,
     tabs: PropTypes.arrayOf(
         PropTypes.shape({
-            active: PropTypes.bool.isRequired,
             id: PropTypes.number.isRequired,
             name: PropTypes.string.isRequired,
         })

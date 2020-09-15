@@ -1,5 +1,5 @@
 import { useConfig } from '@dhis2/app-runtime'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useReducer } from 'react'
 
 /*
  * If the shape of "tabTemplate" changes, by increasing the version number,
@@ -7,152 +7,183 @@ import { useEffect, useMemo, useState } from 'react'
  *
  * Is a string as localStorage only stores strings
  */
-const VERSION = '1'
+const VERSION = '2'
 
 const tabTemplate = {
-    active: false,
     query: null,
     type: 'query',
     name: 'Query',
     result: '',
 }
 
-const setActiveTab = (tabs, index) =>
-    tabs.map((tab, curIndex) => ({
-        ...tab,
-        active: curIndex === index,
-    }))
-
-const addTab = (tabs, lastId, incLastId) => {
-    const withNewTab = [
-        ...tabs.map(tab => ({ ...tab, active: false })),
-        { ...tabTemplate, active: true, id: lastId + 1 },
-    ]
-
-    incLastId()
-
-    return withNewTab
+const spliceTabs = (tabs, index, updatedTab) => {
+    const before = index === 0 ? [] : tabs.slice(0, index)
+    const after = tabs.slice(index + 1)
+    const updated = updatedTab ? [updatedTab] : []
+    return [...before, ...updated, ...after]
 }
 
-const setNextTabToActive = (index, tabs) => {
-    // if new active tab exists
-    if (tabs[index]) {
-        if (index === 0) {
-            return [{ ...tabs[0], active: true }, ...tabs.slice(1)]
+const newTab = id => {
+    return { ...tabTemplate, id, name: `Query ${id}` }
+}
+
+const initTabState = storageNameSpace => {
+    if (localStorage.getItem(storageNameSpace)) {
+        const { version, ...storedState } = JSON.parse(
+            localStorage.getItem(storageNameSpace)
+        )
+        if (version === VERSION && storedState.tabs?.length) {
+            return storedState
         }
-
-        return [
-            ...tabs.slice(0, index),
-            { ...tabs[index], active: true },
-            ...tabs.slice(index + 2),
-        ]
     }
 
-    return [...tabs.slice(0, -1), { ...tabs[tabs.length - 1], active: true }]
-}
-
-const removeTab = (index, tabs) => {
-    const tabIsActive = tabs[index].active
-
-    const afterRemoval =
-        index === 0
-            ? tabs.slice(1)
-            : [...tabs.slice(0, index), ...tabs.slice(index + 1)]
-
-    const withActive = !tabIsActive
-        ? afterRemoval
-        : // index = next tab
-          setNextTabToActive(index, afterRemoval)
-
-    return withActive
-}
-
-const setValue = ({ key, tabs, setTabs }) => index => value => {
-    const update = { ...tabs[index], [key]: value }
-
-    if (index === 0) {
-        return setTabs([update, ...tabs.slice(1)])
+    return {
+        activeTab: 0,
+        tabs: [newTab(1)],
     }
-
-    return setTabs([...tabs.slice(0, index), update, ...tabs.slice(index + 1)])
 }
-
-const useLastId = storageNameSpace => {
-    const storageLastId = `${storageNameSpace}.lastId`
-    const lastStoredId = localStorage.getItem(storageLastId) || 0
-    const [lastId, setLastId] = useState(parseInt(lastStoredId, 10))
-
-    const incLastId = () => {
-        const newLastId = lastId + 1
-        localStorage.setItem(storageLastId, newLastId)
-        setLastId(newLastId)
+const nextAvailableId = tabs => {
+    let candidate = 0
+    while (tabs.some(tab => tab.id === candidate)) {
+        ++candidate
     }
-
-    return { lastId, incLastId }
+    return candidate
 }
 
-const useShouldReset = (storageNameSpace, lastId) => {
-    const storageVersionName = `${storageNameSpace}.version`
-    const lastVersion = localStorage.getItem(storageVersionName)
+const reducer = (state, action) => {
+    switch (action.type) {
+        case 'add': {
+            return {
+                ...state,
+                activeTab: state.tabs.length,
+                tabs: [...state.tabs, newTab(nextAvailableId(state.tabs))],
+            }
+        }
+        case 'remove': {
+            const index = action.payload.index
+            return {
+                ...state,
+                activeTab: Math.min(
+                    index < state.activeTab
+                        ? state.activeTab - 1
+                        : state.activeTab,
+                    state.tabs.length - 2
+                ),
+                tabs: spliceTabs(state.tabs, index),
+            }
+        }
+        case 'edit': {
+            const index = action.payload.index
+            const prevTab = state.tabs[index]
+            if (!prevTab) {
+                return state
+            }
+            return {
+                ...state,
+                tabs: spliceTabs(state.tabs, index, {
+                    ...prevTab,
+                    ...action.payload.updatedTab,
+                }),
+            }
+        }
+        case 'setActive': {
+            return {
+                ...state,
+                activeTab: Math.max(
+                    0,
+                    Math.min(state.tabs.length - 1, action.payload.index)
+                ),
+            }
+        }
+    }
+}
+
+const prepareForStorage = state => ({
+    version: VERSION,
+    ...state,
+    tabs: state.tabs.map(tab => ({ ...tab, result: '' })),
+})
+
+const useTabState = storageNameSpace => {
+    const [state, dispatch] = useReducer(
+        reducer,
+        storageNameSpace,
+        initTabState
+    )
 
     useEffect(() => {
-        localStorage.setItem(storageVersionName, VERSION)
-    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+        localStorage.setItem(
+            storageNameSpace,
+            JSON.stringify(prepareForStorage(state))
+        )
+    }, [storageNameSpace, state])
 
-    return !lastVersion || lastVersion !== VERSION || !lastId
-}
+    const addTab = () => {
+        dispatch({
+            type: 'add',
+        })
+    }
 
-const storeTabs = (storageNameSpace, tabs) => {
-    // Don't store results
-    const storageTabs = tabs.map(tab => ({ ...tab, result: '' }))
-    localStorage.setItem(storageNameSpace, JSON.stringify(storageTabs))
-}
+    const removeTab = index => {
+        dispatch({
+            type: 'remove',
+            payload: {
+                index,
+            },
+        })
+    }
 
-const useTabState = ({ shouldReset, storageNameSpace, lastId, incLastId }) => {
-    // use useMemo so `addTag` does not fire on every render
-    const initialState = useMemo(() => {
-        return !shouldReset && localStorage.getItem(storageNameSpace)
-            ? JSON.parse(localStorage.getItem(storageNameSpace))
-            : addTab([], lastId, incLastId)
-    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    const editTab = (index, updatedTab) => {
+        dispatch({
+            type: 'edit',
+            payload: {
+                index,
+                updatedTab,
+            },
+        })
+    }
 
-    return useState(initialState)
+    const setActiveTab = index => {
+        dispatch({
+            type: 'setActive',
+            payload: {
+                index,
+            },
+        })
+    }
+
+    return [
+        state,
+        {
+            addTab,
+            removeTab,
+            editTab,
+            setActiveTab,
+        },
+    ]
 }
 
 export const useTabs = () => {
     const { baseUrl } = useConfig()
-    const storageNameSpace = `${baseUrl}-playground`
-    const { lastId, incLastId } = useLastId(storageNameSpace)
-    const shouldReset = useShouldReset(storageNameSpace, lastId)
-    const [tabs, _setTabs] = useTabState({
-        incLastId,
-        lastId,
-        shouldReset,
-        storageNameSpace,
-    })
+    const storageNameSpace = `playground-${baseUrl}`
+    const [state, { addTab, removeTab, editTab, setActiveTab }] = useTabState(
+        storageNameSpace
+    )
 
-    const setTabs = tabs => {
-        storeTabs(storageNameSpace, tabs)
-        _setTabs(tabs)
-    }
-
-    useEffect(() => {
-        storeTabs(storageNameSpace, tabs)
-    }, [shouldReset]) // eslint-disable-line react-hooks/exhaustive-deps
-
-    const setName = setValue({ key: 'name', tabs, setTabs })
-    const setQuery = setValue({ key: 'query', tabs, setTabs })
-    const setResult = setValue({ key: 'result', tabs, setTabs })
-    const setType = setValue({ key: 'type', tabs, setTabs })
+    const setName = name => editTab(state.activeTab, { name })
+    const setQuery = query => editTab(state.activeTab, { query })
+    const setResult = result => editTab(state.activeTab, { result })
+    const setType = type => editTab(state.activeTab, { type })
 
     return {
-        tabs,
+        activeTab: state.activeTab,
+        tabs: state.tabs,
         setQuery,
         setResult,
         setType,
         setName,
-        setActiveTab: index => setTabs(setActiveTab(tabs, index)),
-        addTab: () => setTabs(addTab(tabs, lastId, incLastId)),
-        removeTab: index => setTabs(removeTab(index, tabs)),
+        setActiveTab,
+        addTab,
+        removeTab,
     }
 }
