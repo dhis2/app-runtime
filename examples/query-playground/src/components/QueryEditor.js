@@ -56,7 +56,7 @@ export const QueryEditor = ({
         typeof query === 'string' ? query : getDefaultQueryByType(type)
 
     const onEnterPress = event =>
-        event.ctrlKey && event.key === 'Enter' && onClick()
+        (event.ctrlKey || event.metaKey) && event.key === 'Enter' && onClick()
 
     return (
         <div className={styles.editor} onKeyPress={onEnterPress}>
