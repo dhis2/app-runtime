@@ -1,7 +1,7 @@
 {
     "name": "@dhis2/app-runtime",
     "description": "A singular runtime dependency for applications on the DHIS2 platform",
-    "version": "2.2.2",
+    "version": "2.3.0",
     "main": "build/cjs/lib.js",
     "module": "build/es/lib.js",
     "types": "build/types/index.d.ts",
@@ -19,8 +19,8 @@
         "build/**"
     ],
     "dependencies": {
-        "@dhis2/app-service-config": "2.2.2",
-        "@dhis2/app-service-data": "2.2.2"
+        "@dhis2/app-service-config": "2.3.0",
+        "@dhis2/app-service-data": "2.3.0"
     },
     "peerDependencies": {
         "prop-types": "^15.7.2",

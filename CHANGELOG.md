@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/dhis2/app-runtime/compare/v2.2.2...v2.3.0) (2020-09-16)
+
+
+### Features
+
+* add tabs, query persistance and ctrl/cmd+enter query execution ([66ff1a5](https://github.com/dhis2/app-runtime/commit/66ff1a550fb10e79c2736549bca16c03df2fb59d))
+
 ## [2.2.2](https://github.com/dhis2/app-runtime/compare/v2.2.1...v2.2.2) (2020-06-11)
 
 
