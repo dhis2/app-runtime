@@ -1,23 +1,13 @@
-import React, { useState } from 'react'
-import styles from './App.styles'
+import { CssVariables } from '@dhis2/ui'
+import React from 'react'
 
-import { QueryEditor } from './components/QueryEditor'
-import { QueryResults } from './components/QueryResults'
+import { QueryRepl } from './QueryRepl'
 
-import './locales'
-
-const QueryRepl = () => {
-    const [result, setResult] = useState()
-
+export default function App() {
     return (
-        <div className="container">
-            <style jsx>{styles}</style>
-            <div className="inner">
-                <QueryEditor setResult={setResult} />
-                <QueryResults result={result} />
-            </div>
-        </div>
+        <>
+            <CssVariables colors />
+            <QueryRepl />
+        </>
     )
 }
-
-export default QueryRepl

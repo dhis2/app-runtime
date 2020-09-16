@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2019-09-30T12:03:32.004Z\n"
-"PO-Revision-Date: 2019-09-30T12:03:32.004Z\n"
+"POT-Creation-Date: 2020-09-15T18:23:56.679Z\n"
+"PO-Revision-Date: 2020-09-15T18:23:56.679Z\n"
 
 msgid "Enter a query here..."
 msgstr ""
@@ -21,4 +21,19 @@ msgid "Execute"
 msgstr ""
 
 msgid "Results will appear here..."
+msgstr ""
+
+msgid "Server"
+msgstr ""
+
+msgid "API version"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "(add tab)"
 msgstr ""

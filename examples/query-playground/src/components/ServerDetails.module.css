@@ -1,0 +1,29 @@
+.server {
+    font-size: 14px;
+    color: var(--colors-grey600);
+    margin: 0 8px;
+    text-align: right;
+}
+
+.serverLabel {
+    font-weight: bold;
+}
+.serverLabel::after {
+    content: ' ';
+}
+
+.serverLink {
+    color: var(--colors-blue600);
+    text-decoration: none;
+}
+
+.serverLink:hover {
+    text-decoration: underline;
+}
+
+.apiVersionLabel {
+    font-weight: bold;
+}
+.apiVersionLabel:after {
+    content: ' ';
+}

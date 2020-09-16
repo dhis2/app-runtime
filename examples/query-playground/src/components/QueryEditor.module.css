@@ -1,0 +1,38 @@
+.editor {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.error {
+    padding: 8px;
+    color: white;
+    background-color: darkred;
+    width: 100%;
+    text-align: center;
+}
+
+.controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 8px;
+    align-items: center;
+}
+
+.controls :global([data-test="dhis2-uicore-field-content"]) {
+    display: flex;
+}
+
+.radioFields {
+    display: flex;
+    align-items: center;
+}
+
+.queryTypeLabel {
+    margin-right: 8px;
+}
+
+.typeInputQuery {
+    margin-right: 8px;
+}

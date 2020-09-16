@@ -1,0 +1,27 @@
+.container {
+    height: 100%;
+    position: relative;
+}
+
+.contentWrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    font-size: 1rem;
+}
+
+.loading {
+    filter: blur(1px);
+}
+
+.topBar {
+    flex-shrink: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.content {
+    flex-grow: 1;
+}
