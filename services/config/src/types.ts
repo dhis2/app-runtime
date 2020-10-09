@@ -13,6 +13,6 @@ interface SystemInfo {
 export interface Config {
     baseUrl: string
     apiVersion: number
-    serverVersion: ServerVersion
-    systemInfo: SystemInfo
+    serverVersion?: ServerVersion
+    systemInfo?: SystemInfo
 }
