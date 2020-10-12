@@ -2,7 +2,7 @@ type ServerVersion = {
     major: number
     minor: number
     patch?: number
-    tag: string
+    tag?: string
 }
 
 interface SystemInfo {
