@@ -1,3 +1,10 @@
+# [2.4.0](https://github.com/dhis2/app-runtime/compare/v2.3.0...v2.4.0) (2020-10-12)
+
+
+### Features
+
+* add explicit support for systemInfo and serverVersion config props ([#652](https://github.com/dhis2/app-runtime/issues/652)) ([15b8344](https://github.com/dhis2/app-runtime/commit/15b8344b829d88552f0dae337c97f83a902585d1))
+
 # [2.3.0](https://github.com/dhis2/app-runtime/compare/v2.2.2...v2.3.0) (2020-09-16)
 
 
