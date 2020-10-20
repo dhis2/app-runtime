@@ -1,6 +1,7 @@
 import React from 'react'
 import { ConfigProvider } from '@dhis2/app-service-config'
 import { DataProvider } from '@dhis2/app-service-data'
+import { AlertsProvider } from '@dhis2/app-service-alerts'
 import { Config } from '@dhis2/app-service-config/build/types/types'
 
 type ProviderInput = {
@@ -9,7 +10,9 @@ type ProviderInput = {
 }
 export const Provider = ({ config, children }: ProviderInput) => (
     <ConfigProvider config={config}>
-        <DataProvider>{children}</DataProvider>
+        <AlertsProvider>
+            <DataProvider>{children}</DataProvider>
+        </AlertsProvider>
     </ConfigProvider>
 )
 

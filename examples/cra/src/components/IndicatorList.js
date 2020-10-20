@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDataQuery } from '@dhis2/app-runtime'
+import { useAlert, useDataQuery } from '@dhis2/app-runtime'
 import { Indicator } from './Indicator'
 import { AddButton } from './AddButton'
 
@@ -16,6 +16,7 @@ const query = {
 
 export const IndicatorList = () => {
     const { loading, error, data, refetch } = useDataQuery(query)
+    const { show } = useAlert(id => `Created indicator ${id}`)
     return (
         <div>
             <h3>Indicators</h3>
@@ -44,7 +45,12 @@ export const IndicatorList = () => {
                     >
                         &lt;- Previous
                     </button>
-                    <AddButton onCreate={() => refetch()} />
+                    <AddButton
+                        onCreate={result => {
+                            show(result.response.uid)
+                            refetch()
+                        }}
+                    />
                     <button
                         disabled={
                             data.indicators.pager.page ===
