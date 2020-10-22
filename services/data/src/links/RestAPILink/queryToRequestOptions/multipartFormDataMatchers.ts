@@ -7,10 +7,16 @@ import { ResolvedResourceQuery, FetchType } from '../../../engine'
  */
 
 // POST to 'fileResources' (upload a file resource)
-export const fileResourceUpload = (
+export const isFileResourceUpload = (
     type: FetchType,
     { resource }: ResolvedResourceQuery
 ) => type === 'create' && resource === 'fileResources'
+
+// POST to 'messageConversations/attachments' (upload a message conversation attachment)
+export const isMessageConversationAttachment = (
+    type: FetchType,
+    { resource }: ResolvedResourceQuery
+) => type === 'create' && resource === 'messageConversations/attachments'
 
 // POST to `staticContent/${key}` (upload staticContent: logo_banner | logo_front)
 export const isStaticContentUpload = (
@@ -20,3 +26,9 @@ export const isStaticContentUpload = (
     const pattern = /^staticContent\/(?:logo_banner|logo_front)$/
     return type === 'create' && pattern.test(resource)
 }
+
+// POST to 'apps' (install an app)
+export const isAppInstall = (
+    type: FetchType,
+    { resource }: ResolvedResourceQuery
+) => type === 'create' && resource === 'apps'

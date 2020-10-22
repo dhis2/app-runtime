@@ -1,20 +1,39 @@
 import {
-    fileResourceUpload,
+    isFileResourceUpload,
+    isMessageConversationAttachment,
     isStaticContentUpload,
+    isAppInstall,
 } from './multipartFormDataMatchers'
 
-describe('fileResourceUpload', () => {
+describe('isFileResourceUpload', () => {
     it('returns true for a POST to "fileResources"', () => {
         expect(
-            fileResourceUpload('create', {
+            isFileResourceUpload('create', {
                 resource: 'fileResources',
             })
         ).toEqual(true)
     })
     it('retuns false for a POST to a different resource', () => {
         expect(
-            fileResourceUpload('create', {
+            isFileResourceUpload('create', {
                 resource: 'notFileResources',
+            })
+        ).toEqual(false)
+    })
+})
+
+describe('isMessageConversationAttachment', () => {
+    it('returns true for a POST to "messageConversations/attachments"', () => {
+        expect(
+            isMessageConversationAttachment('create', {
+                resource: 'messageConversations/attachments',
+            })
+        ).toEqual(true)
+    })
+    it('retuns false for a POST to a different resource', () => {
+        expect(
+            isMessageConversationAttachment('create', {
+                resource: 'messageConversations/notAttachments',
             })
         ).toEqual(false)
     })
@@ -39,6 +58,23 @@ describe('isStaticContentUpload', () => {
         expect(
             isStaticContentUpload('create', {
                 resource: 'staticContent/no_logo',
+            })
+        ).toEqual(false)
+    })
+})
+
+describe('isAppInstall', () => {
+    it('returns true for a POST to "fileResources"', () => {
+        expect(
+            isAppInstall('create', {
+                resource: 'apps',
+            })
+        ).toEqual(true)
+    })
+    it('retuns false for a POST to a different resource', () => {
+        expect(
+            isAppInstall('create', {
+                resource: 'notApps',
             })
         ).toEqual(false)
     })
