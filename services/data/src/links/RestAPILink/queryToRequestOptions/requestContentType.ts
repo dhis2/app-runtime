@@ -28,6 +28,22 @@ const resourceExpectsMultipartFormData = (
         multipartFormDataMatcher(type, query)
     )
 
+export const FORM_DATA_ERROR_MSG =
+    'Could not convert data to FormData: object does not have own enumerable string-keyed properties'
+
+const convertToFormData = (data: FormData) => {
+    const dataEntries = Object.entries(data)
+
+    if (dataEntries.length === 0) {
+        throw new Error(FORM_DATA_ERROR_MSG)
+    }
+
+    return dataEntries.reduce((formData, [key, value]) => {
+        formData.append(key, value)
+        return formData
+    }, new FormData())
+}
+
 export const requestContentType = (
     type: FetchType,
     query: ResolvedResourceQuery
@@ -70,13 +86,7 @@ export const requestBodyForContentType = (
     }
 
     if (contentType === 'multipart/form-data') {
-        return Object.entries(data as FormData).reduce(
-            (formData, [key, value]) => {
-                formData.append(key, value)
-                return formData
-            },
-            new FormData()
-        )
+        return convertToFormData(data)
     }
 
     // 'text/plain'

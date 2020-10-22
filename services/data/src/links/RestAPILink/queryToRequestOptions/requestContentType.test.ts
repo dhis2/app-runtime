@@ -2,6 +2,7 @@ import {
     requestContentType,
     requestHeadersForContentType,
     requestBodyForContentType,
+    FORM_DATA_ERROR_MSG,
 } from './requestContentType'
 
 describe('requestContentType', () => {
@@ -69,6 +70,14 @@ describe('requestBodyForContentType', () => {
         expect(result instanceof FormData).toEqual(true)
         expect(result.get('a')).toEqual('AAA')
         expect(result.get('file')).toEqual(file)
+    })
+    it('throws an error if contentType is "multipart/form-data" and data does have own string-keyd properties', () => {
+        expect(() => {
+            requestBodyForContentType('multipart/form-data', {
+                resource: 'test',
+                data: new File(['foo'], 'foo.txt', { type: 'text/plain' }),
+            })
+        }).toThrow(new Error(FORM_DATA_ERROR_MSG))
     })
     it('returns the data as received if contentType is "text/plain"', () => {
         const data = 'Something'
