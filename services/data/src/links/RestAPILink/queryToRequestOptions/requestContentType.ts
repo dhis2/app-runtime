@@ -66,7 +66,14 @@ export const requestContentType = (
 export const requestHeadersForContentType = (
     contentType: RequestContentType
 ) => {
-    if (!contentType) {
+    /*
+     * Explicitely setting Content-Type to 'multipart/form-data' produces
+     * a "multipart boundary not found" error. By not setting a Content-Type
+     * the browser will correctly set it for us and also apply multipart
+     * boundaries if the request body is an instance of FormData
+     * See https://stackoverflow.com/a/39281156/1143502
+     */
+    if (!contentType || contentType === 'multipart/form-data') {
         return undefined
     }
 

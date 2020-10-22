@@ -33,10 +33,19 @@ describe('requestHeadersForContentType', () => {
     it('returns undefined if contentType is null', () => {
         expect(requestHeadersForContentType(null)).toEqual(undefined)
     })
-    it('returns a headers object with the contentType supplied to it', () => {
-        const contentType = 'application/json'
-        expect(requestHeadersForContentType(contentType)).toEqual({
-            'Content-Type': contentType,
+    it('returns undefined if contentType is "multipart/form-data"', () => {
+        expect(requestHeadersForContentType('multipart/form-data')).toEqual(
+            undefined
+        )
+    })
+    it('returns a headers object with the contentType for "application/json"', () => {
+        expect(requestHeadersForContentType('application/json')).toEqual({
+            'Content-Type': 'application/json',
+        })
+    })
+    it('returns a headers object with the contentType for "text/plain"', () => {
+        expect(requestHeadersForContentType('text/plain')).toEqual({
+            'Content-Type': 'text/plain',
         })
     })
 })
