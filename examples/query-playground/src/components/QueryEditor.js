@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import { Button, Radio } from '@dhis2/ui'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { Button, RadioGroup, Radio } from '@dhis2/ui-core'
-import styles from './QueryEditor.styles'
-import { useDataEngine } from '@dhis2/app-runtime'
+
 import { Editor } from './Editor'
 import i18n from '@dhis2/d2-i18n'
+import styles from './QueryEditor.module.css'
 
 const defaultQuery = {
     me: {
@@ -23,99 +23,94 @@ const defaultMutation = {
     },
 }
 
-const stringify = obj => JSON.stringify(obj, undefined, 2)
+const getDefaultQueryByType = type =>
+    JSON.stringify(type === 'query' ? defaultQuery : defaultMutation, null, 4)
 
-export const QueryEditor = ({ setResult }) => {
-    const [type, setType] = useState('query')
-    const [query, setQuery] = useState('')
+export const QueryEditor = ({
+    query,
+    execute,
+    setQuery,
+    setResult,
+    setType,
+    type,
+}) => {
     const [error, setError] = useState(null)
-    const [loading, setLoading] = useState(false)
-    const engine = useDataEngine()
 
-    const [lastQuery, setLastQuery] = useState(stringify(defaultQuery))
-    const [lastMutation, setLastMutation] = useState(stringify(defaultMutation))
+    const currentQuery =
+        typeof query === 'string' ? query : getDefaultQueryByType(type)
 
-    useEffect(() => {
-        setResult()
-        if (type === 'query') {
-            if (query) {
-                setLastMutation(query)
-            }
-            setQuery(lastQuery)
-        } else {
-            if (query) {
-                setLastQuery(query)
-            }
-            setQuery(lastMutation)
-        }
-    }, [type]) // eslint-disable-line react-hooks/exhaustive-deps
-
-    const onClick = () => {
-        setLoading(true)
-        setResult('...')
+    const onExecute = () => {
         setError(null)
+
+        let parsed
         try {
-            const parsed = JSON.parse(query)
-            const promise =
-                type === 'query' ? engine.query(parsed) : engine.mutate(parsed)
-            promise
-                .then(result => {
-                    setLoading(false)
-                    setResult(stringify(result))
-                })
-                .catch(error => {
-                    setLoading(false)
-                    setError(String(error))
-                    setResult(
-                        `ERROR: ${error.message}\n${stringify(error.details)}`
-                    )
-                })
+            parsed = JSON.parse(currentQuery)
         } catch (e) {
             setError(`JSON Parse Error: ${e}`)
-            setLoading(false)
-            setResult('ERROR: ')
+            return
+        }
+        execute({ query: parsed, type }).then(setResult)
+    }
+
+    const onKeyPress = event => {
+        if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+            onExecute()
+            event.stopPropagation()
         }
     }
 
     return (
-        <div className="editor">
-            <style jsx>{styles}</style>
+        <div className={styles.editor} onKeyPress={onKeyPress}>
             <Editor
-                value={query}
+                value={currentQuery}
                 theme="monokai"
                 onChange={setQuery}
                 name="editor"
                 placeholder={i18n.t('Enter a query here...')}
                 focus={true}
             />
-            {error && <span className="error">{error}</span>}
-            <div className="controls">
-                <div className="radio-group">
-                    <RadioGroup
-                        name="type"
-                        label="Type"
-                        onChange={({ value }) =>
-                            console.log(value) || setType(value)
-                        }
-                        value={type}
-                    >
-                        <Radio label={i18n.t('Query')} value="query" />
-                        <Radio label={i18n.t('Mutation')} value="mutation" />
-                    </RadioGroup>
+
+            {error && <span className={styles.error}>{error}</span>}
+
+            <div className={styles.controls}>
+                <div className={styles.queryMetaData}>
+                    <div className={styles.radioFields}>
+                        <span className={styles.queryTypeLabel}>Type:</span>
+
+                        <Radio
+                            name="type"
+                            className={styles.typeInputQuery}
+                            checked={type === 'query'}
+                            label={i18n.t('Query')}
+                            value="query"
+                            onChange={({ value }) => setType(value)}
+                        />
+
+                        <Radio
+                            name="type"
+                            checked={type === 'mutation'}
+                            label={i18n.t('Mutation')}
+                            value="mutation"
+                            onChange={({ value }) => setType(value)}
+                        />
+                    </div>
                 </div>
-                <Button
-                    className="execute-button"
-                    primary
-                    disabled={loading}
-                    onClick={onClick}
-                >
-                    {i18n.t('Execute')}
-                </Button>
+
+                <div>
+                    <Button primary onClick={onExecute}>
+                        {i18n.t('Execute')}
+                    </Button>
+                </div>
             </div>
         </div>
     )
 }
 
 QueryEditor.propTypes = {
+    execute: PropTypes.func.isRequired,
+    setQuery: PropTypes.func.isRequired,
     setResult: PropTypes.func.isRequired,
+    setType: PropTypes.func.isRequired,
+    type: PropTypes.string.isRequired,
+    query: PropTypes.string,
 }

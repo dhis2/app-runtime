@@ -1,5 +1,5 @@
 {
-    "version": "2.2.2",
+    "version": "2.4.0",
     "description": "A singular runtime dependency for applications on the DHIS2 platform",
     "repository": "https://github.com/dhis2/app-runtime.git",
     "author": "Austin McGee <austin@dhis2.org>",
@@ -10,7 +10,7 @@
         "services/*"
     ],
     "devDependencies": {
-        "@dhis2/cli-app-scripts": "^4.0.2",
+        "@dhis2/cli-app-scripts": "^5.1.0",
         "@dhis2/cli-style": "^6.0.0",
         "@dhis2/cli-utils-docsite": "^2.0.2",
         "@testing-library/jest-dom": "^5.0.2",
