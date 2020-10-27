@@ -1,4 +1,9 @@
 import { ResolvedResourceQuery, FetchType } from '../../engine'
+import {
+    requestContentType,
+    requestBodyForContentType,
+    requestHeadersForContentType,
+} from './queryToRequestOptions/requestContentType'
 
 const getMethod = (type: FetchType): string => {
     switch (type) {
@@ -17,15 +22,15 @@ const getMethod = (type: FetchType): string => {
 
 export const queryToRequestOptions = (
     type: FetchType,
-    { data }: ResolvedResourceQuery,
+    query: ResolvedResourceQuery,
     signal?: AbortSignal
-): RequestInit => ({
-    method: getMethod(type),
-    body: data ? JSON.stringify(data) : undefined,
-    headers: data
-        ? {
-              'Content-Type': 'application/json',
-          }
-        : undefined,
-    signal,
-})
+): RequestInit => {
+    const contentType = requestContentType(type, query)
+
+    return {
+        method: getMethod(type),
+        body: requestBodyForContentType(contentType, query),
+        headers: requestHeadersForContentType(contentType),
+        signal,
+    }
+}
