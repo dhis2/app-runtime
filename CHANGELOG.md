@@ -1,3 +1,10 @@
+# [2.5.0](https://github.com/dhis2/app-runtime/compare/v2.4.0...v2.5.0) (2020-10-27)
+
+
+### Features
+
+* **rest-api-link:** add support for text/plain and multipart/form-data ([#651](https://github.com/dhis2/app-runtime/issues/651)) ([94e21ad](https://github.com/dhis2/app-runtime/commit/94e21adb4ae3efe577274b827c0191c2b98993b9))
+
 # [2.4.0](https://github.com/dhis2/app-runtime/compare/v2.3.0...v2.4.0) (2020-10-12)
 
 
