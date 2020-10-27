@@ -8,10 +8,6 @@ type RequestContentType =
     | 'multipart/form-data'
     | null
 
-type FormData = {
-    [key: string]: string | Blob
-}
-
 const resourceExpectsTextPlain = (
     type: FetchType,
     query: ResolvedResourceQuery
@@ -31,7 +27,7 @@ const resourceExpectsMultipartFormData = (
 export const FORM_DATA_ERROR_MSG =
     'Could not convert data to FormData: object does not have own enumerable string-keyed properties'
 
-const convertToFormData = (data: FormData) => {
+const convertToFormData = (data: Record<string, any>): FormData => {
     const dataEntries = Object.entries(data)
 
     if (dataEntries.length === 0) {
