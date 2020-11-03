@@ -20,3 +20,8 @@ export type Alert = {
     message: string
     options: AlertOptions
 }
+
+export interface AlertsManagerAlert extends Alert {
+    hide: Function
+    id: number
+}

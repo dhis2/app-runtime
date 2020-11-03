@@ -1,16 +1,21 @@
 import React from 'react'
-import { Alert, AlertsManager } from './types'
+import { Alert, AlertsManager, AlertsManagerAlert } from './types'
 
 type SetAlertsFunction = React.Dispatch<React.SetStateAction<Alert[]>>
 
 export const makeAlertManager = (
     setAlerts: SetAlertsFunction
 ): AlertsManager => {
+    let id = 0
+
     const hide = (alert: Alert) => {
         setAlerts(alerts => {
             const idx = alerts.findIndex(a => a === alert)
-            console.log('HIDE', alert, alerts, idx)
-            if (idx === -1) return alerts
+
+            if (idx === -1) {
+                return alerts
+            }
+
             return [
                 ...alerts.slice(0, idx),
                 ...alerts.slice(idx + 1, alerts.length),
@@ -19,12 +24,21 @@ export const makeAlertManager = (
     }
     const show = (alert: Alert) => {
         setAlerts(alerts => {
-            console.log('show', alert, alerts)
-            if (alerts.find(a => a === alert)) {
-                console.log('found :-(')
+            if (alerts.some(a => a === alert)) {
                 return alerts
             }
-            return [...alerts, alert]
+
+            id++
+
+            const alertManagerAlert: AlertsManagerAlert = {
+                ...alert,
+                id,
+                get hide() {
+                    return () => hide(this)
+                },
+            }
+
+            return [...alerts, alertManagerAlert]
         })
     }
 
@@ -34,14 +48,11 @@ export const makeAlertManager = (
     }
 }
 
-const defaultAlertsManager: AlertsManager = {
-    show: (alert: Alert) => {
-        console.log('ALERT', alert.message)
-    },
-    hide: () => {
-        /* Do nothing */
-    },
+const noop = () => {
+    /* Do nothing */
 }
+
+const defaultAlertsManager: AlertsManager = { show: noop, hide: noop }
 
 export const AlertsManagerContext = React.createContext<AlertsManager>(
     defaultAlertsManager

@@ -4,6 +4,7 @@ import { SwitchableProvider } from './components/SwitchableProvider'
 import { ConfigConsumer } from './components/ConfigConsumer'
 import { IndicatorList } from './components/IndicatorList'
 import { Alerts } from './components/Alerts'
+import { Alerter } from './components/Alerter'
 
 const config = {
     baseUrl: process.env.REACT_APP_D2_BASE_URL || 'http://localhost:8080',
@@ -21,6 +22,7 @@ const App = () => {
                 <header className="App-header">
                     <ConfigConsumer />
                     <IndicatorList />
+                    <Alerter />
                     <Alerts />
                 </header>
             </div>
