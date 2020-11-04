@@ -21,7 +21,7 @@ export interface AlertsManager {
 }
 
 export type Alert = {
-    message: string | React.ElementType
+    message: string
     options: AlertOptions
 }
 
