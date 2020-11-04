@@ -8,7 +8,7 @@ export const makeAlertManager = (
 ): AlertsManager => {
     let id = 0
 
-    const hide = (alert: Alert) => {
+    const remove = (alert: Alert) => {
         setAlerts(alerts => {
             const idx = alerts.findIndex(a => a === alert)
 
@@ -22,7 +22,7 @@ export const makeAlertManager = (
             ]
         })
     }
-    const show = (alert: Alert) => {
+    const add = (alert: Alert) => {
         setAlerts(alerts => {
             if (alerts.some(a => a === alert)) {
                 return alerts
@@ -33,8 +33,11 @@ export const makeAlertManager = (
             const alertManagerAlert: AlertsManagerAlert = {
                 ...alert,
                 id,
-                get hide() {
-                    return () => hide(this)
+                get remove() {
+                    return () => {
+                        alert.options.onHidden && alert.options.onHidden()
+                        remove(this)
+                    }
                 },
             }
 
@@ -43,8 +46,8 @@ export const makeAlertManager = (
     }
 
     return {
-        show,
-        hide,
+        remove,
+        add,
     }
 }
 
@@ -52,7 +55,7 @@ const noop = () => {
     /* Do nothing */
 }
 
-const defaultAlertsManager: AlertsManager = { show: noop, hide: noop }
+const defaultAlertsManager: AlertsManager = { remove: noop, add: noop }
 
 export const AlertsManagerContext = React.createContext<AlertsManager>(
     defaultAlertsManager

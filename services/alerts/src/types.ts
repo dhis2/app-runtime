@@ -3,25 +3,29 @@ type AlertAction = {
     onClick: () => void
 }
 export type AlertOptions = {
-    type?: 'critical' | 'warning' | 'success'
     actions?: AlertAction[]
+    className?: string
+    critical?: boolean
+    dataTest?: string
     duration?: number
     icon?: boolean | React.ElementType
     permanent?: boolean
+    success?: boolean
+    warning?: boolean
     onHidden?: () => void
 }
 
 export interface AlertsManager {
-    show: (alert: Alert) => void
-    hide: (alert: Alert) => void
+    add: (alert: Alert) => void
+    remove: (alert: Alert) => void
 }
 
 export type Alert = {
-    message: string
+    message: string | React.ElementType
     options: AlertOptions
 }
 
 export interface AlertsManagerAlert extends Alert {
-    hide: Function
     id: number
+    remove: () => void
 }

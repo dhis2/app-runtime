@@ -7,7 +7,7 @@ export const Alerts = () => {
     return alerts.map(alert => (
         <div key={alert.id}>
             {alert.message}
-            <button onClick={alert.hide}>hide</button>
+            <button onClick={alert.remove}>hide</button>
         </div>
     ))
 }

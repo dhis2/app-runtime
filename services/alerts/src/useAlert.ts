@@ -3,8 +3,8 @@ import { AlertsManagerContext } from './AlertsManagerContext'
 import { Alert, AlertOptions } from './types'
 
 export const useAlert = (
-    message: string | ((props: any) => string),
-    options?: AlertOptions | ((props: any) => AlertOptions)
+    message: string | React.ReactNode | ((props: any) => string),
+    options: AlertOptions | ((props: any) => AlertOptions) = {}
 ) => {
     const alertsManager = useContext(AlertsManagerContext)
 
@@ -17,10 +17,10 @@ export const useAlert = (
 
             const alert: Alert = {
                 message: resolvedMessage,
-                options: resolvedOptions || {},
+                options: resolvedOptions,
             }
 
-            alertsManager.show(alert)
+            alertsManager.add(alert)
         },
         [alertsManager, message, options]
     )
