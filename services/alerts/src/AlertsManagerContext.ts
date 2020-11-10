@@ -17,10 +17,6 @@ export const makeAlertsManager = (
     }
     const add = (alert: Alert) => {
         setAlerts(alerts => {
-            if (alerts.some(a => a === alert)) {
-                return alerts
-            }
-
             id++
 
             const alertManagerAlert: AlertsManagerAlert = {
