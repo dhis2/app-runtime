@@ -25,5 +25,5 @@ export const useAlert = (
         [alertsManager, message, options]
     )
 
-    return show
+    return { show }
 }

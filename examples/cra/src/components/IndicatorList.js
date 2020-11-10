@@ -16,7 +16,7 @@ const query = {
 
 export const IndicatorList = () => {
     const { loading, error, data, refetch } = useDataQuery(query)
-    const show = useAlert(id => `Created indicator ${id}`)
+    const { show } = useAlert(id => `Created indicator ${id}`)
     return (
         <div>
             <h3>Indicators</h3>
