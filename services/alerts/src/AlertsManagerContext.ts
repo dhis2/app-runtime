@@ -3,7 +3,7 @@ import { Alert, AlertsManager, AlertsManagerAlert } from './types'
 
 type SetAlertsFunction = React.Dispatch<React.SetStateAction<Alert[]>>
 
-export const makeAlertManager = (
+export const makeAlertsManager = (
     setAlerts: SetAlertsFunction
 ): AlertsManager => {
     let id = 0
