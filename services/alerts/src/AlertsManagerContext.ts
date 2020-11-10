@@ -5,6 +5,16 @@ type SetAlertsFunction = React.Dispatch<
     React.SetStateAction<AlertsManagerAlert[]>
 >
 
+const createAlertManagerAlert = (
+    alert: Alert,
+    id: number,
+    remove: Function
+): AlertsManagerAlert => ({
+    ...alert,
+    id,
+    remove: () => remove(id),
+})
+
 export const makeAlertsManager = (
     setAlerts: SetAlertsFunction
 ): AlertsManager => {
@@ -19,13 +29,7 @@ export const makeAlertsManager = (
         setAlerts(alerts => {
             id++
 
-            const alertManagerAlert: AlertsManagerAlert = {
-                ...alert,
-                id,
-                remove: remove.bind(null, id),
-            }
-
-            return [...alerts, alertManagerAlert]
+            return [...alerts, createAlertManagerAlert(alert, id, remove)]
         })
     }
 
