@@ -22,7 +22,7 @@ export const makeAlertsManager = (
             const alertManagerAlert: AlertsManagerAlert = {
                 ...alert,
                 id,
-                remove: () => remove(id),
+                remove: remove.bind(null, id),
             }
 
             return [...alerts, alertManagerAlert]
