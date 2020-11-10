@@ -17,7 +17,7 @@ export type AlertOptions = {
 
 export interface AlertsManager {
     add: (alert: Alert) => void
-    remove: (alert: Alert) => void
+    remove: (id: number) => void
 }
 
 export type Alert = {

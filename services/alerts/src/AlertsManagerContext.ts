@@ -1,26 +1,19 @@
 import React from 'react'
 import { Alert, AlertsManager, AlertsManagerAlert } from './types'
 
-type SetAlertsFunction = React.Dispatch<React.SetStateAction<Alert[]>>
+type SetAlertsFunction = React.Dispatch<
+    React.SetStateAction<AlertsManagerAlert[]>
+>
 
 export const makeAlertsManager = (
     setAlerts: SetAlertsFunction
 ): AlertsManager => {
     let id = 0
 
-    const remove = (alert: Alert) => {
-        setAlerts(alerts => {
-            const idx = alerts.findIndex(a => a === alert)
-
-            if (idx === -1) {
-                return alerts
-            }
-
-            return [
-                ...alerts.slice(0, idx),
-                ...alerts.slice(idx + 1, alerts.length),
-            ]
-        })
+    const remove = (id: number) => {
+        setAlerts((alerts: AlertsManagerAlert[]) =>
+            alerts.filter(alert => alert.id !== id)
+        )
     }
     const add = (alert: Alert) => {
         setAlerts(alerts => {
@@ -33,12 +26,7 @@ export const makeAlertsManager = (
             const alertManagerAlert: AlertsManagerAlert = {
                 ...alert,
                 id,
-                get remove() {
-                    return () => {
-                        alert.options.onHidden && alert.options.onHidden()
-                        remove(this)
-                    }
-                },
+                remove: () => remove(id),
             }
 
             return [...alerts, alertManagerAlert]

@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { AlertsContext } from './AlertsContext'
 import { AlertsManagerContext, makeAlertsManager } from './AlertsManagerContext'
-import { Alert, AlertsManager } from './types'
+import { AlertsManagerAlert, AlertsManager } from './types'
 
 export const AlertsProvider = ({ children }: { children: React.ReactNode }) => {
-    const [alerts, setAlerts] = useState<Alert[]>([])
+    const [alerts, setAlerts] = useState<AlertsManagerAlert[]>([])
     const [alertsManager] = useState<AlertsManager>(
         (): AlertsManager => makeAlertsManager(setAlerts)
     )
