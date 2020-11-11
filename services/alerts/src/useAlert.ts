@@ -10,8 +10,9 @@ export const useAlert = (
 
     const show = useCallback(
         (props?) => {
-            const resolvedMessage =
-                typeof message === 'function' ? message(props) : String(message)
+            const resolvedMessage = String(
+                typeof message === 'function' ? message(props) : message
+            )
             const resolvedOptions =
                 typeof options === 'function' ? options(props) : options
 
