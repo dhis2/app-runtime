@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-extra-semi */
 import { parseStatus, fetchData, parseContentType } from './fetchData'
 import { FetchError } from '../../engine'
 
