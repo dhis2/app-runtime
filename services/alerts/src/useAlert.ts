@@ -9,7 +9,7 @@ export const useAlert = (
     const alertsManager = useContext(AlertsManagerContext)
 
     const show = useCallback(
-        props => {
+        (props?) => {
             const resolvedMessage =
                 typeof message === 'function' ? message(props) : String(message)
             const resolvedOptions =

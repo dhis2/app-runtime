@@ -1,4 +1,4 @@
 import React from 'react'
-import { Alert } from './types'
+import { AlertsManagerAlert } from './types'
 
-export const AlertsContext = React.createContext<Alert[]>([])
+export const AlertsContext = React.createContext<AlertsManagerAlert[]>([])
