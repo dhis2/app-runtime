@@ -1,12 +1,7 @@
 import { FetchError, FetchErrorDetails, JsonValue } from '../../engine'
 
 export const parseContentType = (contentType: string | null) => {
-    return contentType
-        ? contentType
-              .split(';')[0]
-              .trim()
-              .toLowerCase()
-        : null
+    return contentType ? contentType.split(';')[0].trim().toLowerCase() : null
 }
 
 export const parseStatus = async (response: Response) => {

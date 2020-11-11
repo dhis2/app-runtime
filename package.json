@@ -47,7 +47,8 @@
         "format": "d2-style js apply --all --no-stage && d2-style text apply --all --no-stage",
         "start": "yarn build && cd examples/query-playground && yarn start",
         "docs:build": "d2-utils-docsite build ./docs -o ./dist && yarn build:playground",
-        "docs:serve": "d2-utils-docsite serve ./docs -o ./dist"
+        "docs:serve": "d2-utils-docsite serve ./docs -o ./dist",
+        "lint": "d2-style js check && d2-style text check"
     },
     "d2": {
         "docsite": {
