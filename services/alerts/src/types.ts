@@ -1,6 +1,6 @@
 type AlertAction = {
     label: string
-    onClick: () => void
+    onClick: Function
 }
 export type AlertOptions = {
     actions?: AlertAction[]
@@ -12,7 +12,7 @@ export type AlertOptions = {
     permanent?: boolean
     success?: boolean
     warning?: boolean
-    onHidden?: () => void
+    onHidden?: Function
 }
 
 export interface AlertsManager {
