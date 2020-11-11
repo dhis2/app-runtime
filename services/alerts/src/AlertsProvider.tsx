@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { AlertsContext } from './AlertsContext'
-import { AlertsManagerContext, makeAlertsManager } from './AlertsManagerContext'
+import { AlertsManagerContext } from './AlertsManagerContext'
+import { makeAlertsManager } from './makeAlertsManager'
 import { AlertsManagerAlert, AlertsManager } from './types'
 
 export const AlertsProvider = ({ children }: { children: React.ReactNode }) => {
