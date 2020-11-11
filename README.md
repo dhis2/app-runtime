@@ -36,7 +36,7 @@ Releases run automatically for every commit to the master branch using the [d2 c
 The issue tracker can be found in [DHIS2 JIRA](https://jira.dhis2.org)
 under the [LIBS](https://jira.dhis2.org/projects/LIBS) project.
 
-Deeplinks:
+Deep links:
 
 -   [Bug](https://jira.dhis2.org/secure/CreateIssueDetails!init.jspa?pid=10700&issuetype=10006&components=11024)
 -   [Improvement](https://jira.dhis2.org/secure/CreateIssueDetails!init.jspa?pid=10700&issuetype=10002&components=11024)
