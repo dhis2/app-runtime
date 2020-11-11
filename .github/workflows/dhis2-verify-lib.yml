@@ -63,7 +63,7 @@ jobs:
 
     lint:
         runs-on: ubuntu-latest
-        needs: install
+        needs: [install, build]
         if: "!contains(github.event.head_commit.message, '[skip ci]')"
         steps:
             - uses: actions/checkout@v2
@@ -76,6 +76,10 @@ jobs:
               with:
                   path: '**/node_modules'
                   key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+            - uses: actions/download-artifact@v2
+              with:
+                  name: lib-build
 
             - name: Lint
               run: yarn lint
@@ -95,6 +99,10 @@ jobs:
               with:
                   path: '**/node_modules'
                   key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+            - uses: actions/download-artifact@v2
+              with:
+                  name: lib-build
 
             - name: Test
               run: yarn test
