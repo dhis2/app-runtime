@@ -2,12 +2,11 @@ import React, { ReactNode } from 'react'
 import { renderHook, act } from '@testing-library/react-hooks'
 import { AlertsProvider, useAlerts, useAlert } from '../index'
 
-const wrapper = ({ children }: { children?: ReactNode }) => (
-    <AlertsProvider>{children}</AlertsProvider>
-)
-
 describe('useAlert and useAlerts used together', () => {
     it('Can add an alert', () => {
+        const wrapper = ({ children }: { children?: ReactNode }) => (
+            <AlertsProvider>{children}</AlertsProvider>
+        )
         const { result } = renderHook(
             () => {
                 const alerts = useAlerts()
@@ -40,6 +39,9 @@ describe('useAlert and useAlerts used together', () => {
     })
 
     it('Can remove an alert', () => {
+        const wrapper = ({ children }: { children?: ReactNode }) => (
+            <AlertsProvider>{children}</AlertsProvider>
+        )
         const { result } = renderHook(
             () => {
                 const alerts = useAlerts()
@@ -64,6 +66,9 @@ describe('useAlert and useAlerts used together', () => {
     })
 
     it('Will not create duplicate alerts because of rerenders', () => {
+        const wrapper = ({ children }: { children?: ReactNode }) => (
+            <AlertsProvider>{children}</AlertsProvider>
+        )
         const hook = renderHook(
             () => {
                 const alerts = useAlerts()
@@ -85,6 +90,9 @@ describe('useAlert and useAlerts used together', () => {
     })
 
     it('Will create duplicate alerts when show is called multiple times in a render cycle', () => {
+        const wrapper = ({ children }: { children?: ReactNode }) => (
+            <AlertsProvider>{children}</AlertsProvider>
+        )
         const { result } = renderHook(
             () => {
                 const alerts = useAlerts()
