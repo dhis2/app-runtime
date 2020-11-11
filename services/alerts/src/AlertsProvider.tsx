@@ -6,8 +6,8 @@ import { AlertsManagerAlert, AlertsManager } from './types'
 
 export const AlertsProvider = ({ children }: { children: React.ReactNode }) => {
     const [alerts, setAlerts] = useState<AlertsManagerAlert[]>([])
-    const [alertsManager] = useState<AlertsManager>(
-        (): AlertsManager => makeAlertsManager(setAlerts)
+    const [alertsManager] = useState<AlertsManager>(() =>
+        makeAlertsManager(setAlerts)
     )
 
     return (

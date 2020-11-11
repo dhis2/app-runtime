@@ -7,7 +7,7 @@ type SetAlertsFunction = React.Dispatch<
 const createAlertManagerAlert = (
     alert: Alert,
     id: number,
-    remove: Function
+    remove: (id: number) => void
 ): AlertsManagerAlert => ({
     ...alert,
     id,
@@ -20,9 +20,7 @@ export const makeAlertsManager = (
     let id = 0
 
     const remove = (id: number) => {
-        setAlerts((alerts: AlertsManagerAlert[]) =>
-            alerts.filter(alert => alert.id !== id)
-        )
+        setAlerts(alerts => alerts.filter(alert => alert.id !== id))
     }
     const add = (alert: Alert) => {
         setAlerts(alerts => [
