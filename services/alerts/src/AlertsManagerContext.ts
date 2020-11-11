@@ -26,11 +26,10 @@ export const makeAlertsManager = (
         )
     }
     const add = (alert: Alert) => {
-        setAlerts(alerts => {
-            id++
-
-            return [...alerts, createAlertManagerAlert(alert, id, remove)]
-        })
+        setAlerts(alerts => [
+            ...alerts,
+            createAlertManagerAlert(alert, ++id, remove),
+        ])
     }
 
     return {
