@@ -22,7 +22,7 @@ describe('useAlert and useAlerts used together', () => {
             result.current.show()
         })
 
-        expect(result.current.alerts.length).toBe(1)
+        expect(result.current.alerts).toHaveLength(1)
 
         const alert = result.current.alerts[0]
 
@@ -54,13 +54,13 @@ describe('useAlert and useAlerts used together', () => {
             result.current.show()
         })
 
-        expect(result.current.alerts.length).toBe(1)
+        expect(result.current.alerts).toHaveLength(1)
 
         act(() => {
             result.current.alerts[0].remove()
         })
 
-        expect(result.current.alerts.length).toBe(0)
+        expect(result.current.alerts).toHaveLength(0)
     })
 
     it('Will not create duplicate alerts because of rerenders', () => {
@@ -81,7 +81,7 @@ describe('useAlert and useAlerts used together', () => {
             hook.rerender()
         })
 
-        expect(hook.result.current.alerts.length).toBe(1)
+        expect(hook.result.current.alerts).toHaveLength(1)
     })
 
     it('Will create duplicate alerts when show is called multiple times in a render cycle', () => {
@@ -100,6 +100,6 @@ describe('useAlert and useAlerts used together', () => {
             result.current.show()
         })
 
-        expect(result.current.alerts.length).toBe(2)
+        expect(result.current.alerts).toHaveLength(2)
     })
 })
