@@ -1,3 +1,10 @@
+## [2.5.1](https://github.com/dhis2/app-runtime/compare/v2.5.0...v2.5.1) (2020-11-11)
+
+
+### Bug Fixes
+
+* cut release to finish jira migration ([8c030e5](https://github.com/dhis2/app-runtime/commit/8c030e5278be3d6eb823276e5d5bd54739280ceb))
+
 # [2.5.0](https://github.com/dhis2/app-runtime/compare/v2.4.0...v2.5.0) (2020-10-27)
 
 
