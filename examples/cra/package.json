@@ -33,7 +33,7 @@
     ],
     "devDependencies": {
         "eslint": "^5",
-        "source-map-explorer": "^2.2.2",
+        "source-map-explorer": "^2.5.0",
         "typescript": "^3.7.5"
     }
 }
