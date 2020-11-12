@@ -2,7 +2,6 @@
 
 -   [**Getting Started**](getting-started)
 -   [**Provider**](provider)
--   [**AlertsProvider**](alertsProvider)
 -   [**Hooks**](hooks/)
     -   [useConfig](hooks/useConfig)
     -   [useDataQuery](hooks/useDataQuery)
