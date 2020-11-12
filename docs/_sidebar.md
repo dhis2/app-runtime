@@ -7,6 +7,8 @@
     -   [useDataQuery](hooks/useDataQuery)
     -   [useDataMutation](hooks/useDataMutation)
     -   [useDataEngine](hooks/useDataEngine)
+    -   [useAlert](hooks/useAlert)
+    -   [useAlerts](hooks/useAlerts)
 -   [**Components**](components/)
     -   [DataQuery](components/DataQuery)
     -   [DataMutation](components/DataMutation)

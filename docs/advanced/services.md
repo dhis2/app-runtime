@@ -6,3 +6,4 @@ Internally, `@dhis2/app-runtime` is composed of several functionally-isolated **
 
 -   [**Config**](https://github.com/dhis2/app-runtime/blob/master/services/config) - Provide access to basic application configuration values from anywhere within an application. _NOTE: this services is special because it can be a dependency of other services!_
 -   [**Data**](https://github.com/dhis2/app-runtime/blob/master/services/data) - Provides a declarative data access interface and data engine which will eventually handle caching, deduplication, and fetching of DHIS2 data (anything accessible through the DHIS2 Core API)
+-   [**Alerts**](https://github.com/dhis2/app-runtime/blob/master/services/alerts) - Provides a `useAlerts` hook to read a central alerts-context and a `useAlert` hook to add alerts to the alerts-context.

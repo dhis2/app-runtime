@@ -1,6 +1,5 @@
 {
-    "name": "@dhis2/app-runtime",
-    "description": "A singular runtime dependency for applications on the DHIS2 platform",
+    "name": "@dhis2/app-service-alerts",
     "version": "2.5.1",
     "main": "build/cjs/lib.js",
     "module": "build/es/lib.js",
@@ -8,7 +7,7 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/dhis2/app-runtime.git",
-        "directory": "runtime"
+        "directory": "services/alerts"
     },
     "author": "Austin McGee <austin@dhis2.org>",
     "license": "BSD-3-Clause",
@@ -18,20 +17,21 @@
     "files": [
         "build/**"
     ],
-    "dependencies": {
-        "@dhis2/app-service-config": "2.5.1",
-        "@dhis2/app-service-data": "2.5.1",
-        "@dhis2/app-service-alerts": "2.5.1"
-    },
     "peerDependencies": {
         "prop-types": "^15.7.2",
         "react": "^16.8.6",
         "react-dom": "^16.8.6"
     },
     "scripts": {
+        "clean": "rimraf ./build/*",
         "build:types": "tsc --emitDeclarationOnly --outDir ./build/types",
         "build:package": "d2-app-scripts build",
         "build": "concurrently -n build,types \"yarn build:package\" \"yarn build:types\"",
-        "test": "echo \"No tests yet!\""
+        "watch": "NODE_ENV=development concurrently -n build,types \"yarn build:package --watch\" \"yarn build:types --watch\"",
+        "type-check": "tsc --noEmit --allowJs --checkJs",
+        "type-check:watch": "yarn type-check --watch",
+        "test": "d2-app-scripts test",
+        "coverage": "yarn test --coverage",
+        "prepublishOnly": "yarn build"
     }
 }
