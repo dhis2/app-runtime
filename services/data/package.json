@@ -31,7 +31,6 @@
         "type-check": "tsc --noEmit --allowJs --checkJs",
         "type-check:watch": "yarn type-check --watch",
         "test": "d2-app-scripts test",
-        "coverage": "yarn test --coverage",
-        "prepublishOnly": "yarn build"
+        "coverage": "yarn test --coverage"
     }
 }
