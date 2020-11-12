@@ -8,7 +8,8 @@ import { useTabs } from './hooks/useTabs'
 import { useExecuteQuery } from './hooks/useExecuteQuery'
 import styles from './QueryRepl.module.css'
 
-import './locales'
+/* eslint-disable-next-line import/no-unresolved */
+import './locales/index.js'
 import { ServerDetails } from './components/ServerDetails'
 
 export const QueryRepl = () => {
