@@ -1,3 +1,18 @@
+# [2.6.0](https://github.com/dhis2/app-runtime/compare/v2.5.1...v2.6.0) (2020-11-12)
+
+
+### Bug Fixes
+
+* **alerts-service:** adjust message type ([58406e8](https://github.com/dhis2/app-runtime/commit/58406e8d091b49faad02cce1f37223bf4ed396f0))
+* **alerts-service:** adjust types for AlertContext and optional props ([a5ad1f2](https://github.com/dhis2/app-runtime/commit/a5ad1f2e59fc05e34db58d4eb2d697c8e571aadf))
+* **alerts-service:** any message to string ([f24cc75](https://github.com/dhis2/app-runtime/commit/f24cc75248992036b18482c502afdae711564efc))
+* **alerts-service:** bind id to remove ([448a375](https://github.com/dhis2/app-runtime/commit/448a37554284b07c8033ea4dced42a86a18372bb))
+
+
+### Features
+
+* alerts service ([396b386](https://github.com/dhis2/app-runtime/commit/396b386e4bf6841e1abe59a4f16cdfd76029f8d4))
+
 ## [2.5.1](https://github.com/dhis2/app-runtime/compare/v2.5.0...v2.5.1) (2020-11-11)
 
 
