@@ -1,6 +1,6 @@
 {
     "name": "@dhis2/app-service-data",
-    "version": "2.6.0",
+    "version": "2.6.1",
     "main": "build/cjs/lib.js",
     "module": "build/es/lib.js",
     "types": "build/types/index.d.ts",
@@ -18,7 +18,7 @@
         "build/**"
     ],
     "peerDependencies": {
-        "@dhis2/app-service-config": "2.6.0",
+        "@dhis2/app-service-config": "2.6.1",
         "prop-types": "^15.7.2",
         "react": "^16.8",
         "react-dom": "^16.8"

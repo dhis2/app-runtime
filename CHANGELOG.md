@@ -1,3 +1,10 @@
+## [2.6.1](https://github.com/dhis2/app-runtime/compare/v2.6.0...v2.6.1) (2020-11-12)
+
+
+### Bug Fixes
+
+* patch to fix missing package release ([b190931](https://github.com/dhis2/app-runtime/commit/b190931b8171e8235e4508df926ea0a93634bc19))
+
 # [2.6.0](https://github.com/dhis2/app-runtime/compare/v2.5.1...v2.6.0) (2020-11-12)
 
 
