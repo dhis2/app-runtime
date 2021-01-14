@@ -10,7 +10,7 @@
         "services/*"
     ],
     "devDependencies": {
-        "@dhis2/cli-app-scripts": "^5.1.0",
+        "@dhis2/cli-app-scripts": "^5.5.1",
         "@dhis2/cli-style": "^7.2.2",
         "@dhis2/cli-utils-docsite": "^2.0.3",
         "@testing-library/jest-dom": "^5.0.2",
