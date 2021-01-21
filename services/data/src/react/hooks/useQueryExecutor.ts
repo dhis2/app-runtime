@@ -11,7 +11,7 @@ interface StateType<T> {
     data?: T
 }
 
-const checkVariables = (variables: any) => {
+const checkVariables = (variables: any = {}) => {
     if (typeof variables !== 'object' || Array.isArray(variables)) {
         throw new Error(
             'Query/mutation variables must be represented as a plain object.'
