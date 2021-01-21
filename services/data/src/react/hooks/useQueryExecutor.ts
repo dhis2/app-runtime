@@ -48,7 +48,7 @@ export const useQueryExecutor = <ReturnType>({
                 typeof newVariables !== 'object' ||
                 Array.isArray(newVariables)
             ) {
-                throw new Error('Query/mutation variables must be objects.')
+                throw new Error('Query/mutation variables must be represented as a plain object.')
             }
 
             setState(state =>
