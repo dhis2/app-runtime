@@ -45,7 +45,7 @@ export const useQueryExecutor = <ReturnType>({
     const refetch = useCallback(
         (newVariables = {}) => {
             if (
-                typeof newVariables != 'object' ||
+                typeof newVariables !== 'object' ||
                 Array.isArray(newVariables)
             ) {
                 throw new Error('Query/mutation variables must be objects.')
