@@ -22,7 +22,7 @@ return (
 |      Name      |              Type               |   Required   | Description                                                                                                                   |
 | :------------: | :-----------------------------: | :----------: | ----------------------------------------------------------------------------------------------------------------------------- |
 |  **mutation**  | [_Mutation_](types/Mutation.md) | **required** | The Mutation definition describing the requested operation                                                                    |
-| **variables**  |            _Object_             |              | Variables to be passed to the dynamic portions of the mutation                                                                |
+| **variables**  |            _Object_             |              | Variables to be passed to the dynamic portions of the mutation. Must be a plain object.                                       |
 | **onComplete** |           _Function_            |              | Callback function to be called on successfull completion of the mutation. Called with the response data as the only argument. |
 |  **onError**   |           _Function_            |              | Callback function to be called on failure of the mutation. Called with the error instance as the only argument.               |
 |    **lazy**    |            _boolean_            |              | If false, run the mutation immediately after the component mounts.<br/>_**Default**: `true`_                                  |
