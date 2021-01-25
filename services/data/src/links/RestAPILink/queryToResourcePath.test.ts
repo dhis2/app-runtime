@@ -28,6 +28,16 @@ describe('queryToResourcePath', () => {
             )
         })
     })
+    describe('resource with dot', () => {
+        it('should leave dots in resources', () => {
+            const query: ResolvedResourceQuery = {
+                resource: 'svg.pdf',
+            }
+            expect(queryToResourcePath(apiPath, query)).toBe(
+                `${apiPath}/svg.pdf`
+            )
+        })
+    })
     it('should return resource url with no querystring if not query parameters are passed', () => {
         const query: ResolvedResourceQuery = {
             resource: 'test',
