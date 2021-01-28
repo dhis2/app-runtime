@@ -84,7 +84,7 @@ export function fetchData(
             }
 
             // 'text/*'
-            if (/^text\/[a-z0-9.-]*$/.test(contentType)) {
+            if (/^text\/[a-z0-9.-]+$/.test(contentType)) {
                 return await response.text()
             }
 

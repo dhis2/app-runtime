@@ -113,7 +113,7 @@ describe('networkFetch', () => {
                     ? 'application/json'
                     : type === 'text'
                     ? 'text/plain'
-                    : 'image/png',
+                    : 'some/other-content-type',
         }
         const mockFetch = jest.fn(async url => ({
             status: 200,
