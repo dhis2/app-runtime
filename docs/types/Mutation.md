@@ -15,7 +15,7 @@ A mutation defines a destructive operation performed on a collection or instance
 |  **params**  | _Object_ **or** _() => Object_ |              | A dictionary of properties which are translated into querystring parameters when the data is fetched                                                       |
 |   **data**   | _Object_ **or** _() => Object_ |              | The "body" of the mutation, the content of the newly created or updated resource. Disallowed for `delete` mutations                                        |
 
-> See the [Mutation type definition](https://github.com/dhis2/app-runtime/blob/master/services/data/src/types/Mutation.d.ts) for more information
+> See the [Mutation type definition](https://github.com/dhis2/app-runtime/blob/master/services/data/src/engine/types/Mutation.ts) for more information
 
 ## Examples
 
