@@ -1,6 +1,6 @@
-import React from 'react'
 import { useConfig } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
+import React from 'react'
 import styles from './ServerDetails.module.css'
 
 export const ServerDetails = () => {

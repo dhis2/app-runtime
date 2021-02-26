@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react'
-import PropTypes from 'prop-types'
 import { useDataMutation } from '@dhis2/app-runtime'
+import PropTypes from 'prop-types'
+import React, { useState, useRef } from 'react'
 import { DeleteButton } from './DeleteButton'
 
 const mutation = {

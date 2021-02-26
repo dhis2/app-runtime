@@ -1,9 +1,9 @@
-import React from 'react'
 import { render } from '@testing-library/react'
-import { DataProvider } from './DataProvider'
+import React from 'react'
 import { DataEngine } from '../../engine'
 import { RestAPILink } from '../../links'
 import { DataContext } from '../context/DataContext'
+import { DataProvider } from './DataProvider'
 
 describe('DataProvider', () => {
     it('Should pass a new engine and RestAPILink to consumers', () => {

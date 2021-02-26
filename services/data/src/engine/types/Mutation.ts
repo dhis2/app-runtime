@@ -1,5 +1,5 @@
-import { ResourceQuery, QueryVariables } from './Query'
 import { FetchError } from './FetchError'
+import { ResourceQuery, QueryVariables } from './Query'
 
 export type MutationType = 'create' | 'update' | 'replace' | 'delete'
 export interface MutationData {

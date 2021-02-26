@@ -1,5 +1,5 @@
-import React, { ReactNode } from 'react'
 import { renderHook, act } from '@testing-library/react-hooks'
+import React, { ReactNode } from 'react'
 import { AlertsProvider, useAlerts, useAlert } from '../index'
 
 describe('useAlert and useAlerts used together', () => {

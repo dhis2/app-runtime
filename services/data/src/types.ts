@@ -1,8 +1,8 @@
 import DataEngine from './engine/DataEngine'
-import { QueryVariables, QueryResult } from './engine/types/Query'
-import { JsonValue } from './engine/types/JsonValue'
-import { FetchError } from './engine/types/FetchError'
 import { QueryExecuteOptions } from './engine/types/ExecuteOptions'
+import { FetchError } from './engine/types/FetchError'
+import { JsonValue } from './engine/types/JsonValue'
+import { QueryVariables, QueryResult } from './engine/types/Query'
 
 export interface ContextType {
     engine: DataEngine

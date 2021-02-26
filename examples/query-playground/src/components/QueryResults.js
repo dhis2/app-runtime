@@ -1,8 +1,8 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import styles from './QueryResults.module.css'
-import { Editor } from './Editor'
 import i18n from '@dhis2/d2-i18n'
+import PropTypes from 'prop-types'
+import React from 'react'
+import { Editor } from './Editor'
+import styles from './QueryResults.module.css'
 
 export const QueryResults = ({ result }) => {
     return (
