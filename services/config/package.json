@@ -1,9 +1,13 @@
 {
     "name": "@dhis2/app-service-config",
     "version": "2.7.0",
-    "main": "build/cjs/lib.js",
-    "module": "build/es/lib.js",
+    "main": "./build/cjs/index.js",
+    "module": "./build/es/index.js",
     "types": "build/types/index.d.ts",
+    "exports": {
+        "import": "./build/es/index.js",
+        "require": "./build/cjs/index.js"
+    },
     "repository": {
         "type": "git",
         "url": "https://github.com/dhis2/app-runtime.git",
