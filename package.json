@@ -24,7 +24,7 @@
         "@typescript-eslint/eslint-plugin": "^4.7.0",
         "@typescript-eslint/parser": "^4.7.0",
         "concurrently": "^5.0.2",
-        "eslint-config-prettier": "^6.15.0",
+        "eslint-config-prettier": "^8.1.0",
         "eslint-plugin-react-hooks": "^4.2.0",
         "jest": "^24.9.0",
         "loop": "^3.3.4",
