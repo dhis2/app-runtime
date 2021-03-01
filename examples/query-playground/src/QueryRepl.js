@@ -1,16 +1,13 @@
-import React from 'react'
 import cx from 'classnames'
-
+import React from 'react'
 import { GlobalLoading } from './components/GlobalLoading'
 import { QueryTab } from './components/QueryTab'
-import { TabControls } from './components/TabControls'
-import { useTabs } from './hooks/useTabs'
-import { useExecuteQuery } from './hooks/useExecuteQuery'
-import styles from './QueryRepl.module.css'
-
-/* eslint-disable-next-line import/no-unresolved */
-import './locales/index.js'
 import { ServerDetails } from './components/ServerDetails'
+import { TabControls } from './components/TabControls'
+import { useExecuteQuery } from './hooks/useExecuteQuery'
+import { useTabs } from './hooks/useTabs'
+import styles from './QueryRepl.module.css'
+import './locales/index.js'
 
 export const QueryRepl = () => {
     const { loading, execute } = useExecuteQuery()

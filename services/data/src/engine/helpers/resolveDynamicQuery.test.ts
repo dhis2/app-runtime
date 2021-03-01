@@ -1,5 +1,5 @@
-import { resolveDynamicQuery } from './resolveDynamicQuery'
 import { QueryVariables } from '../types/Query'
+import { resolveDynamicQuery } from './resolveDynamicQuery'
 
 describe('resolveDynamicQuery', () => {
     it('Should return an unmodified query if no dynamic properties exist', () => {

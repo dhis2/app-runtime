@@ -1,8 +1,8 @@
-import React, { ReactNode } from 'react'
 import { renderHook, act } from '@testing-library/react-hooks'
+import React, { ReactNode } from 'react'
+import { CreateMutation } from '../../engine/types/Mutation'
 import { CustomDataProvider } from '../components/CustomDataProvider'
 import { useDataMutation } from './useDataMutation'
-import { CreateMutation } from '../../engine/types/Mutation'
 
 const customData = {
     answer: 42,

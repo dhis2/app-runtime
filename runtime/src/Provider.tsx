@@ -1,8 +1,8 @@
-import React from 'react'
-import { ConfigProvider } from '@dhis2/app-service-config'
-import { DataProvider } from '@dhis2/app-service-data'
 import { AlertsProvider } from '@dhis2/app-service-alerts'
+import { ConfigProvider } from '@dhis2/app-service-config'
 import { Config } from '@dhis2/app-service-config/build/types/types'
+import { DataProvider } from '@dhis2/app-service-data'
+import React from 'react'
 
 type ProviderInput = {
     config: Config

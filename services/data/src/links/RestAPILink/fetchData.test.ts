@@ -1,5 +1,5 @@
-import { parseStatus, fetchData, parseContentType } from './fetchData'
 import { FetchError } from '../../engine'
+import { parseStatus, fetchData, parseContentType } from './fetchData'
 
 describe('networkFetch', () => {
     describe('parseContentType', () => {

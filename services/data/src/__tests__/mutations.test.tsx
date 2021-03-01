@@ -1,6 +1,5 @@
 import { render, act, waitForElement } from '@testing-library/react'
 import React from 'react'
-
 import { Mutation, FetchType, ResolvedResourceQuery, JsonMap } from '../engine'
 import { CustomDataProvider, DataMutation } from '../react'
 import { MutationFunction, MutationRenderInput } from '../types'

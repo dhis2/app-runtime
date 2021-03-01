@@ -7,3 +7,4 @@ dist
 yarn-error.log
 coverage
 .vscode
+**/src/locales/*

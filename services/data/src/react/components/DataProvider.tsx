@@ -1,7 +1,7 @@
-import React from 'react'
 import { useConfig } from '@dhis2/app-service-config'
-import { RestAPILink } from '../../links'
+import React from 'react'
 import { DataEngine } from '../../engine'
+import { RestAPILink } from '../../links'
 import { DataContext } from '../context/DataContext'
 
 export interface ProviderInput {

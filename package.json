@@ -10,7 +10,7 @@
         "services/*"
     ],
     "devDependencies": {
-        "@dhis2/cli-app-scripts": "^5.1.0",
+        "@dhis2/cli-app-scripts": "^5.7.1",
         "@dhis2/cli-style": "^7.2.2",
         "@dhis2/cli-utils-docsite": "^2.0.3",
         "@testing-library/jest-dom": "^5.0.2",
@@ -20,6 +20,7 @@
         "@types/node": "^13.1.8",
         "@types/react": "^16.9.18",
         "@types/react-dom": "^16.9.5",
+        "@types/testing-library__dom": "^7.5.0",
         "@typescript-eslint/eslint-plugin": "^4.7.0",
         "@typescript-eslint/parser": "^4.7.0",
         "concurrently": "^5.0.2",

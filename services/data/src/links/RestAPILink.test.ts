@@ -1,5 +1,5 @@
-import { RestAPILink } from '.'
 import { fetchData } from './RestAPILink/fetchData'
+import { RestAPILink } from '.'
 
 jest.mock('./RestAPILink/fetchData', () => ({
     fetchData: jest.fn(async () => null),

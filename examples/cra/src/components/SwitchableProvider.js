@@ -1,5 +1,5 @@
-import React from 'react'
 import { Provider, DataProvider } from '@dhis2/app-runtime'
+import React from 'react'
 
 export const SwitchableProvider = ({ type, config, children }) => {
     if (type === 'data') {

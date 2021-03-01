@@ -1,9 +1,8 @@
-import React from 'react'
-
 import { render } from '@testing-library/react'
+import React from 'react'
+import { ConfigContext } from '../ConfigContext'
 import { ConfigProvider } from '../ConfigProvider'
 import { Config } from '../types'
-import { ConfigContext } from '../ConfigContext'
 
 const mockConfig: Config = {
     baseUrl: 'http://test.com',

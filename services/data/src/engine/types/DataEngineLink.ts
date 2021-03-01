@@ -1,6 +1,6 @@
 import { FetchType } from './ExecuteOptions'
-import { ResolvedResourceQuery } from './Query'
 import { JsonValue } from './JsonValue'
+import { ResolvedResourceQuery } from './Query'
 
 export interface DataEngineLinkExecuteOptions {
     signal?: AbortSignal
