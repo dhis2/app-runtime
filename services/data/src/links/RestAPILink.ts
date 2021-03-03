@@ -36,7 +36,7 @@ export class RestAPILink implements DataEngineLink {
         { signal }: DataEngineLinkExecuteOptions
     ): Promise<JsonValue> {
         return this.fetch(
-            queryToResourcePath(this.apiPath, query),
+            queryToResourcePath(this.apiPath, query, type),
             queryToRequestOptions(type, query, signal)
         )
     }
