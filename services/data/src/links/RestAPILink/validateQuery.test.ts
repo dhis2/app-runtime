@@ -6,11 +6,12 @@ describe('validateQuery', () => {
         console.warn = originalConsoleWarn
     })
     it('Should return true and NOT console.warn for a valid query', () => {
-        console.warn = jest.fn()
+        const warn = (console.warn = jest.fn())
+        process.env.NODE_ENV = 'development'
 
         expect(
             validateResourceQuery(
-                { resource: 'resource', params: { fields: 'name' } },
+                { resource: 'indicators', params: { fields: 'name' } },
                 'read'
             )
         ).toBe(true)
@@ -18,7 +19,7 @@ describe('validateQuery', () => {
         expect(
             validateResourceQuery(
                 {
-                    resource: 'resource',
+                    resource: 'users',
                     params: { fields: ['name', 'id'], pageSize: 35, page: 2 },
                 },
                 'read'
@@ -28,7 +29,7 @@ describe('validateQuery', () => {
         expect(
             validateResourceQuery(
                 {
-                    resource: 'resource',
+                    resource: 'userGroups',
                     params: {
                         fields: ['name', 'shortName'],
                         paging: true,
@@ -41,38 +42,82 @@ describe('validateQuery', () => {
         expect(console.warn).not.toHaveBeenCalled()
     })
 
-    it('Should return ture for mutations', () => {
-        console.warn = jest.fn()
+    it('Should return true for mutations', () => {
+        const warn = (console.warn = jest.fn())
+        process.env.NODE_ENV = 'development'
 
         expect(
             validateResourceQuery(
-                { resource: 'resource', params: { paging: false } },
+                {
+                    resource: 'trackedEntityInstances',
+                    params: { paging: false },
+                },
                 'create'
             )
         ).toBe(true)
         expect(console.warn).not.toHaveBeenCalled()
 
-        expect(validateResourceQuery({ resource: 'resource' }, 'update')).toBe(
-            true
-        )
+        expect(
+            validateResourceQuery({ resource: 'visualizations' }, 'update')
+        ).toBe(true)
         expect(console.warn).not.toHaveBeenCalled()
 
-        expect(validateResourceQuery({ resource: 'resource' }, 'delete')).toBe(
-            true
-        )
+        expect(validateResourceQuery({ resource: 'maps' }, 'delete')).toBe(true)
         expect(console.warn).not.toHaveBeenCalled()
     })
 
-    it('Should return false but not warn in production mode', () => {
+    it('Should skip validation for non-normative and non-metadata resources', () => {
+        const warn = (console.warn = jest.fn())
+        process.env.NODE_ENV = 'development'
+
+        expect(
+            validateResourceQuery(
+                { resource: 'analytics', params: { fields: ['*'] } },
+                'read'
+            )
+        ).toBe(true)
+        expect(console.warn).not.toHaveBeenCalled()
+
+        expect(
+            validateResourceQuery(
+                { resource: 'dataStore', params: { fields: ['*'] } },
+                'read'
+            )
+        ).toBe(true)
+        expect(console.warn).not.toHaveBeenCalled()
+
+        expect(
+            validateResourceQuery(
+                { resource: 'icons', params: { fields: ['*'] } },
+                'read'
+            )
+        ).toBe(true)
+        expect(console.warn).not.toHaveBeenCalled()
+
+        expect(
+            validateResourceQuery(
+                { resource: 'apps', params: { fields: ['*'] } },
+                'read'
+            )
+        ).toBe(true)
+        expect(console.warn).not.toHaveBeenCalled()
+
+        process.env.NODE_ENV = 'test'
+    })
+
+    it('Should return true and not warn in production mode', () => {
         console.warn = jest.fn()
         process.env.NODE_ENV = 'production'
 
         expect(
             validateResourceQuery(
-                { resource: 'resource', params: { fields: ['*'] } },
+                {
+                    resource: 'programTrackedEntityAttributeGroups',
+                    params: { fields: ['*'] },
+                },
                 'read'
             )
-        ).toBe(false)
+        ).toBe(true)
         expect(console.warn).not.toHaveBeenCalled()
 
         process.env.NODE_ENV = 'test'
@@ -84,7 +129,7 @@ describe('validateQuery', () => {
 
         expect(
             validateResourceQuery(
-                { resource: 'resource', params: { fields: ['*'] } },
+                { resource: 'dataElements', params: { fields: ['*'] } },
                 'read'
             )
         ).toBe(false)
@@ -100,7 +145,7 @@ describe('validateQuery', () => {
         const warn = (console.warn = jest.fn())
         process.env.NODE_ENV = 'development'
 
-        expect(validateResourceQuery({ resource: 'resource' }, 'read')).toBe(
+        expect(validateResourceQuery({ resource: 'mapViews' }, 'read')).toBe(
             false
         )
         expect(warn).toHaveBeenCalledTimes(1)
@@ -118,7 +163,7 @@ describe('validateQuery', () => {
         expect(
             validateResourceQuery(
                 {
-                    resource: 'resource',
+                    resource: 'attributes',
                     params: { fields: ['name'], paging: false },
                 },
                 'read'
@@ -132,7 +177,7 @@ describe('validateQuery', () => {
         expect(
             validateResourceQuery(
                 {
-                    resource: 'resource',
+                    resource: 'optionSets',
                     params: { fields: ['name'], paging: 'false' },
                 },
                 'read'
@@ -152,7 +197,7 @@ describe('validateQuery', () => {
 
         expect(
             validateResourceQuery(
-                { resource: 'resource', params: { fields: ['*'] } },
+                { resource: 'categoryOptionCombos', params: { fields: ['*'] } },
                 'read'
             )
         ).toBe(false)
@@ -164,7 +209,7 @@ describe('validateQuery', () => {
         expect(
             validateResourceQuery(
                 {
-                    resource: 'resource',
+                    resource: 'organisationUnits',
                     params: { fields: 'test, :all, something' },
                 },
                 'read'
@@ -178,7 +223,7 @@ describe('validateQuery', () => {
         expect(
             validateResourceQuery(
                 {
-                    resource: 'resource',
+                    resource: 'organisationUnitGroups',
                     params: { fields: ['asdf', ':owner'] },
                 },
                 'read'
@@ -192,7 +237,7 @@ describe('validateQuery', () => {
         expect(
             validateResourceQuery(
                 {
-                    resource: 'resource',
+                    resource: 'dashboards',
                     params: { fields: ['*', ':owner', ':all'] },
                 },
                 'read'
@@ -213,7 +258,7 @@ describe('validateQuery', () => {
         expect(
             validateResourceQuery(
                 {
-                    resource: 'resource',
+                    resource: 'dataSets',
                     params: { fields: ['*'], paging: false },
                 },
                 'read'
@@ -230,7 +275,7 @@ describe('validateQuery', () => {
         expect(
             validateResourceQuery(
                 {
-                    resource: 'resource',
+                    resource: 'dashboardItems',
                     params: { paging: false },
                 },
                 'read'

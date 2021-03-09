@@ -1,9 +1,13 @@
 import { FetchType, ResolvedResourceQuery } from '../../engine'
+import { normativeMetadataResources } from './metadataResources'
 
 const validatePagination = (
     query: ResolvedResourceQuery,
     warn: (...data: any[]) => void
 ): boolean => {
+    if (!normativeMetadataResources.includes(query.resource)) {
+        return true
+    }
     if (query.params?.paging === false || query.params?.paging === 'false') {
         warn(
             'Data queries with paging=false are deprecated and should not be used!',
@@ -11,6 +15,9 @@ const validatePagination = (
         )
         return false
     }
+
+    // TODO: validate sub-resource pagination (i.e. fields=users~paging(1,50)[name] )
+
     return true
 }
 
@@ -18,6 +25,9 @@ const validateDeclarativeFields = (
     query: ResolvedResourceQuery,
     warn: (...data: any[]) => void
 ): boolean => {
+    if (!normativeMetadataResources.includes(query.resource)) {
+        return true
+    }
     if (!query.params?.fields) {
         warn('Data queries should always specify fields to return', query)
         return false
@@ -37,6 +47,8 @@ const validateDeclarativeFields = (
             return false
         }
     }
+
+    // TODO: validate sub-resource wildcard fields (i.e. fields=users[*])
     return true
 }
 
@@ -45,12 +57,14 @@ export const validateResourceQuery = (
     type: FetchType
 ): boolean => {
     let valid = true
-    const warn =
-        process.env.NODE_ENV === 'development' ? console.warn : () => undefined
 
-    if (type === 'read') {
-        valid = validatePagination(query, warn) && valid
-        valid = validateDeclarativeFields(query, warn) && valid
+    if (process.env.NODE_ENV === 'development') {
+        // Support build-time dead code elimination in production
+        const warn = console.warn
+        if (type === 'read') {
+            valid = validatePagination(query, warn) && valid
+            valid = validateDeclarativeFields(query, warn) && valid
+        }
     }
 
     return valid
