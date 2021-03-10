@@ -1,3 +1,10 @@
+# [2.8.0](https://github.com/dhis2/app-runtime/compare/v2.7.1...v2.8.0) (2021-03-10)
+
+
+### Features
+
+* warn in development mode when  query is missing paging or explicit fields ([#788](https://github.com/dhis2/app-runtime/issues/788)) ([5f28c79](https://github.com/dhis2/app-runtime/commit/5f28c790eb010fea733989bbc242d18b21109b7f))
+
 ## [2.7.1](https://github.com/dhis2/app-runtime/compare/v2.7.0...v2.7.1) (2021-03-01)
 
 
