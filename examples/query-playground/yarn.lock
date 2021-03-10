@@ -1783,20 +1783,20 @@
     moment "^2.24.0"
 
 "@dhis2/app-runtime@*", "@dhis2/app-runtime@^2.2.2", "@dhis2/app-runtime@file:../../runtime":
-  version "2.7.0"
+  version "2.7.1"
   dependencies:
-    "@dhis2/app-service-alerts" "2.7.0"
-    "@dhis2/app-service-config" "2.7.0"
-    "@dhis2/app-service-data" "2.7.0"
+    "@dhis2/app-service-alerts" "2.7.1"
+    "@dhis2/app-service-config" "2.7.1"
+    "@dhis2/app-service-data" "2.7.1"
 
-"@dhis2/app-service-alerts@2.7.0", "@dhis2/app-service-alerts@file:../../services/alerts":
-  version "2.7.0"
+"@dhis2/app-service-alerts@2.7.1", "@dhis2/app-service-alerts@file:../../services/alerts":
+  version "2.7.1"
 
-"@dhis2/app-service-config@2.7.0", "@dhis2/app-service-config@file:../../services/config":
-  version "2.7.0"
+"@dhis2/app-service-config@2.7.1", "@dhis2/app-service-config@file:../../services/config":
+  version "2.7.1"
 
-"@dhis2/app-service-data@2.7.0", "@dhis2/app-service-data@file:../../services/data":
-  version "2.7.0"
+"@dhis2/app-service-data@2.7.1", "@dhis2/app-service-data@file:../../services/data":
+  version "2.7.1"
 
 "@dhis2/app-shell@5.2.0":
   version "5.2.0"
