@@ -1,3 +1,4 @@
+import i18n from '@dhis2/d2-i18n'
 import { PropTypes } from '@dhis2/prop-types'
 import {
     Button,
@@ -10,7 +11,6 @@ import {
     TabBar,
     Tab,
 } from '@dhis2/ui'
-import i18n from '@dhis2/d2-i18n'
 import React, { useState } from 'react'
 import styles from './TabControls.module.css'
 

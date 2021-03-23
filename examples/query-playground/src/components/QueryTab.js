@@ -1,9 +1,8 @@
 import { PropTypes } from '@dhis2/prop-types'
 import React from 'react'
-import styles from './QueryTab.module.css'
-
 import { QueryEditor } from './QueryEditor'
 import { QueryResults } from './QueryResults'
+import styles from './QueryTab.module.css'
 
 export const QueryTab = ({
     execute,

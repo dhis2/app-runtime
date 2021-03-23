@@ -83,6 +83,10 @@ jobs:
               with:
                   name: lib-build
 
+            - name: Generate i18n
+              working-directory: ./examples/query-playground
+              run: yarn d2-app-scripts i18n generate
+
             - name: Lint
               run: yarn lint
 

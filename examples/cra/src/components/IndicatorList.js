@@ -1,7 +1,7 @@
-import React from 'react'
 import { useAlert, useDataQuery } from '@dhis2/app-runtime'
-import { Indicator } from './Indicator'
+import React from 'react'
 import { AddButton } from './AddButton'
+import { Indicator } from './Indicator'
 
 const query = {
     indicators: {

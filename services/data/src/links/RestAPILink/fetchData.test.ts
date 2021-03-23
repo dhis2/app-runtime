@@ -1,5 +1,5 @@
-import { parseStatus, fetchData, parseContentType } from './fetchData'
 import { FetchError } from '../../engine'
+import { parseStatus, fetchData, parseContentType } from './fetchData'
 
 describe('networkFetch', () => {
     describe('parseContentType', () => {
@@ -109,7 +109,11 @@ describe('networkFetch', () => {
     describe('fetchData', () => {
         const headers: Record<string, (type: string) => string> = {
             'Content-Type': type =>
-                type === 'json' ? 'application/json' : 'text/plain',
+                type === 'json'
+                    ? 'application/json'
+                    : type === 'text'
+                    ? 'text/plain'
+                    : 'some/other-content-type',
         }
         const mockFetch = jest.fn(async url => ({
             status: 200,
@@ -118,6 +122,7 @@ describe('networkFetch', () => {
             },
             json: async () => ({ foo: 'bar' }),
             text: async () => 'foobar',
+            blob: async () => 'blob of foobar',
         }))
         beforeEach(() => {
             jest.clearAllMocks()
@@ -133,6 +138,11 @@ describe('networkFetch', () => {
         it('Should correctly parse a successful TEXT response', () => {
             ;(global as any).fetch = mockFetch
             expect(fetchData('text')).resolves.toBe('foobar')
+        })
+
+        it('Should correctly parse a successful BLOB response', () => {
+            ;(global as any).fetch = mockFetch
+            expect(fetchData('something else')).resolves.toBe('blob of foobar')
         })
 
         it('Should throw a FetchError if fetch fails', () => {

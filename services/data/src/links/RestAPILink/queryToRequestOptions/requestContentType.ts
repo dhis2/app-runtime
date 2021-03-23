@@ -1,6 +1,6 @@
 import { ResolvedResourceQuery, FetchType } from '../../../engine'
-import * as textPlainMatchers from './textPlainMatchers'
 import * as multipartFormDataMatchers from './multipartFormDataMatchers'
+import * as textPlainMatchers from './textPlainMatchers'
 
 type RequestContentType =
     | 'application/json'

@@ -32,3 +32,9 @@ export const isAppInstall = (
     type: FetchType,
     { resource }: ResolvedResourceQuery
 ) => type === 'create' && resource === 'apps'
+
+// POST to convert an SVG file
+export const isSvgConversion = (
+    type: FetchType,
+    { resource }: ResolvedResourceQuery
+) => type === 'create' && (resource === 'svg.png' || resource === 'svg.pdf')

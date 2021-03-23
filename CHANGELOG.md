@@ -1,3 +1,30 @@
+# [2.8.0](https://github.com/dhis2/app-runtime/compare/v2.7.1...v2.8.0) (2021-03-10)
+
+
+### Features
+
+* warn in development mode when  query is missing paging or explicit fields ([#788](https://github.com/dhis2/app-runtime/issues/788)) ([5f28c79](https://github.com/dhis2/app-runtime/commit/5f28c790eb010fea733989bbc242d18b21109b7f))
+
+## [2.7.1](https://github.com/dhis2/app-runtime/compare/v2.7.0...v2.7.1) (2021-03-01)
+
+
+### Bug Fixes
+
+* support tree-shakable builds and upgrade dependencies ([#780](https://github.com/dhis2/app-runtime/issues/780)) ([1b3ba1d](https://github.com/dhis2/app-runtime/commit/1b3ba1db94cbea87c242b1ec6de5617db697b524))
+
+# [2.7.0](https://github.com/dhis2/app-runtime/compare/v2.6.1...v2.7.0) (2021-01-28)
+
+
+### Bug Fixes
+
+* **fetch-data:** improve regex for contentType text/* and test ([7746543](https://github.com/dhis2/app-runtime/commit/7746543db9a75cd78bd0e55b4b56b546e2a424f2))
+
+
+### Features
+
+* **rest-api-link:** parse response to JSON, text, or blob ([d4028f2](https://github.com/dhis2/app-runtime/commit/d4028f24e97d53912f1e3d951e36c680337ab5f4))
+* add support for svg conversion endpoint ([61db63f](https://github.com/dhis2/app-runtime/commit/61db63facb56119e91529cb09e45866f72292210))
+
 ## [2.6.1](https://github.com/dhis2/app-runtime/compare/v2.6.0...v2.6.1) (2020-11-12)
 
 

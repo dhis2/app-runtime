@@ -1,8 +1,7 @@
 import { FetchError, FetchErrorDetails, JsonValue } from '../../engine'
 
-export const parseContentType = (contentType: string | null) => {
-    return contentType ? contentType.split(';')[0].trim().toLowerCase() : null
-}
+export const parseContentType = (contentType: string | null) =>
+    contentType ? contentType.split(';')[0].trim().toLowerCase() : ''
 
 export const parseStatus = async (response: Response) => {
     const accessError =
@@ -75,12 +74,20 @@ export function fetchData(
         })
         .then(parseStatus)
         .then(async response => {
-            if (
-                parseContentType(response.headers.get('Content-Type')) ===
-                'application/json'
-            ) {
+            const contentType = parseContentType(
+                response.headers.get('Content-Type')
+            )
+
+            // 'application/json'
+            if (contentType === 'application/json') {
                 return await response.json() // Will throw if invalid JSON!
             }
-            return await response.text()
+
+            // 'text/*'
+            if (/^text\/[a-z0-9.-]+$/.test(contentType)) {
+                return await response.text()
+            }
+
+            return await response.blob()
         })
 }

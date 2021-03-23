@@ -1047,20 +1047,20 @@
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
 "@dhis2/app-runtime@file:../../runtime":
-  version "2.5.1"
+  version "2.7.1"
   dependencies:
-    "@dhis2/app-service-alerts" "2.5.1"
-    "@dhis2/app-service-config" "2.5.1"
-    "@dhis2/app-service-data" "2.5.1"
+    "@dhis2/app-service-alerts" "2.7.1"
+    "@dhis2/app-service-config" "2.7.1"
+    "@dhis2/app-service-data" "2.7.1"
 
-"@dhis2/app-service-alerts@2.5.1", "@dhis2/app-service-alerts@file:../../services/alerts":
-  version "2.4.0"
+"@dhis2/app-service-alerts@2.7.1", "@dhis2/app-service-alerts@file:../../services/alerts":
+  version "2.7.1"
 
-"@dhis2/app-service-config@2.5.1", "@dhis2/app-service-config@file:../../services/config":
-  version "2.5.1"
+"@dhis2/app-service-config@2.7.1", "@dhis2/app-service-config@file:../../services/config":
+  version "2.7.1"
 
-"@dhis2/app-service-data@2.5.1", "@dhis2/app-service-data@file:../../services/data":
-  version "2.5.1"
+"@dhis2/app-service-data@2.7.1", "@dhis2/app-service-data@file:../../services/data":
+  version "2.7.1"
 
 "@hapi/address@2.x.x":
   version "2.1.4"

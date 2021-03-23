@@ -2,8 +2,10 @@ import {
     ResolvedResourceQuery,
     QueryParameters,
     QueryParameterValue,
+    FetchType,
 } from '../../engine'
 import { joinPath } from './path'
+import { validateResourceQuery } from './validateQuery'
 
 const encodeQueryParameter = (param: QueryParameterValue): string => {
     if (Array.isArray(param)) {
@@ -69,11 +71,15 @@ const makeActionPath = (resource: string) =>
 
 export const queryToResourcePath = (
     apiPath: string,
-    { resource, id, params = {} }: ResolvedResourceQuery
+    query: ResolvedResourceQuery,
+    type: FetchType
 ): string => {
+    const { resource, id, params = {} } = query
     const base = isAction(resource)
         ? makeActionPath(resource)
         : joinPath(apiPath, resource, id)
+
+    validateResourceQuery(query, type)
 
     if (Object.keys(params).length) {
         return `${base}?${queryParametersToQueryString(params)}`

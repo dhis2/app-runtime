@@ -1,5 +1,5 @@
-import { ResolvedResourceQuery } from '../types/Query'
 import { InvalidQueryError } from '../types/InvalidQueryError'
+import { ResolvedResourceQuery } from '../types/Query'
 
 const validQueryKeys = ['resource', 'id', 'params', 'data']
 const validTypes = ['read', 'create', 'update', 'replace', 'delete']
