@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react'
 import { AlertsProvider, useAlert } from '../index'
 
 describe('useAlert', () => {
-    it('Renders without crashing', () => {
+    it('Hook returns a show and hide function', () => {
         const wrapper = ({ children }: { children?: ReactNode }) => (
             <AlertsProvider>{children}</AlertsProvider>
         )
@@ -11,5 +11,7 @@ describe('useAlert', () => {
 
         expect(result.current).toHaveProperty('show')
         expect(typeof result.current.show).toBe('function')
+        expect(result.current).toHaveProperty('hide')
+        expect(typeof result.current.hide).toBe('function')
     })
 })

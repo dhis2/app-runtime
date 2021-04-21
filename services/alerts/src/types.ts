@@ -1,31 +1,18 @@
-type AlertAction = {
-    label: string
-    onClick: () => void
-}
-export type AlertOptions = {
-    actions?: AlertAction[]
-    className?: string
-    critical?: boolean
-    dataTest?: string
-    duration?: number
-    icon?: boolean | React.ElementType
-    permanent?: boolean
-    success?: boolean
-    warning?: boolean
-    onHidden?: () => void
-}
+import { MutableRefObject } from 'react'
 
-export interface AlertsManager {
-    add: (alert: Alert) => void
-    remove: (id: number) => void
-}
+export type AlertOptions = Record<string, unknown>
 
 export type Alert = {
+    id?: number
+    remove?: () => void
     message: string
     options: AlertOptions
 }
 
-export interface AlertsManagerAlert extends Alert {
-    id: number
-    remove: () => void
+export type AlertRef = MutableRefObject<Alert | null>
+
+export type AlertsMap = Map<number, Alert>
+
+export type AlertsManager = {
+    add: (alert: Alert, alertRef: AlertRef) => Alert
 }

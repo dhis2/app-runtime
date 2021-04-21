@@ -1,5 +1,6 @@
 /* eslint-disable react/display-name, react/prop-types */
 
+import { AlertsProvider } from '@dhis2/app-service-alerts'
 import { renderHook, act } from '@testing-library/react-hooks'
 import React from 'react'
 import {
@@ -31,9 +32,11 @@ afterEach(() => {
 it('renders in the default state initially', () => {
     const { result } = renderHook(() => useCacheableSection('one'), {
         wrapper: ({ children }) => (
-            <OfflineProvider offlineInterface={mockOfflineInterface}>
-                {children}
-            </OfflineProvider>
+            <AlertsProvider>
+                <OfflineProvider offlineInterface={mockOfflineInterface}>
+                    {children}
+                </OfflineProvider>
+            </AlertsProvider>
         ),
     })
 
@@ -57,9 +60,11 @@ it('handles a successful recording', async done => {
         () => useCacheableSection(sectionId),
         {
             wrapper: ({ children }) => (
-                <OfflineProvider offlineInterface={testOfflineInterface}>
-                    {children}
-                </OfflineProvider>
+                <AlertsProvider>
+                    <OfflineProvider offlineInterface={testOfflineInterface}>
+                        {children}
+                    </OfflineProvider>
+                </AlertsProvider>
             ),
         }
     )
@@ -121,9 +126,11 @@ it('handles a recording that encounters an error', async done => {
     }
     const { result } = renderHook(() => useCacheableSection('one'), {
         wrapper: ({ children }) => (
-            <OfflineProvider offlineInterface={testOfflineInterface}>
-                {children}
-            </OfflineProvider>
+            <AlertsProvider>
+                <OfflineProvider offlineInterface={testOfflineInterface}>
+                    {children}
+                </OfflineProvider>
+            </AlertsProvider>
         ),
     })
 
@@ -166,9 +173,11 @@ it('handles an error starting the recording', async () => {
     }
     const { result } = renderHook(() => useCacheableSection('err'), {
         wrapper: ({ children }) => (
-            <OfflineProvider offlineInterface={testOfflineInterface}>
-                {children}
-            </OfflineProvider>
+            <AlertsProvider>
+                <OfflineProvider offlineInterface={testOfflineInterface}>
+                    {children}
+                </OfflineProvider>
+            </AlertsProvider>
         ),
     })
 
@@ -192,9 +201,11 @@ it('handles remove and updates sections', async () => {
         () => useCacheableSection(sectionId),
         {
             wrapper: ({ children }) => (
-                <OfflineProvider offlineInterface={testOfflineInterface}>
-                    {children}
-                </OfflineProvider>
+                <AlertsProvider>
+                    <OfflineProvider offlineInterface={testOfflineInterface}>
+                        {children}
+                    </OfflineProvider>
+                </AlertsProvider>
             ),
         }
     )
@@ -228,9 +239,11 @@ it('handles a change in ID', async () => {
         (...args) => useCacheableSection(...args),
         {
             wrapper: ({ children }) => (
-                <OfflineProvider offlineInterface={testOfflineInterface}>
-                    {children}
-                </OfflineProvider>
+                <AlertsProvider>
+                    <OfflineProvider offlineInterface={testOfflineInterface}>
+                        {children}
+                    </OfflineProvider>
+                </AlertsProvider>
             ),
             initialProps: 'id-one',
         }
