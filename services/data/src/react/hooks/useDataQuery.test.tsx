@@ -1,66 +1,193 @@
-import { renderHook, act } from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import { CustomDataProvider } from '../components/CustomDataProvider'
 import { useDataQuery } from './useDataQuery'
 
-const customData = {
-    answer: 42,
-}
-
-const wrapper = ({ children }: { children?: ReactNode }) => (
-    <CustomDataProvider data={customData}>{children}</CustomDataProvider>
-)
-
-const query = {
-    x: {
-        resource: 'answer',
-    },
-}
 describe('useDataQuery', () => {
     const originalError = console.error
+
+    beforeEach(() => {
+        jest.useFakeTimers()
+    })
 
     afterEach(() => {
         console.error = originalError
     })
 
-    it('Should render without failing', async () => {
-        let hookState: any
+    describe('Loading', () => {
+        it('Should set initial loading state to true if not lazy', async () => {
+            const query = { x: { resource: 'answer' } }
+            const mockData = { answer: 42 }
+            const wrapper = ({ children }: { children?: ReactNode }) => {
+                const queryClient = new QueryClient()
 
-        console.error = jest.fn()
+                return (
+                    <QueryClientProvider client={queryClient}>
+                        <CustomDataProvider data={mockData}>
+                            {children}
+                        </CustomDataProvider>
+                    </QueryClientProvider>
+                )
+            }
 
-        act(() => {
-            hookState = renderHook(() => useDataQuery(query), {
-                wrapper,
+            // TODO: suppresses the act warning, we should address this
+            console.error = jest.fn()
+
+            const { result } = renderHook(
+                () => useDataQuery(query, { lazy: false }),
+                { wrapper }
+            )
+
+            expect(result.current).toMatchObject({
+                loading: true,
+                called: true,
             })
         })
-
-        expect(hookState.result.current).toMatchObject({ loading: true })
     })
 
-    it('Should lazily await a refetch call', async () => {
-        let hookState: any
+    describe('Data', () => {
+        it('Should return the data on success', async () => {
+            const query = { x: { resource: 'answer' } }
+            const mockData = { answer: 42 }
+            const wrapper = ({ children }: { children?: ReactNode }) => {
+                const queryClient = new QueryClient()
 
-        console.error = jest.fn()
+                return (
+                    <QueryClientProvider client={queryClient}>
+                        <CustomDataProvider data={mockData}>
+                            {children}
+                        </CustomDataProvider>
+                    </QueryClientProvider>
+                )
+            }
 
-        act(() => {
-            hookState = renderHook(() => useDataQuery(query, { lazy: true }), {
+            // TODO: suppresses the act warning, we should address this
+            console.error = jest.fn()
+
+            const { result, waitFor } = renderHook(() => useDataQuery(query), {
                 wrapper,
             })
-        })
 
-        expect(hookState.result.current).toMatchObject({ loading: false })
+            expect(result.current).toMatchObject({
+                loading: true,
+                called: true,
+            })
 
-        act(() => {
-            hookState.result.current.refetch()
-        })
+            await waitFor(() => {
+                // Fast forward through react-query's timeouts
+                jest.runAllTimers()
 
-        expect(hookState.result.current).toMatchObject({ loading: true })
-
-        await hookState.waitForNextUpdate()
-
-        expect(hookState.result.current).toMatchObject({
-            loading: false,
-            data: { x: 42 },
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    called: true,
+                    data: { x: 42 },
+                })
+            })
         })
     })
+
+    describe('Errors', () => {
+        it('Should return any errors it encounters', async () => {
+            const expectedError = new Error('Something went wrong')
+            const query = { x: { resource: 'answer' } }
+            const mockData = {
+                answer: () => {
+                    throw expectedError
+                },
+            }
+            const wrapper = ({ children }: { children?: ReactNode }) => {
+                const queryClient = new QueryClient()
+
+                return (
+                    <QueryClientProvider client={queryClient}>
+                        <CustomDataProvider data={mockData}>
+                            {children}
+                        </CustomDataProvider>
+                    </QueryClientProvider>
+                )
+            }
+
+            // TODO: suppresses the act warning, we should address this
+            console.error = jest.fn()
+
+            const { result, waitFor } = renderHook(() => useDataQuery(query), {
+                wrapper,
+            })
+
+            expect(result.current).toMatchObject({
+                loading: true,
+                called: true,
+            })
+
+            await waitFor(() => {
+                // Fast forward through react-query's automatic retries on errors
+                jest.runAllTimers()
+
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    called: true,
+                    error: expectedError,
+                })
+            })
+        })
+    })
+
+    describe('Lazy queries', () => {
+        it('Should not fetch until refetch has been called if lazy', async () => {
+            const query = { x: { resource: 'answer' } }
+            const mockData = { answer: 42 }
+            const wrapper = ({ children }: { children?: ReactNode }) => {
+                const queryClient = new QueryClient()
+
+                return (
+                    <QueryClientProvider client={queryClient}>
+                        <CustomDataProvider data={mockData}>
+                            {children}
+                        </CustomDataProvider>
+                    </QueryClientProvider>
+                )
+            }
+
+            // TODO: suppresses the act warning, we should address this
+            console.error = jest.fn()
+
+            const { result, waitFor } = renderHook(
+                () => useDataQuery(query, { lazy: true }),
+                { wrapper }
+            )
+
+            expect(result.current).toMatchObject({
+                loading: false,
+                called: false,
+            })
+
+            result.current.refetch()
+
+            expect(result.current).toMatchObject({
+                loading: true,
+                called: true,
+            })
+
+            await waitFor(() => {
+                // Fast forward through react-query's timeouts
+                jest.runAllTimers()
+
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    called: true,
+                    data: { x: 42 },
+                })
+            })
+        })
+    })
+
+    /**
+     * TODO
+     * onComplete, onError callbacks
+     * variables (initial)
+     * engine
+     * multiple queries
+     * refetch (for lazy and non-lazy)
+     */
 })
