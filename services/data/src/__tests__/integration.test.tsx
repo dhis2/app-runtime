@@ -1,10 +1,6 @@
-import { render, waitForElement, act } from '@testing-library/react'
+import { render, waitFor, waitForElement } from '@testing-library/react'
 import React from 'react'
-import {
-    FetchType,
-    DataEngineLinkExecuteOptions,
-    ResolvedResourceQuery,
-} from '../engine'
+import { cache, SWRConfig } from 'swr'
 import { CustomDataProvider, DataQuery } from '../react'
 import { QueryRenderInput } from '../types'
 
@@ -13,6 +9,10 @@ const customData = {
 }
 
 describe('Testing custom data provider and useQuery hook', () => {
+    afterEach(async () => {
+        await waitFor(() => cache.clear())
+    })
+
     it('Should render without failing', async () => {
         const renderFunction = jest.fn(
             ({ loading, error, data }: QueryRenderInput) => {
@@ -23,37 +23,46 @@ describe('Testing custom data provider and useQuery hook', () => {
         )
 
         const { getByText } = render(
-            <CustomDataProvider data={customData}>
-                <DataQuery query={{ answer: { resource: 'answer' } }}>
-                    {renderFunction}
-                </DataQuery>
-            </CustomDataProvider>
+            <SWRConfig value={{ dedupingInterval: 0 }}>
+                <CustomDataProvider data={customData}>
+                    <DataQuery query={{ answer: { resource: 'answer' } }}>
+                        {renderFunction}
+                    </DataQuery>
+                </CustomDataProvider>
+            </SWRConfig>
         )
 
         expect(getByText(/loading/i)).not.toBeUndefined()
         expect(renderFunction).toHaveBeenCalledTimes(1)
         expect(renderFunction).toHaveBeenLastCalledWith({
             called: true,
+            data: undefined,
+            engine: expect.any(Object),
+            error: undefined,
             loading: true,
             refetch: expect.any(Function),
-            engine: expect.any(Object),
         })
-        await waitForElement(() => getByText(/data: /i))
+
+        await waitFor(() => {
+            getByText(/data: /i)
+        })
+
         expect(renderFunction).toHaveBeenCalledTimes(2)
         expect(renderFunction).toHaveBeenLastCalledWith({
             called: true,
-            loading: false,
             data: customData,
-            refetch: expect.any(Function),
             engine: expect.any(Object),
+            error: undefined,
+            loading: false,
+            refetch: expect.any(Function),
         })
-
         expect(getByText(/data: /i)).toHaveTextContent(
             `data: ${customData.answer}`
         )
     })
 
     it('Should render an error', async () => {
+        const expectedError = new Error('Something went wrong')
         const renderFunction = jest.fn(
             ({ loading, error, data }: QueryRenderInput) => {
                 if (loading) return 'loading'
@@ -61,122 +70,45 @@ describe('Testing custom data provider and useQuery hook', () => {
                 return <div>data: {data && data.test}</div>
             }
         )
+        const data = {
+            test: () => {
+                throw expectedError
+            },
+        }
 
         const { getByText } = render(
-            <CustomDataProvider data={customData}>
-                <DataQuery query={{ test: { resource: 'test' } }}>
-                    {renderFunction}
-                </DataQuery>
-            </CustomDataProvider>
+            <SWRConfig value={{ dedupingInterval: 0 }}>
+                <CustomDataProvider data={data}>
+                    <DataQuery query={{ test: { resource: 'test' } }}>
+                        {renderFunction}
+                    </DataQuery>
+                </CustomDataProvider>
+            </SWRConfig>
         )
 
         expect(getByText(/loading/i)).not.toBeUndefined()
         expect(renderFunction).toHaveBeenCalledTimes(1)
         expect(renderFunction).toHaveBeenLastCalledWith({
             called: true,
+            data: undefined,
+            engine: expect.any(Object),
+            error: undefined,
             loading: true,
             refetch: expect.any(Function),
+        })
+
+        await waitFor(() => {
+            getByText(/error: /i)
+        })
+
+        expect(renderFunction).toHaveBeenCalledTimes(2)
+        expect(renderFunction).toHaveBeenLastCalledWith({
+            called: true,
+            data: undefined,
             engine: expect.any(Object),
+            error: expectedError,
+            loading: false,
+            refetch: expect.any(Function),
         })
-        await waitForElement(() => getByText(/error: /i))
-        expect(renderFunction).toHaveBeenCalledTimes(2)
-        expect(String(renderFunction.mock.calls[1][0].error)).toBe(
-            'Error: No data provided for resource type test!'
-        )
-        // expect(getByText(/data: /i)).toHaveTextContent(
-        //     `data: ${customData.answer}`
-        // )
-    })
-
-    it('Should abort the fetch when unmounted', async () => {
-        const renderFunction = jest.fn(
-            ({ loading, error, data }: QueryRenderInput) => {
-                if (loading) return 'loading'
-                if (error) return <div>error: {error.message}</div>
-                return <div>data: {data && data.test}</div>
-            }
-        )
-
-        let signal: AbortSignal | null | undefined
-        const mockData = {
-            factory: jest.fn(
-                async (
-                    type: FetchType,
-                    _: ResolvedResourceQuery,
-                    options?: DataEngineLinkExecuteOptions
-                ) => {
-                    if (options && options.signal && !signal) {
-                        signal = options.signal
-                    }
-                    return 'done'
-                }
-            ),
-        }
-
-        const { unmount } = render(
-            <CustomDataProvider data={mockData}>
-                <DataQuery query={{ test: { resource: 'factory' } }}>
-                    {renderFunction}
-                </DataQuery>
-            </CustomDataProvider>
-        )
-
-        expect(renderFunction).toHaveBeenCalledTimes(1)
-        expect(mockData.factory).toHaveBeenCalledTimes(1)
-        act(() => {
-            unmount()
-        })
-        expect(signal && signal.aborted).toBe(true)
-    })
-
-    it('Should abort the fetch when refetching', async () => {
-        let refetch: any
-        const renderFunction = jest.fn(
-            ({ loading, error, data, refetch: _refetch }: QueryRenderInput) => {
-                refetch = _refetch
-                if (loading) return 'loading'
-                if (error) return <div>error: {error.message}</div>
-                return <div>data: {data && data.test}</div>
-            }
-        )
-
-        let signal: any
-        const mockData = {
-            factory: jest.fn(
-                async (
-                    type: FetchType,
-                    q: ResolvedResourceQuery,
-                    options?: DataEngineLinkExecuteOptions
-                ) => {
-                    if (options && options.signal && !signal) {
-                        signal = options.signal
-                    }
-                    return 'test'
-                }
-            ),
-        }
-
-        const { getByText } = render(
-            <CustomDataProvider data={mockData}>
-                <DataQuery query={{ test: { resource: 'factory' } }}>
-                    {renderFunction}
-                </DataQuery>
-            </CustomDataProvider>
-        )
-
-        expect(renderFunction).toHaveBeenCalledTimes(1)
-        expect(mockData.factory).toHaveBeenCalledTimes(1)
-
-        expect(signal.aborted).toBe(false)
-        expect(refetch).not.toBeUndefined()
-        act(() => {
-            refetch()
-        })
-
-        expect(signal.aborted).toBe(true)
-        await waitForElement(() => getByText(/data: /i))
-
-        expect(renderFunction).toHaveBeenCalledTimes(2)
-        expect(mockData.factory).toHaveBeenCalledTimes(2)
     })
 })
