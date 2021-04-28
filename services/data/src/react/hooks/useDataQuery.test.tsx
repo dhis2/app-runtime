@@ -4,6 +4,17 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { CustomDataProvider } from '../components/CustomDataProvider'
 import { useDataQuery } from './useDataQuery'
 
+// eslint-disable-next-line react/display-name
+const createWrapper = mockData => ({ children }: { children?: ReactNode }) => {
+    const queryClient = new QueryClient()
+
+    return (
+        <QueryClientProvider client={queryClient}>
+            <CustomDataProvider data={mockData}>{children}</CustomDataProvider>
+        </QueryClientProvider>
+    )
+}
+
 describe('useDataQuery', () => {
     const originalError = console.error
 
@@ -11,7 +22,12 @@ describe('useDataQuery', () => {
         jest.useFakeTimers()
     })
 
-    afterEach(() => {
+    beforeAll(() => {
+        // TODO: suppresses the act warning, we should address this
+        console.error = jest.fn()
+    })
+
+    afterAll(() => {
         console.error = originalError
     })
 
@@ -19,20 +35,7 @@ describe('useDataQuery', () => {
         it('Should set initial loading state to true if not lazy', async () => {
             const query = { x: { resource: 'answer' } }
             const mockData = { answer: 42 }
-            const wrapper = ({ children }: { children?: ReactNode }) => {
-                const queryClient = new QueryClient()
-
-                return (
-                    <QueryClientProvider client={queryClient}>
-                        <CustomDataProvider data={mockData}>
-                            {children}
-                        </CustomDataProvider>
-                    </QueryClientProvider>
-                )
-            }
-
-            // TODO: suppresses the act warning, we should address this
-            console.error = jest.fn()
+            const wrapper = createWrapper(mockData)
 
             const { result } = renderHook(
                 () => useDataQuery(query, { lazy: false }),
@@ -50,20 +53,7 @@ describe('useDataQuery', () => {
         it('Should return the data on success', async () => {
             const query = { x: { resource: 'answer' } }
             const mockData = { answer: 42 }
-            const wrapper = ({ children }: { children?: ReactNode }) => {
-                const queryClient = new QueryClient()
-
-                return (
-                    <QueryClientProvider client={queryClient}>
-                        <CustomDataProvider data={mockData}>
-                            {children}
-                        </CustomDataProvider>
-                    </QueryClientProvider>
-                )
-            }
-
-            // TODO: suppresses the act warning, we should address this
-            console.error = jest.fn()
+            const wrapper = createWrapper(mockData)
 
             const { result, waitFor } = renderHook(() => useDataQuery(query), {
                 wrapper,
@@ -96,20 +86,7 @@ describe('useDataQuery', () => {
                     throw expectedError
                 },
             }
-            const wrapper = ({ children }: { children?: ReactNode }) => {
-                const queryClient = new QueryClient()
-
-                return (
-                    <QueryClientProvider client={queryClient}>
-                        <CustomDataProvider data={mockData}>
-                            {children}
-                        </CustomDataProvider>
-                    </QueryClientProvider>
-                )
-            }
-
-            // TODO: suppresses the act warning, we should address this
-            console.error = jest.fn()
+            const wrapper = createWrapper(mockData)
 
             const { result, waitFor } = renderHook(() => useDataQuery(query), {
                 wrapper,
@@ -137,20 +114,7 @@ describe('useDataQuery', () => {
         it('Should not fetch until refetch has been called if lazy', async () => {
             const query = { x: { resource: 'answer' } }
             const mockData = { answer: 42 }
-            const wrapper = ({ children }: { children?: ReactNode }) => {
-                const queryClient = new QueryClient()
-
-                return (
-                    <QueryClientProvider client={queryClient}>
-                        <CustomDataProvider data={mockData}>
-                            {children}
-                        </CustomDataProvider>
-                    </QueryClientProvider>
-                )
-            }
-
-            // TODO: suppresses the act warning, we should address this
-            console.error = jest.fn()
+            const wrapper = createWrapper(mockData)
 
             const { result, waitFor } = renderHook(
                 () => useDataQuery(query, { lazy: true }),
@@ -181,13 +145,4 @@ describe('useDataQuery', () => {
             })
         })
     })
-
-    /**
-     * TODO
-     * onComplete, onError callbacks
-     * variables (initial)
-     * engine
-     * multiple queries
-     * refetch (for lazy and non-lazy)
-     */
 })
