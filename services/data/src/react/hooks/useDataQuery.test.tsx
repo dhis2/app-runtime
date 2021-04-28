@@ -239,4 +239,86 @@ describe('useDataQuery', () => {
             })
         })
     })
+
+    describe('Variables', () => {
+        it('Should process a query with variables correctly', async () => {
+            const expectedId = 'id'
+            const expectedData = 42
+
+            // Set up a query that accepts an id as a variable
+            const query = {
+                x: { resource: 'answer', id: ({ id }) => id },
+            }
+
+            // Only return the data if it matches the expected id
+            const mockData = {
+                answer: (_, { id }) => {
+                    if (id === expectedId) {
+                        return expectedData
+                    }
+                },
+            }
+            const wrapper = createWrapper(mockData)
+
+            const { result, waitFor } = renderHook(
+                // Pass the id as a variable
+                () => useDataQuery(query, { variables: { id: expectedId } }),
+                { wrapper }
+            )
+
+            await waitFor(() => {
+                expect(result.current).toMatchObject({
+                    data: { x: expectedData },
+                })
+            })
+        })
+
+        it('Should correctly refetch a query with new variables', async () => {
+            const wrongId = 'wrongId'
+            const expectedId = 'expectedId'
+            const wrongData = 24
+            const expectedData = 42
+
+            // Set up a query that accepts an id as a variable
+            const query = {
+                x: { resource: 'answer', id: ({ id }) => id },
+            }
+
+            // Only return the correct data if it matches the expected id
+            const mockData = {
+                answer: (_, { id }) => {
+                    if (id === expectedId) {
+                        return expectedData
+                    } else if (id === wrongId) {
+                        return wrongData
+                    }
+                },
+            }
+            const wrapper = createWrapper(mockData)
+
+            const { result, waitFor } = renderHook(
+                // Pass the wrong id initially
+                // eslint-disable-next-line
+                // @ts-ignore
+                () => useDataQuery(query, { variables: { id: wrongId } }),
+                { wrapper }
+            )
+
+            await waitFor(() => {
+                expect(result.current).toMatchObject({
+                    data: { x: wrongData },
+                })
+            })
+
+            // eslint-disable-next-line
+            // @ts-ignore
+            result.current.refetch({ id: expectedId })
+
+            await waitFor(() => {
+                expect(result.current).toMatchObject({
+                    data: { x: expectedData },
+                })
+            })
+        })
+    })
 })

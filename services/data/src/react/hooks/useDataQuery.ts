@@ -40,7 +40,9 @@ export const useDataQuery = (
     const called = enabled
 
     // Callback that allows updating the variables and enabling a lazy query
-    const refetch = (newVariables: QueryVariables) => {
+    // eslint-disable-next-line
+    // @ts-ignore
+    const refetch = newVariables => {
         if (newVariables) {
             setVariables({
                 ...variables,
