@@ -185,5 +185,58 @@ describe('useDataQuery', () => {
                 })
             })
         })
+
+        it('Should call onComplete after a successful refetch', async () => {
+            const query = { x: { resource: 'answer' } }
+            const mockData = { answer: 42 }
+            const wrapper = createWrapper(mockData)
+            const onComplete = jest.fn()
+            const onError = jest.fn()
+
+            const { result, waitFor } = renderHook(
+                () => useDataQuery(query, { lazy: true, onComplete, onError }),
+                { wrapper }
+            )
+
+            result.current.refetch()
+
+            await waitFor(() => {
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    called: true,
+                    data: { x: 42 },
+                })
+                expect(onComplete).toHaveBeenCalledWith({ x: 42 })
+                expect(onError).not.toHaveBeenCalled()
+            })
+        })
+
+        it('Should call onError after a failed refetch', async () => {
+            const expectedError = new Error('Something went wrong')
+            const query = { x: { resource: 'answer' } }
+            const mockData = {
+                answer: () => {
+                    throw expectedError
+                },
+            }
+            const wrapper = createWrapper(mockData)
+            const onComplete = jest.fn()
+            const onError = jest.fn()
+
+            const { result, waitFor } = renderHook(
+                () => useDataQuery(query, { lazy: true, onComplete, onError }),
+                { wrapper }
+            )
+
+            result.current.refetch()
+
+            await waitFor(() => {
+                expect(result.current).toMatchObject({
+                    error: expectedError,
+                })
+                expect(onError).toHaveBeenCalledWith(expectedError)
+                expect(onComplete).not.toHaveBeenCalled()
+            })
+        })
     })
 })
