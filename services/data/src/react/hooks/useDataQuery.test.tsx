@@ -100,7 +100,7 @@ describe('useDataQuery', () => {
     })
 
     describe('Data', () => {
-        it('Should return the data on success', async () => {
+        it('Should return the data for a single resource query on success', async () => {
             const query = { x: { resource: 'answer' } }
             const mockData = { answer: 42 }
             const wrapper = createWrapper(mockData)
@@ -122,16 +122,74 @@ describe('useDataQuery', () => {
                 })
             })
         })
+
+        it('Should return the data for a multiple resource query on success', async () => {
+            const query = {
+                x: { resource: 'answer' },
+                y: { resource: 'opposite' },
+            }
+            const mockData = { answer: 42, opposite: 24 }
+            const wrapper = createWrapper(mockData)
+
+            const { result, waitFor } = renderHook(() => useDataQuery(query), {
+                wrapper,
+            })
+
+            expect(result.current).toMatchObject({
+                loading: true,
+                called: true,
+            })
+
+            await waitFor(() => {
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    called: true,
+                    data: { x: 42, y: 24 },
+                })
+            })
+        })
     })
 
     describe('Errors', () => {
-        it('Should return any errors it encounters', async () => {
+        it('Should return errors it encounters for a single resource query', async () => {
             const expectedError = new Error('Something went wrong')
             const query = { x: { resource: 'answer' } }
             const mockData = {
                 answer: () => {
                     throw expectedError
                 },
+            }
+            const wrapper = createWrapper(mockData)
+
+            const { result, waitFor } = renderHook(() => useDataQuery(query), {
+                wrapper,
+            })
+
+            expect(result.current).toMatchObject({
+                loading: true,
+                called: true,
+            })
+
+            await waitFor(() => {
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    called: true,
+                    error: expectedError,
+                })
+            })
+        })
+
+        it('Should return errors it encounters for multiple resource queries', async () => {
+            const expectedError = new Error('Something went wrong')
+            const query = {
+                x: { resource: 'answer' },
+                y: { resource: 'opposite' },
+            }
+            const mockData = {
+                answer: () => {
+                    throw expectedError
+                },
+                opposite: 24,
             }
             const wrapper = createWrapper(mockData)
 
