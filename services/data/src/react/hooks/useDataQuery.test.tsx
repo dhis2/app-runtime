@@ -162,13 +162,4 @@ describe('useDataQuery', () => {
             })
         })
     })
-
-    /**
-     * TODO
-     * onComplete, onError callbacks
-     * variables (initial)
-     * engine
-     * multiple queries
-     * refetch (for lazy and non-lazy)
-     */
 })
