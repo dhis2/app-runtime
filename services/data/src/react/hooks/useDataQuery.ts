@@ -56,7 +56,8 @@ export const useDataQuery = (
             setEnabled(true)
         }
 
-        return queryRefetch().then(({ data }) => data)
+        // Cancel any pending requests before refetching
+        return queryRefetch({ cancelRefetch: true }).then(({ data }) => data)
     }
 
     // eslint-disable-next-line

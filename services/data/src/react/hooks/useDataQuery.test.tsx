@@ -332,6 +332,34 @@ describe('useDataQuery', () => {
                 expect(promise).resolves.toEqual({ x: 42 })
             })
         })
+
+        it('Should return a promise from refetch that does not reject on errors', async () => {
+            const expectedError = new Error('Something went wrong')
+            const query = { x: { resource: 'answer' } }
+            const mockData = {
+                answer: () => {
+                    throw expectedError
+                },
+            }
+            const wrapper = createWrapper(mockData)
+
+            const { result, waitFor } = renderHook(
+                () => useDataQuery(query, { lazy: true }),
+                { wrapper }
+            )
+
+            const promise = result.current.refetch()
+
+            await waitFor(() => {
+                // Fast forward through react-query's automatic retries on errors
+                jest.runAllTimers()
+
+                expect(result.current).toMatchObject({
+                    error: expectedError,
+                })
+                expect(promise).resolves.toBeUndefined()
+            })
+        })
     })
 
     describe('Variables', () => {
