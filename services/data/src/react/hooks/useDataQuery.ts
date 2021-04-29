@@ -56,7 +56,7 @@ export const useDataQuery = (
             setEnabled(true)
         }
 
-        return queryRefetch()
+        return queryRefetch().then(({ data }) => data)
     }
 
     // eslint-disable-next-line

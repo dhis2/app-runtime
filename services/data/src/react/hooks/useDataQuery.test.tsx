@@ -310,6 +310,28 @@ describe('useDataQuery', () => {
                 expect(onComplete).not.toHaveBeenCalled()
             })
         })
+
+        it('Should return a promise from refetch that resolves with the data on success', async () => {
+            const query = { x: { resource: 'answer' } }
+            const mockData = { answer: 42 }
+            const wrapper = createWrapper(mockData)
+
+            const { result, waitFor } = renderHook(
+                () => useDataQuery(query, { lazy: true }),
+                { wrapper }
+            )
+
+            const promise = result.current.refetch()
+
+            await waitFor(() => {
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    called: true,
+                    data: { x: 42 },
+                })
+                expect(promise).resolves.toEqual({ x: 42 })
+            })
+        })
     })
 
     describe('Variables', () => {
