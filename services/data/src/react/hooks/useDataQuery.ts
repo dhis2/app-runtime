@@ -23,15 +23,12 @@ export const useDataQuery = (
         name: 'query',
     })
 
-    // TODO: Used as the cache key, this should be deterministically serialized
-    const queryKey = JSON.stringify([staticQuery, variables])
-
     // The queryfn must return a promise that will either resolve to data or throw an error
     const engine = useDataEngine()
     const queryFn = () =>
         engine.query(staticQuery, { onComplete, onError, variables })
 
-    const shouldFetch = () => (enabled ? queryKey : null)
+    const shouldFetch = () => (enabled ? [staticQuery, variables] : null)
     const { error, data } = useSWR(shouldFetch, queryFn)
 
     // Map our API to swr's API
