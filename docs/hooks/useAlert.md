@@ -4,10 +4,10 @@
 
 ## Hook arguments
 
-| Name      | Type                   | Description                                                                                                                                            |
-| --------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `message` | `string` or `Function` | The message to display                                                                                                                                 |
-| `options` | `object` or `Function` | A configuration object that matches [the props  of the `AlertBar`](https://ui.dhis2.nu/demo/?path=/docs/feedback-alerts-alert-bar--default) in `@dhis2/ui` (alternate: [minimal view](https://ui.dhis2.nu/#/api?id=coresrcalertbaralertbarproptypes-object) of the props) |
+| Name      | Type                   | Description                                                                                                                                                                                                                                                              |
+| --------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `message` | `string` or `Function` | The message to display                                                                                                                                                                                                                                                   |
+| `options` | `object` or `Function` | A configuration object that matches [the props of the `AlertBar`](https://ui.dhis2.nu/demo/?path=/docs/feedback-alerts-alert-bar--default) in `@dhis2/ui` (alternate: [minimal view](https://ui.dhis2.nu/#/api?id=coresrcalertbaralertbarproptypes-object) of the props) |
 
 ## Usage of the returned `show` function
 
