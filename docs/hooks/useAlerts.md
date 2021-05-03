@@ -2,6 +2,10 @@
 
 `useAlerts() → Alert[]`
 
+## Usage note
+
+The app-shell wraps the app in an `AlertsProvider` and also includes an `Alerts` component which leverages `useAlerts` to show `AlertBars` in an `AlertStack` (`@dhis2/ui` components). So in a typical DHIS2 app the only thing you need to use from the alerts-service is the `useAlert` hook.
+
 ## Alert
 
 | Prop      | Type       | Description                                                                                                                                            |
@@ -25,7 +29,3 @@ export const Alerts = () => {
     ))
 }
 ```
-
-## Usage note
-
-The app-shell wraps the app in an `AlertsProvider` and also includes an `Alerts` component which leverages `useAlerts` to show `AlertBars` in an `AlertStack` (`@dhis2/ui` components). So in a typical DHIS2 app the only thing you need to use from the alerts-service is the `useAlert` hook.
