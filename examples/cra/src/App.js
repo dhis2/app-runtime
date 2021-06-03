@@ -1,4 +1,6 @@
+import { useDataEngine } from '@dhis2/app-runtime'
 import React from 'react'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import './App.css'
 import { Alerts } from './components/Alerts'
 import { ConfigConsumer } from './components/ConfigConsumer'
@@ -15,16 +17,31 @@ const providerType = (
 ).toLowerCase()
 
 const App = () => {
+    const engine = useDataEngine()
+    const queryFn = ({ queryKey }) => {
+        const [query] = queryKey
+        return engine.query(query)
+    }
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: {
+                queryFn,
+            },
+        },
+    })
+
     return (
-        <SwitchableProvider type={providerType} config={config}>
-            <div className="App">
-                <header className="App-header">
-                    <ConfigConsumer />
-                    <IndicatorList />
-                    <Alerts />
-                </header>
-            </div>
-        </SwitchableProvider>
+        <QueryClientProvider client={queryClient}>
+            <SwitchableProvider type={providerType} config={config}>
+                <div className="App">
+                    <header className="App-header">
+                        <ConfigConsumer />
+                        <IndicatorList />
+                        <Alerts />
+                    </header>
+                </div>
+            </SwitchableProvider>
+        </QueryClientProvider>
     )
 }
 
