@@ -2,7 +2,7 @@ const config = {
     type: 'lib',
 
     entryPoints: {
-        lib: './src/index.ts',
+        lib: './src/index.js',
     },
 }
 
