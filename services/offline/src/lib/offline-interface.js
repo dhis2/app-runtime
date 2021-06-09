@@ -2,11 +2,13 @@ import { useAlert } from '@dhis2/app-service-alerts'
 import PropTypes from 'prop-types'
 import React, { createContext, useContext } from 'react'
 
-// Offline interface context
-
 const OfflineContext = createContext()
 
-export function OfflineInterfaceProvider({ offlineInterface, children }) {
+export function OfflineInterfaceProvider({
+    offlineInterface,
+    pwaEnabled: pwaEnabledProp,
+    children,
+}) {
     const { show } = useAlert(
         ({ message }) => message,
         ({ action, onConfirm }) => ({
@@ -18,6 +20,7 @@ export function OfflineInterfaceProvider({ offlineInterface, children }) {
     React.useEffect(() => {
         // TODO: refactor from env var; receive from config
         const pwaEnabled =
+            pwaEnabledProp ||
             process.env.REACT_APP_DHIS2_APP_PWA_ENABLED === 'true'
         // init() Returns a cleanup function
         return offlineInterface.init({ promptUpdate: show, pwaEnabled })
@@ -33,6 +36,7 @@ export function OfflineInterfaceProvider({ offlineInterface, children }) {
 OfflineInterfaceProvider.propTypes = {
     children: PropTypes.node,
     offlineInterface: PropTypes.shape({ init: PropTypes.func }),
+    pwaEnabled: PropTypes.bool,
 }
 
 export function useOfflineInterface() {
