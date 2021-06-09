@@ -6,7 +6,7 @@ const OfflineContext = createContext()
 
 export function OfflineInterfaceProvider({
     offlineInterface,
-    pwaEnabled: pwaEnabledProp,
+    pwaEnabled,
     children,
 }) {
     const { show } = useAlert(
@@ -18,11 +18,6 @@ export function OfflineInterfaceProvider({
     )
 
     React.useEffect(() => {
-        // TODO: refactor from env var; receive from config
-        const pwaEnabled =
-            pwaEnabledProp ||
-            process.env.REACT_APP_DHIS2_APP_PWA_ENABLED === 'true'
-        // init() Returns a cleanup function
         return offlineInterface.init({ promptUpdate: show, pwaEnabled })
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
