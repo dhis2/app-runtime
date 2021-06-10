@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { RecordingStatesProvider } from '../lib/cacheable-section'
-import { CachedSectionsProvider } from '../lib/cached-sections'
-import { OfflineInterfaceProvider } from '../lib/offline-interface'
+import { RecordingStatesProvider } from './cacheable-section'
+import { CachedSectionsProvider } from './cached-sections'
+import { OfflineInterfaceProvider } from './offline-interface'
 
 export function OfflineProvider({ offlineInterface, pwaEnabled, children }) {
     return (

@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 import React from 'react'
-import { OfflineProvider } from '../components/OfflineProvider'
+import { OfflineProvider } from '../lib/offline-provider'
 
 const mockOfflineInterface = {
     init: jest.fn(),
