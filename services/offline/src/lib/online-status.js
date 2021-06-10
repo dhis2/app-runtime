@@ -1,5 +1,5 @@
 import throttle from 'lodash/throttle'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 /**
  * Returns the browser's online status. Updates in response to 'online' and
@@ -16,9 +16,13 @@ import { useState, useEffect } from 'react'
 export function useOnlineStatus(options) {
     const [online, setOnline] = useState(navigator.onLine)
 
-    const updateState = throttle(
-        ({ type }) => setOnline(type === 'online'),
-        options?.throttleDelay || 1000
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const updateState = useCallback(
+        throttle(
+            ({ type }) => setOnline(type === 'online'),
+            options?.throttleDelay || 1000
+        ),
+        []
     )
 
     // on 'online' or 'offline' events, set state
