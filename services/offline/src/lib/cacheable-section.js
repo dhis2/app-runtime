@@ -53,6 +53,7 @@ function useRecordingState(id) {
 }
 
 export function useCacheableSection(id) {
+    // TODO: Reconsider alerts
     const { show } = useAlert(
         ({ message }) => message,
         ({ status }) => ({ [status]: true })
@@ -69,17 +70,31 @@ export function useCacheableSection(id) {
         return recordingState.remove
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-    function startRecording() {
+    function startRecording({
+        recordingTimeoutDelay = 1000,
+        onStarted,
+        onCompleted,
+        onError,
+    }) {
         // This promise resolving means that the message to the service worker
         // to start recording was successful. Waiting for resolution prevents
         // unnecessarily rerendering the whole component in case of an error
         offlineInterface
             .startRecording({
                 sectionId: id,
-                recordingTimeoutDelay: 1000,
-                onStarted: onRecordingStarted,
-                onCompleted: onRecordingCompleted,
-                onError: onRecordingError,
+                recordingTimeoutDelay,
+                onStarted: (...args) => {
+                    onStarted && onStarted(...args)
+                    onRecordingStarted(...args)
+                },
+                onCompleted: (...args) => {
+                    onCompleted && onCompleted(...args)
+                    onRecordingCompleted(...args)
+                },
+                onError: (...args) => {
+                    onError && onError(...args)
+                    onRecordingError(...args)
+                },
             })
             .then(() => recordingState.set(recordingStates.pending))
             .catch(error => {
