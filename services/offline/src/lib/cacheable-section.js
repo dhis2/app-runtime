@@ -1,5 +1,3 @@
-import { useAlert } from '@dhis2/app-runtime'
-import i18n from '@dhis2/d2-i18n'
 import { CenteredContent, CircularLoader, Layer } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React, { useState, useEffect, useContext } from 'react'
@@ -53,11 +51,6 @@ function useRecordingState(id) {
 }
 
 export function useCacheableSection(id) {
-    // TODO: Reconsider alerts
-    const { show } = useAlert(
-        ({ message }) => message,
-        ({ status }) => ({ [status]: true })
-    )
     const offlineInterface = useOfflineInterface()
     const { isCached, lastUpdated, remove, updateSections } = useCachedSection(
         id
@@ -79,7 +72,7 @@ export function useCacheableSection(id) {
         // This promise resolving means that the message to the service worker
         // to start recording was successful. Waiting for resolution prevents
         // unnecessarily rerendering the whole component in case of an error
-        offlineInterface
+        return offlineInterface
             .startRecording({
                 sectionId: id,
                 recordingTimeoutDelay,
@@ -97,15 +90,6 @@ export function useCacheableSection(id) {
                 },
             })
             .then(() => recordingState.set(recordingStates.pending))
-            .catch(error => {
-                show({
-                    status: 'critical',
-                    message: i18n.t('Unable to save section. {{msg}}', {
-                        msg: error.message,
-                    }),
-                })
-                console.error(error)
-            })
     }
 
     function onRecordingStarted() {
@@ -113,23 +97,12 @@ export function useCacheableSection(id) {
     }
 
     function onRecordingCompleted() {
-        show({
-            status: 'success',
-            message: i18n.t('Section saved for offline use.'),
-        })
         recordingState.set(recordingStates.default)
         updateSections()
     }
 
     function onRecordingError({ error }) {
-        show({
-            status: 'critical',
-            message: i18n.t(
-                'There was an error when trying to save this section offline. {{msg}}',
-                { msg: error.message }
-            ),
-        })
-        console.error('Oops! Something went wrong with the recording.', error)
+        console.error('Error during recording:', error)
         recordingState.set(recordingStates.error)
     }
 

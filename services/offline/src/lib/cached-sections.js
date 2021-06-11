@@ -1,5 +1,3 @@
-import { useAlert } from '@dhis2/app-runtime'
-import i18n from '@dhis2/d2-i18n'
 import PropTypes from 'prop-types'
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { useOfflineInterface } from './offline-interface'
@@ -12,10 +10,6 @@ const CachedSectionsContext = createContext()
  * an 'updateSections' function as context.
  */
 export function CachedSectionsProvider({ children }) {
-    const { show } = useAlert(
-        ({ message }) => message,
-        ({ props }) => ({ ...props })
-    )
     const offlineInterface = useOfflineInterface()
 
     // cachedSections = Map: id => lastUpdated
@@ -35,50 +29,19 @@ export function CachedSectionsProvider({ children }) {
             )
             setCachedSections(map)
         } catch (error) {
-            const options = {
-                message: i18n.t(
-                    'There was an error when accessing cached sections. {{-msg}}',
-                    { msg: error.message }
-                ),
-                props: { critical: true },
-            }
-            console.error(error)
-            show(options)
+            error.message = `There was an error when attempting to update cached sections: ${error.message}`
+            throw error
         }
     }
 
     async function removeSection(id) {
         try {
             const success = await offlineInterface.removeSection(id)
-
-            if (success) {
-                const options = {
-                    message: i18n.t('Section removed from offline storage.'),
-                    props: { success: true },
-                }
-                show(options)
-                updateSections()
-            } else {
-                const options = {
-                    message: i18n.t(
-                        'That section was not found in offline storage.'
-                    ),
-                }
-                show(options)
-                // No need to update sections here
-            }
-
+            if (success) updateSections()
             return success
         } catch (error) {
-            const options = {
-                message: i18n.t(
-                    'There was an error when trying to remove this section. {{-msg}}',
-                    { msg: error.message }
-                ),
-                props: { critical: true },
-            }
-            console.error(error)
-            show(options)
+            error.message = `There was an error when trying to remove this section: ${error.message}`
+            throw error
         }
     }
 
