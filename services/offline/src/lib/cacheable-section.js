@@ -100,7 +100,7 @@ export function useCacheableSection(id) {
         updateSections()
     }
 
-    function onRecordingError({ error }) {
+    function onRecordingError(error) {
         console.error('Error during recording:', error)
         recordingState.set(recordingStates.error)
     }
