@@ -1,16 +1,16 @@
-import throttle from 'lodash/throttle'
+import debounce from 'lodash/debounce'
 import { useState, useEffect, useCallback } from 'react'
 
 /**
  * Returns the browser's online status. Updates in response to 'online' and
- * 'offline' events. By default, throttles updates to once every second to
+ * 'offline' events. By default, debounces updates to once every second to
  * avoid UI flicker, but that delay can be configured with the
- * `options.throttleDelay` param.
+ * `options.debounceDelay` param.
  *
  * TODO: Add option to periodically ping server to check online status.
  *
  * @param {Object} [options]
- * @param {Number} [options.throttleDelay] - Timeout delay to throttle updates, in ms
+ * @param {Number} [options.debounceDelay] - Timeout delay to debounce updates, in ms
  * @returns {Object} `{ online, offline }` booleans. Each is the opposite of the other.
  */
 export function useOnlineStatus(options) {
@@ -18,9 +18,10 @@ export function useOnlineStatus(options) {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const updateState = useCallback(
-        throttle(
+        debounce(
             ({ type }) => setOnline(type === 'online'),
-            options?.throttleDelay || 1000
+            options?.debounceDelay || 1000,
+            { leading: true }
         ),
         []
     )

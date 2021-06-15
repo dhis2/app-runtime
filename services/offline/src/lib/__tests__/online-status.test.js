@@ -55,8 +55,8 @@ describe('state changes in response to browser "online" and "offline" events', (
     })
 })
 
-describe('throttling state changes', () => {
-    it('throttles with a 1s delay by default', async () => {
+describe('debouncing state changes', () => {
+    it('debounces with a 1s delay by default', async () => {
         // Start online
         jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true)
         const events = {}
@@ -81,14 +81,14 @@ describe('throttling state changes', () => {
         expect(result.current.online).toBe(true)
     })
 
-    it('can have throttle delay set to another number', async () => {
+    it('can have debounce delay set to another number', async () => {
         // Start online
         jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true)
         const events = {}
         window.addEventListener = jest.fn((event, cb) => (events[event] = cb))
         const { result, waitForNextUpdate } = renderHook(
             (...args) => useOnlineStatus(...args),
-            { initialProps: { throttleDelay: 50 } }
+            { initialProps: { debounceDelay: 50 } }
         )
 
         await act(async () => {
