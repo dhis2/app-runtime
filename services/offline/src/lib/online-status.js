@@ -8,6 +8,7 @@ import { useState, useEffect, useCallback } from 'react'
  * `options.debounceDelay` param.
  *
  * TODO: Add option to periodically ping server to check online status.
+ * TODO: Add logic to return a variable indicating unstable connection.
  *
  * @param {Object} [options]
  * @param {Number} [options.debounceDelay] - Timeout delay to debounce updates, in ms
@@ -20,8 +21,7 @@ export function useOnlineStatus(options) {
     const updateState = useCallback(
         debounce(
             ({ type }) => setOnline(type === 'online'),
-            options?.debounceDelay || 1000,
-            { leading: true }
+            options?.debounceDelay || 1000
         ),
         []
     )

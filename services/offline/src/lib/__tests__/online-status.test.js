@@ -24,31 +24,41 @@ describe('initalizes to navigator.onLine value', () => {
 })
 
 describe('state changes in response to browser "online" and "offline" events', () => {
-    it('switches from online to offline when the "offline" event triggers', () => {
+    it('switches from online to offline when the "offline" event triggers', async () => {
         jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true)
         // Capture callback to trigger later using addEventListener mock
         const events = {}
         window.addEventListener = jest.fn((event, cb) => (events[event] = cb))
-        const { result } = renderHook((...args) => useOnlineStatus(...args))
+        const { result, waitForNextUpdate } = renderHook((...args) =>
+            useOnlineStatus(...args)
+        )
 
         act(() => {
             // Trigger callback captured by addEventListener mock
             events.offline({ type: 'offline' })
         })
 
+        // Wait for debounce
+        await waitForNextUpdate({ timeout: 1000 })
+
         expect(result.current.online).toBe(false)
         expect(result.current.offline).toBe(true)
     })
 
-    it('switches from offline to online when the "offline" event triggers', () => {
+    it('switches from offline to online when the "offline" event triggers', async () => {
         jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(false)
         const events = {}
         window.addEventListener = jest.fn((event, cb) => (events[event] = cb))
-        const { result } = renderHook((...args) => useOnlineStatus(...args))
+        const { result, waitForNextUpdate } = renderHook((...args) =>
+            useOnlineStatus(...args)
+        )
 
         act(() => {
             events.online({ type: 'online' })
         })
+
+        // Wait for debounce
+        await waitForNextUpdate({ timeout: 1000 })
 
         expect(result.current.online).toBe(true)
         expect(result.current.offline).toBe(false)
@@ -56,7 +66,7 @@ describe('state changes in response to browser "online" and "offline" events', (
 })
 
 describe('debouncing state changes', () => {
-    it('debounces with a 1s delay by default', async () => {
+    it('debounces with a 1s delay', async () => {
         // Start online
         jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true)
         const events = {}
@@ -70,15 +80,14 @@ describe('debouncing state changes', () => {
             events.offline({ type: 'offline' })
             events.online({ type: 'online' })
             events.offline({ type: 'offline' })
-            events.online({ type: 'online' })
         })
 
-        // Immediately, only the offline should have triggered
-        expect(result.current.online).toBe(false)
-
-        // 1s later, final "online" event should finally resolve
-        await waitForNextUpdate({ timeout: 1000 })
+        // Immediately, nothing should happen
         expect(result.current.online).toBe(true)
+
+        // 1s later, final 'offline' event should resolve
+        await waitForNextUpdate({ timeout: 1009 })
+        expect(result.current.online).toBe(false)
     })
 
     it('can have debounce delay set to another number', async () => {
@@ -96,14 +105,13 @@ describe('debouncing state changes', () => {
             events.offline({ type: 'offline' })
             events.online({ type: 'online' })
             events.offline({ type: 'offline' })
-            events.online({ type: 'online' })
         })
 
-        // Immediately, only the offline should have triggered
-        expect(result.current.online).toBe(false)
-
-        // 50ms later, final "online" event should finally resolve
-        await waitForNextUpdate({ timeout: 50 })
+        // Immediately, nothing should happen
         expect(result.current.online).toBe(true)
+
+        // 50ms later, final "offline" event should finally resolve
+        await waitForNextUpdate({ timeout: 55 })
+        expect(result.current.online).toBe(false)
     })
 })
