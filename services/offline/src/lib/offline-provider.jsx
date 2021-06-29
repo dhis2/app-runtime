@@ -4,6 +4,7 @@ import { RecordingStatesProvider } from './cacheable-section'
 import { CachedSectionsProvider } from './cached-sections'
 import { OfflineInterfaceProvider } from './offline-interface'
 
+/** A context provider for all the relevant offline contexts */
 export function OfflineProvider({ offlineInterface, pwaEnabled, children }) {
     return (
         <OfflineInterfaceProvider
