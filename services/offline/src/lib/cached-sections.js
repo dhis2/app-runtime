@@ -8,32 +8,46 @@ const CachedSectionsContext = createContext()
  * Uses the offline interface to access a Map of cached section IDs to their
  * last updated time. Provides that list, a 'removeSection(id)' function, and
  * an 'updateSections' function as context.
+ *
+ * TODO: Will be refactored to a mutable state model that will prevent context
+ * consumers from rerendering every time the state changes. Will also be
+ * combined with `RecordingStates` context.
  */
 export function CachedSectionsProvider({ children }) {
     const offlineInterface = useOfflineInterface()
 
-    // cachedSections = Map: id => lastUpdated
+    // cachedSections: Map: id => lastUpdated
     const [cachedSections, setCachedSections] = useState(new Map())
 
-    // Get cached sections on load (and on other events?)
+    // Populate cached sections on load
     useEffect(() => {
         updateSections()
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+    /** Syncs state with contents of IndexedDB using offline interface */
     async function updateSections() {
         try {
             const list = await offlineInterface.getCachedSections()
+            // Convert list to a map for easy lookup
             const map = new Map()
             list.forEach(section =>
                 map.set(section.sectionId, section.lastUpdated)
             )
             setCachedSections(map)
         } catch (error) {
+            // Add a descriptive message before throwing
             error.message = `There was an error when attempting to update cached sections: ${error.message}`
             throw error
         }
     }
 
+    /**
+     * Uses offline interface to remove a section from IndexedDB and Cache
+     * Storage.
+     *
+     * Returns `true` if a section is found and deleted, or `false` if a
+     * section with the specified ID does not exist.
+     */
     async function removeSection(id) {
         try {
             const success = await offlineInterface.removeSection(id)
@@ -63,7 +77,7 @@ CachedSectionsProvider.propTypes = {
 }
 
 /**
- * Access info and operations related to all cached sections.
+ * Access info and operations related to _all_ cached sections.
  * @returns {Object} { cachedSections: Map, removeSection: func(id), updateSections: func() }
  */
 export function useCachedSections() {
@@ -79,7 +93,7 @@ export function useCachedSections() {
 }
 
 /**
- * Accesses info and operations related to a single cached section.
+ * Accesses info and operations related to _a single_ cached section.
  * @param {string} id - Section ID of a cached section
  * @returns {Object} { isCached: boolean, lastUpdated: Date, remove: func(), updateSections: func() }
  */
