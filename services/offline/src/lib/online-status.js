@@ -15,6 +15,7 @@ import { useState, useEffect, useCallback } from 'react'
  * @returns {Object} `{ online, offline }` booleans. Each is the opposite of the other.
  */
 export function useOnlineStatus(options) {
+    // initialize state to `navigator.onLine` value
     const [online, setOnline] = useState(navigator.onLine)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
