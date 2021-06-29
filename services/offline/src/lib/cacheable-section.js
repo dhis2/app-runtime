@@ -12,6 +12,15 @@ const recordingStates = {
 
 const RecordingStatesContext = React.createContext()
 
+/**
+ * Provides context for cacheable sections' recording states, which will
+ * determine how that component will render. The provider will be a part of
+ * the OfflineProvider.
+ *
+ * TODO: This will be refactored into a mutable state provider and combined
+ * with Cached Sections to become one provider that avoids unnecessary rerenders
+ * of consumer components.
+ */
 export function RecordingStatesProvider({ children }) {
     const [recordingStates, setRecordingStates] = useState(new Map())
 
@@ -49,6 +58,15 @@ function useRecordingState(id) {
     return newContext
 }
 
+/**
+ * Returns the main controls for a cacheable section and manages recording
+ * state, which affects the render state of the CacheableSection component.
+ * Also returns the cached status of the section, which come straight from
+ * the `useCachedSection` hook.
+ *
+ * @param {String} id
+ * @returns {Object}
+ */
 export function useCacheableSection(id) {
     const offlineInterface = useOfflineInterface()
     const { isCached, lastUpdated, remove, updateSections } = useCachedSection(
@@ -56,9 +74,10 @@ export function useCacheableSection(id) {
     )
     const recordingState = useRecordingState(id)
 
-    // Set up and tear down recording state in context
+    // On mount, add recording state for this ID to context
     useEffect(() => {
         recordingState.set(recordingStates.default)
+        // On unnmount, remove recording state
         return recordingState.remove
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -105,7 +124,7 @@ export function useCacheableSection(id) {
         recordingState.set(recordingStates.error)
     }
 
-    // Section status: _could_ be accessed by useCachedSection,
+    // isCached, lastUpdated, remove: _could_ be accessed by useCachedSection,
     // but provided through this hook for convenience
     return {
         recordingState: recordingState.get(),
@@ -116,19 +135,32 @@ export function useCacheableSection(id) {
     }
 }
 
+/**
+ * Used to wrap the relevant component to be recorded and saved offline.
+ * Depending on the recording state of the section, this wrapper will
+ * render its children, not render its children while recording is pending,
+ * or RErerender the chilren to force data fetching to record by the service
+ * worker.
+ *
+ * During recording, a loading mask provided by props is also rendered that is
+ * intended to prevent other interaction with the app that might interfere
+ * with the recording process.
+ */
 export function CacheableSection({ id, loadingMask, children }) {
+    // Accesses recording state that will be controlled by useCacheableSection
+    // hook
     const { get } = useRecordingState(id)
     const recordingState = get()
 
-    // This will cause the component to reload in the event of a recording error;
-    // the state will be cleared next time recording moves to pending.
-    // Fixes a component getting stuck while rendered without data after failing a
-    // recording while offline.
-    // Errors can be handled in useCacheableSection > onRecordingError
+    // The following causes the component to reload in the event of a recording
+    // error; the state will be cleared next time recording moves to pending.
+    // It fixes a component getting stuck while rendered without data after
+    // failing a recording while offline.
+    // Errors can be handled in the `onError` callback to `startRecording`.
     if (recordingState === recordingStates.error) return children
 
-    // Handling rendering this way prevents the component rerendering unnecessarily
-    // after completing a recording:
+    // Handling rendering with the following conditions prevents an unncessary
+    // rerender after successful recording
     return (
         <>
             {recordingState === recordingStates.recording && loadingMask}
