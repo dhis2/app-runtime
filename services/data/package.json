@@ -36,5 +36,11 @@
         "type-check:watch": "yarn type-check --watch",
         "test": "d2-app-scripts test",
         "coverage": "yarn test --coverage"
+    },
+    "dependencies": {
+        "memoizee": "^0.4.15"
+    },
+    "devDependencies": {
+        "@types/memoizee": "^0.4.5"
     }
 }

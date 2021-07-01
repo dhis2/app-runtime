@@ -7,4 +7,5 @@ export interface QueryExecuteOptions {
     signal?: AbortSignal
     onComplete?: (data: any) => void
     onError?: (error: FetchError) => void
+    invalidateCache?: boolean
 }

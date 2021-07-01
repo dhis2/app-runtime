@@ -4,6 +4,7 @@ import {
     validateResourceQuery,
     validateResourceQueries,
 } from './helpers/validate'
+import { DataEngineCache } from './types/DataEngineCache'
 import { DataEngineLink } from './types/DataEngineLink'
 import { QueryExecuteOptions } from './types/ExecuteOptions'
 import { JsonMap, JsonValue } from './types/JsonValue'
@@ -17,10 +18,10 @@ const reduceResponses = (responses: JsonValue[], names: string[]) =>
     }, {})
 
 export class DataEngine {
-    private link: DataEngineLink
-    public constructor(link: DataEngineLink) {
-        this.link = link
-    }
+    public constructor(
+        private link: DataEngineLink,
+        private cache?: DataEngineCache
+    ) {}
 
     public query(
         query: Query,
@@ -29,6 +30,7 @@ export class DataEngine {
             signal,
             onComplete,
             onError,
+            invalidateCache,
         }: QueryExecuteOptions = {}
     ): Promise<JsonMap> {
         const names = Object.keys(query)
@@ -40,9 +42,27 @@ export class DataEngine {
 
         return Promise.all(
             queries.map(q => {
-                return this.link.executeResourceQuery('read', q, {
-                    signal,
-                })
+                const cacheKey = this.cache?.createKey(q) || ''
+
+                if (cacheKey && invalidateCache) {
+                    this.cache?.invalidateCacheByKey(cacheKey)
+                }
+
+                if (cacheKey && !this.cache?.keyExists(cacheKey)) {
+                    const fn = () =>
+                        this.link.executeResourceQuery('read', q, {
+                            signal,
+                        })
+
+                    return this.cache?.registerResource(cacheKey, fn)()
+                }
+
+                return (
+                    this.cache?.getCacheByKey(cacheKey) ||
+                    this.link.executeResourceQuery('read', q, {
+                        signal,
+                    })
+                )
             })
         )
             .then(results => {
