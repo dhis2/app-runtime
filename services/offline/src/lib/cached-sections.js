@@ -21,7 +21,7 @@ export function CachedSectionsProvider({ children }) {
 
     // Populate cached sections on load
     useEffect(() => {
-        updateSections()
+        if (offlineInterface.pwaEnabled) updateSections()
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     /** Syncs state with contents of IndexedDB using offline interface */
