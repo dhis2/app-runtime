@@ -1,3 +1,4 @@
+import { JsonValue } from '../types/JsonValue'
 import {
     QueryVariables,
     ResourceQuery,
@@ -6,10 +7,12 @@ import {
 
 export const resolveDynamicQuery = (
     { resource, id, data, params }: ResourceQuery,
-    variables: QueryVariables
+    variables: QueryVariables,
+    resultSet?: JsonValue
 ): ResolvedResourceQuery => ({
     resource,
-    id: typeof id === 'function' ? id(variables) : id,
-    data: typeof data === 'function' ? data(variables) : data,
-    params: typeof params === 'function' ? params(variables) : params,
+    id: typeof id === 'function' ? id(variables, resultSet) : id,
+    data: typeof data === 'function' ? data(variables, resultSet) : data,
+    params:
+        typeof params === 'function' ? params(variables, resultSet) : params,
 })

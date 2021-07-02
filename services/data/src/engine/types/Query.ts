@@ -1,15 +1,18 @@
 import { FetchError } from './FetchError'
-import { JsonMap } from './JsonValue'
-import { PossiblyDynamic } from './PossiblyDynamic'
+import { JsonMap, JsonValue } from './JsonValue'
 import { QueryParameters } from './QueryParameters'
 
 export type QueryVariables = Record<string, any>
+export type DynamicQueryVariables<T, R = T> = (
+    input: T,
+    resultSet?: JsonValue
+) => R
 
 export interface ResourceQuery {
     resource: string
-    id?: PossiblyDynamic<string, QueryVariables>
-    data?: PossiblyDynamic<any, QueryVariables>
-    params?: PossiblyDynamic<QueryParameters, QueryVariables>
+    id?: string | DynamicQueryVariables<QueryVariables, string>
+    data?: QueryVariables | DynamicQueryVariables<QueryVariables>
+    params?: QueryVariables | DynamicQueryVariables<QueryVariables>
 }
 
 export interface ResolvedResourceQuery extends ResourceQuery {
@@ -18,7 +21,9 @@ export interface ResolvedResourceQuery extends ResourceQuery {
     params?: QueryParameters
 }
 
-export type Query = Record<string, ResourceQuery>
+export type ParallelQuery = Record<string, ResourceQuery>
+export type SequentialQuery = Array<ParallelQuery>
+export type Query = ParallelQuery | SequentialQuery
 export type QueryResult = JsonMap
 
 export interface QueryOptions {

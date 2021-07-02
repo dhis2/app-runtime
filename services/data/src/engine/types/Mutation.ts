@@ -23,7 +23,9 @@ export interface DeleteMutation extends BaseMutation {
     id: string
 }
 
-export type Mutation = CreateMutation | UpdateMutation | DeleteMutation
+export type SingleMutation = CreateMutation | UpdateMutation | DeleteMutation
+export type SequentialMutation = Array<Record<string, SingleMutation>>
+export type Mutation = SingleMutation | SequentialMutation
 
 export interface MutationOptions {
     variables?: QueryVariables
