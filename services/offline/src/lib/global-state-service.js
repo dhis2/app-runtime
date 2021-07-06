@@ -2,6 +2,10 @@ import isEqual from 'lodash/isEqual'
 import PropTypes from 'prop-types'
 import React, { useEffect, useCallback, useContext, useState } from 'react'
 
+// This file creates a redux-like state management service using React context
+// that minimizes unnecessary rerenders that consume the context.
+// See more at https://github.com/amcgee/state-service-poc
+
 const identity = state => state
 
 export const createStore = (initialState = {}) => {

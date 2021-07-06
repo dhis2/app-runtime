@@ -1,26 +1,14 @@
 import { useGlobalState, useGlobalStateMutation } from './global-state-service'
 import { useOfflineInterface } from './offline-interface'
 
-// Should I just rename the global state components to something appropriate for
-// cacheable sections in this package?
+// Functions in here use the global state service to manage cacheable section
+// state in a performant way
 
-export function useCacheableSectionState(id) {
-    const [sectionState] = useGlobalState(state => state[id])
-    const setSectionState = useGlobalStateMutation(
-        newSectionState => state => ({
-            ...state,
-            [id]: { ...state[id], ...newSectionState },
-        })
-    )
-    const removeSectionState = useGlobalStateMutation(() => state => {
-        delete state[id]
-        return state
-    })
-
-    return { sectionState, setSectionState, removeSectionState }
-}
-
-function useRecordingState(id) {
+/**
+ * Uses an optimized global state to manage 'recording state' values without
+ * unnecessarily rerendering all consuming components
+ */
+export function useRecordingState(id) {
     const [recordingState] = useGlobalState(state => state.recordingStates[id])
     const setRecordingState = useGlobalStateMutation(newState => state => ({
         ...state,
@@ -39,7 +27,7 @@ function useRecordingState(id) {
  * Returns a function that syncs cached sections in the global state
  * with IndexedDB, so that IndexedDB is the single source of truth
  */
-export function useUpdateCachedSections() {
+function useUpdateCachedSections() {
     const offlineInterface = useOfflineInterface()
     const setCachedSections = useGlobalStateMutation(
         cachedSections => state => ({
@@ -60,6 +48,11 @@ export function useUpdateCachedSections() {
     }
 }
 
+/**
+ * Uses global state to manage an object of cached sections' statuses
+ *
+ * @returns {Object} { cachedSections: Object, removeSection: Function }
+ */
 export function useCachedSections() {
     const [cachedSections] = useGlobalState(state => state.cachedSections)
     const updateCachedSections = useUpdateCachedSections()
@@ -69,8 +62,8 @@ export function useCachedSections() {
      * Uses offline interface to remove a section from IndexedDB and Cache
      * Storage.
      *
-     * Returns `true` if a section is found and deleted, or `false` if a
-     * section with the specified ID does not exist.
+     * Returns a promise that resolves to `true` if a section is found and
+     * deleted, or `false` if asection with the specified ID does not exist.
      */
     async function removeSection(id) {
         const success = await offlineInterface.removeSection(id)
@@ -81,6 +74,13 @@ export function useCachedSections() {
     return { cachedSections, removeSection }
 }
 
+/**
+ * Uses global state to manage the cached status of just one section, which
+ * prevents unnecessary rerenders of consuming components
+ *
+ * @param {String} id
+ * @returns {Object} { lastUpdated: Date, remove: Function }
+ */
 export function useCachedSection(id) {
     const [lastUpdated] = useGlobalState(state => state.cachedSections[id])
     const updateCachedSections = useUpdateCachedSections()
@@ -101,28 +101,3 @@ export function useCachedSection(id) {
 
     return { lastUpdated, remove }
 }
-
-// function useCacheableSection(id) {
-//     const {
-//         recordingState,
-//         setRecordingState,
-//         removeRecordingState,
-//     } = useRecordingState(id)
-//     const { lastUpdated, remove } = useCachedSection(id)
-
-//     React.useEffect(() => {
-//         setRecordingState('default')
-//         return removeRecordingState
-//     })
-
-//     function startRecording() {
-//         // send message
-//         setRecordingState('pending')
-//     }
-
-//     const onRecordingStarted = () => setRecordingState('recording')
-//     const onRecordingCompleted = () => setRecordingState('default')
-//     const onRecordingError = () => setRecordingState('error')
-
-//     return { recordingState, startRecording }
-// }
