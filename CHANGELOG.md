@@ -1,3 +1,11 @@
+# [2.9.0-alpha.1](https://github.com/dhis2/app-runtime/compare/v2.8.0...v2.9.0-alpha.1) (2021-07-06)
+
+
+### Features
+
+* **custom-data-provider:** include react-query provider in custom-data-provider ([99ff732](https://github.com/dhis2/app-runtime/commit/99ff732521f80dbe6431586ebe0b99f93ed2f080))
+* **use-data-query:** use react-query to cache queries ([87fdcd8](https://github.com/dhis2/app-runtime/commit/87fdcd841e0fa6f299b2363773233c191d874ce0))
+
 # [2.8.0](https://github.com/dhis2/app-runtime/compare/v2.7.1...v2.8.0) (2021-03-10)
 
 
