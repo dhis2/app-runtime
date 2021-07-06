@@ -5,12 +5,9 @@ import { CachedSectionsProvider } from './cached-sections'
 import { OfflineInterfaceProvider } from './offline-interface'
 
 /** A context provider for all the relevant offline contexts */
-export function OfflineProvider({ offlineInterface, pwaEnabled, children }) {
+export function OfflineProvider({ offlineInterface, children }) {
     return (
-        <OfflineInterfaceProvider
-            offlineInterface={offlineInterface}
-            pwaEnabled={pwaEnabled}
-        >
+        <OfflineInterfaceProvider offlineInterface={offlineInterface}>
             <RecordingStatesProvider>
                 <CachedSectionsProvider>{children}</CachedSectionsProvider>
             </RecordingStatesProvider>
@@ -21,5 +18,4 @@ export function OfflineProvider({ offlineInterface, pwaEnabled, children }) {
 OfflineProvider.propTypes = {
     children: PropTypes.node,
     offlineInterface: PropTypes.shape({}),
-    pwaEnabled: PropTypes.bool,
 }
