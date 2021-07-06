@@ -1,23 +1,8 @@
 import { renderHook, act } from '@testing-library/react-hooks'
-import React, { ReactNode } from 'react'
-import { QueryClient, QueryClientProvider, setLogger } from 'react-query'
+import React from 'react'
+import { setLogger } from 'react-query'
 import { CustomDataProvider } from '../components/CustomDataProvider'
 import { useDataQuery } from './useDataQuery'
-
-// eslint-disable-next-line react/display-name
-const createWrapper = (mockData, queryClientOptions = {}) => ({
-    children,
-}: {
-    children?: ReactNode
-}) => {
-    const queryClient = new QueryClient(queryClientOptions)
-
-    return (
-        <QueryClientProvider client={queryClient}>
-            <CustomDataProvider data={mockData}>{children}</CustomDataProvider>
-        </QueryClientProvider>
-    )
-}
 
 beforeAll(() => {
     // Prevent the react-query logger from logging to the console
@@ -37,8 +22,10 @@ describe('useDataQuery', () => {
     describe('parameters: onComplete', () => {
         it('Should call onComplete with the data after a successful fetch', async () => {
             const query = { x: { resource: 'answer' } }
-            const mockData = { answer: 42 }
-            const wrapper = createWrapper(mockData)
+            const data = { answer: 42 }
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
             const onComplete = jest.fn()
             const onError = jest.fn()
 
@@ -64,23 +51,16 @@ describe('useDataQuery', () => {
 
     describe('parameters: onError', () => {
         it('Should call onError with the error after a fetch error', async () => {
-            // Disable automatic retries, see: https://react-query.tanstack.com/reference/useQuery
-            const queryClientOptions = {
-                defaultOptions: {
-                    queries: {
-                        retry: false,
-                    },
-                },
-            }
-
             const expectedError = new Error('Something went wrong')
             const query = { x: { resource: 'answer' } }
-            const mockData = {
+            const data = {
                 answer: () => {
                     throw expectedError
                 },
             }
-            const wrapper = createWrapper(mockData, queryClientOptions)
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
             const onComplete = jest.fn()
             const onError = jest.fn()
 
@@ -121,10 +101,12 @@ describe('useDataQuery', () => {
                         return resultTwo
                 }
             })
-            const mockData = {
+            const data = {
                 answer: mockSpy,
             }
-            const wrapper = createWrapper(mockData)
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
             const initialProps = {
                 query,
                 options: { variables: { id: one } },
@@ -172,8 +154,10 @@ describe('useDataQuery', () => {
         it('Should be false by default', async () => {
             const query = { x: { resource: 'answer' } }
             const mockSpy = jest.fn(() => 42)
-            const mockData = { answer: mockSpy }
-            const wrapper = createWrapper(mockData)
+            const data = { answer: mockSpy }
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
 
             const { result, waitForNextUpdate } = renderHook(
                 () => useDataQuery(query),
@@ -200,11 +184,13 @@ describe('useDataQuery', () => {
         it('Should return stale data initially on refetch', async () => {
             const answers = [42, 43]
             const mockSpy = jest.fn(() => answers.shift())
-            const mockData = {
+            const data = {
                 answer: mockSpy,
             }
             const query = { x: { resource: 'answer' } }
-            const wrapper = createWrapper(mockData)
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
 
             const { result, waitForNextUpdate } = renderHook(
                 () => useDataQuery(query),
@@ -259,11 +245,18 @@ describe('useDataQuery', () => {
             }
             const answers = [42, 43]
             const mockSpy = jest.fn(() => answers.shift())
-            const mockData = {
+            const data = {
                 answer: mockSpy,
             }
             const query = { x: { resource: 'answer' } }
-            const wrapper = createWrapper(mockData, queryClientOptions)
+            const wrapper = ({ children }) => (
+                <CustomDataProvider
+                    data={data}
+                    queryClientOptions={queryClientOptions}
+                >
+                    {children}
+                </CustomDataProvider>
+            )
 
             const { result, waitForNextUpdate } = renderHook(
                 () => useDataQuery(query),
@@ -327,8 +320,10 @@ describe('useDataQuery', () => {
     describe('return values: data', () => {
         it('Should return the data for a single resource query on success', async () => {
             const query = { x: { resource: 'answer' } }
-            const mockData = { answer: 42 }
-            const wrapper = createWrapper(mockData)
+            const data = { answer: 42 }
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
 
             const { result, waitForNextUpdate } = renderHook(
                 () => useDataQuery(query),
@@ -356,8 +351,10 @@ describe('useDataQuery', () => {
                 x: { resource: 'answer' },
                 y: { resource: 'opposite' },
             }
-            const mockData = { answer: 42, opposite: 24 }
-            const wrapper = createWrapper(mockData)
+            const data = { answer: 42, opposite: 24 }
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
 
             const { result, waitForNextUpdate } = renderHook(
                 () => useDataQuery(query),
@@ -383,23 +380,16 @@ describe('useDataQuery', () => {
 
     describe('return values: error', () => {
         it('Should return errors it encounters for a single resource query', async () => {
-            // Disable automatic retries, see: https://react-query.tanstack.com/reference/useQuery
-            const queryClientOptions = {
-                defaultOptions: {
-                    queries: {
-                        retry: false,
-                    },
-                },
-            }
-
             const expectedError = new Error('Something went wrong')
             const query = { x: { resource: 'answer' } }
-            const mockData = {
+            const data = {
                 answer: () => {
                     throw expectedError
                 },
             }
-            const wrapper = createWrapper(mockData, queryClientOptions)
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
 
             const { result, waitForNextUpdate } = renderHook(
                 () => useDataQuery(query),
@@ -423,27 +413,20 @@ describe('useDataQuery', () => {
         })
 
         it('Should return errors it encounters for multiple resource queries', async () => {
-            // Disable automatic retries, see: https://react-query.tanstack.com/reference/useQuery
-            const queryClientOptions = {
-                defaultOptions: {
-                    queries: {
-                        retry: false,
-                    },
-                },
-            }
-
             const expectedError = new Error('Something went wrong')
             const query = {
                 x: { resource: 'answer' },
                 y: { resource: 'opposite' },
             }
-            const mockData = {
+            const data = {
                 answer: () => {
                     throw expectedError
                 },
                 opposite: 24,
             }
-            const wrapper = createWrapper(mockData, queryClientOptions)
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
 
             const { result, waitForNextUpdate } = renderHook(
                 () => useDataQuery(query),
@@ -471,8 +454,10 @@ describe('useDataQuery', () => {
         it('Should not fetch until refetch has been called if lazy', async () => {
             const query = { x: { resource: 'answer' } }
             const mockSpy = jest.fn(() => 42)
-            const mockData = { answer: mockSpy }
-            const wrapper = createWrapper(mockData)
+            const data = { answer: mockSpy }
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
 
             const { result, waitForNextUpdate } = renderHook(
                 () => useDataQuery(query, { lazy: true }),
@@ -506,8 +491,10 @@ describe('useDataQuery', () => {
 
         it('Should call onComplete after a successful refetch', async () => {
             const query = { x: { resource: 'answer' } }
-            const mockData = { answer: 42 }
-            const wrapper = createWrapper(mockData)
+            const data = { answer: 42 }
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
             const onComplete = jest.fn()
             const onError = jest.fn()
 
@@ -532,23 +519,16 @@ describe('useDataQuery', () => {
         })
 
         it('Should call onError after a failed refetch', async () => {
-            // Disable automatic retries, see: https://react-query.tanstack.com/reference/useQuery
-            const queryClientOptions = {
-                defaultOptions: {
-                    queries: {
-                        retry: false,
-                    },
-                },
-            }
-
             const expectedError = new Error('Something went wrong')
             const query = { x: { resource: 'answer' } }
-            const mockData = {
+            const data = {
                 answer: () => {
                     throw expectedError
                 },
             }
-            const wrapper = createWrapper(mockData, queryClientOptions)
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
             const onComplete = jest.fn()
             const onError = jest.fn()
 
@@ -572,8 +552,10 @@ describe('useDataQuery', () => {
 
         it('Should return a promise that resolves with the data on success when refetching and lazy', async () => {
             const query = { x: { resource: 'answer' } }
-            const mockData = { answer: 42 }
-            const wrapper = createWrapper(mockData)
+            const data = { answer: 42 }
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
 
             const { result, waitForNextUpdate } = renderHook(
                 () => useDataQuery(query, { lazy: true }),
@@ -598,8 +580,10 @@ describe('useDataQuery', () => {
 
         it('Should return a promise that resolves with the data on success when refetching and not lazy', async () => {
             const query = { x: { resource: 'answer' } }
-            const mockData = { answer: 42 }
-            const wrapper = createWrapper(mockData)
+            const data = { answer: 42 }
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
 
             const { result, waitForNextUpdate } = renderHook(
                 () => useDataQuery(query, { lazy: false }),
@@ -623,23 +607,16 @@ describe('useDataQuery', () => {
         })
 
         it('Should return a promise that does not reject on errors when refetching and lazy', async () => {
-            // Disable automatic retries, see: https://react-query.tanstack.com/reference/useQuery
-            const queryClientOptions = {
-                defaultOptions: {
-                    queries: {
-                        retry: false,
-                    },
-                },
-            }
-
             const expectedError = new Error('Something went wrong')
             const query = { x: { resource: 'answer' } }
-            const mockData = {
+            const data = {
                 answer: () => {
                     throw expectedError
                 },
             }
-            const wrapper = createWrapper(mockData, queryClientOptions)
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
 
             const { result, waitForNextUpdate } = renderHook(
                 () => useDataQuery(query, { lazy: true }),
@@ -661,23 +638,16 @@ describe('useDataQuery', () => {
         })
 
         it('Should return a promise that does not reject on errors when refetching and not lazy', async () => {
-            // Disable automatic retries, see: https://react-query.tanstack.com/reference/useQuery
-            const queryClientOptions = {
-                defaultOptions: {
-                    queries: {
-                        retry: false,
-                    },
-                },
-            }
-
             const expectedError = new Error('Something went wrong')
             const query = { x: { resource: 'answer' } }
-            const mockData = {
+            const data = {
                 answer: () => {
                     throw expectedError
                 },
             }
-            const wrapper = createWrapper(mockData, queryClientOptions)
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
 
             const { result, waitForNextUpdate } = renderHook(
                 () => useDataQuery(query, { lazy: false }),
@@ -714,10 +684,12 @@ describe('useDataQuery', () => {
                         return resultTwo
                 }
             })
-            const mockData = {
+            const data = {
                 answer: mockSpy,
             }
-            const wrapper = createWrapper(mockData)
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
             const initialProps = {
                 query,
                 options: { variables: { id: one } },
@@ -761,10 +733,12 @@ describe('useDataQuery', () => {
                 },
             }
             const mockSpy = jest.fn(() => 42)
-            const mockData = {
+            const data = {
                 answer: mockSpy,
             }
-            const wrapper = createWrapper(mockData)
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
 
             const { result, waitForNextUpdate } = renderHook(
                 () => useDataQuery(query, { variables: initialVariables }),

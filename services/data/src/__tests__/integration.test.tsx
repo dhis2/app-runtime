@@ -1,23 +1,8 @@
 import { render, waitFor } from '@testing-library/react'
 import React, { ReactNode } from 'react'
-import { QueryClient, QueryClientProvider, setLogger } from 'react-query'
+import { setLogger } from 'react-query'
 import { CustomDataProvider, DataQuery } from '../react'
 import { QueryRenderInput } from '../types'
-
-// eslint-disable-next-line react/display-name
-const createWrapper = (mockData, queryClientOptions = {}) => ({
-    children,
-}: {
-    children?: ReactNode
-}) => {
-    const queryClient = new QueryClient(queryClientOptions)
-
-    return (
-        <QueryClientProvider client={queryClient}>
-            <CustomDataProvider data={mockData}>{children}</CustomDataProvider>
-        </QueryClientProvider>
-    )
-}
 
 beforeAll(() => {
     // Prevent the react-query logger from logging to the console
@@ -38,7 +23,9 @@ describe('Testing custom data provider and useQuery hook', () => {
         const data = {
             answer: 42,
         }
-        const wrapper = createWrapper(data)
+        const wrapper = ({ children }) => (
+            <CustomDataProvider data={data}>{children}</CustomDataProvider>
+        )
         const renderFunction = jest.fn(
             ({ loading, error, data }: QueryRenderInput) => {
                 if (loading) return 'loading'
@@ -88,14 +75,9 @@ describe('Testing custom data provider and useQuery hook', () => {
                 throw expectedError
             },
         }
-        // Disable automatic retries, see: https://react-query.tanstack.com/reference/useQuery
-        const wrapper = createWrapper(data, {
-            defaultOptions: {
-                queries: {
-                    retry: false,
-                },
-            },
-        })
+        const wrapper = ({ children }) => (
+            <CustomDataProvider data={data}>{children}</CustomDataProvider>
+        )
         const renderFunction = jest.fn(
             ({ loading, error, data }: QueryRenderInput) => {
                 if (loading) return 'loading'
