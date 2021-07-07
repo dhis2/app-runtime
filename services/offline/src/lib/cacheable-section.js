@@ -86,7 +86,7 @@ export function useCacheableSection(id) {
         onStarted,
         onCompleted,
         onError,
-    }) {
+    } = {}) {
         // This promise resolving means that the message to the service worker
         // to start recording was successful. Waiting for resolution prevents
         // unnecessarily rerendering the whole component in case of an error
