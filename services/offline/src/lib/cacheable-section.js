@@ -95,16 +95,16 @@ export function useCacheableSection(id) {
                 sectionId: id,
                 recordingTimeoutDelay,
                 onStarted: (...args) => {
-                    onStarted && onStarted(...args)
                     onRecordingStarted(...args)
+                    onStarted && onStarted(...args)
                 },
                 onCompleted: (...args) => {
-                    onCompleted && onCompleted(...args)
                     onRecordingCompleted(...args)
+                    onCompleted && onCompleted(...args)
                 },
                 onError: (...args) => {
-                    onError && onError(...args)
                     onRecordingError(...args)
+                    onError && onError(...args)
                 },
             })
             .then(() => recordingState.set(recordingStates.pending))
