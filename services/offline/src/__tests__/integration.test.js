@@ -1,25 +1,240 @@
+/* eslint-disable react/prop-types */
+
 import { render, screen } from '@testing-library/react'
+import { renderHook, act } from '@testing-library/react-hooks'
 import React from 'react'
 import { useCacheableSection, CacheableSection } from '../lib/cacheable-section'
 import { OfflineProvider } from '../lib/offline-provider'
 
+const successfulRecordingMock = jest
+    .fn()
+    .mockImplementation(async ({ onStarted, onCompleted } = {}) => {
+        // in 500ms, call 'onStarted' callback (allows 'pending' state)
+        if (onStarted) setTimeout(() => act(onStarted), 500)
+
+        // in 1500ms, call 'onCompleted' callback
+        if (onCompleted) setTimeout(() => act(onCompleted), 2000)
+
+        // resolve
+        return Promise.resolve()
+    })
+
+const errorRecordingMock = jest
+    .fn()
+    .mockImplementation(({ onStarted, onError } = {}) => {
+        // start right away this time - don't need to test pending
+        if (onStarted) onStarted()
+
+        // in 1000ms, call 'onError'
+        setTimeout(() => onError(new Error('test err')), 1000)
+
+        // resolve to signal successful initiation
+        return Promise.resolve()
+    })
+
+const failedMessageRecordingMock = jest
+    .fn()
+    .mockRejectedValue(new Error('Failed message'))
+
 const mockOfflineInterface = {
     init: jest.fn(),
-    startRecording: jest.fn().mockResolvedValue(),
+    startRecording: successfulRecordingMock,
     getCachedSections: jest.fn().mockResolvedValue(['TODO: Dummy sections']),
     removeSection: jest.fn().mockResolvedValue(true),
 }
 
-const TestComponents = () => (
-    <OfflineProvider offlineInterface={mockOfflineInterface}></OfflineProvider>
+const RenderCounter = ({ count, testId }) => (
+    <div data-testid={testId}>{++count}</div>
 )
+
+const TestControls = ({ id, renderCount }) => {
+    const {
+        startRecording,
+        remove,
+        isCached,
+        lastUpdated,
+        recordingState,
+    } = useCacheableSection(id)
+
+    return (
+        <>
+            <RenderCounter
+                count={renderCount}
+                testId={`controls-render-count-${id}`}
+            />
+            <button
+                data-testid={`start-recording-${id}`}
+                onClick={() => {
+                    console.log('todo: start recording')
+                    startRecording()
+                }}
+            />
+            <button
+                data-testid={`remove-${id}`}
+                onClick={() => {
+                    console.log('todo: remove')
+                    remove()
+                }}
+            />
+            <div data-testid={`is-cached-${id}`}>{isCached ? 'yes' : 'no'}</div>
+            <div data-testid={`last-updated-${id}`}>
+                {lastUpdated || 'never'}
+            </div>
+            <div data-testid={`recording-state-${id}`}>{recordingState}</div>
+        </>
+    )
+}
+
+const TestSection = ({ id, renderCount }) => (
+    <CacheableSection
+        id={id}
+        loadingMask={<div data-testid={`loading-mask-${id}`} />}
+    >
+        <RenderCounter
+            count={renderCount}
+            testId={`section-render-count-${id}`}
+        />
+    </CacheableSection>
+)
+
+const TestSingleSection = () => {
+    let controlsRenderCount = 0,
+        sectionRenderCount = 0
+
+    return (
+        <OfflineProvider offlineInterface={mockOfflineInterface}>
+            <TestControls id={'1'} renderCount={controlsRenderCount} />
+            <TestSection id={'1'} renderCount={sectionRenderCount} />
+        </OfflineProvider>
+    )
+}
 
 afterEach(() => {
     jest.clearAllMocks()
 })
 
+describe('Testing single section', () => {
+    // Wrapper for rendered hooks and sections in tests
+    const wrapper = ({ children }) => (
+        <OfflineProvider offlineInterface={mockOfflineInterface}>
+            {children}
+        </OfflineProvider>
+    )
+
+    it('renders in the default state initially', () => {
+        // Set up hook
+        const { result } = renderHook(() => useCacheableSection('one'), {
+            wrapper,
+        })
+
+        // Set up section
+        let sectionRenderCount = 0 // eslint-disable-line prefer-const
+        render(<TestSection id="one" renderCount={sectionRenderCount} />, {
+            wrapper,
+        })
+
+        expect(screen.getByTestId(/section-render-count/).textContent).toBe('1')
+        expect(result.current.recordingState).toBe('default')
+        expect(result.current.isCached).toBe(false)
+        expect(result.current.lastUpdated).toBeUndefined()
+    })
+
+    it('handles a successful recording', async done => {
+        const { result, waitForNextUpdate } = renderHook(
+            () => useCacheableSection('one'),
+            {
+                wrapper,
+            }
+        )
+        let sectionRenderCount = 0 // eslint-disable-line prefer-const
+        render(<TestSection id="one" renderCount={sectionRenderCount} />, {
+            wrapper,
+        })
+
+        const assertRecordingPending = jest
+            .fn()
+            .mockImplementation(async () => {
+                console.log('pending')
+                expect(result.current.recordingState).toBe('pending')
+
+                // While pending, section children should not be rendered
+                // expect(screen.getByTestId(/section-render-count/)).not.toBeDefined()
+            })
+        const assertRecordingStarted = jest
+            .fn()
+            .mockImplementation(async () => {
+                await waitForNextUpdate()
+
+                console.log('starting')
+                expect(result.current.recordingState).toBe('recording')
+
+                // await act(async () => await waitForNextUpdate())
+                // While recording, section and loading mask should be rendered
+                // expect(screen.getByTestId(/section-render-count/))
+                // expect(screen.getByTestId(/loading-mask/))
+            })
+        const assertRecordingCompleted = jest
+            .fn()
+            .mockImplementation(async () => {
+                await waitForNextUpdate()
+
+                console.log('completing')
+                expect(result.current.recordingState).toBe('default')
+
+                // When finished, only children should be rendered, not mask
+                // expect(screen.getByTestId(/section-render-count/))
+                // expect(screen.getByTestId(/loading-mask/)).toThrow()
+
+                // TODO: Assert render count has not increased since recording?
+                done()
+            })
+
+        await act(async () => {
+            result.current
+                .startRecording({
+                    onStarted: assertRecordingStarted,
+                    onCompleted: assertRecordingCompleted,
+                })
+                .then(assertRecordingPending)
+        })
+
+        // TODO: Assert correct params to offlineInterface
+
+        // TODO: Assert assertions were asserted (lol) - may need to happen asynchronously
+        // expect(assertRecordingStarted).toBeCalledTimes(1)
+        // expect(assertRecordingCompleted).toBeCalledTimes(1)
+    })
+
+    it.todo('accepts `recordingTimeoutDelay` option') // may be a unit test
+
+    it.todo('handles a recording that encounters an error')
+
+    it.todo('handles an error starting the recording')
+})
+
+// Don't forget screen.debug!
+
+// TODO: Multiple sections
+describe('multiple sections', () => {
+    it.skip('renders initially in the default state', () => {
+        render(<TestSingleSection />)
+
+        expect(screen.getByTestId(/recording-state/).textContent).toBe(
+            'default'
+        )
+        expect(screen.getByTestId(/is-cached/).textContent).toBe('no')
+        expect(screen.getByTestId(/last-updated/).textContent).toBe('never')
+        expect(screen.getByTestId(/section-render-count/).textContent).toBe('1')
+        expect(screen.getByTestId(/controls-render-count/).textContent).toBe(
+            '1'
+        )
+    })
+})
+
+// The tests
+
 // TODO: Move to offline-provider.test.js
-describe('Testing offline provider', () => {
+describe.skip('Testing offline provider', () => {
     it('Should render without failing', async () => {
         render(
             <OfflineProvider offlineInterface={mockOfflineInterface}>
