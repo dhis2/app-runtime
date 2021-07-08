@@ -34,7 +34,7 @@ export const mockOfflineInterface = {
     pwaEnabled: true,
     init: jest.fn(),
     startRecording: successfulRecordingMock,
-    getCachedSections: jest.fn().mockResolvedValue(['TODO: Dummy sections']),
+    getCachedSections: jest.fn().mockResolvedValue([]),
     removeSection: jest.fn().mockResolvedValue(true),
 }
 

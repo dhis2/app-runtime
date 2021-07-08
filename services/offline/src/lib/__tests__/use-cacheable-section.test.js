@@ -10,10 +10,6 @@ import {
 import { useCacheableSection } from '../cacheable-section'
 import { OfflineProvider } from '../offline-provider'
 
-afterEach(() => {
-    jest.clearAllMocks()
-})
-
 // Suppress 'act' warning for these tests
 const originalError = console.error
 beforeEach(() => {
@@ -27,6 +23,8 @@ beforeEach(() => {
 })
 
 afterEach(() => {
+    jest.clearAllMocks()
+
     console.error.mockRestore()
 })
 
@@ -106,7 +104,7 @@ it('handles a recording that encounters an error', async done => {
         ...mockOfflineInterface,
         startRecording: errorRecordingMock,
     }
-    const { result } = renderHook(() => useCacheableSection('err'), {
+    const { result } = renderHook(() => useCacheableSection('one'), {
         wrapper: ({ children }) => (
             <OfflineProvider offlineInterface={testOfflineInterface}>
                 {children}
@@ -125,7 +123,7 @@ it('handles a recording that encounters an error', async done => {
             error
         )
 
-        // Expect only one call from initialization:
+        // Expect only one call, from initialization:
         expect(mockOfflineInterface.getCachedSections).toBeCalledTimes(1)
 
         // If this cb is not called, test should time out and fail
@@ -163,3 +161,5 @@ it('handles an error starting the recording', async () => {
         'Failed message' // from failedMessageRecordingMock
     )
 })
+
+// todo: test `remove`
