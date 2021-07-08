@@ -11,7 +11,11 @@ import {
     RenderCounter,
 } from '../utils/test-utils'
 
-const TestControls = ({ id, renderCount, recordingOptions }) => {
+// TODO: Test multiple sections and rerendering (started below)
+
+const identity = arg => arg
+
+const TestControls = ({ id, renderCount, makeRecordingHandler = identity }) => {
     const {
         startRecording,
         remove,
@@ -28,11 +32,7 @@ const TestControls = ({ id, renderCount, recordingOptions }) => {
             />
             <button
                 data-testid={`start-recording-${id}`}
-                onClick={() => {
-                    startRecording(recordingOptions).catch(err =>
-                        console.error(err)
-                    )
-                }}
+                onClick={makeRecordingHandler(startRecording)}
             />
             <button
                 data-testid={`remove-${id}`}
@@ -125,7 +125,12 @@ describe('Coordination between useCacheableSection and CacheableSection', () => 
             done()
         }
         const recordingOptions = { onStarted, onCompleted }
-        render(<TestSingleSection recordingOptions={recordingOptions} />)
+        const makeRecordingHandler = startRecording => {
+            return () => startRecording(recordingOptions)
+        }
+        render(
+            <TestSingleSection makeRecordingHandler={makeRecordingHandler} />
+        )
 
         await act(async () => {
             fireEvent.click(getByTestId(/start-recording/))
@@ -162,11 +167,13 @@ describe('Coordination between useCacheableSection and CacheableSection', () => 
             expect(getByTestId(/section-render-count/)).toBeInTheDocument()
             done()
         }
-        const recordingOptions = { onError }
+        const makeRecordingHandler = startRecording => {
+            return () => startRecording({ onError })
+        }
         render(
             <TestSingleSection
                 offlineInterface={testOfflineInterface}
-                recordingOptions={recordingOptions}
+                makeRecordingHandler={makeRecordingHandler}
             />
         )
 
@@ -177,21 +184,35 @@ describe('Coordination between useCacheableSection and CacheableSection', () => 
         expect.assertions(3)
     })
 
-    it.skip('handles an error starting the recording', async done => {
-        const { getByTestId, queryByTestId } = screen
+    it('handles an error starting the recording', async done => {
+        const { getByTestId } = screen
         const testOfflineInterface = {
             ...mockOfflineInterface,
             startRecording: failedMessageRecordingMock,
         }
 
-        render(<TestSingleSection offlineInterface={testOfflineInterface} />)
+        const onStarted = jest.fn()
+
+        const testErrCondition = err => {
+            expect(err.message).toBe('Failed message') // from the mock
+            expect(onStarted).not.toHaveBeenCalled()
+            expect(getByTestId(/recording-state/).textContent).toBe('default')
+            done()
+        }
+
+        const makeRecordingHandler = startRecording => {
+            return () => startRecording({ onStarted }).catch(testErrCondition)
+        }
+
+        render(
+            <TestSingleSection
+                offlineInterface={testOfflineInterface}
+                makeRecordingHandler={makeRecordingHandler}
+            />
+        )
 
         await act(async () => {
-            try {
-                await fireEvent.click(getByTestId(/start-recording/))
-            } catch (err) {
-                console.log(err)
-            }
+            fireEvent.click(getByTestId(/start-recording/))
         })
     })
 })
@@ -213,90 +234,3 @@ describe('multiple sections', () => {
         )
     })
 })
-
-// The tests
-
-// TODO: Move to offline-provider.test.js
-// TODO: Test 'getCachedSections' is called on mount
-describe.skip('Testing offline provider', () => {
-    it('Should render without failing', async () => {
-        render(
-            <OfflineProvider offlineInterface={mockOfflineInterface}>
-                <div data-testid="test-div" />
-            </OfflineProvider>
-        )
-
-        expect(screen.findByTestId('test-div')).toBeDefined()
-    })
-
-    it('Should initialize the offline interface with an update prompt', () => {
-        render(<OfflineProvider offlineInterface={mockOfflineInterface} />)
-
-        expect(mockOfflineInterface.init).toHaveBeenCalledTimes(1)
-
-        // Expect to have been called with a 'promptUpdate' function
-        const arg = mockOfflineInterface.init.mock.calls[0][0]
-        expect(arg).toHaveProperty('promptUpdate')
-        expect(typeof arg['promptUpdate']).toBe('function')
-    })
-
-    it('Should provide the relevant contexts to cacheable sections', () => {
-        const TestConsumer = () => {
-            useCacheableSection('id')
-
-            return (
-                <CacheableSection id={'id'}>
-                    <div data-testid="test-div" />
-                </CacheableSection>
-            )
-        }
-
-        render(
-            <OfflineProvider offlineInterface={mockOfflineInterface}>
-                <TestConsumer />
-            </OfflineProvider>
-        )
-
-        expect(screen.getByTestId('test-div')).toBeDefined()
-    })
-})
-
-// Can hooks be mocked? Like spy on 'useCachedSection' to see if 'remove' gets
-// called
-
-// How will we test the state management?
-// Unit test: use the hooks; make sure that different ones don't rerender
-// when others' states change
-
-// TODO: Test useCacheableSection
-// startRecording:
-// - offlineInterface method is called with right options
-// - state gets updated
-// - Upon finishing, 'update cached sections' is called (integration)
-
-// remove:
-// - test that useCachedSection 'remove' is called
-// - check if 'update cached sections' is called
-
-// TODO: Integration tests
-// call startRecording
-// - check if offlineInterface.startRecording is called
-// - check if recording state changes to 'pending'
-// - check if CacheableSection renders nothing
-
-// mock implementation to trigger 'onRecordingStarted' callback
-// - check if recording state changes to 'recording'
-// - check if CacheableSection section renders loading mask AND children
-// - check if app's 'onStarted' callback is called
-
-// mock implementation to wait, then trigger 'onRecordingCompleted' callback
-// - check if recording state changes to 'default'
-// - check if Cached Section state is synced/updated
-// - check if app's 'onCompleted' callback is called
-// could mock 'getCachedSections' to resolve to new value
-// - check if that value is used
-
-// test errors by mocking 'onRecordingError' callback w/ error object
-// - check if recording state changes to 'error'
-// - check if CacheableSection renders children (with rerender!)
-// - check if App's 'onError' callback is called with an error
