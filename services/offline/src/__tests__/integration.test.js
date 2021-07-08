@@ -1,53 +1,17 @@
 /* eslint-disable react/prop-types */
 
-import { render, screen } from '@testing-library/react'
-import { renderHook, act } from '@testing-library/react-hooks'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
 import { useCacheableSection, CacheableSection } from '../lib/cacheable-section'
 import { OfflineProvider } from '../lib/offline-provider'
+import {
+    errorRecordingMock,
+    failedMessageRecordingMock,
+    mockOfflineInterface,
+    RenderCounter,
+} from '../utils/test-utils'
 
-const successfulRecordingMock = jest
-    .fn()
-    .mockImplementation(async ({ onStarted, onCompleted } = {}) => {
-        // in 500ms, call 'onStarted' callback (allows 'pending' state)
-        if (onStarted) setTimeout(() => act(onStarted), 500)
-
-        // in 1500ms, call 'onCompleted' callback
-        if (onCompleted) setTimeout(() => act(onCompleted), 2000)
-
-        // resolve
-        return Promise.resolve()
-    })
-
-const errorRecordingMock = jest
-    .fn()
-    .mockImplementation(({ onStarted, onError } = {}) => {
-        // start right away this time - don't need to test pending
-        if (onStarted) onStarted()
-
-        // in 1000ms, call 'onError'
-        setTimeout(() => onError(new Error('test err')), 1000)
-
-        // resolve to signal successful initiation
-        return Promise.resolve()
-    })
-
-const failedMessageRecordingMock = jest
-    .fn()
-    .mockRejectedValue(new Error('Failed message'))
-
-const mockOfflineInterface = {
-    init: jest.fn(),
-    startRecording: successfulRecordingMock,
-    getCachedSections: jest.fn().mockResolvedValue(['TODO: Dummy sections']),
-    removeSection: jest.fn().mockResolvedValue(true),
-}
-
-const RenderCounter = ({ count, testId }) => (
-    <div data-testid={testId}>{++count}</div>
-)
-
-const TestControls = ({ id, renderCount }) => {
+const TestControls = ({ id, renderCount, recordingOptions }) => {
     const {
         startRecording,
         remove,
@@ -65,14 +29,14 @@ const TestControls = ({ id, renderCount }) => {
             <button
                 data-testid={`start-recording-${id}`}
                 onClick={() => {
-                    console.log('todo: start recording')
-                    startRecording()
+                    startRecording(recordingOptions).catch(err =>
+                        console.error(err)
+                    )
                 }}
             />
             <button
                 data-testid={`remove-${id}`}
                 onClick={() => {
-                    console.log('todo: remove')
                     remove()
                 }}
             />
@@ -97,14 +61,20 @@ const TestSection = ({ id, renderCount }) => (
     </CacheableSection>
 )
 
-const TestSingleSection = () => {
-    let controlsRenderCount = 0,
-        sectionRenderCount = 0
+// TODO: Render counter isn't working
+const TestSingleSection = props => {
+    let controlsRenderCount = 0, // eslint-disable-line prefer-const
+        sectionRenderCount = 0 // eslint-disable-line prefer-const
 
+    // Props are spread so they can be overwritten
     return (
-        <OfflineProvider offlineInterface={mockOfflineInterface}>
-            <TestControls id={'1'} renderCount={controlsRenderCount} />
-            <TestSection id={'1'} renderCount={sectionRenderCount} />
+        <OfflineProvider offlineInterface={mockOfflineInterface} {...props}>
+            <TestControls
+                id={'1'}
+                renderCount={controlsRenderCount}
+                {...props}
+            />
+            <TestSection id={'1'} renderCount={sectionRenderCount} {...props} />
         </OfflineProvider>
     )
 }
@@ -113,108 +83,121 @@ afterEach(() => {
     jest.clearAllMocks()
 })
 
-describe('Testing single section', () => {
-    // Wrapper for rendered hooks and sections in tests
-    const wrapper = ({ children }) => (
-        <OfflineProvider offlineInterface={mockOfflineInterface}>
-            {children}
-        </OfflineProvider>
-    )
-
-    it('renders in the default state initially', () => {
-        // Set up hook
-        const { result } = renderHook(() => useCacheableSection('one'), {
-            wrapper,
+describe('Coordination between useCacheableSection and CacheableSection', () => {
+    // Suppress 'act' warning for these tests
+    const originalError = console.error
+    beforeEach(() => {
+        jest.spyOn(console, 'error').mockImplementation((...args) => {
+            const pattern = /Warning: An update to .* inside a test was not wrapped in act/
+            if (typeof args[0] === 'string' && pattern.test(args[0])) {
+                return
+            }
+            return originalError.call(console, ...args)
         })
+    })
 
-        // Set up section
-        let sectionRenderCount = 0 // eslint-disable-line prefer-const
-        render(<TestSection id="one" renderCount={sectionRenderCount} />, {
-            wrapper,
-        })
+    afterEach(() => {
+        console.error.mockRestore()
+    })
 
-        expect(screen.getByTestId(/section-render-count/).textContent).toBe('1')
-        expect(result.current.recordingState).toBe('default')
-        expect(result.current.isCached).toBe(false)
-        expect(result.current.lastUpdated).toBeUndefined()
+    it('renders in the default state initially', async () => {
+        render(<TestSingleSection />)
+
+        const { getByTestId } = screen
+        expect(getByTestId(/recording-state/).textContent).toBe('default')
+        expect(getByTestId(/is-cached/).textContent).toBe('no')
+        expect(getByTestId(/last-updated/).textContent).toBe('never')
+        expect(getByTestId(/section-render-count/).textContent).toBe('1')
+        expect(getByTestId(/controls-render-count/).textContent).toBe('1')
     })
 
     it('handles a successful recording', async done => {
-        const { result, waitForNextUpdate } = renderHook(
-            () => useCacheableSection('one'),
-            {
-                wrapper,
-            }
-        )
-        let sectionRenderCount = 0 // eslint-disable-line prefer-const
-        render(<TestSection id="one" renderCount={sectionRenderCount} />, {
-            wrapper,
-        })
+        const { getByTestId, queryByTestId } = screen
 
-        const assertRecordingPending = jest
-            .fn()
-            .mockImplementation(async () => {
-                console.log('pending')
-                expect(result.current.recordingState).toBe('pending')
-
-                // While pending, section children should not be rendered
-                // expect(screen.getByTestId(/section-render-count/)).not.toBeDefined()
-            })
-        const assertRecordingStarted = jest
-            .fn()
-            .mockImplementation(async () => {
-                await waitForNextUpdate()
-
-                console.log('starting')
-                expect(result.current.recordingState).toBe('recording')
-
-                // await act(async () => await waitForNextUpdate())
-                // While recording, section and loading mask should be rendered
-                // expect(screen.getByTestId(/section-render-count/))
-                // expect(screen.getByTestId(/loading-mask/))
-            })
-        const assertRecordingCompleted = jest
-            .fn()
-            .mockImplementation(async () => {
-                await waitForNextUpdate()
-
-                console.log('completing')
-                expect(result.current.recordingState).toBe('default')
-
-                // When finished, only children should be rendered, not mask
-                // expect(screen.getByTestId(/section-render-count/))
-                // expect(screen.getByTestId(/loading-mask/)).toThrow()
-
-                // TODO: Assert render count has not increased since recording?
-                done()
-            })
+        const onStarted = () => {
+            expect(getByTestId(/recording-state/).textContent).toBe('recording')
+            expect(getByTestId(/loading-mask/)).toBeInTheDocument()
+            expect(getByTestId(/section-render-count/)).toBeInTheDocument()
+        }
+        const onCompleted = () => {
+            expect(getByTestId(/recording-state/).textContent).toBe('default')
+            expect(queryByTestId(/loading-mask/)).not.toBeInTheDocument()
+            done()
+        }
+        const recordingOptions = { onStarted, onCompleted }
+        render(<TestSingleSection recordingOptions={recordingOptions} />)
 
         await act(async () => {
-            result.current
-                .startRecording({
-                    onStarted: assertRecordingStarted,
-                    onCompleted: assertRecordingCompleted,
-                })
-                .then(assertRecordingPending)
+            fireEvent.click(getByTestId(/start-recording/))
         })
 
-        // TODO: Assert correct params to offlineInterface
-
-        // TODO: Assert assertions were asserted (lol) - may need to happen asynchronously
-        // expect(assertRecordingStarted).toBeCalledTimes(1)
-        // expect(assertRecordingCompleted).toBeCalledTimes(1)
+        // At this stage, should be pending
+        expect(getByTestId(/recording-state/).textContent).toBe('pending')
+        expect(queryByTestId(/section-render-count/)).not.toBeInTheDocument()
+        expect.assertions(7)
     })
 
-    it.todo('accepts `recordingTimeoutDelay` option') // may be a unit test
+    it('handles a recording that encounters an error', async done => {
+        // Suppress the expected error from console (in addition to 'act' warning)
+        jest.spyOn(console, 'error').mockImplementation((...args) => {
+            const actPattern = /Warning: An update to .* inside a test was not wrapped in act/
+            const errPattern = /Error during recording/
+            const matchesPattern =
+                actPattern.test(args[0]) || errPattern.test(args[0])
+            if (typeof args[0] === 'string' && matchesPattern) {
+                return
+            }
+            return originalError.call(console, ...args)
+        })
+        const { getByTestId, queryByTestId } = screen
 
-    it.todo('handles a recording that encounters an error')
+        const testOfflineInterface = {
+            ...mockOfflineInterface,
+            startRecording: errorRecordingMock,
+        }
 
-    it.todo('handles an error starting the recording')
+        const onError = () => {
+            expect(getByTestId(/recording-state/).textContent).toBe('error')
+            expect(queryByTestId(/loading-mask/)).not.toBeInTheDocument()
+            expect(getByTestId(/section-render-count/)).toBeInTheDocument()
+            done()
+        }
+        const recordingOptions = { onError }
+        render(
+            <TestSingleSection
+                offlineInterface={testOfflineInterface}
+                recordingOptions={recordingOptions}
+            />
+        )
+
+        await act(async () => {
+            fireEvent.click(getByTestId(/start-recording/))
+        })
+
+        expect.assertions(3)
+    })
+
+    it.skip('handles an error starting the recording', async done => {
+        const { getByTestId, queryByTestId } = screen
+        const testOfflineInterface = {
+            ...mockOfflineInterface,
+            startRecording: failedMessageRecordingMock,
+        }
+
+        render(<TestSingleSection offlineInterface={testOfflineInterface} />)
+
+        await act(async () => {
+            try {
+                await fireEvent.click(getByTestId(/start-recording/))
+            } catch (err) {
+                console.log(err)
+            }
+        })
+    })
 })
 
-// Don't forget screen.debug!
-
-// TODO: Multiple sections
+// TODO: Multiple sections - test that other sections don't rerender when
+// another section does
 describe('multiple sections', () => {
     it.skip('renders initially in the default state', () => {
         render(<TestSingleSection />)
@@ -234,6 +217,7 @@ describe('multiple sections', () => {
 // The tests
 
 // TODO: Move to offline-provider.test.js
+// TODO: Test 'getCachedSections' is called on mount
 describe.skip('Testing offline provider', () => {
     it('Should render without failing', async () => {
         render(
