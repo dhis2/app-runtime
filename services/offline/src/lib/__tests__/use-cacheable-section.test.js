@@ -10,6 +10,9 @@ import {
 import { useCacheableSection } from '../cacheable-section'
 import { OfflineProvider } from '../offline-provider'
 
+// todo: more detailed tests of 'section status' updates
+// todo: test `remove`
+
 // Suppress 'act' warning for these tests
 const originalError = console.error
 beforeEach(() => {
@@ -161,5 +164,3 @@ it('handles an error starting the recording', async () => {
         'Failed message' // from failedMessageRecordingMock
     )
 })
-
-// todo: test `remove`
