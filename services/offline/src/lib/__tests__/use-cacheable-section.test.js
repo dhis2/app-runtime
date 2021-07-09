@@ -8,10 +8,13 @@ import {
     mockOfflineInterface,
 } from '../../utils/test-mocks'
 import { useCacheableSection } from '../cacheable-section'
+import { createCacheableSectionStore } from '../cacheable-section-state'
 import { OfflineProvider } from '../offline-provider'
 
 // todo: more detailed tests of 'section status' updates
 // todo: test `remove`
+
+const store = createCacheableSectionStore()
 
 // Suppress 'act' warning for these tests
 const originalError = console.error
@@ -34,7 +37,10 @@ afterEach(() => {
 it('renders in the default state initially', () => {
     const { result } = renderHook(() => useCacheableSection('one'), {
         wrapper: ({ children }) => (
-            <OfflineProvider offlineInterface={mockOfflineInterface}>
+            <OfflineProvider
+                cacheableSectionStore={store}
+                offlineInterface={mockOfflineInterface}
+            >
                 {children}
             </OfflineProvider>
         ),
@@ -49,7 +55,10 @@ it('handles a successful recording', async done => {
     const [sectionId, timeoutDelay] = ['one', 1234]
     const { result } = renderHook(() => useCacheableSection(sectionId), {
         wrapper: ({ children }) => (
-            <OfflineProvider offlineInterface={mockOfflineInterface}>
+            <OfflineProvider
+                cacheableSectionStore={store}
+                offlineInterface={mockOfflineInterface}
+            >
                 {children}
             </OfflineProvider>
         ),
@@ -109,7 +118,10 @@ it('handles a recording that encounters an error', async done => {
     }
     const { result } = renderHook(() => useCacheableSection('one'), {
         wrapper: ({ children }) => (
-            <OfflineProvider offlineInterface={testOfflineInterface}>
+            <OfflineProvider
+                cacheableSectionStore={store}
+                offlineInterface={testOfflineInterface}
+            >
                 {children}
             </OfflineProvider>
         ),
@@ -154,7 +166,10 @@ it('handles an error starting the recording', async () => {
     }
     const { result } = renderHook(() => useCacheableSection('err'), {
         wrapper: ({ children }) => (
-            <OfflineProvider offlineInterface={testOfflineInterface}>
+            <OfflineProvider
+                cacheableSectionStore={store}
+                offlineInterface={testOfflineInterface}
+            >
                 {children}
             </OfflineProvider>
         ),

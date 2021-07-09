@@ -1,23 +1,74 @@
-import { useGlobalState, useGlobalStateMutation } from './global-state-service'
+import PropTypes from 'prop-types'
+import React from 'react'
+import {
+    createStore,
+    useGlobalState,
+    useGlobalStateMutation,
+    GlobalStateProvider,
+} from './global-state-service'
 import { useOfflineInterface } from './offline-interface'
 
 // Functions in here use the global state service to manage cacheable section
 // state in a performant way
 
 /**
+ * Create a store for Cacheable Section state.
+ * Expected to be used in app adapter
+ */
+export function createCacheableSectionStore() {
+    const initialState = { recordingStates: {}, cachedSections: {} }
+    return createStore(initialState)
+}
+
+/**
+ * Provides context for a global state context which will track cached
+ * sections' status and cacheable sections' recording states, which will
+ * determine how that component will render. The provider will be a part of
+ * the OfflineProvider.
+ */
+export function CacheableSectionProvider({ children, store }) {
+    const offlineInterface = useOfflineInterface()
+
+    // On load, get sections and add to store
+    React.useEffect(() => {
+        offlineInterface.getCachedSections().then(sections => {
+            const newSections = sections.reduce(
+                (result, { sectionId, lastUpdated }) => {
+                    result[sectionId] = lastUpdated
+                },
+                {}
+            )
+            store.mutate(state => ({
+                ...state,
+                cachedSections: newSections,
+            }))
+        })
+    }, [store, offlineInterface])
+
+    return <GlobalStateProvider store={store}>{children}</GlobalStateProvider>
+}
+CacheableSectionProvider.propTypes = {
+    children: PropTypes.node,
+    store: PropTypes.shape({ mutate: PropTypes.func }),
+}
+
+/**
  * Uses an optimized global state to manage 'recording state' values without
  * unnecessarily rerendering all consuming components
+ *
+ * @param {String} id - ID of the cacheable section to track
+ * @returns {Object} { recordingState: String, setRecordingState: Function, removeRecordingState: Function}
  */
 export function useRecordingState(id) {
     const [recordingState] = useGlobalState(state => state.recordingStates[id])
     const setRecordingState = useGlobalStateMutation(newState => state => ({
         ...state,
-        [id]: newState,
+        recordingStates: { ...state.recordingStates, [id]: newState },
     }))
     const removeRecordingState = useGlobalStateMutation(() => state => {
-        const newState = { ...state }
-        delete newState[id]
-        return newState
+        const recordingStates = { ...state.recordingStates }
+        delete recordingStates[id]
+        return { ...state, recordingStates }
     })
 
     return { recordingState, setRecordingState, removeRecordingState }
@@ -26,6 +77,8 @@ export function useRecordingState(id) {
 /**
  * Returns a function that syncs cached sections in the global state
  * with IndexedDB, so that IndexedDB is the single source of truth
+ *
+ * @returns {Function} updateCachedSections
  */
 function useUpdateCachedSections() {
     const offlineInterface = useOfflineInterface()
@@ -71,7 +124,11 @@ export function useCachedSections() {
         return success
     }
 
-    return { cachedSections, removeSection }
+    return {
+        cachedSections,
+        removeSection,
+        updateSections: updateCachedSections,
+    }
 }
 
 /**
@@ -99,5 +156,10 @@ export function useCachedSection(id) {
         return success
     }
 
-    return { lastUpdated, remove }
+    return {
+        lastUpdated,
+        isCached: !!lastUpdated,
+        remove,
+        updateSections: updateCachedSections,
+    }
 }

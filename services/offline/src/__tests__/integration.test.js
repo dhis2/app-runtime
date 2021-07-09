@@ -3,6 +3,7 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
 import { useCacheableSection, CacheableSection } from '../lib/cacheable-section'
+import { createCacheableSectionStore } from '../lib/cacheable-section-state'
 import { OfflineProvider } from '../lib/offline-provider'
 import { RenderCounter, resetRenderCounts } from '../utils/render-counter'
 import {
@@ -11,7 +12,7 @@ import {
     mockOfflineInterface,
 } from '../utils/test-mocks'
 
-// TODO: Test multiple sections and rerendering counts (started below)
+const store = createCacheableSectionStore()
 
 const renderCounts = {}
 
@@ -60,24 +61,22 @@ const TestSection = ({ id }) => (
 const TestSingleSection = props => {
     // Props are spread so they can be overwritten
     return (
-        <OfflineProvider offlineInterface={mockOfflineInterface} {...props}>
+        <OfflineProvider
+            cacheableSectionStore={store}
+            offlineInterface={mockOfflineInterface}
+            {...props}
+        >
             <TestControls id={'1'} {...props} />
             <TestSection id={'1'} {...props} />
         </OfflineProvider>
     )
 }
 
-beforeAll(() => {
-    // The code in these tests is very asynchronous; exiting on error makes
-    // debugging challenging. For this suite, just log errors without exiting
-    process.on('unhandledRejection', err => {
-        console.error(err)
-    })
-})
-
 // Suppress 'act' warning for these tests
 const originalError = console.error
 beforeEach(() => {
+    // This is done before each because the 'recording error' test uses its own
+    // spy on console.error
     jest.spyOn(console, 'error').mockImplementation((...args) => {
         const pattern = /Warning: An update to .* inside a test was not wrapped in act/
         if (typeof args[0] === 'string' && pattern.test(args[0])) {
@@ -93,13 +92,6 @@ afterEach(() => {
     resetRenderCounts(renderCounts)
 })
 
-afterAll(() => {
-    // Go back to previous config
-    process.on('unhandledRejection', err => {
-        throw err
-    })
-})
-
 describe('Coordination between useCacheableSection and CacheableSection', () => {
     it('renders in the default state initially', async () => {
         render(<TestSingleSection />)
@@ -108,9 +100,8 @@ describe('Coordination between useCacheableSection and CacheableSection', () => 
         expect(getByTestId(/recording-state/)).toHaveTextContent('default')
         expect(getByTestId(/is-cached/)).toHaveTextContent('no')
         expect(getByTestId(/last-updated/)).toHaveTextContent('never')
-        expect(getByTestId(/section-rc/)).toHaveTextContent('1')
-        // TODO: Verify render count
-        expect(getByTestId(/controls-rc/)).toBeInTheDocument('1')
+        expect(getByTestId(/section-rc/)).toBeInTheDocument()
+        expect(getByTestId(/controls-rc/)).toBeInTheDocument()
     })
 
     it('handles a successful recording', async done => {
@@ -223,7 +214,11 @@ describe('Coordination between useCacheableSection and CacheableSection', () => 
 
 const TwoTestSections = props => (
     // Props are spread so they can be overwritten (but only on one section)
-    <OfflineProvider offlineInterface={mockOfflineInterface} {...props}>
+    <OfflineProvider
+        cacheableSectionStore={store}
+        offlineInterface={mockOfflineInterface}
+        {...props}
+    >
         <TestControls id={'1'} {...props} />
         <TestSection id={'1'} {...props} />
         <TestControls id={'2'} />
@@ -231,20 +226,31 @@ const TwoTestSections = props => (
     </OfflineProvider>
 )
 
-// TODO: Multiple sections - test that other sections don't rerender when
-// another section does
-describe('multiple sections', () => {
-    it('rerenders some amount of times', async done => {
-        const { getByTestId } = screen
-        const onCompleted = () => {
-            // Make assertions
-            // screen.debug(screen.getAllByTestId(/rc/))
+// test that other sections don't rerender when one section does
+describe('Performant state management', () => {
+    it('establishes a pre-recording render count', () => {
+        render(<TwoTestSections />)
 
-            // Before refactor: controls have 6 renders EACH, and
-            // sections 1 and 2 have 2 and 1 renders respectively
-            expect(getByTestId('controls-rc-1')).toHaveTextContent('6')
-            expect(getByTestId('controls-rc-2')).toHaveTextContent('6')
+        const { getByTestId } = screen
+        // Two renders for controls: undefined and 'default' states
+        expect(getByTestId('controls-rc-1')).toHaveTextContent('2')
+        expect(getByTestId('controls-rc-2')).toHaveTextContent('2')
+        // Just one render for sections
+        expect(getByTestId('section-rc-1')).toHaveTextContent('1')
+        expect(getByTestId('section-rc-2')).toHaveTextContent('1')
+    })
+
+    it('isolates rerenders from other consumers', async done => {
+        const { getByTestId } = screen
+        // Make assertions
+        const onCompleted = () => {
+            // Before refactor: controls components have 6 renders EACH, and
+            // sections 1 and 2 have 2 and 1 renders, respectively
+            // After refactor, section that recorded:
+            expect(getByTestId('controls-rc-1')).toHaveTextContent('5')
             expect(getByTestId('section-rc-1')).toHaveTextContent('2')
+            // Section that did not record (should be same as pre-recording):
+            expect(getByTestId('controls-rc-2')).toHaveTextContent('2')
             expect(getByTestId('section-rc-2')).toHaveTextContent('1')
             done()
         }
@@ -257,6 +263,6 @@ describe('multiple sections', () => {
             fireEvent.click(getByTestId('start-recording-1'))
         })
 
-        expect(1).toBe(1)
+        expect.assertions(4)
     })
 })
