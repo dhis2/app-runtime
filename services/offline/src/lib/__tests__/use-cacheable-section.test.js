@@ -53,25 +53,40 @@ it('renders in the default state initially', () => {
 
 it('handles a successful recording', async done => {
     const [sectionId, timeoutDelay] = ['one', 1234]
-    const { result } = renderHook(() => useCacheableSection(sectionId), {
-        wrapper: ({ children }) => (
-            <OfflineProvider
-                cacheableSectionStore={store}
-                offlineInterface={mockOfflineInterface}
-            >
-                {children}
-            </OfflineProvider>
-        ),
-    })
+    const testOfflineInterface = {
+        ...mockOfflineInterface,
+        getCachedSections: jest
+            .fn()
+            .mockResolvedValueOnce([])
+            .mockResolvedValueOnce([
+                { sectionId: sectionId, lastUpdated: new Date() },
+            ]),
+    }
+    const { result, waitFor } = renderHook(
+        () => useCacheableSection(sectionId),
+        {
+            wrapper: ({ children }) => (
+                <OfflineProvider
+                    cacheableSectionStore={store}
+                    offlineInterface={testOfflineInterface}
+                >
+                    {children}
+                </OfflineProvider>
+            ),
+        }
+    )
 
     const assertRecordingStarted = () => {
         expect(result.current.recordingState).toBe('recording')
     }
-    const assertRecordingCompleted = () => {
+    const assertRecordingCompleted = async () => {
         expect(result.current.recordingState).toBe('default')
 
-        // Expect two calls: one on initialization, one after recording
-        expect(mockOfflineInterface.getCachedSections).toBeCalledTimes(2)
+        // Test that 'isCached' gets updated
+        expect(testOfflineInterface.getCachedSections).toBeCalledTimes(2)
+        await waitFor(() => result.current.isCached === true)
+        expect(result.current.isCached).toBe(true)
+        expect(result.current.lastUpdated).toBeInstanceOf(Date)
 
         // If this cb is not called, test should time out and fail
         done()
@@ -97,7 +112,7 @@ it('handles a successful recording', async done => {
     expect(typeof options.onError).toBe('function')
 
     // Make sure all async assertions are called
-    expect.assertions(9)
+    expect.assertions(11)
 })
 
 it('handles a recording that encounters an error', async done => {

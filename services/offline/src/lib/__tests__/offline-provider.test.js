@@ -1,10 +1,11 @@
-/* eslint-disable react/prop-types */
-
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 import { mockOfflineInterface } from '../../utils/test-mocks'
 import { useCacheableSection, CacheableSection } from '../cacheable-section'
-import { createCacheableSectionStore } from '../cacheable-section-state'
+import {
+    createCacheableSectionStore,
+    useCachedSections,
+} from '../cacheable-section-state'
 import { OfflineProvider } from '../offline-provider'
 
 const store = createCacheableSectionStore()
@@ -56,18 +57,41 @@ describe('Testing offline provider', () => {
         expect(typeof arg['promptUpdate']).toBe('function')
     })
 
-    it('Should query getCacheSections to sync with indexedDB', () => {
+    it('Should sync cached sections with indexedDB', async () => {
+        const testOfflineInterface = {
+            ...mockOfflineInterface,
+            getCachedSections: jest.fn().mockResolvedValue([
+                { sectionId: '1', lastUpdated: 'date1' },
+                { sectionId: '2', lastUpdated: 'date2' },
+            ]),
+        }
+
+        const CachedSections = () => {
+            const { cachedSections } = useCachedSections()
+            return (
+                <div data-testid="sections">
+                    {JSON.stringify(cachedSections)}
+                </div>
+            )
+        }
+
         render(
             <OfflineProvider
                 cacheableSectionStore={store}
-                offlineInterface={mockOfflineInterface}
-            />
+                offlineInterface={testOfflineInterface}
+            >
+                <CachedSections />
+            </OfflineProvider>
         )
 
-        expect(mockOfflineInterface.getCachedSections).toHaveBeenCalled()
+        const { getByTestId } = screen
+        expect(testOfflineInterface.getCachedSections).toHaveBeenCalled()
+        await waitFor(() => getByTestId('sections').textContent !== '{}')
+        const textContent = JSON.parse(getByTestId('sections').textContent)
+        expect(textContent).toEqual({ 1: 'date1', 2: 'date2' })
     })
 
-    it('Should provide the relevant contexts to cacheable sections', () => {
+    it('Should provide the relevant contexts to consumers', () => {
         const TestConsumer = () => {
             useCacheableSection('id')
 
