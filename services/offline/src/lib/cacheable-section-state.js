@@ -34,7 +34,7 @@ export function CacheableSectionProvider({ children, store }) {
         offlineInterface.getCachedSections().then(sections => {
             const newSections = sections.reduce(
                 (result, { sectionId, lastUpdated }) => {
-                    result[sectionId] = lastUpdated
+                    return { ...result, [sectionId]: lastUpdated }
                 },
                 {}
             )
@@ -93,7 +93,7 @@ function useUpdateCachedSections() {
         const sections = await offlineInterface.getCachedSections()
         const newSections = sections.reduce(
             (result, { sectionId, lastUpdated }) => {
-                result[sectionId] = lastUpdated
+                return { ...result, [sectionId]: lastUpdated }
             },
             {}
         )
