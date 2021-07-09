@@ -4,9 +4,10 @@ import { render, screen } from '@testing-library/react'
 import React from 'react'
 import { mockOfflineInterface } from '../../utils/test-mocks'
 import { useCacheableSection, CacheableSection } from '../cacheable-section'
+import { createCacheableSectionStore } from '../cacheable-section-state'
 import { OfflineProvider } from '../offline-provider'
 
-// TODO: Test 'getCachedSections' is called on mount
+const store = createCacheableSectionStore()
 
 // Suppress 'act' warning for these tests
 const originalError = console.error
@@ -28,7 +29,10 @@ afterEach(() => {
 describe('Testing offline provider', () => {
     it('Should render without failing', () => {
         render(
-            <OfflineProvider offlineInterface={mockOfflineInterface}>
+            <OfflineProvider
+                cacheableSectionStore={store}
+                offlineInterface={mockOfflineInterface}
+            >
                 <div data-testid="test-div" />
             </OfflineProvider>
         )
@@ -37,7 +41,12 @@ describe('Testing offline provider', () => {
     })
 
     it('Should initialize the offline interface with an update prompt', () => {
-        render(<OfflineProvider offlineInterface={mockOfflineInterface} />)
+        render(
+            <OfflineProvider
+                cacheableSectionStore={store}
+                offlineInterface={mockOfflineInterface}
+            />
+        )
 
         expect(mockOfflineInterface.init).toHaveBeenCalledTimes(1)
 
@@ -45,6 +54,17 @@ describe('Testing offline provider', () => {
         const arg = mockOfflineInterface.init.mock.calls[0][0]
         expect(arg).toHaveProperty('promptUpdate')
         expect(typeof arg['promptUpdate']).toBe('function')
+    })
+
+    it('Should query getCacheSections to sync with indexedDB', () => {
+        render(
+            <OfflineProvider
+                cacheableSectionStore={store}
+                offlineInterface={mockOfflineInterface}
+            />
+        )
+
+        expect(mockOfflineInterface.getCachedSections).toHaveBeenCalled()
     })
 
     it('Should provide the relevant contexts to cacheable sections', () => {
@@ -59,7 +79,10 @@ describe('Testing offline provider', () => {
         }
 
         render(
-            <OfflineProvider offlineInterface={mockOfflineInterface}>
+            <OfflineProvider
+                cacheableSectionStore={store}
+                offlineInterface={mockOfflineInterface}
+            >
                 <TestConsumer />
             </OfflineProvider>
         )
