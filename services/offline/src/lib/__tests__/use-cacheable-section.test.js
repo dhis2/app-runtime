@@ -6,7 +6,7 @@ import {
     errorRecordingMock,
     failedMessageRecordingMock,
     mockOfflineInterface,
-} from '../../utils/test-utils'
+} from '../../utils/test-mocks'
 import { useCacheableSection } from '../cacheable-section'
 import { OfflineProvider } from '../offline-provider'
 

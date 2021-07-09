@@ -2,7 +2,7 @@
 
 import { render, screen } from '@testing-library/react'
 import React from 'react'
-import { mockOfflineInterface } from '../../utils/test-utils'
+import { mockOfflineInterface } from '../../utils/test-mocks'
 import { useCacheableSection, CacheableSection } from '../cacheable-section'
 import { OfflineProvider } from '../offline-provider'
 

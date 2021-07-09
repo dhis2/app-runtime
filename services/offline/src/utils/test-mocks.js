@@ -1,5 +1,3 @@
-import React from 'react'
-
 export const successfulRecordingMock = jest
     .fn()
     .mockImplementation(async ({ onStarted, onCompleted } = {}) => {
@@ -37,8 +35,3 @@ export const mockOfflineInterface = {
     getCachedSections: jest.fn().mockResolvedValue([]),
     removeSection: jest.fn().mockResolvedValue(true),
 }
-
-// eslint-disable-next-line react/prop-types
-export const RenderCounter = ({ count, testId }) => (
-    <div data-testid={testId}>{++count}</div>
-)
