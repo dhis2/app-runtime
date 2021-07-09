@@ -59,7 +59,7 @@ export const useGlobalState = (selector = identity) => {
         return () => store.unsubscribe(callback)
     }, [store]) /* eslint-disable-line react-hooks/exhaustive-deps */
 
-    return [selectedState /* { dispatch: store.dispatch } */]
+    return [selectedState, store.mutate]
 }
 
 export const useGlobalStateMutation = mutationCreator => {
