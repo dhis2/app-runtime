@@ -75,8 +75,21 @@ beforeAll(() => {
     })
 })
 
+// Suppress 'act' warning for these tests
+const originalError = console.error
+beforeEach(() => {
+    jest.spyOn(console, 'error').mockImplementation((...args) => {
+        const pattern = /Warning: An update to .* inside a test was not wrapped in act/
+        if (typeof args[0] === 'string' && pattern.test(args[0])) {
+            return
+        }
+        return originalError.call(console, ...args)
+    })
+})
+
 afterEach(() => {
     jest.clearAllMocks()
+    console.error.mockRestore()
     resetRenderCounts(renderCounts)
 })
 
@@ -88,22 +101,6 @@ afterAll(() => {
 })
 
 describe('Coordination between useCacheableSection and CacheableSection', () => {
-    // Suppress 'act' warning for these tests
-    const originalError = console.error
-    beforeEach(() => {
-        jest.spyOn(console, 'error').mockImplementation((...args) => {
-            const pattern = /Warning: An update to .* inside a test was not wrapped in act/
-            if (typeof args[0] === 'string' && pattern.test(args[0])) {
-                return
-            }
-            return originalError.call(console, ...args)
-        })
-    })
-
-    afterEach(() => {
-        console.error.mockRestore()
-    })
-
     it('renders in the default state initially', async () => {
         render(<TestSingleSection />)
 
@@ -138,7 +135,6 @@ describe('Coordination between useCacheableSection and CacheableSection', () => 
         render(
             <TestSingleSection makeRecordingHandler={makeRecordingHandler} />
         )
-
 
         await act(async () => {
             fireEvent.click(getByTestId(/start-recording/))
@@ -225,18 +221,42 @@ describe('Coordination between useCacheableSection and CacheableSection', () => 
     })
 })
 
+const TwoTestSections = props => (
+    // Props are spread so they can be overwritten (but only on one section)
+    <OfflineProvider offlineInterface={mockOfflineInterface} {...props}>
+        <TestControls id={'1'} {...props} />
+        <TestSection id={'1'} {...props} />
+        <TestControls id={'2'} />
+        <TestSection id={'2'} />
+    </OfflineProvider>
+)
+
 // TODO: Multiple sections - test that other sections don't rerender when
 // another section does
-describe.skip('multiple sections', () => {
-    it('renders initially in the default state', () => {
-        render(<TestSingleSection />)
+describe('multiple sections', () => {
+    it('rerenders some amount of times', async done => {
+        const { getByTestId } = screen
+        const onCompleted = () => {
+            // Make assertions
+            // screen.debug(screen.getAllByTestId(/rc/))
 
-        expect(screen.getByTestId(/recording-state/)).toHaveTextContent(
-            'default'
-        )
-        expect(screen.getByTestId(/is-cached/)).toHaveTextContent('no')
-        expect(screen.getByTestId(/last-updated/)).toHaveTextContent('never')
-        expect(screen.getByTestId(/section-rc/)).toHaveTextContent('1')
-        expect(screen.getByTestId(/controls-rc/)).toHaveTextContent('1')
+            // Before refactor: controls have 6 renders EACH, and
+            // sections 1 and 2 have 2 and 1 renders respectively
+            expect(getByTestId('controls-rc-1')).toHaveTextContent('6')
+            expect(getByTestId('controls-rc-2')).toHaveTextContent('6')
+            expect(getByTestId('section-rc-1')).toHaveTextContent('2')
+            expect(getByTestId('section-rc-2')).toHaveTextContent('1')
+            done()
+        }
+
+        const makeRecordingHandler = startRecording => () =>
+            startRecording({ onCompleted })
+        render(<TwoTestSections makeRecordingHandler={makeRecordingHandler} />)
+
+        await act(async () => {
+            fireEvent.click(getByTestId('start-recording-1'))
+        })
+
+        expect(1).toBe(1)
     })
 })
