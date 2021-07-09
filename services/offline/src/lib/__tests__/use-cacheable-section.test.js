@@ -11,7 +11,6 @@ import { useCacheableSection } from '../cacheable-section'
 import { createCacheableSectionStore } from '../cacheable-section-state'
 import { OfflineProvider } from '../offline-provider'
 
-// todo: more detailed tests of 'section status' updates
 // todo: test `remove`
 
 const store = createCacheableSectionStore()
