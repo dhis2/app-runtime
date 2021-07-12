@@ -52,7 +52,12 @@ export const useGlobalState = (selector = identity) => {
         // NEW: deep equality check before updating
         const callback = state => {
             const newSelectedState = selector(state)
-            if (!isEqual(selectedState, newSelectedState))
+            // Second condition handles case where a selected object gets
+            // deleted, but state does not update
+            if (
+                !isEqual(selectedState, newSelectedState) ||
+                selectedState === undefined
+            )
                 setSelectedState(newSelectedState)
         }
         store.subscribe(callback)
