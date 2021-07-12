@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { DataEngine } from '../../engine'
 import { CustomDataLink, CustomData, CustomLinkOptions } from '../../links'
 import { DataContext } from '../context/DataContext'
+import { queryClientOptions as queryClientDefaults } from './DataProvider'
 
 interface CustomProviderInput {
     children: React.ReactNode
@@ -11,23 +12,11 @@ interface CustomProviderInput {
     queryClientOptions?: any
 }
 
-/**
- * Disable automatic retries, which can cause tests to take unnecessarily long
- * see: https://react-query.tanstack.com/reference/useQuery
- */
-const defaultQueryClientOptions = {
-    defaultOptions: {
-        queries: {
-            retry: false,
-        },
-    },
-}
-
 export const CustomDataProvider = ({
     children,
     data,
     options,
-    queryClientOptions = defaultQueryClientOptions,
+    queryClientOptions = queryClientDefaults,
 }: CustomProviderInput) => {
     const link = new CustomDataLink(data, options)
     const engine = new DataEngine(link)

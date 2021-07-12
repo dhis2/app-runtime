@@ -11,13 +11,13 @@ export interface ProviderInput {
     children: React.ReactNode
 }
 
-const queryClient = new QueryClient({
+export const queryClientOptions = {
     defaultOptions: {
         queries: {
             // Disable automatic error retries
             retry: false,
-            // Don't retry on mount if query has errored
-            retryOnMount: false,
+            // Retry on mount if query has errored
+            retryOnMount: true,
             // Refetch on mount if data is stale
             refetchOnMount: true,
             // Don't refetch when the window regains focus
@@ -26,7 +26,9 @@ const queryClient = new QueryClient({
             refetchOnReconnect: false,
         },
     },
-})
+}
+
+const queryClient = new QueryClient(queryClientOptions)
 
 export const DataProvider = (props: ProviderInput) => {
     const config = {
