@@ -193,3 +193,44 @@ it('handles an error starting the recording', async () => {
         'Failed message' // from failedMessageRecordingMock
     )
 })
+
+it.only('handles remove and updates sections', async () => {
+    const sectionId = 'one'
+    const testOfflineInterface = {
+        ...mockOfflineInterface,
+        getCachedSections: jest
+            .fn()
+            .mockResolvedValueOnce([
+                { sectionId: sectionId, lastUpdated: new Date() },
+            ])
+            .mockResolvedValueOnce([]),
+    }
+    const { result, waitFor } = renderHook(
+        () => useCacheableSection(sectionId),
+        {
+            wrapper: ({ children }) => (
+                <OfflineProvider
+                    cacheableSectionStore={store}
+                    offlineInterface={testOfflineInterface}
+                >
+                    {children}
+                </OfflineProvider>
+            ),
+        }
+    )
+
+    // Wait for state to sync with indexedDB
+    await waitFor(() => result.current.isCached === true)
+
+    let success
+    await act(async () => {
+        success = await result.current.remove()
+    })
+
+    expect(success).toBe(true)
+    // Test that 'isCached' gets updated
+    expect(testOfflineInterface.getCachedSections).toBeCalledTimes(2)
+    await waitFor(() => result.current.isCached === false)
+    expect(result.current.isCached).toBe(false)
+    expect(result.current.lastUpdated).toBeUndefined()
+})
