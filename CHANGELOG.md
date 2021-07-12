@@ -1,3 +1,11 @@
+# [2.9.0-alpha.3](https://github.com/dhis2/app-runtime/compare/v2.9.0-alpha.2...v2.9.0-alpha.3) (2021-07-12)
+
+
+### Features
+
+* **custom-data-provider:** use query client defaults for custom data provider ([a566c4d](https://github.com/dhis2/app-runtime/commit/a566c4d943742c863006c6f7fa0ce3ba04380a4d))
+* **use-data-query:** set conservative defaults for caching ([e5e4f69](https://github.com/dhis2/app-runtime/commit/e5e4f6993e4736efdbc86ea4ca286f45915bc451))
+
 # [2.9.0-alpha.2](https://github.com/dhis2/app-runtime/compare/v2.9.0-alpha.1...v2.9.0-alpha.2) (2021-07-08)
 
 
