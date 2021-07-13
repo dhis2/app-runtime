@@ -127,7 +127,7 @@ export function useCachedSections() {
      */
     async function removeSection(id) {
         const success = await offlineInterface.removeSection(id)
-        if (success) updateCachedSections()
+        if (success) await updateCachedSections()
         return success
     }
 
@@ -159,7 +159,7 @@ export function useCachedSection(id) {
      */
     async function remove() {
         const success = await offlineInterface.removeSection(id)
-        if (success) updateCachedSections()
+        if (success) await updateCachedSections()
         return success
     }
 
