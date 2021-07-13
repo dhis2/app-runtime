@@ -90,9 +90,9 @@ export function useRecordingState(id) {
  * Returns a function that syncs cached sections in the global state
  * with IndexedDB, so that IndexedDB is the single source of truth
  *
- * @returns {Function} updateCachedSections
+ * @returns {Function} syncCachedSections
  */
-function useUpdateCachedSections() {
+function useSyncCachedSections() {
     const offlineInterface = useOfflineInterface()
     const setCachedSections = useGlobalStateMutation(
         cachedSections => state => ({
@@ -101,7 +101,7 @@ function useUpdateCachedSections() {
         })
     )
 
-    return async function updateCachedSections() {
+    return async function syncCachedSections() {
         const sections = await offlineInterface.getCachedSections()
         const sectionsById = transformSections(sections)
         setCachedSections(sectionsById)
@@ -115,7 +115,7 @@ function useUpdateCachedSections() {
  */
 export function useCachedSections() {
     const [cachedSections] = useGlobalState(state => state.cachedSections)
-    const updateCachedSections = useUpdateCachedSections()
+    const syncCachedSections = useSyncCachedSections()
     const offlineInterface = useOfflineInterface()
 
     /**
@@ -127,14 +127,14 @@ export function useCachedSections() {
      */
     async function removeSection(id) {
         const success = await offlineInterface.removeSection(id)
-        if (success) await updateCachedSections()
+        if (success) await syncCachedSections()
         return success
     }
 
     return {
         cachedSections,
         removeSection,
-        updateSections: updateCachedSections,
+        syncCachedSections,
     }
 }
 
@@ -147,7 +147,7 @@ export function useCachedSections() {
  */
 export function useCachedSection(id) {
     const [lastUpdated] = useGlobalState(state => state.cachedSections[id])
-    const updateCachedSections = useUpdateCachedSections()
+    const syncCachedSections = useSyncCachedSections()
     const offlineInterface = useOfflineInterface()
 
     /**
@@ -159,7 +159,7 @@ export function useCachedSection(id) {
      */
     async function remove() {
         const success = await offlineInterface.removeSection(id)
-        if (success) await updateCachedSections()
+        if (success) await syncCachedSections()
         return success
     }
 
@@ -167,6 +167,6 @@ export function useCachedSection(id) {
         lastUpdated,
         isCached: !!lastUpdated,
         remove,
-        updateSections: updateCachedSections,
+        syncCachedSections,
     }
 }

@@ -21,9 +21,12 @@ const recordingStates = {
  */
 export function useCacheableSection(id) {
     const offlineInterface = useOfflineInterface()
-    const { isCached, lastUpdated, remove, updateSections } = useCachedSection(
-        id
-    )
+    const {
+        isCached,
+        lastUpdated,
+        remove,
+        syncCachedSections,
+    } = useCachedSection(id)
     const {
         recordingState,
         setRecordingState,
@@ -72,7 +75,7 @@ export function useCacheableSection(id) {
 
     function onRecordingCompleted() {
         setRecordingState(recordingStates.default)
-        updateSections()
+        syncCachedSections()
     }
 
     function onRecordingError(error) {
