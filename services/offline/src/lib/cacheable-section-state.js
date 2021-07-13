@@ -40,8 +40,9 @@ export function createCacheableSectionStore() {
 /**
  * Helper hook that returns a value that will persist between renders but makes
  * sure to only set its initial state once.
+ * See https://gist.github.com/amcgee/42bb2fa6d5f79e607f00e6dccc733482
  */
-function useConstRef(factory) {
+function useConst(factory) {
     const ref = React.useRef(null)
     if (ref.current === null) ref.current = factory()
     return ref.current
@@ -55,7 +56,7 @@ function useConstRef(factory) {
  */
 export function CacheableSectionProvider({ children }) {
     const offlineInterface = useOfflineInterface()
-    const store = useConstRef(createCacheableSectionStore)
+    const store = useConst(createCacheableSectionStore)
 
     // On load, get sections and add to store
     React.useEffect(() => {
