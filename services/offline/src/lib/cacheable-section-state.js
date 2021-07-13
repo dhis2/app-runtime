@@ -12,6 +12,23 @@ import { useOfflineInterface } from './offline-interface'
 // state in a performant way
 
 /**
+ * Helper that transforms an array of cached section objects from the IndexedDB
+ * into an object of values keyed by section ID
+ *
+ * @param {Array} list - An array of section objects
+ * @returns {Object} An object of sections, keyed by ID
+ */
+function transformSections(sectionsArray) {
+    return sectionsArray.reduce(
+        (result, { sectionId, lastUpdated }) => ({
+            ...result,
+            [sectionId]: lastUpdated,
+        }),
+        {}
+    )
+}
+
+/**
  * Create a store for Cacheable Section state.
  * Expected to be used in app adapter
  */
@@ -32,15 +49,10 @@ export function CacheableSectionProvider({ children, store }) {
     // On load, get sections and add to store
     React.useEffect(() => {
         offlineInterface.getCachedSections().then(sections => {
-            const newSections = sections.reduce(
-                (result, { sectionId, lastUpdated }) => {
-                    return { ...result, [sectionId]: lastUpdated }
-                },
-                {}
-            )
+            const sectionsById = transformSections(sections)
             store.mutate(state => ({
                 ...state,
-                cachedSections: newSections,
+                cachedSections: sectionsById,
             }))
         })
     }, [store, offlineInterface])
@@ -91,13 +103,8 @@ function useUpdateCachedSections() {
 
     return async function updateCachedSections() {
         const sections = await offlineInterface.getCachedSections()
-        const newSections = sections.reduce(
-            (result, { sectionId, lastUpdated }) => {
-                return { ...result, [sectionId]: lastUpdated }
-            },
-            {}
-        )
-        setCachedSections(newSections)
+        const sectionsById = transformSections(sections)
+        setCachedSections(sectionsById)
     }
 }
 
