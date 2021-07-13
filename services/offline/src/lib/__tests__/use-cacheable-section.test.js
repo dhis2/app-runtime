@@ -194,7 +194,7 @@ it('handles an error starting the recording', async () => {
     )
 })
 
-it.only('handles remove and updates sections', async () => {
+it('handles remove and updates sections', async () => {
     const sectionId = 'one'
     const testOfflineInterface = {
         ...mockOfflineInterface,
