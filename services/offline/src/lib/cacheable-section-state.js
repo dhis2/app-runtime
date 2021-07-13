@@ -18,7 +18,7 @@ import { useOfflineInterface } from './offline-interface'
  * @param {Array} list - An array of section objects
  * @returns {Object} An object of sections, keyed by ID
  */
-function transformSections(sectionsArray) {
+function getSectionsById(sectionsArray) {
     return sectionsArray.reduce(
         (result, { sectionId, lastUpdated }) => ({
             ...result,
@@ -61,10 +61,9 @@ export function CacheableSectionProvider({ children }) {
     // On load, get sections and add to store
     React.useEffect(() => {
         offlineInterface.getCachedSections().then(sections => {
-            const sectionsById = transformSections(sections)
             store.mutate(state => ({
                 ...state,
-                cachedSections: sectionsById,
+                cachedSections: getSectionsById(sections),
             }))
         })
     }, [store, offlineInterface])
@@ -114,8 +113,7 @@ function useSyncCachedSections() {
 
     return async function syncCachedSections() {
         const sections = await offlineInterface.getCachedSections()
-        const sectionsById = transformSections(sections)
-        setCachedSections(sectionsById)
+        setCachedSections(getSectionsById(sections))
     }
 }
 
