@@ -4,7 +4,6 @@ import { RenderCounter, resetRenderCounts } from '../render-counter'
 
 const renderCounts = {}
 
-// eslint-disable-next-line react/prop-types
 export const Rerenderer = () => {
     const [, setState] = React.useState(true)
     const toggleState = () => setState(prevState => !prevState)
