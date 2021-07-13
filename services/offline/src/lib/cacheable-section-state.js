@@ -38,13 +38,24 @@ export function createCacheableSectionStore() {
 }
 
 /**
+ * Helper hook that returns a value that will persist between renders but makes
+ * sure to only set its initial state once.
+ */
+function useConstRef(factory) {
+    const ref = React.useRef(null)
+    if (ref.current === null) ref.current = factory()
+    return ref.current
+}
+
+/**
  * Provides context for a global state context which will track cached
  * sections' status and cacheable sections' recording states, which will
  * determine how that component will render. The provider will be a part of
  * the OfflineProvider.
  */
-export function CacheableSectionProvider({ children, store }) {
+export function CacheableSectionProvider({ children }) {
     const offlineInterface = useOfflineInterface()
+    const store = useConstRef(createCacheableSectionStore)
 
     // On load, get sections and add to store
     React.useEffect(() => {
@@ -61,7 +72,6 @@ export function CacheableSectionProvider({ children, store }) {
 }
 CacheableSectionProvider.propTypes = {
     children: PropTypes.node,
-    store: PropTypes.shape({ mutate: PropTypes.func }),
 }
 
 /**

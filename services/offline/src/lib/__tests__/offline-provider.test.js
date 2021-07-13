@@ -2,13 +2,8 @@ import { render, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 import { mockOfflineInterface } from '../../utils/test-mocks'
 import { useCacheableSection, CacheableSection } from '../cacheable-section'
-import {
-    createCacheableSectionStore,
-    useCachedSections,
-} from '../cacheable-section-state'
+import { useCachedSections } from '../cacheable-section-state'
 import { OfflineProvider } from '../offline-provider'
-
-const store = createCacheableSectionStore()
 
 // Suppress 'act' warning for these tests
 const originalError = console.error
@@ -30,10 +25,7 @@ afterEach(() => {
 describe('Testing offline provider', () => {
     it('Should render without failing', () => {
         render(
-            <OfflineProvider
-                cacheableSectionStore={store}
-                offlineInterface={mockOfflineInterface}
-            >
+            <OfflineProvider offlineInterface={mockOfflineInterface}>
                 <div data-testid="test-div" />
             </OfflineProvider>
         )
@@ -42,12 +34,7 @@ describe('Testing offline provider', () => {
     })
 
     it('Should initialize the offline interface with an update prompt', () => {
-        render(
-            <OfflineProvider
-                cacheableSectionStore={store}
-                offlineInterface={mockOfflineInterface}
-            />
-        )
+        render(<OfflineProvider offlineInterface={mockOfflineInterface} />)
 
         expect(mockOfflineInterface.init).toHaveBeenCalledTimes(1)
 
@@ -76,10 +63,7 @@ describe('Testing offline provider', () => {
         }
 
         render(
-            <OfflineProvider
-                cacheableSectionStore={store}
-                offlineInterface={testOfflineInterface}
-            >
+            <OfflineProvider offlineInterface={testOfflineInterface}>
                 <CachedSections />
             </OfflineProvider>
         )
@@ -103,10 +87,7 @@ describe('Testing offline provider', () => {
         }
 
         render(
-            <OfflineProvider
-                cacheableSectionStore={store}
-                offlineInterface={mockOfflineInterface}
-            >
+            <OfflineProvider offlineInterface={mockOfflineInterface}>
                 <TestConsumer />
             </OfflineProvider>
         )

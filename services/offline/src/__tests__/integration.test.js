@@ -3,7 +3,6 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
 import { useCacheableSection, CacheableSection } from '../lib/cacheable-section'
-import { createCacheableSectionStore } from '../lib/cacheable-section-state'
 import { OfflineProvider } from '../lib/offline-provider'
 import { RenderCounter, resetRenderCounts } from '../utils/render-counter'
 import {
@@ -11,8 +10,6 @@ import {
     failedMessageRecordingMock,
     mockOfflineInterface,
 } from '../utils/test-mocks'
-
-const store = createCacheableSectionStore()
 
 const renderCounts = {}
 
@@ -61,11 +58,7 @@ const TestSection = ({ id }) => (
 const TestSingleSection = props => {
     // Props are spread so they can be overwritten
     return (
-        <OfflineProvider
-            cacheableSectionStore={store}
-            offlineInterface={mockOfflineInterface}
-            {...props}
-        >
+        <OfflineProvider offlineInterface={mockOfflineInterface} {...props}>
             <TestControls id={'1'} {...props} />
             <TestSection id={'1'} {...props} />
         </OfflineProvider>
@@ -216,11 +209,7 @@ describe('Coordination between useCacheableSection and CacheableSection', () => 
 
 const TwoTestSections = props => (
     // Props are spread so they can be overwritten (but only on one section)
-    <OfflineProvider
-        cacheableSectionStore={store}
-        offlineInterface={mockOfflineInterface}
-        {...props}
-    >
+    <OfflineProvider offlineInterface={mockOfflineInterface} {...props}>
         <TestControls id={'1'} {...props} />
         <TestSection id={'1'} {...props} />
         <TestControls id={'2'} />

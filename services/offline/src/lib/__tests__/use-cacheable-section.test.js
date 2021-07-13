@@ -8,12 +8,7 @@ import {
     mockOfflineInterface,
 } from '../../utils/test-mocks'
 import { useCacheableSection } from '../cacheable-section'
-import { createCacheableSectionStore } from '../cacheable-section-state'
 import { OfflineProvider } from '../offline-provider'
-
-// todo: test `remove`
-
-const store = createCacheableSectionStore()
 
 // Suppress 'act' warning for these tests
 const originalError = console.error
@@ -36,10 +31,7 @@ afterEach(() => {
 it('renders in the default state initially', () => {
     const { result } = renderHook(() => useCacheableSection('one'), {
         wrapper: ({ children }) => (
-            <OfflineProvider
-                cacheableSectionStore={store}
-                offlineInterface={mockOfflineInterface}
-            >
+            <OfflineProvider offlineInterface={mockOfflineInterface}>
                 {children}
             </OfflineProvider>
         ),
@@ -65,10 +57,7 @@ it('handles a successful recording', async done => {
         () => useCacheableSection(sectionId),
         {
             wrapper: ({ children }) => (
-                <OfflineProvider
-                    cacheableSectionStore={store}
-                    offlineInterface={testOfflineInterface}
-                >
+                <OfflineProvider offlineInterface={testOfflineInterface}>
                     {children}
                 </OfflineProvider>
             ),
@@ -132,10 +121,7 @@ it('handles a recording that encounters an error', async done => {
     }
     const { result } = renderHook(() => useCacheableSection('one'), {
         wrapper: ({ children }) => (
-            <OfflineProvider
-                cacheableSectionStore={store}
-                offlineInterface={testOfflineInterface}
-            >
+            <OfflineProvider offlineInterface={testOfflineInterface}>
                 {children}
             </OfflineProvider>
         ),
@@ -180,10 +166,7 @@ it('handles an error starting the recording', async () => {
     }
     const { result } = renderHook(() => useCacheableSection('err'), {
         wrapper: ({ children }) => (
-            <OfflineProvider
-                cacheableSectionStore={store}
-                offlineInterface={testOfflineInterface}
-            >
+            <OfflineProvider offlineInterface={testOfflineInterface}>
                 {children}
             </OfflineProvider>
         ),
@@ -209,10 +192,7 @@ it('handles remove and updates sections', async () => {
         () => useCacheableSection(sectionId),
         {
             wrapper: ({ children }) => (
-                <OfflineProvider
-                    cacheableSectionStore={store}
-                    offlineInterface={testOfflineInterface}
-                >
+                <OfflineProvider offlineInterface={testOfflineInterface}>
                     {children}
                 </OfflineProvider>
             ),
