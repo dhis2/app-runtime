@@ -44,7 +44,9 @@ export function createCacheableSectionStore() {
  */
 function useConst(factory) {
     const ref = React.useRef(null)
-    if (ref.current === null) ref.current = factory()
+    if (ref.current === null) {
+        ref.current = factory()
+    }
     return ref.current
 }
 
@@ -136,7 +138,9 @@ export function useCachedSections() {
      */
     async function removeSection(id) {
         const success = await offlineInterface.removeSection(id)
-        if (success) await syncCachedSections()
+        if (success) {
+            await syncCachedSections()
+        }
         return success
     }
 
@@ -168,7 +172,9 @@ export function useCachedSection(id) {
      */
     async function remove() {
         const success = await offlineInterface.removeSection(id)
-        if (success) await syncCachedSections()
+        if (success) {
+            await syncCachedSections()
+        }
         return success
     }
 
