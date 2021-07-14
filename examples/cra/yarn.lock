@@ -1052,6 +1052,7 @@
     "@dhis2/app-service-alerts" "2.8.0"
     "@dhis2/app-service-config" "2.8.0"
     "@dhis2/app-service-data" "2.8.0"
+    "@dhis2/app-service-offline" "2.8.0"
 
 "@dhis2/app-service-alerts@2.8.0", "@dhis2/app-service-alerts@file:../../services/alerts":
   version "2.8.0"
@@ -1060,6 +1061,9 @@
   version "2.8.0"
 
 "@dhis2/app-service-data@2.8.0", "@dhis2/app-service-data@file:../../services/data":
+  version "2.8.0"
+
+"@dhis2/app-service-offline@2.8.0", "@dhis2/app-service-offline@file:../../services/offline":
   version "2.8.0"
 
 "@hapi/address@2.x.x":
