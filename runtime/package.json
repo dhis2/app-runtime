@@ -23,9 +23,10 @@
         "build/**"
     ],
     "dependencies": {
+        "@dhis2/app-service-alerts": "2.8.0",
         "@dhis2/app-service-config": "2.8.0",
         "@dhis2/app-service-data": "2.8.0",
-        "@dhis2/app-service-alerts": "2.8.0"
+        "@dhis2/app-service-offline": "2.8.0"
     },
     "peerDependencies": {
         "prop-types": "^15.7.2",
