@@ -13,9 +13,7 @@ export interface ContextInput {
     apiVersion: number
 }
 
-export interface RefetchOptions {
-    variables?: QueryVariables
-}
+export type RefetchOptions = QueryVariables
 export type RefetchFunction<ReturnType> = (
     options?: RefetchOptions
 ) => Promise<ReturnType>

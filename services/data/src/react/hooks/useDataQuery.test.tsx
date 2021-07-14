@@ -96,15 +96,15 @@ describe('useDataQuery', () => {
             const mockSpy = jest.fn((_, { id }) => {
                 switch (id) {
                     case one:
-                        return resultOne
+                        return Promise.resolve(resultOne)
                     case two:
-                        return resultTwo
+                        return Promise.resolve(resultTwo)
                 }
             })
             const data = {
                 answer: mockSpy,
             }
-            const wrapper = ({ children }) => (
+            const wrapper = ({ children }: { children?: any }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
             const initialProps = {
@@ -153,7 +153,7 @@ describe('useDataQuery', () => {
     describe('parameters: lazy', () => {
         it('Should be false by default', async () => {
             const query = { x: { resource: 'answer' } }
-            const mockSpy = jest.fn(() => 42)
+            const mockSpy = jest.fn(() => Promise.resolve(42))
             const data = { answer: mockSpy }
             const wrapper = ({ children }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
@@ -183,7 +183,7 @@ describe('useDataQuery', () => {
     describe('internal: caching', () => {
         it('Should return stale data initially on refetch', async () => {
             const answers = [42, 43]
-            const mockSpy = jest.fn(() => answers.shift())
+            const mockSpy = jest.fn(() => Promise.resolve(answers.shift()))
             const data = {
                 answer: mockSpy,
             }
@@ -244,11 +244,13 @@ describe('useDataQuery', () => {
                 },
             }
             const answers = [42, 43]
-            const mockSpy = jest.fn(() => answers.shift())
+            const mockSpy = jest.fn(() => Promise.resolve(answers.shift()))
             const data = {
                 answer: mockSpy,
             }
-            const query = { x: { resource: 'answer' } }
+            const query = {
+                x: { resource: 'answer' },
+            }
             const wrapper = ({ children }) => (
                 <CustomDataProvider
                     data={data}
@@ -282,8 +284,6 @@ describe('useDataQuery', () => {
 
             act(() => {
                 // Add a variable to the request to ensure a different cache key
-                // eslint-disable-next-line
-                // @ts-ignore
                 result.current.refetch({ one: 1 })
             })
 
@@ -302,8 +302,6 @@ describe('useDataQuery', () => {
 
             act(() => {
                 // Request the resource without variables again
-                // eslint-disable-next-line
-                // @ts-ignore
                 result.current.refetch({ one: undefined })
             })
 
@@ -453,7 +451,7 @@ describe('useDataQuery', () => {
     describe('return values: refetch', () => {
         it('Should not fetch until refetch has been called if lazy', async () => {
             const query = { x: { resource: 'answer' } }
-            const mockSpy = jest.fn(() => 42)
+            const mockSpy = jest.fn(() => Promise.resolve(42))
             const data = { answer: mockSpy }
             const wrapper = ({ children }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
@@ -679,15 +677,15 @@ describe('useDataQuery', () => {
             const mockSpy = jest.fn((_, { id }) => {
                 switch (id) {
                     case one:
-                        return resultOne
+                        return Promise.resolve(resultOne)
                     case two:
-                        return resultTwo
+                        return Promise.resolve(resultTwo)
                 }
             })
             const data = {
                 answer: mockSpy,
             }
-            const wrapper = ({ children }) => (
+            const wrapper = ({ children }: { children?: any }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
             const initialProps = {
@@ -710,8 +708,6 @@ describe('useDataQuery', () => {
             })
 
             act(() => {
-                // eslint-disable-next-line
-                // @ts-ignore
                 result.current.refetch({ id: two })
             })
 
@@ -732,7 +728,7 @@ describe('useDataQuery', () => {
                     params: ({ one, two, three }) => ({ one, two, three }),
                 },
             }
-            const mockSpy = jest.fn(() => 42)
+            const mockSpy = jest.fn(() => Promise.resolve(42))
             const data = {
                 answer: mockSpy,
             }
@@ -747,26 +743,28 @@ describe('useDataQuery', () => {
 
             await waitForNextUpdate()
 
-            // eslint-disable-next-line
-            // @ts-ignore
-            const { params: firstParams } = mockSpy.mock.calls[0][1]
-            expect(firstParams).toMatchObject(initialVariables)
+            expect(mockSpy).toHaveBeenLastCalledWith(
+                expect.anything(),
+                expect.objectContaining({ params: initialVariables }),
+                expect.anything()
+            )
 
             act(() => {
-                // eslint-disable-next-line
-                // @ts-ignore
                 result.current.refetch(newVariables)
             })
 
             await waitForNextUpdate()
 
-            // eslint-disable-next-line
-            // @ts-ignore
-            const { params: secondParams } = mockSpy.mock.calls[1][1]
-            expect(secondParams).toMatchObject({
-                ...initialVariables,
-                ...newVariables,
-            })
+            expect(mockSpy).toHaveBeenLastCalledWith(
+                expect.anything(),
+                expect.objectContaining({
+                    params: {
+                        ...initialVariables,
+                        ...newVariables,
+                    },
+                }),
+                expect.anything()
+            )
         })
     })
 })

@@ -17,7 +17,7 @@ export const CustomDataProvider = ({
     data,
     options,
     queryClientOptions = queryClientDefaults,
-}: CustomProviderInput) => {
+}: CustomProviderInput): JSX.Element => {
     const link = new CustomDataLink(data, options)
     const engine = new DataEngine(link)
     const queryClient = new QueryClient(queryClientOptions)
