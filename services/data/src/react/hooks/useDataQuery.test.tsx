@@ -317,6 +317,51 @@ describe('useDataQuery', () => {
         })
     })
 
+    describe('internal: deduplication', () => {
+        it('Should deduplicate identical requests', async () => {
+            const mockSpy = jest.fn(() => 42)
+            const data = {
+                answer: mockSpy,
+            }
+            const query = {
+                x: { resource: 'answer' },
+            }
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
+
+            const { result, waitForNextUpdate } = renderHook(
+                () => {
+                    const one = useDataQuery(query)
+                    const two = useDataQuery(query)
+                    const three = useDataQuery(query)
+
+                    return [one, two, three]
+                },
+                {
+                    wrapper,
+                }
+            )
+
+            const loading = {
+                loading: true,
+                called: true,
+            }
+            expect(mockSpy).toHaveBeenCalledTimes(1)
+            expect(result.current).toMatchObject([loading, loading, loading])
+
+            await waitForNextUpdate()
+
+            const done = {
+                loading: false,
+                called: true,
+                data: { x: 42 },
+            }
+            expect(mockSpy).toHaveBeenCalledTimes(1)
+            expect(result.current).toMatchObject([done, done, done])
+        })
+    })
+
     describe('return values: data', () => {
         it('Should return the data for a single resource query on success', async () => {
             const query = { x: { resource: 'answer' } }
