@@ -1,19 +1,13 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { RecordingStatesProvider } from './cacheable-section'
-import { CachedSectionsProvider } from './cached-sections'
+import { CacheableSectionProvider } from './cacheable-section-state'
 import { OfflineInterfaceProvider } from './offline-interface'
 
 /** A context provider for all the relevant offline contexts */
-export function OfflineProvider({ offlineInterface, pwaEnabled, children }) {
+export function OfflineProvider({ offlineInterface, children }) {
     return (
-        <OfflineInterfaceProvider
-            offlineInterface={offlineInterface}
-            pwaEnabled={pwaEnabled}
-        >
-            <RecordingStatesProvider>
-                <CachedSectionsProvider>{children}</CachedSectionsProvider>
-            </RecordingStatesProvider>
+        <OfflineInterfaceProvider offlineInterface={offlineInterface}>
+            <CacheableSectionProvider>{children}</CacheableSectionProvider>
         </OfflineInterfaceProvider>
     )
 }
@@ -21,5 +15,4 @@ export function OfflineProvider({ offlineInterface, pwaEnabled, children }) {
 OfflineProvider.propTypes = {
     children: PropTypes.node,
     offlineInterface: PropTypes.shape({}),
-    pwaEnabled: PropTypes.bool,
 }

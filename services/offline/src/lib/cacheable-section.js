@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
-import React, { useState, useEffect, useContext } from 'react'
-import { useCachedSection } from './cached-sections'
+import React, { useEffect } from 'react'
+import { useRecordingState, useCachedSection } from './cacheable-section-state'
 import { useOfflineInterface } from './offline-interface'
 
 const recordingStates = {
@@ -8,54 +8,6 @@ const recordingStates = {
     pending: 'pending',
     recording: 'recording',
     error: 'error',
-}
-
-const RecordingStatesContext = React.createContext()
-
-/**
- * Provides context for cacheable sections' recording states, which will
- * determine how that component will render. The provider will be a part of
- * the OfflineProvider.
- *
- * TODO: This will be refactored into a mutable state provider and combined
- * with Cached Sections to become one provider that avoids unnecessary rerenders
- * of consumer components.
- */
-export function RecordingStatesProvider({ children }) {
-    const [recordingStates, setRecordingStates] = useState(new Map())
-
-    const get = id => recordingStates.get(id)
-    const set = (id, recordingState) =>
-        setRecordingStates(rs => new Map(rs).set(id, recordingState))
-    const remove = id =>
-        setRecordingStates(rs => {
-            rs.delete(id)
-            return rs
-        })
-
-    const context = { get, set, remove }
-
-    return (
-        <RecordingStatesContext.Provider value={context}>
-            {children}
-        </RecordingStatesContext.Provider>
-    )
-}
-RecordingStatesProvider.propTypes = { children: PropTypes.node }
-
-/** Returns `{ get(), set(value), remove() }` for a particular ID */
-function useRecordingState(id) {
-    const context = useContext(RecordingStatesContext)
-    if (!context)
-        throw new Error(
-            'useRecordingState must be used within a RecordingStatesProvider component'
-        )
-    const newContext = {
-        get: () => context.get(id),
-        set: val => context.set(id, val),
-        remove: () => context.remove(id),
-    }
-    return newContext
 }
 
 /**
@@ -69,16 +21,23 @@ function useRecordingState(id) {
  */
 export function useCacheableSection(id) {
     const offlineInterface = useOfflineInterface()
-    const { isCached, lastUpdated, remove, updateSections } = useCachedSection(
-        id
-    )
-    const recordingState = useRecordingState(id)
+    const {
+        isCached,
+        lastUpdated,
+        remove,
+        syncCachedSections,
+    } = useCachedSection(id)
+    const {
+        recordingState,
+        setRecordingState,
+        removeRecordingState,
+    } = useRecordingState(id)
 
-    // On mount, add recording state for this ID to context
     useEffect(() => {
-        recordingState.set(recordingStates.default)
+        // On mount, add recording state for this ID to context
+        setRecordingState(recordingStates.default)
         // On unnmount, remove recording state
-        return recordingState.remove
+        return removeRecordingState
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     function startRecording({
@@ -107,27 +66,27 @@ export function useCacheableSection(id) {
                     onError && onError(...args)
                 },
             })
-            .then(() => recordingState.set(recordingStates.pending))
+            .then(() => setRecordingState(recordingStates.pending))
     }
 
     function onRecordingStarted() {
-        recordingState.set(recordingStates.recording)
+        setRecordingState(recordingStates.recording)
     }
 
     function onRecordingCompleted() {
-        recordingState.set(recordingStates.default)
-        updateSections()
+        setRecordingState(recordingStates.default)
+        syncCachedSections()
     }
 
     function onRecordingError(error) {
         console.error('Error during recording:', error)
-        recordingState.set(recordingStates.error)
+        setRecordingState(recordingStates.error)
     }
 
     // isCached, lastUpdated, remove: _could_ be accessed by useCachedSection,
     // but provided through this hook for convenience
     return {
-        recordingState: recordingState.get(),
+        recordingState,
         startRecording,
         lastUpdated,
         isCached,
@@ -147,10 +106,8 @@ export function useCacheableSection(id) {
  * with the recording process.
  */
 export function CacheableSection({ id, loadingMask, children }) {
-    // Accesses recording state that will be controlled by useCacheableSection
-    // hook
-    const { get } = useRecordingState(id)
-    const recordingState = get()
+    // Accesses recording state that useCacheableSection controls
+    const { recordingState } = useRecordingState(id)
 
     // The following causes the component to reload in the event of a recording
     // error; the state will be cleared next time recording moves to pending.

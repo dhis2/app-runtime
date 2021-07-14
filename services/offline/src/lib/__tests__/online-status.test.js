@@ -39,7 +39,7 @@ describe('state changes in response to browser "online" and "offline" events', (
         })
 
         // Wait for debounce
-        await waitForNextUpdate({ timeout: 1000 })
+        await waitForNextUpdate({ timeout: 1010 })
 
         expect(result.current.online).toBe(false)
         expect(result.current.offline).toBe(true)
@@ -58,7 +58,7 @@ describe('state changes in response to browser "online" and "offline" events', (
         })
 
         // Wait for debounce
-        await waitForNextUpdate({ timeout: 1000 })
+        await waitForNextUpdate({ timeout: 1010 })
 
         expect(result.current.online).toBe(true)
         expect(result.current.offline).toBe(false)

@@ -1,4 +1,4 @@
-import { render, act, waitForElement } from '@testing-library/react'
+import { render, act, waitFor } from '@testing-library/react'
 import React from 'react'
 import { Mutation, FetchType, ResolvedResourceQuery, JsonMap } from '../engine'
 import { CustomDataProvider, DataMutation } from '../react'
@@ -71,7 +71,7 @@ describe('Test mutations', () => {
         ])
         expect(mockBackend.target).toHaveBeenCalledTimes(1)
 
-        await waitForElement(() => getByText(/data: /i))
+        await waitFor(() => getByText(/data: /i))
         expect(renderFunction).toHaveBeenCalledTimes(3)
         expect(renderFunction).toHaveBeenLastCalledWith([
             doMutation,
