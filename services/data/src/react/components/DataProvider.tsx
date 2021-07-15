@@ -30,7 +30,7 @@ export const queryClientOptions = {
 
 const queryClient = new QueryClient(queryClientOptions)
 
-export const DataProvider = (props: ProviderInput) => {
+export const DataProvider = (props: ProviderInput): JSX.Element => {
     const config = {
         ...useConfig(),
         ...props,
