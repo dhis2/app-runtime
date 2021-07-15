@@ -43,14 +43,12 @@ describe('Testing custom data provider and useQuery hook', () => {
 
         expect(getByText(/loading/i)).not.toBeUndefined()
         expect(renderFunction).toHaveBeenCalledTimes(1)
-        expect(renderFunction).toHaveBeenLastCalledWith({
-            called: true,
-            data: undefined,
-            engine: expect.any(Object),
-            error: undefined,
-            loading: true,
-            refetch: expect.any(Function),
-        })
+        expect(renderFunction).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                called: true,
+                loading: true,
+            })
+        )
 
         await waitFor(() => {
             getByText(/data: /i)
@@ -58,14 +56,13 @@ describe('Testing custom data provider and useQuery hook', () => {
 
         expect(getByText(/data: /i)).toHaveTextContent(`data: ${data.answer}`)
         expect(renderFunction).toHaveBeenCalledTimes(2)
-        expect(renderFunction).toHaveBeenLastCalledWith({
-            called: true,
-            data,
-            engine: expect.any(Object),
-            error: undefined,
-            loading: false,
-            refetch: expect.any(Function),
-        })
+        expect(renderFunction).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                called: true,
+                loading: false,
+                data,
+            })
+        )
     })
 
     it('Should render an error', async () => {
@@ -95,14 +92,12 @@ describe('Testing custom data provider and useQuery hook', () => {
 
         expect(getByText(/loading/i)).not.toBeUndefined()
         expect(renderFunction).toHaveBeenCalledTimes(1)
-        expect(renderFunction).toHaveBeenLastCalledWith({
-            called: true,
-            data: undefined,
-            engine: expect.any(Object),
-            error: undefined,
-            loading: true,
-            refetch: expect.any(Function),
-        })
+        expect(renderFunction).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                called: true,
+                loading: true,
+            })
+        )
 
         await waitFor(() => {
             getByText(/error: /i)
@@ -112,13 +107,12 @@ describe('Testing custom data provider and useQuery hook', () => {
         expect(getByText(/error: /i)).toHaveTextContent(
             `error: ${expectedError.message}`
         )
-        expect(renderFunction).toHaveBeenLastCalledWith({
-            called: true,
-            data: undefined,
-            engine: expect.any(Object),
-            error: expectedError,
-            loading: false,
-            refetch: expect.any(Function),
-        })
+        expect(renderFunction).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                called: true,
+                loading: false,
+                error: expectedError,
+            })
+        )
     })
 })
