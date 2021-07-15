@@ -22,7 +22,7 @@ function getSectionsById(sectionsArray) {
     return sectionsArray.reduce(
         (result, { sectionId, lastUpdated }) => ({
             ...result,
-            [sectionId]: lastUpdated,
+            [sectionId]: { lastUpdated },
         }),
         {}
     )
@@ -159,9 +159,11 @@ export function useCachedSections() {
  * @returns {Object} { lastUpdated: Date, remove: Function }
  */
 export function useCachedSection(id) {
-    const [lastUpdated] = useGlobalState(state => state.cachedSections[id])
+    const [status] = useGlobalState(state => state.cachedSections[id])
     const syncCachedSections = useSyncCachedSections()
     const offlineInterface = useOfflineInterface()
+
+    const lastUpdated = status && status.lastUpdated
 
     /**
      * Uses offline interface to remove a section from IndexedDB and Cache

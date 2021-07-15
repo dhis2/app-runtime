@@ -72,7 +72,10 @@ describe('Testing offline provider', () => {
         expect(testOfflineInterface.getCachedSections).toHaveBeenCalled()
         await waitFor(() => getByTestId('sections').textContent !== '{}')
         const textContent = JSON.parse(getByTestId('sections').textContent)
-        expect(textContent).toEqual({ 1: 'date1', 2: 'date2' })
+        expect(textContent).toEqual({
+            1: { lastUpdated: 'date1' },
+            2: { lastUpdated: 'date2' },
+        })
     })
 
     it('Should provide the relevant contexts to consumers', () => {
