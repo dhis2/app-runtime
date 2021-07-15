@@ -111,7 +111,7 @@ describe('debouncing state changes', () => {
         expect(result.current.online).toBe(true)
 
         // 50ms later, final "offline" event should finally resolve
-        await waitForNextUpdate({ timeout: 55 })
+        await waitForNextUpdate({ timeout: 60 })
         expect(result.current.online).toBe(false)
     })
 })
