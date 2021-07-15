@@ -56,6 +56,23 @@ export const useDataQuery = (
     const engine = useDataEngine()
     const queryKey = [staticQuery, variables]
     const queryFn = () => engine.query(staticQuery, { variables })
+    let response
+
+    try {
+        response = useQuery(queryKey, queryFn, {
+            enabled,
+            onSuccess,
+            onError,
+        })
+    } catch (e) {
+        response = {
+            isIdle: false,
+            isLoading: false,
+            error: e,
+            data: undefined,
+            refetch: () => {},
+        }
+    }
 
     const {
         isIdle,
@@ -63,11 +80,7 @@ export const useDataQuery = (
         error,
         data,
         refetch: queryRefetch,
-    } = useQuery(queryKey, queryFn, {
-        enabled,
-        onSuccess,
-        onError,
-    })
+    } = response
 
     /**
      * Refetch allows a user to update the variables or just

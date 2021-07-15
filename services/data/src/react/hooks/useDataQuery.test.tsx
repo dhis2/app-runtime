@@ -19,6 +19,17 @@ afterAll(() => {
 })
 
 describe('useDataQuery', () => {
+    describe('provider', () => {
+        it('Should return the provider error if the provider is missing', async () => {
+            const query = { x: { resource: 'answer' } }
+            const { result } = renderHook(() => useDataQuery(query))
+
+            expect(result.current.error.message).toMatchInlineSnapshot(
+                `"No QueryClient set, use QueryClientProvider to set one"`
+            )
+        })
+    })
+
     describe('parameters: onComplete', () => {
         it('Should call onComplete with the data after a successful fetch', async () => {
             const query = { x: { resource: 'answer' } }
