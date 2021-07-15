@@ -136,7 +136,7 @@ export function useCachedSections() {
      * Returns a promise that resolves to `true` if a section is found and
      * deleted, or `false` if asection with the specified ID does not exist.
      */
-    async function removeSection(id) {
+    async function removeById(id) {
         const success = await offlineInterface.removeSection(id)
         if (success) {
             await syncCachedSections()
@@ -146,7 +146,7 @@ export function useCachedSections() {
 
     return {
         cachedSections,
-        removeSection,
+        removeById,
         syncCachedSections,
     }
 }

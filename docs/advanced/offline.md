@@ -1,6 +1,6 @@
 # Offline tools
 
-The app platform provides some support for PWA features, including a `manifest.json` file for installability and service worker which can provide offline caching. In addition to those features, the app runtime provides support for "cacheable sections", which are sections of an app that can be individually cached on-demand. The [`useCacheableSection`](#usecacheablesection-api) hook and the [`CacheableSection`](#cacheablesection-api) component provide the controls for the section and the wrapper for the section, respectively.
+The app platform provides some support for PWA features, including a `manifest.json` file for installability and service worker which can provide offline caching. In addition to those features, the app runtime provides support for "cacheable sections", which are sections of an app that can be individually cached on-demand. The [`useCacheableSection`](#usecacheablesection-api) hook and the [`CacheableSection`](#cacheablesection-api) component provide the controls for the section and the wrapper for the section, respectively. The [`useCachedSections`](#usecachedsections-api) hook returns a list of sections that are stored in the cache and a function that can delete them.
 
 There is also a [`useOnlineStatus`](#online-status) hook which returns the online or offline status of the client.
 
@@ -125,6 +125,16 @@ function StartRecordingButton({ id }) {
     return <Button onClick={handleStartRecording}>Save offline</Button>
 }
 ```
+
+#### `useCachedSections` API
+
+The `useCachedSections` hook returns a list of all the sections that are cached, which can be useful if an app needs to manage that whole list at once. It takes no arguments and it returns an object with the following properties:
+
+| Property             | Type     | Description                                                                                                                                                                                                                                                                               |
+| -------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `cachedSections`     | Object   | An object of cached sections' statuses, where the keys are the section IDs and the values are the date the section was last updated (a `Date` object).                                                                                                                                    |
+| `removeById`         | Function | Receives an `id` parameter and attempts to remove the section with that ID from the offline cache. If successful, updates the cached sections list. Returns a promise that resolves to `true` if that section is successfully removed or `false` if a section with that ID was not found. |
+| `syncCachedSections` | Function | Syncs the list of cached sections with the list in IndexedDB. Returns a promise. This is handled by the `removeById` function and is probably not necessary to use in most applications.                                                                                                  |
 
 ## Online status
 
