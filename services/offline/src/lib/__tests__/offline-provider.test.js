@@ -97,4 +97,29 @@ describe('Testing offline provider', () => {
 
         expect(screen.getByTestId('test-div')).toBeInTheDocument()
     })
+
+    it('Should render without failing when no offlineInterface is provided', () => {
+        render(
+            <OfflineProvider>
+                <div data-testid="test-div" />
+            </OfflineProvider>
+        )
+        expect(screen.getByTestId('test-div')).toBeInTheDocument()
+    })
+
+    it('Should render without failing if PWA is not enabled', () => {
+        const testOfflineInterface = {
+            ...mockOfflineInterface,
+            pwaEnabled: false,
+        }
+        render(
+            <OfflineProvider offlineInterface={testOfflineInterface}>
+                <div data-testid="test-div" />
+            </OfflineProvider>
+        )
+
+        // Init should still be called - see comments in offline-provider.js
+        expect(testOfflineInterface.init).toHaveBeenCalled()
+        expect(screen.getByTestId('test-div')).toBeInTheDocument()
+    })
 })

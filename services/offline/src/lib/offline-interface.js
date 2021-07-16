@@ -43,7 +43,7 @@ export function useOfflineInterface() {
 
     if (offlineInterface === undefined) {
         throw new Error(
-            'useOfflineInterface must be used within an OfflineInterfaceProvider'
+            'useOfflineInterface must be used within an OfflineInterfaceProvider. Make sure `pwa: { enabled: true }` in `d2.config.js`.'
         )
     }
 
