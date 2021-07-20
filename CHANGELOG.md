@@ -1,3 +1,10 @@
+# [2.9.0-beta.2](https://github.com/dhis2/app-runtime/compare/v2.9.0-beta.1...v2.9.0-beta.2) (2021-07-20)
+
+
+### Bug Fixes
+
+* **use-data-query:** drop context sharing ([f9af172](https://github.com/dhis2/app-runtime/commit/f9af172fa7d14139c8d003862d597ff2183b40ab))
+
 # [2.9.0-beta.1](https://github.com/dhis2/app-runtime/compare/v2.8.0...v2.9.0-beta.1) (2021-07-20)
 
 
