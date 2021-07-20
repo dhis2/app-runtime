@@ -41,7 +41,7 @@ export const DataProvider = (props: ProviderInput): JSX.Element => {
     const context = { engine }
 
     return (
-        <QueryClientProvider client={queryClient} contextSharing>
+        <QueryClientProvider client={queryClient}>
             <DataContext.Provider value={context}>
                 {props.children}
             </DataContext.Provider>
