@@ -1,3 +1,26 @@
+# [2.9.0-alpha.3](https://github.com/dhis2/app-runtime/compare/v2.9.0-alpha.2...v2.9.0-alpha.3) (2021-07-12)
+
+
+### Features
+
+* **custom-data-provider:** use query client defaults for custom data provider ([a566c4d](https://github.com/dhis2/app-runtime/commit/a566c4d943742c863006c6f7fa0ce3ba04380a4d))
+* **use-data-query:** set conservative defaults for caching ([e5e4f69](https://github.com/dhis2/app-runtime/commit/e5e4f6993e4736efdbc86ea4ca286f45915bc451))
+
+# [2.9.0-alpha.2](https://github.com/dhis2/app-runtime/compare/v2.9.0-alpha.1...v2.9.0-alpha.2) (2021-07-08)
+
+
+### Features
+
+* **data-provider:** enable context sharing ([2018513](https://github.com/dhis2/app-runtime/commit/2018513f8fa53972d0c483ae8c2bd4f130175ab7))
+
+# [2.9.0-alpha.1](https://github.com/dhis2/app-runtime/compare/v2.8.0...v2.9.0-alpha.1) (2021-07-06)
+
+
+### Features
+
+* **custom-data-provider:** include react-query provider in custom-data-provider ([99ff732](https://github.com/dhis2/app-runtime/commit/99ff732521f80dbe6431586ebe0b99f93ed2f080))
+* **use-data-query:** use react-query to cache queries ([87fdcd8](https://github.com/dhis2/app-runtime/commit/87fdcd841e0fa6f299b2363773233c191d874ce0))
+
 # [2.8.0](https://github.com/dhis2/app-runtime/compare/v2.7.1...v2.8.0) (2021-03-10)
 
 

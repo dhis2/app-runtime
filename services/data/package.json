@@ -1,6 +1,6 @@
 {
     "name": "@dhis2/app-service-data",
-    "version": "2.8.0",
+    "version": "2.9.0-alpha.3",
     "main": "./build/cjs/index.js",
     "module": "./build/es/index.js",
     "types": "build/types/index.d.ts",
@@ -22,7 +22,7 @@
         "build/**"
     ],
     "peerDependencies": {
-        "@dhis2/app-service-config": "2.8.0",
+        "@dhis2/app-service-config": "2.9.0-alpha.3",
         "prop-types": "^15.7.2",
         "react": "^16.8",
         "react-dom": "^16.8"
@@ -36,5 +36,8 @@
         "type-check:watch": "yarn type-check --watch",
         "test": "d2-app-scripts test",
         "coverage": "yarn test --coverage"
+    },
+    "dependencies": {
+        "react-query": "^3.13.11"
     }
 }
