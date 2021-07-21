@@ -8,13 +8,13 @@ To see a good example of these functions' APIs and their usage, see `SectionWrap
 
 ## Cacheable sections
 
-> This feature can only be used when PWA is enabled in `d2.config.js`. See the [App Platform docs](TODO:link-me-too!) for more information.
+> This feature can only be used when PWA is enabled in `d2.config.js`. See the [App Platform docs](https://platform.dhis2.nu/#/pwa/pwa) for more information.
 
 These features are supported by an `<OfflineProvider>` component which the app platform provides to the app.
 
 ### How it works
 
-Cacheable sections enable sections of an app to be individually cached offline on demand. Using the `CacheableSection` wrapper and the `useCacheableSection` hook, when a user requests a section to be cached for offline use, the section's component tree will rerender, and the app's service worker will listen to all the network traffic for the component to cache it offline. To avoid caching that components' data before a user requests to do so, you can use the [URL filters feature](TODO:another-link!) in `d2.config.js`.
+Cacheable sections enable sections of an app to be individually cached offline on demand. Using the `CacheableSection` wrapper and the `useCacheableSection` hook, when a user requests a section to be cached for offline use, the section's component tree will rerender, and the app's service worker will listen to all the network traffic for the component to cache it offline. To avoid caching that components' data before a user requests to do so, you can use the [URL filters feature](https://platform.dhis2.nu/#/pwa/pwa?id=opting-in) in `d2.config.js`.
 
 Note that, without using these features, an app using offline caching will cache all the data that is requested by user as they use the app without needing to use cacheable sections.
 
