@@ -1,3 +1,10 @@
+# [2.9.0-beta.3](https://github.com/dhis2/app-runtime/compare/v2.9.0-beta.2...v2.9.0-beta.3) (2021-07-21)
+
+
+### Bug Fixes
+
+* **dependencies:** add optional cli-app-scripts peer dependency requirement ([32733b5](https://github.com/dhis2/app-runtime/commit/32733b5725ccb3c2532b7c49ccb221e0c4e50e17))
+
 # [2.9.0-beta.2](https://github.com/dhis2/app-runtime/compare/v2.9.0-beta.1...v2.9.0-beta.2) (2021-07-20)
 
 
