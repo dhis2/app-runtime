@@ -181,59 +181,6 @@ describe('useDataQuery', () => {
     })
 
     describe('internal: caching', () => {
-        it('Should return stale data initially on refetch', async () => {
-            const answers = [42, 43]
-            const mockSpy = jest.fn(() => Promise.resolve(answers.shift()))
-            const data = {
-                answer: mockSpy,
-            }
-            const query = { x: { resource: 'answer' } }
-            const wrapper = ({ children }) => (
-                <CustomDataProvider data={data}>{children}</CustomDataProvider>
-            )
-
-            const { result, waitForNextUpdate } = renderHook(
-                () => useDataQuery(query),
-                {
-                    wrapper,
-                }
-            )
-
-            expect(mockSpy).toHaveBeenCalledTimes(1)
-            expect(result.current).toMatchObject({
-                loading: true,
-                called: true,
-            })
-
-            await waitForNextUpdate()
-
-            expect(result.current).toMatchObject({
-                loading: false,
-                called: true,
-                data: { x: 42 },
-            })
-
-            act(() => {
-                result.current.refetch()
-            })
-
-            expect(mockSpy).toHaveBeenCalledTimes(2)
-            expect(result.current).toMatchObject({
-                loading: false,
-                called: true,
-                data: { x: 42 },
-            })
-
-            await waitForNextUpdate()
-
-            expect(mockSpy).toHaveBeenCalledTimes(2)
-            expect(result.current).toMatchObject({
-                loading: false,
-                called: true,
-                data: { x: 43 },
-            })
-        })
-
         it('Should return data from the cache if it is not stale', async () => {
             // Keep cached data forever, see: https://react-query.tanstack.com/reference/useQuery
             const queryClientOptions = {
@@ -494,6 +441,66 @@ describe('useDataQuery', () => {
     })
 
     describe('return values: refetch', () => {
+        it('Should return stale data and set loading to true on refetch', async () => {
+            const answers = [42, 43]
+            const mockSpy = jest.fn(() => Promise.resolve(answers.shift()))
+            const data = {
+                answer: mockSpy,
+            }
+            const query = { x: { resource: 'answer' } }
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
+
+            const { result, waitForNextUpdate, rerender } = renderHook(
+                () => useDataQuery(query),
+                {
+                    wrapper,
+                }
+            )
+
+            expect(mockSpy).toHaveBeenCalledTimes(1)
+            expect(result.current).toMatchObject({
+                loading: true,
+                called: true,
+            })
+
+            await waitForNextUpdate()
+
+            expect(result.current).toMatchObject({
+                loading: false,
+                called: true,
+                data: { x: 42 },
+            })
+
+            act(() => {
+                result.current.refetch()
+
+                /**
+                 * FIXME: https://github.com/tannerlinsley/react-query/issues/2481
+                 * It's unclear whether this rerender being necessary is intentional
+                 * or a bug.
+                 */
+                rerender()
+            })
+
+            expect(mockSpy).toHaveBeenCalledTimes(2)
+            expect(result.current).toMatchObject({
+                loading: true,
+                called: true,
+                data: { x: 42 },
+            })
+
+            await waitForNextUpdate()
+
+            expect(mockSpy).toHaveBeenCalledTimes(2)
+            expect(result.current).toMatchObject({
+                loading: false,
+                called: true,
+                data: { x: 43 },
+            })
+        })
+
         it('Should not fetch until refetch has been called if lazy', async () => {
             const query = { x: { resource: 'answer' } }
             const mockSpy = jest.fn(() => Promise.resolve(42))
@@ -607,7 +614,7 @@ describe('useDataQuery', () => {
 
             let ourPromise
             act(() => {
-                // This refetch will trigger our own refetch logic
+                // This refetch will trigger our own refetch logic as the query is lazy
                 ourPromise = result.current.refetch()
             })
 
@@ -635,7 +642,7 @@ describe('useDataQuery', () => {
 
             let reactQueryPromise
             act(() => {
-                // This refetch will trigger react query's refetch logic
+                // This refetch will trigger react query's refetch logic as the query is not lazy
                 reactQueryPromise = result.current.refetch()
             })
 
@@ -668,7 +675,7 @@ describe('useDataQuery', () => {
 
             let ourPromise
             act(() => {
-                // This refetch will trigger our own refetch logic
+                // This refetch will trigger our own refetch logic as the query is lazy
                 ourPromise = result.current.refetch()
             })
 
@@ -699,7 +706,7 @@ describe('useDataQuery', () => {
 
             let reactQueryPromise
             act(() => {
-                // This refetch will trigger react query's refetch logic
+                // This refetch will trigger react query's refetch logic as the query is not lazy
                 reactQueryPromise = result.current.refetch()
             })
 
