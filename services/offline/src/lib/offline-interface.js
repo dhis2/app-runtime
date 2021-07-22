@@ -43,7 +43,7 @@ export function useOfflineInterface() {
 
     if (offlineInterface === undefined) {
         throw new Error(
-            'useOfflineInterface must be used within an OfflineInterfaceProvider. Make sure `pwa: { enabled: true }` in `d2.config.js`.'
+            'Offline interface context not found. If this app is using the app platform, make sure `pwa: { enabled: true }` is in d2.config.js. If this is not a platform app, make sure your app is wrapped with an app-runtime <Provider> or an <OfflineProvider> from app-service-offline.'
         )
     }
 
