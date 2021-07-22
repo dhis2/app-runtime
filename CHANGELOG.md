@@ -1,3 +1,10 @@
+# [2.9.0-beta.4](https://github.com/dhis2/app-runtime/compare/v2.9.0-beta.3...v2.9.0-beta.4) (2021-07-22)
+
+
+### Bug Fixes
+
+* **use-data-query:** use isFetching for loading state ([728f346](https://github.com/dhis2/app-runtime/commit/728f3464705b43e0c8074cf64d5fcd1d08280e91))
+
 # [2.9.0-beta.3](https://github.com/dhis2/app-runtime/compare/v2.9.0-beta.2...v2.9.0-beta.3) (2021-07-21)
 
 
