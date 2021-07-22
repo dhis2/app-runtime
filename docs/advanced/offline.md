@@ -4,7 +4,7 @@ The app platform provides some support for PWA features, including a `manifest.j
 
 There is also a [`useOnlineStatus`](#online-status) hook which returns the online or offline status of the client.
 
-To see a good example of these functions' APIs and their usage, see `SectionWrapper.js` in the [PWA example app](TODO:link-me-once-the-branch-is-released!) in the platform repository.
+To see a good example of these functions' APIs and their usage, see `SectionWrapper.js` in the [PWA example app](https://github.com/dhis2/app-platform/tree/master/examples/pwa-app/src/components/SectionWrapper.js) in the platform repository.
 
 ## Cacheable sections
 
