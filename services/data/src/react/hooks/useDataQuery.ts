@@ -57,17 +57,15 @@ export const useDataQuery = (
     const queryKey = [staticQuery, variables]
     const queryFn = () => engine.query(staticQuery, { variables })
 
-    const {
-        isIdle,
-        isLoading: loading,
-        error,
-        data,
-        refetch: queryRefetch,
-    } = useQuery(queryKey, queryFn, {
-        enabled,
-        onSuccess,
-        onError,
-    })
+    const { isIdle, isFetching, error, data, refetch: queryRefetch } = useQuery(
+        queryKey,
+        queryFn,
+        {
+            enabled,
+            onSuccess,
+            onError,
+        }
+    )
 
     /**
      * Refetch allows a user to update the variables or just
@@ -107,13 +105,12 @@ export const useDataQuery = (
      * or an error, so this ensures consistency with the other types.
      */
     const ourError = error || undefined
-    // A query is idle if it is lazy and no initial data is available.
-    const ourCalled = !isIdle
 
     return {
         engine,
-        called: ourCalled,
-        loading,
+        // A query is idle if it is lazy and no initial data is available.
+        called: !isIdle,
+        loading: isFetching,
         error: ourError,
         data,
         refetch,
