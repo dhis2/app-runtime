@@ -1,8 +1,14 @@
 import { useAlert } from '@dhis2/app-service-alerts'
 import PropTypes from 'prop-types'
 import React, { createContext, useContext } from 'react'
+import { OfflineInterface } from '../types'
 
-const OfflineContext = createContext()
+const OfflineInterfaceContext = createContext<OfflineInterface | null>(null)
+
+interface OfflineInterfaceProviderInput {
+    offlineInterface: OfflineInterface
+    children: React.ReactNode
+}
 
 /**
  * Receives an OfflineInterface instance as a prop (presumably from the app
@@ -12,7 +18,10 @@ const OfflineContext = createContext()
  * checks for service worker updates and, if updates are ready, prompts the
  * user with an alert to skip waiting and reload the page to use new content.
  */
-export function OfflineInterfaceProvider({ offlineInterface, children }) {
+export function OfflineInterfaceProvider({
+    offlineInterface,
+    children,
+}: OfflineInterfaceProviderInput): JSX.Element {
     const { show } = useAlert(
         ({ message }) => message,
         ({ action, onConfirm }) => ({
@@ -27,9 +36,9 @@ export function OfflineInterfaceProvider({ offlineInterface, children }) {
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <OfflineContext.Provider value={offlineInterface}>
+        <OfflineInterfaceContext.Provider value={offlineInterface}>
             {children}
-        </OfflineContext.Provider>
+        </OfflineInterfaceContext.Provider>
     )
 }
 
@@ -38,8 +47,8 @@ OfflineInterfaceProvider.propTypes = {
     offlineInterface: PropTypes.shape({ init: PropTypes.func }),
 }
 
-export function useOfflineInterface() {
-    const offlineInterface = useContext(OfflineContext)
+export function useOfflineInterface(): OfflineInterface | null {
+    const offlineInterface = useContext(OfflineInterfaceContext)
 
     if (offlineInterface === undefined) {
         throw new Error(
