@@ -133,7 +133,7 @@ export function CacheableSection({
     id,
     loadingMask,
     children,
-}: CacheableSectionProps): React.ReactNode {
+}: CacheableSectionProps): JSX.Element {
     // Accesses recording state that useCacheableSection controls
     const { recordingState } = useRecordingState(id)
 
@@ -142,7 +142,9 @@ export function CacheableSection({
     // It fixes a component getting stuck while rendered without data after
     // failing a recording while offline.
     // Errors can be handled in the `onError` callback to `startRecording`.
-    if (recordingState === recordingStates.error) return children
+    if (recordingState === recordingStates.error) {
+        return <>{children}</>
+    }
 
     // Handling rendering with the following conditions prevents an unncessary
     // rerender after successful recording
