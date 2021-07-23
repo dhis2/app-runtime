@@ -6,7 +6,7 @@ import { OfflineInterfaceProvider } from './offline-interface'
 
 interface OfflineProviderInput {
     offlineInterface?: OfflineInterface
-    children: React.ReactNode
+    children?: React.ReactNode
 }
 
 /** A context provider for all the relevant offline contexts */
