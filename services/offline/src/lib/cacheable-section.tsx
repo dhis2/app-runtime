@@ -67,27 +67,24 @@ export function useCacheableSection(id: string): CacheableSectionControls {
         // This promise resolving means that the message to the service worker
         // to start recording was successful. Waiting for resolution prevents
         // unnecessarily rerendering the whole component in case of an error
-        return (
-            offlineInterface &&
-            offlineInterface
-                .startRecording({
-                    sectionId: id,
-                    recordingTimeoutDelay,
-                    onStarted: () => {
-                        onRecordingStarted()
-                        onStarted && onStarted()
-                    },
-                    onCompleted: () => {
-                        onRecordingCompleted()
-                        onCompleted && onCompleted()
-                    },
-                    onError: error => {
-                        onRecordingError(error)
-                        onError && onError(error)
-                    },
-                })
-                .then(() => setRecordingState(recordingStates.pending))
-        )
+        return offlineInterface
+            .startRecording({
+                sectionId: id,
+                recordingTimeoutDelay,
+                onStarted: () => {
+                    onRecordingStarted()
+                    onStarted && onStarted()
+                },
+                onCompleted: () => {
+                    onRecordingCompleted()
+                    onCompleted && onCompleted()
+                },
+                onError: error => {
+                    onRecordingError(error)
+                    onError && onError(error)
+                },
+            })
+            .then(() => setRecordingState(recordingStates.pending))
     }
 
     function onRecordingStarted() {

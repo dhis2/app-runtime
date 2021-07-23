@@ -3,7 +3,18 @@ import PropTypes from 'prop-types'
 import React, { createContext, useContext } from 'react'
 import { OfflineInterface } from '../types'
 
-const OfflineInterfaceContext = createContext<OfflineInterface | null>(null)
+// This is to prevent 'offlineInterface could be null' type-checking errors
+const noopOfflineInterface: OfflineInterface = {
+    pwaEnabled: false,
+    init: () => () => null,
+    startRecording: async () => undefined,
+    getCachedSections: async () => [],
+    removeSection: async () => false,
+}
+
+const OfflineInterfaceContext = createContext<OfflineInterface>(
+    noopOfflineInterface
+)
 
 interface OfflineInterfaceProviderInput {
     offlineInterface: OfflineInterface
@@ -47,7 +58,7 @@ OfflineInterfaceProvider.propTypes = {
     offlineInterface: PropTypes.shape({ init: PropTypes.func }),
 }
 
-export function useOfflineInterface(): OfflineInterface | null {
+export function useOfflineInterface(): OfflineInterface {
     const offlineInterface = useContext(OfflineInterfaceContext)
 
     if (offlineInterface === undefined) {
