@@ -1,3 +1,22 @@
+// Global state types
+
+export interface GlobalStateMutation {
+    (state: any): any
+}
+
+export interface GlobalStateStoreMutate {
+    (mutation: GlobalStateMutation): void
+}
+
+export interface GlobalStateStore {
+    getState: () => any
+    subscribe: (callback: (state: any) => void) => void
+    unsubscribe: (callback: (state: any) => void) => void
+    mutate: GlobalStateStoreMutate
+}
+
+// Offline Interface types
+
 interface PromptUpdate {
     (params: { message: string; action: string; onConfirm: () => void }): void
 }

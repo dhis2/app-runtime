@@ -1,6 +1,11 @@
 import isEqual from 'lodash/isEqual'
 import PropTypes from 'prop-types'
 import React, { useEffect, useCallback, useContext, useState } from 'react'
+import {
+    GlobalStateStore,
+    GlobalStateStoreMutate,
+    GlobalStateMutation,
+} from '../types'
 
 // This file creates a redux-like state management service using React context
 // that minimizes unnecessary rerenders that consume the context.
@@ -8,8 +13,8 @@ import React, { useEffect, useCallback, useContext, useState } from 'react'
 
 const identity = state => state
 
-export const createStore = (initialState = {}) => {
-    const subscriptions = new Set()
+export const createStore = (initialState = {}): GlobalStateStore => {
+    const subscriptions: Set<(state: any) => void> = new Set()
     let state = initialState
 
     return {
@@ -32,7 +37,13 @@ export const createStore = (initialState = {}) => {
 const GlobalStateContext = React.createContext(createStore())
 const useGlobalStateStore = () => useContext(GlobalStateContext)
 
-export const GlobalStateProvider = ({ store, children }) => (
+export const GlobalStateProvider = ({
+    store,
+    children,
+}: {
+    store: GlobalStateStore
+    children: React.ReactNode
+}): JSX.Element => (
     <GlobalStateContext.Provider value={store}>
         {children}
     </GlobalStateContext.Provider>
@@ -42,7 +53,9 @@ GlobalStateProvider.propTypes = {
     store: PropTypes.shape({}),
 }
 
-export const useGlobalState = (selector = identity) => {
+export const useGlobalState = (
+    selector = identity
+): [any, GlobalStateStoreMutate] => {
     const store = useGlobalStateStore()
     const [selectedState, setSelectedState] = useState(
         selector(store.getState())
@@ -67,7 +80,9 @@ export const useGlobalState = (selector = identity) => {
     return [selectedState, store.mutate]
 }
 
-export const useGlobalStateMutation = mutationCreator => {
+export const useGlobalStateMutation = (
+    mutationCreator: (...args: any[]) => GlobalStateMutation
+): GlobalStateMutation => {
     const store = useGlobalStateStore()
     return useCallback(
         (...args) => {
