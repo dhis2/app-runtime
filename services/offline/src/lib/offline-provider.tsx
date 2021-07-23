@@ -13,11 +13,11 @@ interface OfflineProviderInput {
 export function OfflineProvider({
     offlineInterface,
     children,
-}: OfflineProviderInput): React.ReactNode {
+}: OfflineProviderInput): JSX.Element {
     // If an offline interface is not provided, or if one is provided and PWA
     // is not enabled, skip adding context providers
     if (!offlineInterface) {
-        return children
+        return <>{children}</>
     }
 
     // If PWA is not enabled, just init interface to make sure new SW gets
@@ -26,7 +26,7 @@ export function OfflineProvider({
     // Then, skip adding any context
     if (!offlineInterface.pwaEnabled) {
         offlineInterface.init({ promptUpdate: ({ onConfirm }) => onConfirm() })
-        return children
+        return <>{children}</>
     }
 
     return (
