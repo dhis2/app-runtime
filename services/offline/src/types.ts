@@ -4,19 +4,33 @@ export type RecordingState = 'default' | 'pending' | 'error' | 'recording'
 
 // Global state types
 
-export interface GlobalStateMutation {
+// This is the mutation that gets executed by store.mutate. Should return
+// new state
+export interface GlobalStateStoreMutation {
     (state: any): any
 }
 
-export interface GlobalStateStoreMutate {
-    (mutation: GlobalStateMutation): void
+// Uses generic <Type> because global state mutation will also receive
+// the same parameters
+export interface GlobalStateStoreMutationCreator<Type> {
+    (...args: Type[]): GlobalStateStoreMutation
+}
+
+// This is the function returned by useGlobalStateMutation;
+// it triggers a GlobalStateStoreMutation
+export interface GlobalStateMutation<Type> {
+    (...args: Type[]): void
+}
+
+export interface GlobalStateStoreMutateMethod {
+    (mutation: GlobalStateStoreMutation): void
 }
 
 export interface GlobalStateStore {
     getState: () => any
     subscribe: (callback: (state: any) => void) => void
     unsubscribe: (callback: (state: any) => void) => void
-    mutate: GlobalStateStoreMutate
+    mutate: GlobalStateStoreMutateMethod
 }
 
 // Offline Interface types

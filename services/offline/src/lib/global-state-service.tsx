@@ -3,8 +3,9 @@ import PropTypes from 'prop-types'
 import React, { useEffect, useCallback, useContext, useState } from 'react'
 import {
     GlobalStateStore,
-    GlobalStateStoreMutate,
+    GlobalStateStoreMutateMethod,
     GlobalStateMutation,
+    GlobalStateStoreMutationCreator,
 } from '../types'
 
 // This file creates a redux-like state management service using React context
@@ -55,7 +56,7 @@ GlobalStateProvider.propTypes = {
 
 export const useGlobalState = (
     selector = identity
-): [any, GlobalStateStoreMutate] => {
+): [any, GlobalStateStoreMutateMethod] => {
     const store = useGlobalStateStore()
     const [selectedState, setSelectedState] = useState(
         selector(store.getState())
@@ -80,9 +81,9 @@ export const useGlobalState = (
     return [selectedState, store.mutate]
 }
 
-export const useGlobalStateMutation = (
-    mutationCreator: (...args: any[]) => GlobalStateMutation
-): GlobalStateMutation => {
+export function useGlobalStateMutation<Type>(
+    mutationCreator: GlobalStateStoreMutationCreator<Type>
+): GlobalStateMutation<Type> {
     const store = useGlobalStateStore()
     return useCallback(
         (...args) => {
