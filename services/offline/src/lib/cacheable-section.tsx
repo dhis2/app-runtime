@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types'
 import React, { useEffect } from 'react'
+import { RecordingState } from '../types'
 import { useRecordingState, useCachedSection } from './cacheable-section-state'
 import { useOfflineInterface } from './offline-interface'
 
-const recordingStates = {
+const recordingStates: { [index: string]: RecordingState } = {
     default: 'default',
     pending: 'pending',
     recording: 'recording',
@@ -18,7 +19,7 @@ interface CacheableSectionStartRecordingOptions {
 }
 
 interface CacheableSectionControls {
-    recordingState: 'default' | 'pending' | 'error' | 'recording'
+    recordingState: RecordingState
     startRecording: (
         options?: CacheableSectionStartRecordingOptions
     ) => Promise<any> | null
@@ -54,7 +55,7 @@ export function useCacheableSection(id: string): CacheableSectionControls {
         // On mount, add recording state for this ID to context
         setRecordingState(recordingStates.default)
         // On unnmount, remove recording state
-        return removeRecordingState
+        return () => removeRecordingState()
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     function startRecording({

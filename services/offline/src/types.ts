@@ -1,3 +1,7 @@
+// Cacheable Section types
+
+export type RecordingState = 'default' | 'pending' | 'error' | 'recording'
+
 // Global state types
 
 export interface GlobalStateMutation {
@@ -43,5 +47,5 @@ export interface OfflineInterface {
     init: (params: { promptUpdate: PromptUpdate }) => () => void
     startRecording: StartRecording
     getCachedSections: () => Promise<IndexedDBCachedSection[]>
-    removeCachedSection: (id: string) => Promise<boolean>
+    removeSection: (id: string) => Promise<boolean>
 }
