@@ -7,5 +7,5 @@ module.exports = {
     ],
 
     // Setup react-testing-library
-    setupFilesAfterEnv: ['<rootDir>/src/setupRTL.js'],
+    setupFilesAfterEnv: ['<rootDir>/src/setupRTL.ts'],
 }
