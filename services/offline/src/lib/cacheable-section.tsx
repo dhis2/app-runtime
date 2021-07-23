@@ -10,6 +10,23 @@ const recordingStates = {
     error: 'error',
 }
 
+interface CacheableSectionStartRecordingOptions {
+    recordingTimeoutDelay?: number
+    onStarted?: () => void
+    onCompleted?: () => void
+    onError?: (err: Error) => void
+}
+
+interface CacheableSectionControls {
+    recordingState: 'default' | 'pending' | 'error' | 'recording'
+    startRecording: (
+        options?: CacheableSectionStartRecordingOptions
+    ) => Promise<any> | null
+    lastUpdated: Date | undefined
+    isCached: boolean
+    remove: () => Promise<boolean>
+}
+
 /**
  * Returns the main controls for a cacheable section and manages recording
  * state, which affects the render state of the CacheableSection component.
@@ -19,7 +36,7 @@ const recordingStates = {
  * @param {String} id
  * @returns {Object}
  */
-export function useCacheableSection(id) {
+export function useCacheableSection(id: string): CacheableSectionControls {
     const offlineInterface = useOfflineInterface()
     const {
         isCached,
@@ -45,28 +62,31 @@ export function useCacheableSection(id) {
         onStarted,
         onCompleted,
         onError,
-    } = {}) {
+    }: CacheableSectionStartRecordingOptions = {}) {
         // This promise resolving means that the message to the service worker
         // to start recording was successful. Waiting for resolution prevents
         // unnecessarily rerendering the whole component in case of an error
-        return offlineInterface
-            .startRecording({
-                sectionId: id,
-                recordingTimeoutDelay,
-                onStarted: (...args) => {
-                    onRecordingStarted(...args)
-                    onStarted && onStarted(...args)
-                },
-                onCompleted: (...args) => {
-                    onRecordingCompleted(...args)
-                    onCompleted && onCompleted(...args)
-                },
-                onError: (...args) => {
-                    onRecordingError(...args)
-                    onError && onError(...args)
-                },
-            })
-            .then(() => setRecordingState(recordingStates.pending))
+        return (
+            offlineInterface &&
+            offlineInterface
+                .startRecording({
+                    sectionId: id,
+                    recordingTimeoutDelay,
+                    onStarted: () => {
+                        onRecordingStarted()
+                        onStarted && onStarted()
+                    },
+                    onCompleted: () => {
+                        onRecordingCompleted()
+                        onCompleted && onCompleted()
+                    },
+                    onError: error => {
+                        onRecordingError(error)
+                        onError && onError(error)
+                    },
+                })
+                .then(() => setRecordingState(recordingStates.pending))
+        )
     }
 
     function onRecordingStarted() {
@@ -94,6 +114,12 @@ export function useCacheableSection(id) {
     }
 }
 
+interface CacheableSectionProps {
+    id: string
+    loadingMask: JSX.Element
+    children: React.ReactNode
+}
+
 /**
  * Used to wrap the relevant component to be recorded and saved offline.
  * Depending on the recording state of the section, this wrapper will
@@ -105,7 +131,11 @@ export function useCacheableSection(id) {
  * intended to prevent other interaction with the app that might interfere
  * with the recording process.
  */
-export function CacheableSection({ id, loadingMask, children }) {
+export function CacheableSection({
+    id,
+    loadingMask,
+    children,
+}: CacheableSectionProps): React.ReactNode {
     // Accesses recording state that useCacheableSection controls
     const { recordingState } = useRecordingState(id)
 
