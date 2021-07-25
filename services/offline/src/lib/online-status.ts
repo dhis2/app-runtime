@@ -2,7 +2,7 @@ import debounce from 'lodash/debounce'
 import { useState, useEffect, useCallback } from 'react'
 
 interface OnlineStatusOptions {
-    debounceDelay: number
+    debounceDelay?: number
 }
 
 interface OnlineStatus {
