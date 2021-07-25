@@ -4,7 +4,7 @@ import { RenderCounter, resetRenderCounts } from '../render-counter'
 
 const renderCounts = {}
 
-export const Rerenderer = () => {
+export const Rerenderer = (): JSX.Element => {
     const [, setState] = React.useState(true)
     const toggleState = () => setState(prevState => !prevState)
 
