@@ -24,8 +24,8 @@ beforeEach(() => {
 
 afterEach(() => {
     jest.clearAllMocks()
-
-    console.error.mockRestore()
+    // This syntax appeases typescript:
+    ;(console.error as jest.Mock).mockRestore()
 })
 
 it('renders in the default state initially', () => {
