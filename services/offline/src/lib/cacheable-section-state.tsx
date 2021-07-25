@@ -1,6 +1,10 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { GlobalStateStore, RecordingState } from '../types'
+import {
+    GlobalStateStore,
+    IndexedDBCachedSection,
+    RecordingState,
+} from '../types'
 import {
     createStore,
     useGlobalState,
@@ -12,6 +16,10 @@ import { useOfflineInterface } from './offline-interface'
 // Functions in here use the global state service to manage cacheable section
 // state in a performant way
 
+interface CachedSectionsById {
+    [index: string]: { lastUpdated: Date }
+}
+
 /**
  * Helper that transforms an array of cached section objects from the IndexedDB
  * into an object of values keyed by section ID
@@ -19,7 +27,9 @@ import { useOfflineInterface } from './offline-interface'
  * @param {Array} list - An array of section objects
  * @returns {Object} An object of sections, keyed by ID
  */
-function getSectionsById(sectionsArray) {
+function getSectionsById(
+    sectionsArray: IndexedDBCachedSection[]
+): CachedSectionsById {
     return sectionsArray.reduce(
         (result, { sectionId, lastUpdated }) => ({
             ...result,
@@ -133,7 +143,7 @@ function useSyncCachedSections() {
 }
 
 interface CachedSectionsControls {
-    cachedSections: { [index: string]: { lastUpdated: Date } }
+    cachedSections: CachedSectionsById
     removeById: (id: string) => Promise<boolean>
     syncCachedSections: () => Promise<void>
 }
@@ -155,7 +165,7 @@ export function useCachedSections(): CachedSectionsControls {
      * Returns a promise that resolves to `true` if a section is found and
      * deleted, or `false` if asection with the specified ID does not exist.
      */
-    async function removeById(id) {
+    async function removeById(id: string) {
         const success = await offlineInterface.removeSection(id)
         if (success) {
             await syncCachedSections()

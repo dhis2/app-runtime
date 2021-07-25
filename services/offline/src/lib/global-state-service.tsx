@@ -12,7 +12,7 @@ import {
 // that minimizes unnecessary rerenders that consume the context.
 // See more at https://github.com/amcgee/state-service-poc
 
-const identity = state => state
+const identity = (state: any) => state
 
 export const createStore = (initialState = {}): GlobalStateStore => {
     const subscriptions: Set<(state: any) => void> = new Set()
@@ -64,7 +64,7 @@ export const useGlobalState = (
 
     useEffect(() => {
         // NEW: deep equality check before updating
-        const callback = state => {
+        const callback = (state: any) => {
             const newSelectedState = selector(state)
             // Second condition handles case where a selected object gets
             // deleted, but state does not update

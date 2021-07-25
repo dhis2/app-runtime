@@ -96,7 +96,7 @@ export function useCacheableSection(id: string): CacheableSectionControls {
         syncCachedSections()
     }
 
-    function onRecordingError(error) {
+    function onRecordingError(error: Error) {
         console.error('Error during recording:', error)
         setRecordingState(recordingStates.error)
     }

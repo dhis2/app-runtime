@@ -30,7 +30,7 @@ export function useOnlineStatus(options: OnlineStatusOptions): OnlineStatus {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const updateState = useCallback(
         debounce(
-            ({ type }) => setOnline(type === 'online'),
+            ({ type }: Event) => setOnline(type === 'online'),
             options?.debounceDelay || 1000
         ),
         []

@@ -49,7 +49,7 @@ interface StartRecording {
     }): Promise<undefined>
 }
 
-interface IndexedDBCachedSection {
+export interface IndexedDBCachedSection {
     sectionId: string
     lastUpdated: Date
     // this may change in the future:
