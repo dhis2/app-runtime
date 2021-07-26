@@ -1,8 +1,9 @@
 import debounce from 'lodash/debounce'
 import { useState, useEffect, useCallback } from 'react'
 
+type milliseconds = number
 interface OnlineStatusOptions {
-    debounceDelay?: number
+    debounceDelay?: milliseconds
 }
 
 interface OnlineStatus {
