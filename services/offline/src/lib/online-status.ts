@@ -1,6 +1,16 @@
 import debounce from 'lodash/debounce'
 import { useState, useEffect, useCallback } from 'react'
 
+type milliseconds = number
+interface OnlineStatusOptions {
+    debounceDelay?: milliseconds
+}
+
+interface OnlineStatus {
+    online: boolean
+    offline: boolean
+}
+
 /**
  * Returns the browser's online status. Updates in response to 'online' and
  * 'offline' events. By default, debounces updates to once every second to
@@ -14,14 +24,14 @@ import { useState, useEffect, useCallback } from 'react'
  * @param {Number} [options.debounceDelay] - Timeout delay to debounce updates, in ms
  * @returns {Object} `{ online, offline }` booleans. Each is the opposite of the other.
  */
-export function useOnlineStatus(options) {
+export function useOnlineStatus(options: OnlineStatusOptions): OnlineStatus {
     // initialize state to `navigator.onLine` value
     const [online, setOnline] = useState(navigator.onLine)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const updateState = useCallback(
         debounce(
-            ({ type }) => setOnline(type === 'online'),
+            ({ type }: Event) => setOnline(type === 'online'),
             options?.debounceDelay || 1000
         ),
         []

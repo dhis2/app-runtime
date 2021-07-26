@@ -1,6 +1,11 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import {
+    GlobalStateStore,
+    IndexedDBCachedSection,
+    RecordingState,
+} from '../types'
+import {
     createStore,
     useGlobalState,
     useGlobalStateMutation,
@@ -11,6 +16,10 @@ import { useOfflineInterface } from './offline-interface'
 // Functions in here use the global state service to manage cacheable section
 // state in a performant way
 
+interface CachedSectionsById {
+    [index: string]: { lastUpdated: Date }
+}
+
 /**
  * Helper that transforms an array of cached section objects from the IndexedDB
  * into an object of values keyed by section ID
@@ -18,7 +27,9 @@ import { useOfflineInterface } from './offline-interface'
  * @param {Array} list - An array of section objects
  * @returns {Object} An object of sections, keyed by ID
  */
-function getSectionsById(sectionsArray) {
+function getSectionsById(
+    sectionsArray: IndexedDBCachedSection[]
+): CachedSectionsById {
     return sectionsArray.reduce(
         (result, { sectionId, lastUpdated }) => ({
             ...result,
@@ -32,7 +43,7 @@ function getSectionsById(sectionsArray) {
  * Create a store for Cacheable Section state.
  * Expected to be used in app adapter
  */
-export function createCacheableSectionStore() {
+export function createCacheableSectionStore(): GlobalStateStore {
     const initialState = { recordingStates: {}, cachedSections: {} }
     return createStore(initialState)
 }
@@ -42,8 +53,8 @@ export function createCacheableSectionStore() {
  * sure to only set its initial state once.
  * See https://gist.github.com/amcgee/42bb2fa6d5f79e607f00e6dccc733482
  */
-function useConst(factory) {
-    const ref = React.useRef(null)
+function useConst<Type>(factory: () => Type): Type {
+    const ref = React.useRef<Type | null>(null)
     if (ref.current === null) {
         ref.current = factory()
     }
@@ -56,24 +67,36 @@ function useConst(factory) {
  * determine how that component will render. The provider will be a part of
  * the OfflineProvider.
  */
-export function CacheableSectionProvider({ children }) {
+export function CacheableSectionProvider({
+    children,
+}: {
+    children: React.ReactNode
+}): JSX.Element {
     const offlineInterface = useOfflineInterface()
     const store = useConst(createCacheableSectionStore)
 
     // On load, get sections and add to store
     React.useEffect(() => {
-        offlineInterface.getCachedSections().then(sections => {
-            store.mutate(state => ({
-                ...state,
-                cachedSections: getSectionsById(sections),
-            }))
-        })
+        if (offlineInterface) {
+            offlineInterface.getCachedSections().then(sections => {
+                store.mutate(state => ({
+                    ...state,
+                    cachedSections: getSectionsById(sections),
+                }))
+            })
+        }
     }, [store, offlineInterface])
 
     return <GlobalStateProvider store={store}>{children}</GlobalStateProvider>
 }
 CacheableSectionProvider.propTypes = {
     children: PropTypes.node,
+}
+
+interface RecordingStateControls {
+    recordingState: RecordingState
+    setRecordingState: (newState: RecordingState) => void
+    removeRecordingState: () => void
 }
 
 /**
@@ -83,7 +106,7 @@ CacheableSectionProvider.propTypes = {
  * @param {String} id - ID of the cacheable section to track
  * @returns {Object} { recordingState: String, setRecordingState: Function, removeRecordingState: Function}
  */
-export function useRecordingState(id) {
+export function useRecordingState(id: string): RecordingStateControls {
     const [recordingState] = useGlobalState(state => state.recordingStates[id])
     const setRecordingState = useGlobalStateMutation(newState => state => ({
         ...state,
@@ -119,12 +142,18 @@ function useSyncCachedSections() {
     }
 }
 
+interface CachedSectionsControls {
+    cachedSections: CachedSectionsById
+    removeById: (id: string) => Promise<boolean>
+    syncCachedSections: () => Promise<void>
+}
+
 /**
  * Uses global state to manage an object of cached sections' statuses
  *
  * @returns {Object} { cachedSections: Object, removeSection: Function }
  */
-export function useCachedSections() {
+export function useCachedSections(): CachedSectionsControls {
     const [cachedSections] = useGlobalState(state => state.cachedSections)
     const syncCachedSections = useSyncCachedSections()
     const offlineInterface = useOfflineInterface()
@@ -136,7 +165,7 @@ export function useCachedSections() {
      * Returns a promise that resolves to `true` if a section is found and
      * deleted, or `false` if asection with the specified ID does not exist.
      */
-    async function removeById(id) {
+    async function removeById(id: string) {
         const success = await offlineInterface.removeSection(id)
         if (success) {
             await syncCachedSections()
@@ -151,6 +180,13 @@ export function useCachedSections() {
     }
 }
 
+interface CachedSectionControls {
+    lastUpdated: Date
+    isCached: boolean
+    remove: () => Promise<boolean>
+    syncCachedSections: () => Promise<void>
+}
+
 /**
  * Uses global state to manage the cached status of just one section, which
  * prevents unnecessary rerenders of consuming components
@@ -158,7 +194,7 @@ export function useCachedSections() {
  * @param {String} id
  * @returns {Object} { lastUpdated: Date, remove: Function }
  */
-export function useCachedSection(id) {
+export function useCachedSection(id: string): CachedSectionControls {
     const [status] = useGlobalState(state => state.cachedSections[id])
     const syncCachedSections = useSyncCachedSections()
     const offlineInterface = useOfflineInterface()

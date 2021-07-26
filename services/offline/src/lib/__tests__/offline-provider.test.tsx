@@ -19,7 +19,8 @@ beforeEach(() => {
 
 afterEach(() => {
     jest.clearAllMocks()
-    console.error.mockRestore()
+    // syntax needed to appease typescript
+    ;(console.error as jest.Mock).mockRestore()
 })
 
 describe('Testing offline provider', () => {
@@ -71,7 +72,9 @@ describe('Testing offline provider', () => {
         const { getByTestId } = screen
         expect(testOfflineInterface.getCachedSections).toHaveBeenCalled()
         await waitFor(() => getByTestId('sections').textContent !== '{}')
-        const textContent = JSON.parse(getByTestId('sections').textContent)
+        const textContent = JSON.parse(
+            getByTestId('sections').textContent || ''
+        )
         expect(textContent).toEqual({
             1: { lastUpdated: 'date1' },
             2: { lastUpdated: 'date2' },
@@ -83,7 +86,7 @@ describe('Testing offline provider', () => {
             useCacheableSection('id')
 
             return (
-                <CacheableSection id={'id'}>
+                <CacheableSection loadingMask={<div />} id={'id'}>
                     <div data-testid="test-div" />
                 </CacheableSection>
             )

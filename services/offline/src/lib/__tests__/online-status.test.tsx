@@ -1,6 +1,10 @@
 import { act, renderHook } from '@testing-library/react-hooks'
 import { useOnlineStatus } from '../online-status'
 
+interface CapturedEventListeners {
+    [index: string]: EventListener
+}
+
 beforeEach(() => {
     jest.restoreAllMocks()
 })
@@ -27,15 +31,17 @@ describe('state changes in response to browser "online" and "offline" events', (
     it('switches from online to offline when the "offline" event triggers', async () => {
         jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true)
         // Capture callback to trigger later using addEventListener mock
-        const events = {}
-        window.addEventListener = jest.fn((event, cb) => (events[event] = cb))
+        const events: CapturedEventListeners = {}
+        window.addEventListener = jest.fn(
+            (event, cb) => (events[event] = cb as EventListener)
+        )
         const { result, waitForNextUpdate } = renderHook((...args) =>
             useOnlineStatus(...args)
         )
 
         act(() => {
             // Trigger callback captured by addEventListener mock
-            events.offline({ type: 'offline' })
+            events.offline(new Event('offline'))
         })
 
         // Wait for debounce
@@ -47,14 +53,16 @@ describe('state changes in response to browser "online" and "offline" events', (
 
     it('switches from offline to online when the "offline" event triggers', async () => {
         jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(false)
-        const events = {}
-        window.addEventListener = jest.fn((event, cb) => (events[event] = cb))
+        const events: CapturedEventListeners = {}
+        window.addEventListener = jest.fn(
+            (event, cb) => (events[event] = cb as EventListener)
+        )
         const { result, waitForNextUpdate } = renderHook((...args) =>
             useOnlineStatus(...args)
         )
 
         act(() => {
-            events.online({ type: 'online' })
+            events.online(new Event('online'))
         })
 
         // Wait for debounce
@@ -69,17 +77,19 @@ describe('debouncing state changes', () => {
     it('debounces with a 1s delay', async () => {
         // Start online
         jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true)
-        const events = {}
-        window.addEventListener = jest.fn((event, cb) => (events[event] = cb))
+        const events: CapturedEventListeners = {}
+        window.addEventListener = jest.fn(
+            (event, cb) => (events[event] = cb as EventListener)
+        )
         const { result, waitForNextUpdate } = renderHook((...args) =>
             useOnlineStatus(...args)
         )
 
         await act(async () => {
             // Multiple events in succession
-            events.offline({ type: 'offline' })
-            events.online({ type: 'online' })
-            events.offline({ type: 'offline' })
+            events.offline(new Event('offline'))
+            events.online(new Event('online'))
+            events.offline(new Event('offline'))
         })
 
         // Immediately, nothing should happen
@@ -93,8 +103,10 @@ describe('debouncing state changes', () => {
     it('can have debounce delay set to another number', async () => {
         // Start online
         jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true)
-        const events = {}
-        window.addEventListener = jest.fn((event, cb) => (events[event] = cb))
+        const events: CapturedEventListeners = {}
+        window.addEventListener = jest.fn(
+            (event, cb) => (events[event] = cb as EventListener)
+        )
         const { result, waitForNextUpdate } = renderHook(
             (...args) => useOnlineStatus(...args),
             { initialProps: { debounceDelay: 50 } }
@@ -102,9 +114,9 @@ describe('debouncing state changes', () => {
 
         await act(async () => {
             // Multiple events in succession
-            events.offline({ type: 'offline' })
-            events.online({ type: 'online' })
-            events.offline({ type: 'offline' })
+            events.offline(new Event('offline'))
+            events.online(new Event('online'))
+            events.offline(new Event('offline'))
         })
 
         // Immediately, nothing should happen

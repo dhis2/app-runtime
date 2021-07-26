@@ -1,14 +1,23 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import { OfflineInterface } from '../types'
 import { CacheableSectionProvider } from './cacheable-section-state'
 import { OfflineInterfaceProvider } from './offline-interface'
 
+interface OfflineProviderInput {
+    offlineInterface?: OfflineInterface
+    children?: React.ReactNode
+}
+
 /** A context provider for all the relevant offline contexts */
-export function OfflineProvider({ offlineInterface, children }) {
+export function OfflineProvider({
+    offlineInterface,
+    children,
+}: OfflineProviderInput): JSX.Element {
     // If an offline interface is not provided, or if one is provided and PWA
     // is not enabled, skip adding context providers
     if (!offlineInterface) {
-        return children
+        return <>{children}</>
     }
 
     // If PWA is not enabled, just init interface to make sure new SW gets
@@ -17,7 +26,7 @@ export function OfflineProvider({ offlineInterface, children }) {
     // Then, skip adding any context
     if (!offlineInterface.pwaEnabled) {
         offlineInterface.init({ promptUpdate: ({ onConfirm }) => onConfirm() })
-        return children
+        return <>{children}</>
     }
 
     return (
