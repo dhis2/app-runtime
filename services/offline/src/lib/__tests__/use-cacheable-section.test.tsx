@@ -130,7 +130,7 @@ it('handles a recording that encounters an error', async done => {
     const assertRecordingStarted = () => {
         expect(result.current.recordingState).toBe('recording')
     }
-    const assertRecordingError = error => {
+    const assertRecordingError = (error: Error) => {
         expect(result.current.recordingState).toBe('error')
         expect(error.message).toMatch(/test err/) // see errorRecordingMock
         expect(console.error).toHaveBeenCalledWith(

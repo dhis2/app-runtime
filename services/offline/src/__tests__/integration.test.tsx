@@ -1,8 +1,10 @@
-/* eslint-disable react/prop-types */
-
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
-import { useCacheableSection, CacheableSection } from '../lib/cacheable-section'
+import {
+    useCacheableSection,
+    CacheableSection,
+    CacheableSectionStartRecording,
+} from '../lib/cacheable-section'
 import { OfflineProvider } from '../lib/offline-provider'
 import { RenderCounter, resetRenderCounts } from '../utils/render-counter'
 import {
@@ -13,9 +15,15 @@ import {
 
 const renderCounts = {}
 
-const identity = arg => arg
+const identity = (arg: any) => arg
 
-const TestControls = ({ id, makeRecordingHandler = identity }) => {
+const TestControls = ({
+    id,
+    makeRecordingHandler = identity,
+}: {
+    id: string
+    makeRecordingHandler?: (cb?: any) => () => Promise<any>
+}) => {
     const {
         startRecording,
         remove,
@@ -46,7 +54,7 @@ const TestControls = ({ id, makeRecordingHandler = identity }) => {
     )
 }
 
-const TestSection = ({ id }) => (
+const TestSection = ({ id }: { id: string }) => (
     <CacheableSection
         id={id}
         loadingMask={<div data-testid={`loading-mask-${id}`} />}
@@ -55,7 +63,7 @@ const TestSection = ({ id }) => (
     </CacheableSection>
 )
 
-const TestSingleSection = props => {
+const TestSingleSection = (props?: any) => {
     // Props are spread so they can be overwritten
     return (
         <OfflineProvider offlineInterface={mockOfflineInterface} {...props}>
@@ -114,7 +122,9 @@ describe('Coordination between useCacheableSection and CacheableSection', () => 
             done()
         }
         const recordingOptions = { onStarted, onCompleted }
-        const makeRecordingHandler = startRecording => {
+        const makeRecordingHandler = (
+            startRecording: CacheableSectionStartRecording
+        ) => {
             return () => startRecording(recordingOptions)
         }
         render(
@@ -156,7 +166,9 @@ describe('Coordination between useCacheableSection and CacheableSection', () => 
             expect(getByTestId(/section-rc/)).toBeInTheDocument()
             done()
         }
-        const makeRecordingHandler = startRecording => {
+        const makeRecordingHandler = (
+            startRecording: CacheableSectionStartRecording
+        ) => {
             return () => startRecording({ onError })
         }
         render(
@@ -184,14 +196,16 @@ describe('Coordination between useCacheableSection and CacheableSection', () => 
 
         const onStarted = jest.fn()
 
-        const testErrCondition = err => {
+        const testErrCondition = (err: Error) => {
             expect(err.message).toBe('Failed message') // from the mock
             expect(onStarted).not.toHaveBeenCalled()
             expect(getByTestId(/recording-state/)).toHaveTextContent('default')
             done()
         }
 
-        const makeRecordingHandler = startRecording => {
+        const makeRecordingHandler = (
+            startRecording: CacheableSectionStartRecording
+        ) => {
             return () => startRecording({ onStarted }).catch(testErrCondition)
         }
 
@@ -208,7 +222,7 @@ describe('Coordination between useCacheableSection and CacheableSection', () => 
     })
 })
 
-const TwoTestSections = props => (
+const TwoTestSections = (props?: any) => (
     // Props are spread so they can be overwritten (but only on one section)
     <OfflineProvider offlineInterface={mockOfflineInterface} {...props}>
         <TestControls id={'1'} {...props} />
@@ -247,8 +261,9 @@ describe('Performant state management', () => {
             done()
         }
 
-        const makeRecordingHandler = startRecording => () =>
-            startRecording({ onCompleted })
+        const makeRecordingHandler = (
+            startRecording: CacheableSectionStartRecording
+        ) => () => startRecording({ onCompleted })
         render(<TwoTestSections makeRecordingHandler={makeRecordingHandler} />)
 
         await act(async () => {

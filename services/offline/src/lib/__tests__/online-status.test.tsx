@@ -12,7 +12,7 @@ beforeEach(() => {
 describe('initalizes to navigator.onLine value', () => {
     it('initializes to true', () => {
         jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true)
-        const { result } = renderHook((...args) => useOnlineStatus(...args))
+        const { result } = renderHook(() => useOnlineStatus())
 
         expect(result.current.online).toBe(true)
         expect(result.current.offline).toBe(false)
@@ -20,7 +20,7 @@ describe('initalizes to navigator.onLine value', () => {
 
     it('initializes to false', () => {
         jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(false)
-        const { result } = renderHook((...args) => useOnlineStatus(...args))
+        const { result } = renderHook(() => useOnlineStatus())
 
         expect(result.current.online).toBe(false)
         expect(result.current.offline).toBe(true)
@@ -35,8 +35,8 @@ describe('state changes in response to browser "online" and "offline" events', (
         window.addEventListener = jest.fn(
             (event, cb) => (events[event] = cb as EventListener)
         )
-        const { result, waitForNextUpdate } = renderHook((...args) =>
-            useOnlineStatus(...args)
+        const { result, waitForNextUpdate } = renderHook(() =>
+            useOnlineStatus()
         )
 
         act(() => {
@@ -57,8 +57,8 @@ describe('state changes in response to browser "online" and "offline" events', (
         window.addEventListener = jest.fn(
             (event, cb) => (events[event] = cb as EventListener)
         )
-        const { result, waitForNextUpdate } = renderHook((...args) =>
-            useOnlineStatus(...args)
+        const { result, waitForNextUpdate } = renderHook(() =>
+            useOnlineStatus()
         )
 
         act(() => {
@@ -81,8 +81,8 @@ describe('debouncing state changes', () => {
         window.addEventListener = jest.fn(
             (event, cb) => (events[event] = cb as EventListener)
         )
-        const { result, waitForNextUpdate } = renderHook((...args) =>
-            useOnlineStatus(...args)
+        const { result, waitForNextUpdate } = renderHook(() =>
+            useOnlineStatus()
         )
 
         await act(async () => {

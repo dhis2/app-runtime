@@ -18,11 +18,13 @@ interface CacheableSectionStartRecordingOptions {
     onError?: (err: Error) => void
 }
 
+export type CacheableSectionStartRecording = (
+    options?: CacheableSectionStartRecordingOptions
+) => Promise<any>
+
 interface CacheableSectionControls {
     recordingState: RecordingState
-    startRecording: (
-        options?: CacheableSectionStartRecordingOptions
-    ) => Promise<any> | null
+    startRecording: CacheableSectionStartRecording
     lastUpdated: Date | undefined
     isCached: boolean
     remove: () => Promise<boolean>
