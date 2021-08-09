@@ -1,22 +1,7 @@
 import { render, waitFor } from '@testing-library/react'
 import React, { ReactNode } from 'react'
-import { setLogger } from 'react-query'
 import { CustomDataProvider, DataQuery } from '../react'
 import { QueryRenderInput } from '../types'
-
-beforeAll(() => {
-    // Prevent the react-query logger from logging to the console
-    setLogger({
-        log: jest.fn(),
-        warn: jest.fn(),
-        error: jest.fn(),
-    })
-})
-
-afterAll(() => {
-    // Restore the original react-query logger
-    setLogger(console)
-})
 
 describe('Testing custom data provider and useQuery hook', () => {
     it('Should render without failing', async () => {
