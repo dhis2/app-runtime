@@ -44,6 +44,7 @@
         "coverage": "yarn test --coverage"
     },
     "dependencies": {
+        "fast-safe-stringify": "^2.0.8",
         "react-query": "^3.13.11"
     }
 }

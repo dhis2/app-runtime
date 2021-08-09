@@ -1,3 +1,4 @@
+import stringify from 'fast-safe-stringify'
 import { useState, useRef } from 'react'
 import { useQuery, setLogger } from 'react-query'
 import { Query, QueryOptions } from '../../engine'
@@ -103,7 +104,20 @@ export const useDataQuery = (
         }
 
         if (newVariables) {
-            setVariables({ ...variables, ...newVariables })
+            const merged = { ...variables, ...newVariables }
+            const identical =
+                stringify.stableStringify(variables) ===
+                stringify.stableStringify(merged)
+
+            setVariables(merged)
+
+            // If the variables are identical we'll need to trigger the refetch manually
+            if (identical) {
+                return queryRefetch({
+                    cancelRefetch: true,
+                    throwOnError: false,
+                }).then(({ data }) => data)
+            }
         }
 
         // This promise does not currently reject on errors
