@@ -1,3 +1,10 @@
+# [2.9.0-beta.5](https://github.com/dhis2/app-runtime/compare/v2.9.0-beta.4...v2.9.0-beta.5) (2021-08-09)
+
+
+### Bug Fixes
+
+* **logging:** silence react-query logger by default ([aa3dc1c](https://github.com/dhis2/app-runtime/commit/aa3dc1cdce5d9ad4f0f6b79fe9b055c1954b17c7))
+
 # [2.9.0-beta.4](https://github.com/dhis2/app-runtime/compare/v2.9.0-beta.3...v2.9.0-beta.4) (2021-07-22)
 
 
