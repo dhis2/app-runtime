@@ -1,22 +1,7 @@
 import { renderHook, act } from '@testing-library/react-hooks'
 import React from 'react'
-import { setLogger } from 'react-query'
 import { CustomDataProvider } from '../components/CustomDataProvider'
 import { useDataQuery } from './useDataQuery'
-
-beforeAll(() => {
-    // Prevent the react-query logger from logging to the console
-    setLogger({
-        log: jest.fn(),
-        warn: jest.fn(),
-        error: jest.fn(),
-    })
-})
-
-afterAll(() => {
-    // Restore the original react-query logger
-    setLogger(console)
-})
 
 describe('useDataQuery', () => {
     describe('parameters: onComplete', () => {

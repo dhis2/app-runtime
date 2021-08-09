@@ -1,10 +1,24 @@
 import { useState, useRef } from 'react'
-import { useQuery } from 'react-query'
+import { useQuery, setLogger } from 'react-query'
 import { Query, QueryOptions } from '../../engine'
 import { FetchError } from '../../engine/types/FetchError'
 import { QueryRenderInput, QueryRefetchFunction } from '../../types'
 import { useDataEngine } from './useDataEngine'
 import { useStaticInput } from './useStaticInput'
+
+const noop = () => {
+    /**
+     * Used to silence the default react-query logger. Eventually we
+     * could expose the setLogger functionality and remove the call
+     * to setLogger here.
+     */
+}
+
+setLogger({
+    log: noop,
+    warn: noop,
+    error: noop,
+})
 
 export const useDataQuery = (
     query: Query,
