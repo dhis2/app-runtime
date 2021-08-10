@@ -45,5 +45,11 @@
     },
     "dependencies": {
         "react-query": "^3.13.11"
+    },
+    "devDependencies": {
+        "jest-measure": "^0.0.14"
+    },
+    "jestBenchmark": {
+        "benchmarkRounds": 100
     }
 }
