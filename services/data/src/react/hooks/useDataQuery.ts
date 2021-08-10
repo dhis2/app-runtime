@@ -30,6 +30,7 @@ export const useDataQuery = (
         lazy: initialLazy = false,
     }: QueryOptions = {}
 ): QueryRenderInput => {
+    const variablesHash = useRef<string | null>(null)
     const [variables, setVariables] = useState(initialVariables)
     const [enabled, setEnabled] = useState(!initialLazy)
     const [staticQuery] = useStaticInput<Query>(query, {
@@ -104,9 +105,13 @@ export const useDataQuery = (
         }
 
         if (newVariables) {
-            const merged = { ...variables, ...newVariables }
-            const identical =
-                stableValueHash(variables) === stableValueHash(merged)
+            // Use cached hash if it exists
+            const currentHash =
+                variablesHash.current || stableValueHash(variables)
+
+            const mergedVariables = { ...variables, ...newVariables }
+            const mergedHash = stableValueHash(mergedVariables)
+            const identical = currentHash === mergedHash
 
             if (identical) {
                 // If the variables are identical we'll need to trigger the refetch manually
@@ -115,7 +120,8 @@ export const useDataQuery = (
                     throwOnError: false,
                 }).then(({ data }) => data)
             } else {
-                setVariables(merged)
+                variablesHash.current = mergedHash
+                setVariables(mergedVariables)
             }
         }
 
