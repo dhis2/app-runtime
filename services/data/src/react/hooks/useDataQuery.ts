@@ -108,14 +108,14 @@ export const useDataQuery = (
             const identical =
                 stableValueHash(variables) === stableValueHash(merged)
 
-            setVariables(merged)
-
-            // If the variables are identical we'll need to trigger the refetch manually
             if (identical) {
+                // If the variables are identical we'll need to trigger the refetch manually
                 return queryRefetch({
                     cancelRefetch: true,
                     throwOnError: false,
                 }).then(({ data }) => data)
+            } else {
+                setVariables(merged)
             }
         }
 
