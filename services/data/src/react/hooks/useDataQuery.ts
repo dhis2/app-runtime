@@ -1,9 +1,9 @@
-import stringify from 'fast-safe-stringify'
 import { useState, useRef } from 'react'
 import { useQuery, setLogger } from 'react-query'
 import { Query, QueryOptions } from '../../engine'
 import { FetchError } from '../../engine/types/FetchError'
 import { QueryRenderInput, QueryRefetchFunction } from '../../types'
+import { stableValueHash } from './stableValueHash'
 import { useDataEngine } from './useDataEngine'
 import { useStaticInput } from './useStaticInput'
 
@@ -106,8 +106,7 @@ export const useDataQuery = (
         if (newVariables) {
             const merged = { ...variables, ...newVariables }
             const identical =
-                stringify.stableStringify(variables) ===
-                stringify.stableStringify(merged)
+                stableValueHash(variables) === stableValueHash(merged)
 
             setVariables(merged)
 

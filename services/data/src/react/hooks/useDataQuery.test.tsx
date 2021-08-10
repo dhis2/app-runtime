@@ -614,7 +614,7 @@ describe('useDataQuery', () => {
             })
 
             act(() => {
-                result.current.refetch({ variables })
+                result.current.refetch(variables)
             })
 
             await waitForNextUpdate()
