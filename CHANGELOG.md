@@ -1,3 +1,13 @@
+# [2.9.0-beta.6](https://github.com/dhis2/app-runtime/compare/v2.9.0-beta.5...v2.9.0-beta.6) (2021-08-11)
+
+
+### Bug Fixes
+
+* **refetch:** force refetch when variables resolve to identical query key ([524eb3e](https://github.com/dhis2/app-runtime/commit/524eb3eec0f50b00ae3db1a4c3e052993bbe4edc))
+* **use-data-query:** only set variables if they've changed ([e96d984](https://github.com/dhis2/app-runtime/commit/e96d9848bc036e51f470721195e05f56e99adb17))
+* **use-data-query:** use local stable value hashing function ([147ba28](https://github.com/dhis2/app-runtime/commit/147ba281bde191597e5d402a3fc2883268dadd3a))
+* **use-data-query:** use ref to store variables hash ([3025dc7](https://github.com/dhis2/app-runtime/commit/3025dc7211b19eb2639e3c01bd19f50a8d23a012))
+
 # [2.9.0-beta.5](https://github.com/dhis2/app-runtime/compare/v2.9.0-beta.4...v2.9.0-beta.5) (2021-08-09)
 
 
