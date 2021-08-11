@@ -463,8 +463,8 @@ describe('useDataQuery', () => {
 
                 /**
                  * FIXME: https://github.com/tannerlinsley/react-query/issues/2481
-                 * It's unclear whether this rerender being necessary is intentional
-                 * or a bug.
+                 * This forced rerender is not necessary in the app, just when testing.
+                 * It is unclear why.
                  */
                 rerender()
             })
@@ -582,6 +582,48 @@ describe('useDataQuery', () => {
             expect(onComplete).not.toHaveBeenCalled()
             expect(result.current).toMatchObject({
                 error: expectedError,
+            })
+        })
+
+        it('Should refetch when refetch is called with variables that resolve to the same query key', async () => {
+            const variables = { one: 1, two: 2, three: 3 }
+            const query = {
+                x: {
+                    resource: 'answer',
+                    params: ({ one, two, three }) => ({ one, two, three }),
+                },
+            }
+            const spy = jest.fn(() => 42)
+            const data = { answer: spy }
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
+
+            const { result, waitForNextUpdate } = renderHook(
+                () => useDataQuery(query, { variables }),
+                { wrapper }
+            )
+
+            await waitForNextUpdate()
+
+            expect(spy).toHaveBeenCalledTimes(1)
+            expect(result.current).toMatchObject({
+                loading: false,
+                called: true,
+                data: { x: 42 },
+            })
+
+            act(() => {
+                result.current.refetch(variables)
+            })
+
+            await waitForNextUpdate()
+
+            expect(spy).toHaveBeenCalledTimes(2)
+            expect(result.current).toMatchObject({
+                loading: false,
+                called: true,
+                data: { x: 42 },
             })
         })
 
