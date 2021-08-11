@@ -54,13 +54,16 @@ export function useCacheableSection(id: string): CacheableSectionControls {
     } = useRecordingState(id)
 
     useEffect(() => {
-        // On mount, add recording state for this ID to context
+        // On mount, add recording state for this ID to context if needed
         if (!recordingState) {
             setRecordingState(recordingStates.default)
         }
-        // On unnmount, remove recording state
+        // On unnmount, remove recording state if possible
         return () => {
-            if (recordingState === recordingStates.default) {
+            if (
+                recordingState === recordingStates.default ||
+                recordingState === recordingStates.error
+            ) {
                 removeRecordingState()
             }
         }
