@@ -1047,24 +1047,24 @@
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
 "@dhis2/app-runtime@file:../../runtime":
-  version "2.10.0-pwa.1"
+  version "2.10.0-pwa.2"
   dependencies:
-    "@dhis2/app-service-alerts" "2.10.0-pwa.1"
-    "@dhis2/app-service-config" "2.10.0-pwa.1"
-    "@dhis2/app-service-data" "2.10.0-pwa.1"
-    "@dhis2/app-service-offline" "2.10.0-pwa.1"
+    "@dhis2/app-service-alerts" "2.10.0-pwa.2"
+    "@dhis2/app-service-config" "2.10.0-pwa.2"
+    "@dhis2/app-service-data" "2.10.0-pwa.2"
+    "@dhis2/app-service-offline" "2.10.0-pwa.2"
 
-"@dhis2/app-service-alerts@2.10.0-pwa.1", "@dhis2/app-service-alerts@file:../../services/alerts":
-  version "2.10.0-pwa.1"
+"@dhis2/app-service-alerts@2.10.0-pwa.2", "@dhis2/app-service-alerts@file:../../services/alerts":
+  version "2.10.0-pwa.2"
 
-"@dhis2/app-service-config@2.10.0-pwa.1", "@dhis2/app-service-config@file:../../services/config":
-  version "2.10.0-pwa.1"
+"@dhis2/app-service-config@2.10.0-pwa.2", "@dhis2/app-service-config@file:../../services/config":
+  version "2.10.0-pwa.2"
 
-"@dhis2/app-service-data@2.10.0-pwa.1", "@dhis2/app-service-data@file:../../services/data":
-  version "2.10.0-pwa.1"
+"@dhis2/app-service-data@2.10.0-pwa.2", "@dhis2/app-service-data@file:../../services/data":
+  version "2.10.0-pwa.2"
 
-"@dhis2/app-service-offline@2.10.0-pwa.1", "@dhis2/app-service-offline@file:../../services/offline":
-  version "2.10.0-pwa.1"
+"@dhis2/app-service-offline@2.10.0-pwa.2", "@dhis2/app-service-offline@file:../../services/offline":
+  version "2.10.0-pwa.2"
 
 "@hapi/address@2.x.x":
   version "2.1.4"
