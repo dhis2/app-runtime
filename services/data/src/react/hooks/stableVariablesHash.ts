@@ -34,15 +34,25 @@ export function isPlainObject(o: any): o is Object {
  */
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export function stableValueHash(value: any): string {
-    return JSON.stringify(value, (_, val) =>
-        isPlainObject(val)
-            ? Object.keys(val)
-                  .sort()
-                  .reduce((result, key) => {
-                      result[key] = val[key]
-                      return result
-                  }, {} as any)
-            : val
-    )
+export function stableVariablesHash(value: any): string {
+    let hash
+
+    try {
+        hash = JSON.stringify(value, (_, val) =>
+            isPlainObject(val)
+                ? Object.keys(val)
+                      .sort()
+                      .reduce((result, key) => {
+                          result[key] = val[key]
+                          return result
+                      }, {} as any)
+                : val
+        )
+    } catch (e) {
+        throw new Error(
+            'Could not serialize variables. Make sure that the variables do not contain circular references and can be processed by JSON.stringify.'
+        )
+    }
+
+    return hash
 }

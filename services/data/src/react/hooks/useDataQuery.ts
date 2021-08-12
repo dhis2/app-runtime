@@ -3,7 +3,7 @@ import { useQuery, setLogger } from 'react-query'
 import { Query, QueryOptions } from '../../engine'
 import { FetchError } from '../../engine/types/FetchError'
 import { QueryRenderInput, QueryRefetchFunction } from '../../types'
-import { stableValueHash } from './stableValueHash'
+import { stableVariablesHash } from './stableVariablesHash'
 import { useDataEngine } from './useDataEngine'
 import { useStaticInput } from './useStaticInput'
 
@@ -107,10 +107,10 @@ export const useDataQuery = (
         if (newVariables) {
             // Use cached hash if it exists
             const currentHash =
-                variablesHash.current || stableValueHash(variables)
+                variablesHash.current || stableVariablesHash(variables)
 
             const mergedVariables = { ...variables, ...newVariables }
-            const mergedHash = stableValueHash(mergedVariables)
+            const mergedHash = stableVariablesHash(mergedVariables)
             const identical = currentHash === mergedHash
 
             if (identical) {
