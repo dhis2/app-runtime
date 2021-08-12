@@ -1,3 +1,10 @@
+# [2.9.0-beta.7](https://github.com/dhis2/app-runtime/compare/v2.9.0-beta.6...v2.9.0-beta.7) (2021-08-12)
+
+
+### Bug Fixes
+
+* **use-data-query:** throw more specific error on serialization failure ([35a6b28](https://github.com/dhis2/app-runtime/commit/35a6b280ff61f8fdd69a5d2a376f0d3e7be2c7a9))
+
 # [2.9.0-beta.6](https://github.com/dhis2/app-runtime/compare/v2.9.0-beta.5...v2.9.0-beta.6) (2021-08-11)
 
 
