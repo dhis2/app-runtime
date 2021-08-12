@@ -58,11 +58,12 @@ export function useCacheableSection(id: string): CacheableSectionControls {
         if (!recordingState) {
             setRecordingState(recordingStates.default)
         }
-        // On unnmount, remove recording state if possible
+        // On unnmount, remove recording state if not recording
         return () => {
             if (
-                recordingState === recordingStates.default ||
-                recordingState === recordingStates.error
+                recordingState &&
+                recordingState !== recordingStates.recording &&
+                recordingState !== recordingStates.pending
             ) {
                 removeRecordingState()
             }
