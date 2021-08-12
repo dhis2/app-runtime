@@ -54,12 +54,19 @@ const TestControls = ({
     )
 }
 
-const TestSection = ({ id }: { id: string }) => (
+const TestSection = ({
+    id,
+    children,
+}: {
+    id: string
+    children?: React.ReactNode
+}) => (
     <CacheableSection
         id={id}
         loadingMask={<div data-testid={`loading-mask-${id}`} />}
     >
         <RenderCounter id={`section-rc-${id}`} countsObj={renderCounts} />
+        {children}
     </CacheableSection>
 )
 
@@ -271,5 +278,53 @@ describe('Performant state management', () => {
         })
 
         expect.assertions(4)
+    })
+})
+
+describe('useCacheableSection can be used inside a child of CacheableSection', () => {
+    const ChildTest = (props?: any) => {
+        // Props are spread so they can be overwritten
+        return (
+            <OfflineProvider offlineInterface={mockOfflineInterface} {...props}>
+                <TestSection id={'1'} {...props}>
+                    <TestControls id={'1'} {...props} />
+                </TestSection>
+            </OfflineProvider>
+        )
+    }
+
+    it('handles a successful recording', async done => {
+        const { getByTestId, queryByTestId } = screen
+
+        const onStarted = () => {
+            expect(getByTestId(/recording-state/)).toHaveTextContent(
+                'recording'
+            )
+            expect(getByTestId(/loading-mask/)).toBeInTheDocument()
+            expect(getByTestId(/section-rc/)).toBeInTheDocument()
+        }
+        const onCompleted = () => {
+            expect(getByTestId(/recording-state/)).toHaveTextContent('default')
+            expect(queryByTestId(/loading-mask/)).not.toBeInTheDocument()
+            done()
+        }
+        const recordingOptions = { onStarted, onCompleted }
+        const makeRecordingHandler = (
+            startRecording: CacheableSectionStartRecording
+        ) => {
+            return () => startRecording(recordingOptions)
+        }
+
+        render(<ChildTest makeRecordingHandler={makeRecordingHandler} />)
+
+        await act(async () => {
+            fireEvent.click(getByTestId(/start-recording/))
+        })
+
+        // At this stage, should be pending
+        // - In this test case, 'controls' should not be rendered
+        expect(queryByTestId(/recording-state/)).not.toBeInTheDocument()
+        expect(queryByTestId(/section-rc/)).not.toBeInTheDocument()
+        expect.assertions(7)
     })
 })

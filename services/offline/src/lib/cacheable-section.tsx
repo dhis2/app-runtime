@@ -54,10 +54,20 @@ export function useCacheableSection(id: string): CacheableSectionControls {
     } = useRecordingState(id)
 
     useEffect(() => {
-        // On mount, add recording state for this ID to context
-        setRecordingState(recordingStates.default)
-        // On unnmount, remove recording state
-        return () => removeRecordingState()
+        // On mount, add recording state for this ID to context if needed
+        if (!recordingState) {
+            setRecordingState(recordingStates.default)
+        }
+        // On unnmount, remove recording state if not recording
+        return () => {
+            if (
+                recordingState &&
+                recordingState !== recordingStates.recording &&
+                recordingState !== recordingStates.pending
+            ) {
+                removeRecordingState()
+            }
+        }
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     function startRecording({
