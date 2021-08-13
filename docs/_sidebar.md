@@ -22,6 +22,7 @@
 
 -   **Advanced**
 
+    -   [Offline tools](advanced/offline)
     -   [Services](advanced/services)
     -   [Data Engine](advanced/DataEngine)
         -   [Links](advanced/DataEngineLinks)

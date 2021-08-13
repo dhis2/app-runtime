@@ -1,4 +1,4 @@
-import { render, waitForElement, act } from '@testing-library/react'
+import { render, waitFor, act } from '@testing-library/react'
 import React from 'react'
 import {
     FetchType,
@@ -38,7 +38,7 @@ describe('Testing custom data provider and useQuery hook', () => {
             refetch: expect.any(Function),
             engine: expect.any(Object),
         })
-        await waitForElement(() => getByText(/data: /i))
+        await waitFor(() => getByText(/data: /i))
         expect(renderFunction).toHaveBeenCalledTimes(2)
         expect(renderFunction).toHaveBeenLastCalledWith({
             called: true,
@@ -78,7 +78,7 @@ describe('Testing custom data provider and useQuery hook', () => {
             refetch: expect.any(Function),
             engine: expect.any(Object),
         })
-        await waitForElement(() => getByText(/error: /i))
+        await waitFor(() => getByText(/error: /i))
         expect(renderFunction).toHaveBeenCalledTimes(2)
         expect(String(renderFunction.mock.calls[1][0].error)).toBe(
             'Error: No data provided for resource type test!'
@@ -174,7 +174,7 @@ describe('Testing custom data provider and useQuery hook', () => {
         })
 
         expect(signal.aborted).toBe(true)
-        await waitForElement(() => getByText(/data: /i))
+        await waitFor(() => getByText(/data: /i))
 
         expect(renderFunction).toHaveBeenCalledTimes(2)
         expect(mockData.factory).toHaveBeenCalledTimes(2)
