@@ -9,7 +9,7 @@ export const Alerts = () => {
             {alert.message}
             <button
                 onClick={() => {
-                    alert.options.onHidden?.()
+                    alert.options.onHidden && alert.options.onHidden()
                     alert.remove()
                 }}
             >
