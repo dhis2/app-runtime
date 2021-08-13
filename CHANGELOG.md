@@ -1,3 +1,10 @@
+# [2.9.0](https://github.com/dhis2/app-runtime/compare/v2.8.0...v2.9.0) (2021-08-13)
+
+
+### Features
+
+* add online status ([#953](https://github.com/dhis2/app-runtime/issues/953)) ([9b45a81](https://github.com/dhis2/app-runtime/commit/9b45a81f074d3dc501b4acb34af8b75893ba8dbf))
+
 # [2.8.0](https://github.com/dhis2/app-runtime/compare/v2.7.1...v2.8.0) (2021-03-10)
 
 
