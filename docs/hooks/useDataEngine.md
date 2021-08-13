@@ -1,4 +1,4 @@
-# useDataEngine hook
+# useDataEngine Hook
 
 Get access to the [Data Engine](advanced/DataEngine) instance for non-React contexts.
 

@@ -1,13 +1,26 @@
-# `useAlert`
+# useAlert Hook
 
-`useAlert(message, options?) → { show }`
+## Basic Usage:
 
-## Hook arguments
+```js
+import { useAlert } from '@dhis2/app-runtime'
 
-| Name      | Type                   | Description                                                                                                                                                                                                                                                              |
-| --------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `message` | `string` or `Function` | The message to display                                                                                                                                                                                                                                                   |
-| `options` | `object` or `Function` | A configuration object that matches [the props of the `AlertBar`](https://ui.dhis2.nu/demo/?path=/docs/feedback-alerts-alert-bar--default) in `@dhis2/ui` (alternate: [minimal view](https://ui.dhis2.nu/#/api?id=coresrcalertbaralertbarproptypes-object) of the props) |
+// Within a functional component body
+const { show } = useAlert(message, options)
+```
+
+## Input
+
+| Name    | Type                   | Required     | Description                                                                                                             |
+| ------- | ---------------------- | ------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| message | _string_ or _function_ | **required** | The message to display                                                                                                  |
+| options | _object_ or _function_ |              | A configuration object that matches [the props of the `AlertBar`](https://ui.dhis2.nu/#/api?id=alertbar) in `@dhis2/ui` |
+
+## Output
+
+| Name | Type       | Description                                            |
+| ---- | ---------- | ------------------------------------------------------ |
+| show | _function_ | A new alert is shown each time this function is called |
 
 ## Usage of the returned `show` function
 
@@ -39,6 +52,36 @@ show({ username: 'hendrik', isCurrentUser: true })
 ```
 
 The two approaches can also be combined, i.e. having a static `message` and dynamic `options` or vice versa.
+
+## Example
+
+```jsx
+import React from 'react'
+import { useAlert, useDataMutation } from '@dhis2/app-runtime'
+
+const mutation = {
+    resource: 'mutation',
+    type: 'create',
+}
+
+const MyComponent = () => {
+    const successAlert = useAlert('Mutation succeeded', { success: true })
+    const errorAlert = useAlert(({ error }) => `Mutation error: ${error}`, {
+        critical: true,
+    })
+
+    const [mutate] = useDataMutation(mutation, {
+        onComplete() {
+            successAlert.show()
+        },
+        onError(error) {
+            errorAlert.show({ error: error.message })
+        },
+    })
+
+    return <Button onClick={mutate}>Trigger mutation</Button>
+}
+```
 
 ## Usage note
 
