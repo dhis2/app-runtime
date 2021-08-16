@@ -11,14 +11,14 @@ interface OnlineStatus {
     offline: boolean
 }
 
+// TODO: Add option to periodically ping server to check online status.
+// TODO: Add logic to return a variable indicating unstable connection.
+
 /**
  * Returns the browser's online status. Updates in response to 'online' and
  * 'offline' events. By default, debounces updates to once every second to
  * avoid UI flicker, but that delay can be configured with the
  * `options.debounceDelay` param.
- *
- * TODO: Add option to periodically ping server to check online status.
- * TODO: Add logic to return a variable indicating unstable connection.
  *
  * @param {Object} [options]
  * @param {Number} [options.debounceDelay] - Timeout delay to debounce updates, in ms
