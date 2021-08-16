@@ -126,4 +126,48 @@ describe('debouncing state changes', () => {
         await waitForNextUpdate({ timeout: 60 })
         expect(result.current.online).toBe(false)
     })
+
+    it('can have the debounce delay changed during its lifecycle', async () => {
+        // Start with 150 ms debounce
+        jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true)
+        const events: CapturedEventListeners = {}
+        window.addEventListener = jest.fn(
+            (event, cb) => (events[event] = cb as EventListener)
+        )
+        const { result, waitForNextUpdate, rerender } = renderHook(
+            (...args) => useOnlineStatus(...args),
+            { initialProps: { debounceDelay: 150 } }
+        )
+
+        await act(async () => {
+            // Multiple events in succession
+            events.offline(new Event('offline'))
+            events.online(new Event('online'))
+            events.offline(new Event('offline'))
+        })
+
+        // Immediately, nothing should happen
+        expect(result.current.online).toBe(true)
+
+        // 150ms later, final "offline" event should finally resolve
+        await waitForNextUpdate({ timeout: 160 })
+        expect(result.current.online).toBe(false)
+
+        // Change to 50 ms debounce
+        rerender({ debounceDelay: 50 })
+
+        await act(async () => {
+            // Multiple events in succession
+            events.online(new Event('online'))
+            events.offline(new Event('offline'))
+            events.online(new Event('online'))
+        })
+
+        // Immediately, nothing should happen
+        expect(result.current.online).toBe(false)
+
+        // 50ms later, final "online" event should finally resolve
+        await waitForNextUpdate({ timeout: 60 })
+        expect(result.current.online).toBe(true)
+    })
 })

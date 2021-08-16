@@ -34,7 +34,7 @@ export function useOnlineStatus(options?: OnlineStatusOptions): OnlineStatus {
             ({ type }: Event) => setOnline(type === 'online'),
             options?.debounceDelay || 1000
         ),
-        []
+        [options]
     )
 
     // on 'online' or 'offline' events, set state
