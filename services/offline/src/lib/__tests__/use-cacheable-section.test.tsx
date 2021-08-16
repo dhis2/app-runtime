@@ -214,3 +214,36 @@ it('handles remove and updates sections', async () => {
     expect(result.current.isCached).toBe(false)
     expect(result.current.lastUpdated).toBeUndefined()
 })
+
+it('handles a change in ID', async () => {
+    const testOfflineInterface = {
+        ...mockOfflineInterface,
+        getCachedSections: jest
+            .fn()
+            .mockResolvedValue([
+                { sectionId: 'id-one', lastUpdated: new Date() },
+            ]),
+    }
+    const { result, waitFor, rerender } = renderHook(
+        (...args) => useCacheableSection(...args),
+        {
+            wrapper: ({ children }) => (
+                <OfflineProvider offlineInterface={testOfflineInterface}>
+                    {children}
+                </OfflineProvider>
+            ),
+            initialProps: 'id-one',
+        }
+    )
+
+    // Wait for state to sync with indexedDB
+    await waitFor(() => result.current.isCached === true)
+
+    rerender('id-two')
+
+    // Test that 'isCached' gets updated
+    // expect(testOfflineInterface.getCachedSections).toBeCalledTimes(2)
+    await waitFor(() => result.current.isCached === false)
+    expect(result.current.isCached).toBe(false)
+    expect(result.current.lastUpdated).toBeUndefined()
+})
