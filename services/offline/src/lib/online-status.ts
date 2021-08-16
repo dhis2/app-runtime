@@ -1,5 +1,5 @@
-import debounce from 'lodash/debounce'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
+import { useDebouncedCallback } from 'use-debounce'
 
 type milliseconds = number
 interface OnlineStatusOptions {
@@ -28,13 +28,9 @@ export function useOnlineStatus(options?: OnlineStatusOptions): OnlineStatus {
     // initialize state to `navigator.onLine` value
     const [online, setOnline] = useState(navigator.onLine)
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const updateState = useCallback(
-        debounce(
-            ({ type }: Event) => setOnline(type === 'online'),
-            options?.debounceDelay || 1000
-        ),
-        [options]
+    const updateState = useDebouncedCallback(
+        ({ type }: Event) => setOnline(type === 'online'),
+        options?.debounceDelay || 1000
     )
 
     // on 'online' or 'offline' events, set state
@@ -42,7 +38,6 @@ export function useOnlineStatus(options?: OnlineStatusOptions): OnlineStatus {
         window.addEventListener('online', updateState)
         window.addEventListener('offline', updateState)
         return () => {
-            updateState.cancel()
             window.removeEventListener('online', updateState)
             window.removeEventListener('offline', updateState)
         }
