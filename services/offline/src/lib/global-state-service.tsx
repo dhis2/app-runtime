@@ -75,8 +75,10 @@ export const useGlobalState = (
                 setSelectedState(newSelectedState)
         }
         store.subscribe(callback)
+        // Make sure to update state when selector changes
+        callback(store.getState())
         return () => store.unsubscribe(callback)
-    }, [store]) /* eslint-disable-line react-hooks/exhaustive-deps */
+    }, [store, selector]) /* eslint-disable-line react-hooks/exhaustive-deps */
 
     return [selectedState, store.mutate]
 }
