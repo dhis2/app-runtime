@@ -35,8 +35,9 @@ describe('state changes in response to browser "online" and "offline" events', (
         window.addEventListener = jest.fn(
             (event, cb) => (events[event] = cb as EventListener)
         )
-        const { result, waitForNextUpdate } = renderHook(() =>
-            useOnlineStatus()
+        const { result, waitForNextUpdate } = renderHook(
+            (...args) => useOnlineStatus(...args),
+            { initialProps: { debounceDelay: 50 } }
         )
 
         act(() => {
@@ -45,20 +46,21 @@ describe('state changes in response to browser "online" and "offline" events', (
         })
 
         // Wait for debounce
-        await waitForNextUpdate({ timeout: 1010 })
+        await waitForNextUpdate({ timeout: 60 })
 
         expect(result.current.online).toBe(false)
         expect(result.current.offline).toBe(true)
     })
 
-    it('switches from offline to online when the "offline" event triggers', async () => {
+    it('switches from offline to online when the "online" event triggers', async () => {
         jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(false)
         const events: CapturedEventListeners = {}
         window.addEventListener = jest.fn(
             (event, cb) => (events[event] = cb as EventListener)
         )
-        const { result, waitForNextUpdate } = renderHook(() =>
-            useOnlineStatus()
+        const { result, waitForNextUpdate } = renderHook(
+            (...args) => useOnlineStatus(...args),
+            { initialProps: { debounceDelay: 50 } }
         )
 
         act(() => {
@@ -66,7 +68,7 @@ describe('state changes in response to browser "online" and "offline" events', (
         })
 
         // Wait for debounce
-        await waitForNextUpdate({ timeout: 1010 })
+        await waitForNextUpdate({ timeout: 60 })
 
         expect(result.current.online).toBe(true)
         expect(result.current.offline).toBe(false)
