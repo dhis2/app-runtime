@@ -1341,12 +1341,12 @@
     moment "^2.24.0"
 
 "@dhis2/app-runtime@^2.8.0":
-  version "2.10.0-pwa.2"
+  version "2.10.0-pwa.3"
   dependencies:
-    "@dhis2/app-service-alerts" "2.10.0-pwa.2"
-    "@dhis2/app-service-config" "2.10.0-pwa.2"
-    "@dhis2/app-service-data" "2.10.0-pwa.2"
-    "@dhis2/app-service-offline" "2.10.0-pwa.2"
+    "@dhis2/app-service-alerts" "2.10.0-pwa.3"
+    "@dhis2/app-service-config" "2.10.0-pwa.3"
+    "@dhis2/app-service-data" "2.10.0-pwa.3"
+    "@dhis2/app-service-offline" "2.10.0-pwa.3"
 
 "@dhis2/app-shell@6.2.0":
   version "6.2.0"
