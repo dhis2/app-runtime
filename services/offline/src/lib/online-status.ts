@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { useDebouncedCallback } from 'use-debounce'
+import debounce from 'lodash/debounce'
+import { useState, useEffect, useCallback } from 'react'
 
 type milliseconds = number
 interface OnlineStatusOptions {
@@ -24,13 +24,19 @@ interface OnlineStatus {
  * @param {Number} [options.debounceDelay] - Timeout delay to debounce updates, in ms
  * @returns {Object} `{ online, offline }` booleans. Each is the opposite of the other.
  */
-export function useOnlineStatus(options?: OnlineStatusOptions): OnlineStatus {
+export function useOnlineStatus(
+    options: OnlineStatusOptions = {}
+): OnlineStatus {
     // initialize state to `navigator.onLine` value
     const [online, setOnline] = useState(navigator.onLine)
 
-    const updateState = useDebouncedCallback(
-        ({ type }: Event) => setOnline(type === 'online'),
-        options?.debounceDelay || 1000
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const updateState = useCallback(
+        debounce(
+            ({ type }: Event) => setOnline(type === 'online'),
+            options.debounceDelay || 1000
+        ),
+        [options.debounceDelay]
     )
 
     // on 'online' or 'offline' events, set state
