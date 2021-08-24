@@ -44,6 +44,7 @@ export function useOnlineStatus(
         window.addEventListener('online', updateState)
         window.addEventListener('offline', updateState)
         return () => {
+            updateState.flush()
             window.removeEventListener('online', updateState)
             window.removeEventListener('offline', updateState)
         }
