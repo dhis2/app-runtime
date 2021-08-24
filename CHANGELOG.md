@@ -1,3 +1,10 @@
+## [2.9.2](https://github.com/dhis2/app-runtime/compare/v2.9.1...v2.9.2) (2021-08-24)
+
+
+### Bug Fixes
+
+* **online-status:** handle debouncing across rerenders ([#963](https://github.com/dhis2/app-runtime/issues/963)) ([e83bfd1](https://github.com/dhis2/app-runtime/commit/e83bfd18b2f41cd60dec8d99ad743b5c9edb39ea))
+
 ## [2.9.1](https://github.com/dhis2/app-runtime/compare/v2.9.0...v2.9.1) (2021-08-16)
 
 
