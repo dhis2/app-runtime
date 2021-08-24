@@ -24,7 +24,9 @@ interface OnlineStatus {
  * @param {Number} [options.debounceDelay] - Timeout delay to debounce updates, in ms
  * @returns {Object} `{ online, offline }` booleans. Each is the opposite of the other.
  */
-export function useOnlineStatus(options?: OnlineStatusOptions): OnlineStatus {
+export function useOnlineStatus(
+    options: OnlineStatusOptions = {}
+): OnlineStatus {
     // initialize state to `navigator.onLine` value
     const [online, setOnline] = useState(navigator.onLine)
 
@@ -32,9 +34,9 @@ export function useOnlineStatus(options?: OnlineStatusOptions): OnlineStatus {
     const updateState = useCallback(
         debounce(
             ({ type }: Event) => setOnline(type === 'online'),
-            options?.debounceDelay || 1000
+            options.debounceDelay || 1000
         ),
-        [options]
+        [options.debounceDelay]
     )
 
     // on 'online' or 'offline' events, set state
@@ -42,7 +44,7 @@ export function useOnlineStatus(options?: OnlineStatusOptions): OnlineStatus {
         window.addEventListener('online', updateState)
         window.addEventListener('offline', updateState)
         return () => {
-            updateState.cancel()
+            updateState.flush()
             window.removeEventListener('online', updateState)
             window.removeEventListener('offline', updateState)
         }

@@ -1,8 +1,16 @@
+import { render, screen, waitFor } from '@testing-library/react'
 import { act, renderHook } from '@testing-library/react-hooks'
+import React from 'react'
 import { useOnlineStatus } from '../online-status'
 
 interface CapturedEventListeners {
     [index: string]: EventListener
+}
+
+function wait(ms: number): Promise<void> {
+    return new Promise(resolve => {
+        setTimeout(() => resolve(), ms)
+    })
 }
 
 beforeEach(() => {
@@ -171,5 +179,124 @@ describe('debouncing state changes', () => {
         // 50ms later, final "online" event should finally resolve
         await waitForNextUpdate({ timeout: 60 })
         expect(result.current.online).toBe(true)
+    })
+
+    it('handles debounced state change when parent component rerenders during a debounce delay', async () => {
+        jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true)
+        const events: CapturedEventListeners = {}
+        window.addEventListener = jest.fn(
+            (event, cb) => (events[event] = cb as EventListener)
+        )
+
+        const TestComponent = () => {
+            const { online } = useOnlineStatus({ debounceDelay: 50 })
+            return <div data-testid="status">{online ? 'on' : 'off'}</div>
+        }
+        const { rerender } = render(<TestComponent />)
+
+        const { getByTestId } = screen
+        expect(getByTestId('status')).toHaveTextContent('on')
+
+        await act(async () => {
+            // Multiple events in succession
+            events.offline(new Event('offline'))
+            events.online(new Event('online'))
+            events.offline(new Event('offline'))
+        })
+
+        // Immediately, nothing should happen
+        expect(getByTestId('status')).toHaveTextContent('on')
+
+        // Rerender parent component
+        rerender(<TestComponent />)
+
+        // Final "offline" event should still resolve
+        await waitFor(() =>
+            expect(getByTestId('status')).toHaveTextContent('off')
+        )
+    })
+
+    it('handles debounced state change when debounce delay is changed during a delay', async () => {
+        jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true)
+        const events: CapturedEventListeners = {}
+        window.addEventListener = jest.fn(
+            (event, cb) => (events[event] = cb as EventListener)
+        )
+
+        const TestComponent = ({ options }: { options?: any }) => {
+            const { online } = useOnlineStatus(options)
+            return <div data-testid="status">{online ? 'on' : 'off'}</div>
+        }
+        const { rerender } = render(
+            <TestComponent options={{ debounceDelay: 100 }} />
+        )
+
+        const { getByTestId } = screen
+        expect(getByTestId('status')).toHaveTextContent('on')
+
+        await act(async () => {
+            // Multiple events in succession
+            events.offline(new Event('offline'))
+            events.online(new Event('online'))
+            events.offline(new Event('offline'))
+        })
+
+        // Immediately, nothing should happen
+        expect(getByTestId('status')).toHaveTextContent('on')
+
+        // Change debounce options
+        rerender(<TestComponent options={{ debounceDelay: 50 }} />)
+
+        // Final "offline" event should still resolve
+        await waitFor(() =>
+            expect(getByTestId('status')).toHaveTextContent('off')
+        )
+    })
+
+    it('debounces consistently across rerenders', async () => {
+        jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true)
+        const events: CapturedEventListeners = {}
+        window.addEventListener = jest.fn(
+            (event, cb) => (events[event] = cb as EventListener)
+        )
+
+        const TestComponent = () => {
+            const { online } = useOnlineStatus({ debounceDelay: 100 })
+            return <div data-testid="status">{online ? 'on' : 'off'}</div>
+        }
+        const { rerender } = render(<TestComponent />)
+
+        const { getByTestId } = screen
+        expect(getByTestId('status')).toHaveTextContent('on')
+
+        await act(async () => {
+            // Multiple events in succession
+            events.offline(new Event('offline'))
+            events.online(new Event('online'))
+            events.offline(new Event('offline'))
+        })
+
+        // wait a little bit - not long enough for debounce to resolve
+        await wait(50)
+        expect(getByTestId('status')).toHaveTextContent('on')
+
+        // Rerender parent component
+        rerender(<TestComponent />)
+
+        // Trigger more events
+        await act(async () => {
+            events.online(new Event('online'))
+            events.offline(new Event('offline'))
+        })
+
+        // wait a little more - long enough that the first debounced callbacks
+        // _would_ have resolved if there weren't the second set of events
+        await wait(60)
+        expect(getByTestId('status')).toHaveTextContent('on')
+
+        // wait long enough for second set of callbacks to resolve
+        await waitFor(() =>
+            expect(getByTestId('status')).toHaveTextContent('off')
+        )
     })
 })
