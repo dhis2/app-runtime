@@ -216,7 +216,7 @@ describe('debouncing state changes', () => {
         )
     })
 
-    it('handles debounced state change when parent component rerenders during a debounce delay', async () => {
+    it('handles debounced state change when debounce delay is changed during a delay', async () => {
         jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true)
         const events: CapturedEventListeners = {}
         window.addEventListener = jest.fn(
@@ -227,7 +227,9 @@ describe('debouncing state changes', () => {
             const { online } = useOnlineStatus(options)
             return <div data-testid="status">{online ? 'on' : 'off'}</div>
         }
-        const { rerender } = render(<TestComponent />)
+        const { rerender } = render(
+            <TestComponent options={{ debounceDelay: 100 }} />
+        )
 
         const { getByTestId } = screen
         expect(getByTestId('status')).toHaveTextContent('on')
