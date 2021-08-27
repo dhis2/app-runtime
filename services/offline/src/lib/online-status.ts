@@ -11,6 +11,8 @@ interface OnlineStatus {
     offline: boolean
 }
 
+const lastOnlineKey = 'dhis2.lastOnline'
+
 // TODO: Add option to periodically ping server to check online status.
 // TODO: Add logic to return a variable indicating unstable connection.
 
@@ -19,6 +21,9 @@ interface OnlineStatus {
  * 'offline' events. By default, debounces updates to once every second to
  * avoid UI flicker, but that delay can be configured with the
  * `options.debounceDelay` param.
+ *
+ * On state change, updates the `dhis2.lastOnline` property in local storage
+ * for consuming apps to format and display.
  *
  * @param {Object} [options]
  * @param {Number} [options.debounceDelay] - Timeout delay to debounce updates, in ms
@@ -49,6 +54,22 @@ export function useOnlineStatus(
             window.removeEventListener('offline', updateState)
         }
     }, [updateState])
+
+    useEffect(() => {
+        const lastOnline = localStorage.getItem(lastOnlineKey)
+        // When going online, remove 'lastOnline' if it's set
+        if (online && lastOnline) {
+            localStorage.removeItem(lastOnlineKey)
+        }
+        // When going offline, set 'lastOnline' if it's undefined
+        if (!online && !lastOnline) {
+            localStorage.setItem(
+                lastOnlineKey,
+                // Using Date.now() to simplify testing
+                new Date(Date.now()).toUTCString()
+            )
+        }
+    }, [online])
 
     return { online, offline: !online }
 }

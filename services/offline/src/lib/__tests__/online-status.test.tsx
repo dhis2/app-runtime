@@ -300,3 +300,88 @@ describe('debouncing state changes', () => {
         )
     })
 })
+
+describe('it updates the lastOnline value in local storage', () => {
+    const lastOnlineKey = 'dhis2.lastOnline'
+
+    it('sets lastOnline in local storage when it goes offline', async () => {
+        jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true)
+        const events: CapturedEventListeners = {}
+        window.addEventListener = jest.fn(
+            (event, cb) => (events[event] = cb as EventListener)
+        )
+        const { result, waitForNextUpdate } = renderHook(
+            (...args) => useOnlineStatus(...args),
+            { initialProps: { debounceDelay: 10 } }
+        )
+
+        expect(localStorage.getItem(lastOnlineKey)).toBe(null)
+
+        act(() => {
+            events.offline(new Event('offline'))
+        })
+
+        // Wait for debounce
+        await waitForNextUpdate({ timeout: 20 })
+
+        expect(result.current.online).toBe(false)
+        expect(result.current.offline).toBe(true)
+
+        const parsedDate = new Date(localStorage.getItem(lastOnlineKey))
+        expect(parsedDate.toString()).not.toBe('Invalid Date')
+    })
+
+    it("doesn't change lastOnline if it's already offline", async () => {
+        // seed localStorage
+        localStorage.setItem(lastOnlineKey, 'testDate')
+        jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(false)
+        const events: CapturedEventListeners = {}
+        window.addEventListener = jest.fn(
+            (event, cb) => (events[event] = cb as EventListener)
+        )
+        const { result } = renderHook((...args) => useOnlineStatus(...args), {
+            initialProps: { debounceDelay: 10 },
+        })
+
+        expect(localStorage.getItem(lastOnlineKey)).toBe('testDate')
+
+        act(() => {
+            events.offline(new Event('offline'))
+        })
+
+        expect(result.current.online).toBe(false)
+        expect(result.current.offline).toBe(true)
+
+        expect(localStorage.getItem(lastOnlineKey)).toBe('testDate')
+    })
+
+    it('clears lastOnline when it goes online', async () => {
+        // seed localStorage
+        localStorage.setItem(lastOnlineKey, 'testDate')
+        jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(false)
+        const events: CapturedEventListeners = {}
+        window.addEventListener = jest.fn(
+            (event, cb) => (events[event] = cb as EventListener)
+        )
+        const { result, waitForNextUpdate } = renderHook(
+            (...args) => useOnlineStatus(...args),
+            {
+                initialProps: { debounceDelay: 10 },
+            }
+        )
+
+        expect(localStorage.getItem(lastOnlineKey)).toBe('testDate')
+
+        act(() => {
+            events.offline(new Event('online'))
+        })
+
+        // Wait for debounce
+        await waitForNextUpdate({ timeout: 20 })
+
+        expect(result.current.online).toBe(true)
+        expect(result.current.offline).toBe(false)
+
+        expect(localStorage.getItem(lastOnlineKey)).toBe(null)
+    })
+})
