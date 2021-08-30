@@ -1,5 +1,5 @@
 import debounce from 'lodash/debounce'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 
 type milliseconds = number
 interface OnlineStatusOptions {
@@ -67,7 +67,10 @@ export function useOnlineStatus(
     }, [updateState])
 
     // Only fetch if `online === false` as local storage is synchronous and disk-based
-    const lastOnline = !online && localStorage.getItem(lastOnlineKey)
+    const lastOnline = useMemo(
+        () => !online && localStorage.getItem(lastOnlineKey),
+        [online]
+    )
 
     return {
         online,
