@@ -9,6 +9,7 @@ interface OnlineStatusOptions {
 interface OnlineStatus {
     online: boolean
     offline: boolean
+    lastOnline: Date | null
 }
 
 const lastOnlineKey = 'dhis2.lastOnline'
@@ -27,6 +28,7 @@ const lastOnlineKey = 'dhis2.lastOnline'
  *
  * @param {Object} [options]
  * @param {Number} [options.debounceDelay] - Timeout delay to debounce updates, in ms
+ * todo: update return value
  * @returns {Object} `{ online, offline }` booleans. Each is the opposite of the other.
  */
 export function useOnlineStatus(
@@ -37,10 +39,19 @@ export function useOnlineStatus(
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const updateState = useCallback(
-        debounce(
-            ({ type }: Event) => setOnline(type === 'online'),
-            options.debounceDelay || 1000
-        ),
+        debounce(({ type }: Event) => {
+            if (type === 'online') {
+                setOnline(true)
+            } else if (type === 'offline') {
+                setOnline(false)
+                if (!localStorage.getItem(lastOnlineKey)) {
+                    localStorage.setItem(
+                        lastOnlineKey,
+                        new Date(Date.now()).toUTCString()
+                    )
+                }
+            }
+        }, options.debounceDelay || 1000),
         [options.debounceDelay]
     )
 
@@ -55,21 +66,14 @@ export function useOnlineStatus(
         }
     }, [updateState])
 
-    useEffect(() => {
-        const lastOnline = localStorage.getItem(lastOnlineKey)
-        // When going online, remove 'lastOnline' if it's set
-        if (online && lastOnline) {
-            localStorage.removeItem(lastOnlineKey)
-        }
-        // When going offline, set 'lastOnline' if it's undefined
-        if (!online && !lastOnline) {
-            localStorage.setItem(
-                lastOnlineKey,
-                // Using Date.now() to simplify testing
-                new Date(Date.now()).toUTCString()
-            )
-        }
-    }, [online])
+    // Only fetch if `online === false` as local storage is synchronous and disk-based
+    const lastOnline = !online && localStorage.getItem(lastOnlineKey)
 
-    return { online, offline: !online }
+    return {
+        online,
+        offline: !online,
+        lastOnline: lastOnline ? new Date(lastOnline) : null,
+        // for testing purposes:
+        localStorageVal: localStorage.getItem(lastOnlineKey),
+    }
 }

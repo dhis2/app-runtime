@@ -17,6 +17,10 @@ beforeEach(() => {
     jest.restoreAllMocks()
 })
 
+afterEach(() => {
+    localStorage.clear()
+})
+
 describe('initalizes to navigator.onLine value', () => {
     it('initializes to true', () => {
         jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true)
@@ -303,6 +307,7 @@ describe('debouncing state changes', () => {
 
 describe('it updates the lastOnline value in local storage', () => {
     const lastOnlineKey = 'dhis2.lastOnline'
+    const testDateString = 'Fri, 27 Aug 2021 19:53:06 GMT'
 
     it('sets lastOnline in local storage when it goes offline', async () => {
         jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true)
@@ -315,7 +320,9 @@ describe('it updates the lastOnline value in local storage', () => {
             { initialProps: { debounceDelay: 10 } }
         )
 
+        // Correct initial state
         expect(localStorage.getItem(lastOnlineKey)).toBe(null)
+        expect(result.current.lastOnline).toBe(null)
 
         act(() => {
             events.offline(new Event('offline'))
@@ -327,13 +334,20 @@ describe('it updates the lastOnline value in local storage', () => {
         expect(result.current.online).toBe(false)
         expect(result.current.offline).toBe(true)
 
+        // Check localStorage for a stored date
         const parsedDate = new Date(localStorage.getItem(lastOnlineKey))
         expect(parsedDate.toString()).not.toBe('Invalid Date')
+        // ! Check hook return value (fails following tests)
+        expect(result.current.localStorageVal).not.toBe(null)
+        expect(result.current.lastOnline).toBeInstanceOf(Date)
+        expect(result.current.lastOnline?.toUTCString()).toBe(
+            localStorage.getItem(lastOnlineKey)
+        )
     })
 
     it("doesn't change lastOnline if it's already offline", async () => {
         // seed localStorage
-        localStorage.setItem(lastOnlineKey, 'testDate')
+        localStorage.setItem(lastOnlineKey, testDateString)
         jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(false)
         const events: CapturedEventListeners = {}
         window.addEventListener = jest.fn(
@@ -343,21 +357,25 @@ describe('it updates the lastOnline value in local storage', () => {
             initialProps: { debounceDelay: 10 },
         })
 
-        expect(localStorage.getItem(lastOnlineKey)).toBe('testDate')
+        expect(localStorage.getItem(lastOnlineKey)).toBe(testDateString)
+        expect(result.current.lastOnline).toEqual(new Date(testDateString))
 
         act(() => {
             events.offline(new Event('offline'))
         })
 
+        await wait(20)
+
         expect(result.current.online).toBe(false)
         expect(result.current.offline).toBe(true)
 
-        expect(localStorage.getItem(lastOnlineKey)).toBe('testDate')
+        expect(localStorage.getItem(lastOnlineKey)).toBe(testDateString)
+        expect(result.current.lastOnline).toEqual(new Date(testDateString))
     })
 
     it('clears lastOnline when it goes online', async () => {
         // seed localStorage
-        localStorage.setItem(lastOnlineKey, 'testDate')
+        localStorage.setItem(lastOnlineKey, testDateString)
         jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(false)
         const events: CapturedEventListeners = {}
         window.addEventListener = jest.fn(
@@ -370,7 +388,8 @@ describe('it updates the lastOnline value in local storage', () => {
             }
         )
 
-        expect(localStorage.getItem(lastOnlineKey)).toBe('testDate')
+        expect(localStorage.getItem(lastOnlineKey)).toBe(testDateString)
+        expect(result.current.lastOnline).toEqual(new Date(testDateString))
 
         act(() => {
             events.offline(new Event('online'))
@@ -382,6 +401,7 @@ describe('it updates the lastOnline value in local storage', () => {
         expect(result.current.online).toBe(true)
         expect(result.current.offline).toBe(false)
 
-        expect(localStorage.getItem(lastOnlineKey)).toBe(null)
+        // expect(localStorage.getItem(lastOnlineKey)).toBe(null)
+        expect(result.current.lastOnline).toBe(null)
     })
 })
