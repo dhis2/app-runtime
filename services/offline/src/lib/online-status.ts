@@ -10,6 +10,8 @@ interface OnlineStatus {
     online: boolean
     offline: boolean
     lastOnline: Date | null
+    // todo: remove
+    localStorageVal: string | null
 }
 
 const lastOnlineKey = 'dhis2.lastOnline'
