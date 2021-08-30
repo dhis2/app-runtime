@@ -51,7 +51,7 @@ export function useOnlineStatus(
                 }
                 setOnline(false)
             }
-        }, options.debounceDelay || 1000),
+        }, options.debounceDelay ?? 1000),
         [options.debounceDelay]
     )
 
