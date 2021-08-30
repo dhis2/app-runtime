@@ -335,10 +335,11 @@ describe('it updates the lastOnline value in local storage', () => {
         expect(result.current.offline).toBe(true)
 
         // Check localStorage for a stored date
-        const parsedDate = new Date(localStorage.getItem(lastOnlineKey))
+        const parsedDate = new Date(
+            localStorage.getItem(lastOnlineKey) as string
+        )
         expect(parsedDate.toString()).not.toBe('Invalid Date')
-        // ! Check hook return value (fails following tests)
-        expect(result.current.localStorageVal).not.toBe(null)
+        // Check hook return value (fails following tests)
         expect(result.current.lastOnline).toBeInstanceOf(Date)
         expect(result.current.lastOnline?.toUTCString()).toBe(
             localStorage.getItem(lastOnlineKey)
@@ -403,5 +404,51 @@ describe('it updates the lastOnline value in local storage', () => {
 
         // expect(localStorage.getItem(lastOnlineKey)).toBe(null)
         expect(result.current.lastOnline).toBe(null)
+    })
+
+    it('tracks correctly when going offline and online', async () => {
+        jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true)
+        const events: CapturedEventListeners = {}
+        window.addEventListener = jest.fn(
+            (event, cb) => (events[event] = cb as EventListener)
+        )
+        const { result, waitForNextUpdate } = renderHook(
+            (...args) => useOnlineStatus(...args),
+            { initialProps: { debounceDelay: 10 } }
+        )
+
+        // Correct initial state
+        expect(localStorage.getItem(lastOnlineKey)).toBe(null)
+        expect(result.current.lastOnline).toBe(null)
+
+        act(() => {
+            events.offline(new Event('offline'))
+        })
+        await waitForNextUpdate({ timeout: 20 })
+
+        const firstDate = new Date(
+            localStorage.getItem(lastOnlineKey) as string
+        )
+        const firstValue = result.current.lastOnline?.valueOf()
+
+        act(() => {
+            events.offline(new Event('online'))
+        })
+        await waitForNextUpdate({ timeout: 20 })
+
+        expect(result.current.lastOnline).toBe(null)
+
+        // todo: this is an error from UTC strings' imprecision
+        await wait(1000)
+
+        act(() => {
+            events.offline(new Event('offline'))
+        })
+        await waitForNextUpdate({ timeout: 20 })
+
+        expect(
+            new Date(localStorage.getItem(lastOnlineKey) as string)
+        ).not.toEqual(firstDate)
+        expect(result.current.lastOnline?.valueOf()).not.toEqual(firstValue)
     })
 })

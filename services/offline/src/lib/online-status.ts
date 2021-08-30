@@ -10,8 +10,6 @@ interface OnlineStatus {
     online: boolean
     offline: boolean
     lastOnline: Date | null
-    // todo: remove
-    localStorageVal: string | null
 }
 
 const lastOnlineKey = 'dhis2.lastOnline'
@@ -26,12 +24,12 @@ const lastOnlineKey = 'dhis2.lastOnline'
  * `options.debounceDelay` param.
  *
  * On state change, updates the `dhis2.lastOnline` property in local storage
- * for consuming apps to format and display.
+ * for consuming apps to format and display. Returns `lastOnline` as `null` if
+ * online or as a Date if offline.
  *
  * @param {Object} [options]
  * @param {Number} [options.debounceDelay] - Timeout delay to debounce updates, in ms
- * todo: update return value
- * @returns {Object} `{ online, offline }` booleans. Each is the opposite of the other.
+ * @returns {Object} `{ online: boolean, offline: boolean, lastOnline: Date | null }`
  */
 export function useOnlineStatus(
     options: OnlineStatusOptions = {}
@@ -45,13 +43,13 @@ export function useOnlineStatus(
             if (type === 'online') {
                 setOnline(true)
             } else if (type === 'offline') {
-                setOnline(false)
-                if (!localStorage.getItem(lastOnlineKey)) {
+                if (online || !localStorage.getItem(lastOnlineKey)) {
                     localStorage.setItem(
                         lastOnlineKey,
                         new Date(Date.now()).toUTCString()
                     )
                 }
+                setOnline(false)
             }
         }, options.debounceDelay || 1000),
         [options.debounceDelay]
@@ -75,7 +73,5 @@ export function useOnlineStatus(
         online,
         offline: !online,
         lastOnline: lastOnline ? new Date(lastOnline) : null,
-        // for testing purposes:
-        localStorageVal: localStorage.getItem(lastOnlineKey),
     }
 }
