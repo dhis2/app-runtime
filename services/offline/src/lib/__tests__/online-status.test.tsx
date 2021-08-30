@@ -372,6 +372,26 @@ describe('it updates the lastOnline value in local storage', () => {
         )
     })
 
+    it("sets lastOnline on mount if it's not set", () => {
+        jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(false)
+        const events: CapturedEventListeners = {}
+        window.addEventListener = jest.fn(
+            (event, cb) => (events[event] = cb as EventListener)
+        )
+        const { result } = renderHook((...args) => useOnlineStatus(...args), {
+            initialProps: { debounceDelay: 0 },
+        })
+
+        const parsedDate = new Date(
+            localStorage.getItem(lastOnlineKey) as string
+        )
+        expect(parsedDate.toString()).not.toBe('Invalid Date')
+        expect(result.current.lastOnline).toBeInstanceOf(Date)
+        expect(result.current.lastOnline?.toUTCString()).toBe(
+            localStorage.getItem(lastOnlineKey)
+        )
+    })
+
     it("doesn't change lastOnline it exists and if it's already offline", async () => {
         // seed localStorage
         localStorage.setItem(lastOnlineKey, testDateString)
