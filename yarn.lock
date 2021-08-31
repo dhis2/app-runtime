@@ -1340,13 +1340,37 @@
   dependencies:
     moment "^2.24.0"
 
-"@dhis2/app-runtime@^2.8.0":
+"@dhis2/app-runtime@2.10.0-pwa.4":
   version "2.10.0-pwa.4"
+  resolved "https://registry.yarnpkg.com/@dhis2/app-runtime/-/app-runtime-2.10.0-pwa.4.tgz#62a58f3588a38190966e19def97f291f251d519e"
+  integrity sha512-7421t9nqH94fy0O5ZGqhaKkjI8wV9W23F7ILikfuI+zJDssw04iHxtfkouON3SDUhnzbOw2/VNnJNbBQE/BtbQ==
   dependencies:
     "@dhis2/app-service-alerts" "2.10.0-pwa.4"
     "@dhis2/app-service-config" "2.10.0-pwa.4"
     "@dhis2/app-service-data" "2.10.0-pwa.4"
     "@dhis2/app-service-offline" "2.10.0-pwa.4"
+
+"@dhis2/app-service-alerts@2.10.0-pwa.4":
+  version "2.10.0-pwa.4"
+  resolved "https://registry.yarnpkg.com/@dhis2/app-service-alerts/-/app-service-alerts-2.10.0-pwa.4.tgz#397002167e5c07067aad5b0d4d0c0a2fa2dd1aa0"
+  integrity sha512-lr+O+qjBpgqGowzgJGQBsssoTrqODyhW9XNWh9+W2LFp5XGiHKjPJbgUsm1yLFbVGTfeImgrnl4WvMOU5Czp3g==
+
+"@dhis2/app-service-config@2.10.0-pwa.4":
+  version "2.10.0-pwa.4"
+  resolved "https://registry.yarnpkg.com/@dhis2/app-service-config/-/app-service-config-2.10.0-pwa.4.tgz#5973e2043538e117d458123a98ae51079b0281d4"
+  integrity sha512-HCpcYhnwbR72Y/gfov2pTrlfb9ZdjHynRV1fE7XGXpY/cTzSLbjJE5czz3mbTvIWWAzll6y0fEysGKJcgYeo8A==
+
+"@dhis2/app-service-data@2.10.0-pwa.4":
+  version "2.10.0-pwa.4"
+  resolved "https://registry.yarnpkg.com/@dhis2/app-service-data/-/app-service-data-2.10.0-pwa.4.tgz#e0baa3cad94d4c59ff02f23e2a12e752b7e678b3"
+  integrity sha512-xSyA83oBWjFkvPaO3WX8r0XYYkiS7OgG3mgQ0yShz7O60tuFfxgb9vQSfeaJDsubdkici67OSnl2urYIpXgAUw==
+
+"@dhis2/app-service-offline@2.10.0-pwa.4":
+  version "2.10.0-pwa.4"
+  resolved "https://registry.yarnpkg.com/@dhis2/app-service-offline/-/app-service-offline-2.10.0-pwa.4.tgz#11eaee946960f620ad170d0409187e88a626b264"
+  integrity sha512-K1h8RG7ZezuC+g2lQNrfYngNe9sWBcPgr7F/xaOkSjUMbHUZuaQC7VC6upHe58sAVBLZG7iBKnbqpznrZlMN9g==
+  dependencies:
+    lodash "^4.17.21"
 
 "@dhis2/app-shell@6.2.0":
   version "6.2.0"
@@ -2360,15 +2384,10 @@
   resolved "https://registry.yarnpkg.com/@types/minimist/-/minimist-1.2.1.tgz#283f669ff76d7b8260df8ab7a4262cc83d988256"
   integrity sha512-fZQQafSREFyuZcdWFAExYjBiCL7AUCdgsk80iO0q4yihYYdcIiH28CcuPTGFgLOCC8RlW49GSQxdHwZP+I7CNg==
 
-"@types/node@*":
-  version "14.14.31"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.31.tgz#72286bd33d137aa0d152d47ec7c1762563d34055"
-  integrity sha512-vFHy/ezP5qI0rFgJ7aQnjDXwAMrG0KqqIH7tQG5PPv3BWBayOPIQNBjVc/P6hhdZfMx51REc6tfDNXHUio893g==
-
-"@types/node@^13.1.8":
-  version "13.13.45"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.13.45.tgz#e6676bcca092bae5751d015f074a234d5a82eb63"
-  integrity sha512-703YTEp8AwQeapI0PTXDOj+Bs/mtdV/k9VcTP7z/de+lx6XjFMKdB+JhKnK+6PZ5za7omgZ3V6qm/dNkMj/Zow==
+"@types/node@*", "@types/node@^16.7.9":
+  version "16.7.9"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.7.9.tgz#3bf27710839e62a470ddf6bd8dd321f1737ce5b4"
+  integrity sha512-KktxVzS4FPDFVHUUOWyZMvRo//8vqOLITtLMhFSW9IdLsYT/sPyXj3wXtaTcR7A7olCe7R2Xy7R+q5pg2bU46g==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
