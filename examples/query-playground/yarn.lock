@@ -1782,25 +1782,36 @@
   dependencies:
     moment "^2.24.0"
 
-"@dhis2/app-runtime@*", "@dhis2/app-runtime@^2.2.2", "@dhis2/app-runtime@file:../../runtime":
+"@dhis2/app-runtime@*":
   version "2.8.0"
+  resolved "https://registry.yarnpkg.com/@dhis2/app-runtime/-/app-runtime-2.8.0.tgz#83ca6e96c299686ee72eea3e1825e04aa53cd5d2"
+  integrity sha512-Ru6x9L61fD7ITzVaxFqx88kV5/ypB9xSr8nHgRj4EE/kHl/aVejXuwnSS2OIWh80J3mtD1dpNRN/GJ8o0x0HYg==
   dependencies:
     "@dhis2/app-service-alerts" "2.8.0"
     "@dhis2/app-service-config" "2.8.0"
     "@dhis2/app-service-data" "2.8.0"
-    "@dhis2/app-service-offline" "2.8.0"
 
-"@dhis2/app-service-alerts@2.8.0", "@dhis2/app-service-alerts@file:../../services/alerts":
-  version "2.8.0"
+"@dhis2/app-runtime@^2.2.2", "@dhis2/app-runtime@file:../../runtime":
+  version "2.10.0-pwa.4"
+  dependencies:
+    "@dhis2/app-service-alerts" "2.10.0-pwa.4"
+    "@dhis2/app-service-config" "2.10.0-pwa.4"
+    "@dhis2/app-service-data" "2.10.0-pwa.4"
+    "@dhis2/app-service-offline" "2.10.0-pwa.4"
 
-"@dhis2/app-service-config@2.8.0", "@dhis2/app-service-config@file:../../services/config":
-  version "2.8.0"
+"@dhis2/app-service-alerts@2.10.0-pwa.4", "@dhis2/app-service-alerts@2.8.0", "@dhis2/app-service-alerts@file:../../services/alerts":
+  version "2.10.0-pwa.4"
 
-"@dhis2/app-service-data@2.8.0", "@dhis2/app-service-data@file:../../services/data":
-  version "2.8.0"
+"@dhis2/app-service-config@2.10.0-pwa.4", "@dhis2/app-service-config@2.8.0", "@dhis2/app-service-config@file:../../services/config":
+  version "2.10.0-pwa.4"
 
-"@dhis2/app-service-offline@2.8.0", "@dhis2/app-service-offline@file:../../services/offline":
-  version "2.8.0"
+"@dhis2/app-service-data@2.10.0-pwa.4", "@dhis2/app-service-data@2.8.0", "@dhis2/app-service-data@file:../../services/data":
+  version "2.10.0-pwa.4"
+
+"@dhis2/app-service-offline@2.10.0-pwa.4", "@dhis2/app-service-offline@file:../../services/offline":
+  version "2.10.0-pwa.4"
+  dependencies:
+    lodash "^4.17.21"
 
 "@dhis2/app-shell@5.2.0":
   version "5.2.0"
@@ -8253,6 +8264,11 @@ lodash@^4.17.19:
   version "4.17.20"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
   integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
+
+lodash@^4.17.21:
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
+  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
 loglevel@^1.6.6:
   version "1.6.7"
