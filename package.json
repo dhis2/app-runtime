@@ -1,5 +1,5 @@
 {
-    "version": "2.10.0-pwa.3",
+    "version": "2.10.0-pwa.4",
     "description": "A singular runtime dependency for applications on the DHIS2 platform",
     "repository": "https://github.com/dhis2/app-runtime.git",
     "author": "Austin McGee <austin@dhis2.org>",
@@ -59,6 +59,6 @@
         }
     },
     "resolutions": {
-        "@dhis2/app-runtime": "2.10.0-pwa.3"
+        "@dhis2/app-runtime": "2.10.0-pwa.4"
     }
 }
