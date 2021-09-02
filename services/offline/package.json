@@ -1,0 +1,44 @@
+{
+    "name": "@dhis2/app-service-offline",
+    "description": "A runtime service for online/offline detection and offline caching",
+    "version": "2.11.0",
+    "main": "./build/cjs/index.js",
+    "module": "./build/es/index.js",
+    "types": "build/types/index.d.ts",
+    "exports": {
+        "import": "./build/es/index.js",
+        "require": "./build/cjs/index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dhis2/app-runtime.git",
+        "directory": "services/offline"
+    },
+    "author": "Kai Vandivier <kai@dhis2.org>",
+    "license": "BSD-3-Clause",
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "build/**"
+    ],
+    "scripts": {
+        "build:types": "tsc --emitDeclarationOnly --outDir ./build/types",
+        "build:package": "d2-app-scripts build",
+        "build": "concurrently -n build,types \"yarn build:package\" \"yarn build:types\"",
+        "watch": "NODE_ENV=development concurrently -n build,types \"yarn build:package --watch\" \"yarn build:types --watch\"",
+        "type-check": "tsc --noEmit --allowJs --checkJs",
+        "type-check:watch": "yarn type-check --watch",
+        "test": "d2-app-scripts test",
+        "coverage": "yarn test --coverage"
+    },
+    "peerDependencies": {
+        "@dhis2/app-service-alerts": "2.11.0",
+        "prop-types": "^15.7.2",
+        "react": "^16.8.6",
+        "react-dom": "^16.8.6"
+    },
+    "dependencies": {
+        "lodash": "^4.17.21"
+    }
+}
