@@ -1,3 +1,10 @@
+## [2.11.1](https://github.com/dhis2/app-runtime/compare/v2.11.0...v2.11.1) (2021-09-02)
+
+
+### Bug Fixes
+
+* **pkg:** remove unnecessary resolution ([#984](https://github.com/dhis2/app-runtime/issues/984)) ([ff08b91](https://github.com/dhis2/app-runtime/commit/ff08b91758a52da2f54fbeacda8f5745d1542801))
+
 # [2.11.0](https://github.com/dhis2/app-runtime/compare/v2.10.0...v2.11.0) (2021-08-31)
 
 
