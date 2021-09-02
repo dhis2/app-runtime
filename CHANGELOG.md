@@ -1,3 +1,27 @@
+# [2.12.0-beta.1](https://github.com/dhis2/app-runtime/compare/v2.11.1...v2.12.0-beta.1) (2021-09-02)
+
+
+### Bug Fixes
+
+* **dependencies:** add optional cli-app-scripts peer dependency requirement ([32733b5](https://github.com/dhis2/app-runtime/commit/32733b5725ccb3c2532b7c49ccb221e0c4e50e17))
+* **logging:** silence react-query logger by default ([aa3dc1c](https://github.com/dhis2/app-runtime/commit/aa3dc1cdce5d9ad4f0f6b79fe9b055c1954b17c7))
+* **refetch:** force refetch when variables resolve to identical query key ([524eb3e](https://github.com/dhis2/app-runtime/commit/524eb3eec0f50b00ae3db1a4c3e052993bbe4edc))
+* **use-data-query:** drop context sharing ([f9af172](https://github.com/dhis2/app-runtime/commit/f9af172fa7d14139c8d003862d597ff2183b40ab))
+* **use-data-query:** only set variables if they've changed ([e96d984](https://github.com/dhis2/app-runtime/commit/e96d9848bc036e51f470721195e05f56e99adb17))
+* **use-data-query:** throw more specific error on serialization failure ([35a6b28](https://github.com/dhis2/app-runtime/commit/35a6b280ff61f8fdd69a5d2a376f0d3e7be2c7a9))
+* **use-data-query:** use isFetching for loading state ([728f346](https://github.com/dhis2/app-runtime/commit/728f3464705b43e0c8074cf64d5fcd1d08280e91))
+* **use-data-query:** use local stable value hashing function ([147ba28](https://github.com/dhis2/app-runtime/commit/147ba281bde191597e5d402a3fc2883268dadd3a))
+* **use-data-query:** use ref to store variables hash ([3025dc7](https://github.com/dhis2/app-runtime/commit/3025dc7211b19eb2639e3c01bd19f50a8d23a012))
+
+
+### Features
+
+* **custom-data-provider:** include react-query provider in custom-data-provider ([99ff732](https://github.com/dhis2/app-runtime/commit/99ff732521f80dbe6431586ebe0b99f93ed2f080))
+* **custom-data-provider:** use query client defaults for custom data provider ([a566c4d](https://github.com/dhis2/app-runtime/commit/a566c4d943742c863006c6f7fa0ce3ba04380a4d))
+* **data-provider:** enable context sharing ([2018513](https://github.com/dhis2/app-runtime/commit/2018513f8fa53972d0c483ae8c2bd4f130175ab7))
+* **use-data-query:** set conservative defaults for caching ([e5e4f69](https://github.com/dhis2/app-runtime/commit/e5e4f6993e4736efdbc86ea4ca286f45915bc451))
+* **use-data-query:** use react-query to cache queries ([87fdcd8](https://github.com/dhis2/app-runtime/commit/87fdcd841e0fa6f299b2363773233c191d874ce0))
+
 # [2.9.0-beta.7](https://github.com/dhis2/app-runtime/compare/v2.9.0-beta.6...v2.9.0-beta.7) (2021-08-12)
 
 
@@ -76,6 +100,48 @@
 
 * **custom-data-provider:** include react-query provider in custom-data-provider ([99ff732](https://github.com/dhis2/app-runtime/commit/99ff732521f80dbe6431586ebe0b99f93ed2f080))
 * **use-data-query:** use react-query to cache queries ([87fdcd8](https://github.com/dhis2/app-runtime/commit/87fdcd841e0fa6f299b2363773233c191d874ce0))
+
+## [2.11.1](https://github.com/dhis2/app-runtime/compare/v2.11.0...v2.11.1) (2021-09-02)
+
+
+### Bug Fixes
+
+* **pkg:** remove unnecessary resolution ([#984](https://github.com/dhis2/app-runtime/issues/984)) ([ff08b91](https://github.com/dhis2/app-runtime/commit/ff08b91758a52da2f54fbeacda8f5745d1542801))
+
+# [2.11.0](https://github.com/dhis2/app-runtime/compare/v2.10.0...v2.11.0) (2021-08-31)
+
+
+### Features
+
+* add offline service ([#874](https://github.com/dhis2/app-runtime/issues/874)) ([578bd41](https://github.com/dhis2/app-runtime/commit/578bd41678535a293bc537f6d4b3114a693b5869))
+
+# [2.10.0](https://github.com/dhis2/app-runtime/compare/v2.9.2...v2.10.0) (2021-08-30)
+
+
+### Features
+
+* track 'last online' time in localStorage ([#974](https://github.com/dhis2/app-runtime/issues/974)) ([98d7cd3](https://github.com/dhis2/app-runtime/commit/98d7cd3d289ca92444f17fc66a40aa73f6927f99))
+
+## [2.9.2](https://github.com/dhis2/app-runtime/compare/v2.9.1...v2.9.2) (2021-08-24)
+
+
+### Bug Fixes
+
+* **online-status:** handle debouncing across rerenders ([#963](https://github.com/dhis2/app-runtime/issues/963)) ([e83bfd1](https://github.com/dhis2/app-runtime/commit/e83bfd18b2f41cd60dec8d99ad743b5c9edb39ea))
+
+## [2.9.1](https://github.com/dhis2/app-runtime/compare/v2.9.0...v2.9.1) (2021-08-16)
+
+
+### Bug Fixes
+
+* update useOnlineStatus debounce delay when options change ([#960](https://github.com/dhis2/app-runtime/issues/960)) ([4f7c237](https://github.com/dhis2/app-runtime/commit/4f7c237949237ab2262a52770783334a721e94e1))
+
+# [2.9.0](https://github.com/dhis2/app-runtime/compare/v2.8.0...v2.9.0) (2021-08-13)
+
+
+### Features
+
+* add online status ([#953](https://github.com/dhis2/app-runtime/issues/953)) ([9b45a81](https://github.com/dhis2/app-runtime/commit/9b45a81f074d3dc501b4acb34af8b75893ba8dbf))
 
 # [2.8.0](https://github.com/dhis2/app-runtime/compare/v2.7.1...v2.8.0) (2021-03-10)
 

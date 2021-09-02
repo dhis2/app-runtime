@@ -3,6 +3,7 @@ import './App.css'
 import { Alerts } from './components/Alerts'
 import { ConfigConsumer } from './components/ConfigConsumer'
 import { IndicatorList } from './components/IndicatorList'
+import { OnlineStatus } from './components/OnlineStatus'
 import { SwitchableProvider } from './components/SwitchableProvider'
 
 const config = {
@@ -19,6 +20,7 @@ const App = () => {
         <SwitchableProvider type={providerType} config={config}>
             <div className="App">
                 <header className="App-header">
+                    <OnlineStatus />
                     <ConfigConsumer />
                     <IndicatorList />
                     <Alerts />

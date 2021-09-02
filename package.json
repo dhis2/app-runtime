@@ -1,5 +1,5 @@
 {
-    "version": "2.9.0-beta.7",
+    "version": "2.12.0-beta.1",
     "description": "A singular runtime dependency for applications on the DHIS2 platform",
     "repository": "https://github.com/dhis2/app-runtime.git",
     "author": "Austin McGee <austin@dhis2.org>",
@@ -10,13 +10,14 @@
         "services/*"
     ],
     "devDependencies": {
-        "@dhis2/cli-app-scripts": "^5.7.1",
+        "@dhis2/cli-app-scripts": "^6.2.0",
         "@dhis2/cli-style": "^7.2.2",
         "@dhis2/cli-utils-docsite": "^2.0.3",
-        "@testing-library/jest-dom": "^5.0.2",
-        "@testing-library/react": "^10.0.0",
-        "@testing-library/react-hooks": "^3.2.1",
+        "@testing-library/jest-dom": "^5.14.1",
+        "@testing-library/react": "^12.0.0",
+        "@testing-library/react-hooks": "^7.0.1",
         "@types/jest": "^24.9.0",
+        "@types/lodash": "^4.14.171",
         "@types/node": "^13.1.8",
         "@types/react": "^16.9.18",
         "@types/react-dom": "^16.9.5",
