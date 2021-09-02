@@ -57,8 +57,5 @@
             "name": "DHIS2 Application Runtime",
             "description": "A singular runtime dependency for applications on the [DHIS2 platform](https://platform.dhis2.nu)"
         }
-    },
-    "resolutions": {
-        "@dhis2/app-runtime": "2.10.0-pwa.4"
     }
 }
