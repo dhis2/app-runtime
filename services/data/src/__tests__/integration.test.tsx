@@ -1,5 +1,5 @@
 import { render, waitFor } from '@testing-library/react'
-import React, { ReactNode } from 'react'
+import * as React from 'react'
 import { CustomDataProvider, DataQuery } from '../react'
 import { QueryRenderInput } from '../types'
 
