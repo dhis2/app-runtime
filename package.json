@@ -10,7 +10,7 @@
         "services/*"
     ],
     "devDependencies": {
-        "@dhis2/cli-app-scripts": "^6.2.0",
+        "@dhis2/cli-app-scripts": "^7.6.2",
         "@dhis2/cli-style": "^7.2.2",
         "@dhis2/cli-utils-docsite": "^2.0.3",
         "@testing-library/jest-dom": "^5.14.1",
@@ -57,8 +57,5 @@
             "name": "DHIS2 Application Runtime",
             "description": "A singular runtime dependency for applications on the [DHIS2 platform](https://platform.dhis2.nu)"
         }
-    },
-    "resolutions": {
-        "@dhis2/app-runtime": "2.10.0-pwa.4"
     }
 }
