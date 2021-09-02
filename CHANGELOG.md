@@ -1,3 +1,33 @@
+# [3.0.0-beta.1](https://github.com/dhis2/app-runtime/compare/v2.12.0-beta.1...v3.0.0-beta.1) (2021-09-02)
+
+
+### chore
+
+* **use-data-query:** list breaking changes ([89cb1e6](https://github.com/dhis2/app-runtime/commit/89cb1e634a336dd871de719fcc51b80f4742294e))
+
+
+### BREAKING CHANGES
+
+* **use-data-query:** If you're using cli-app-scripts, these changes need @dhis2/cli-app-scripts version
+7.1.1 or above. Since this is an optional peer-dependency you'll need to ensure you're using the
+proper version.
+* **use-data-query:** The DataProvider is now a required parent for all components that use the
+useDataQuery hook. For apps that use the dhis2 app-platform this will be done automatically, but
+for libraries (and storybook testing) you'll have to do this manually.
+* **use-data-query:** The variables supplied to refetch are not allowed to contain circular references.
+* **use-data-query:** The data and error values will not be cleared during a refetch (this allows for
+the opt-in stale-while-revalidate). This means that logic that relies on data or error being
+cleared during a refetch will now behave differently. For example, placing an if condition that
+checks if there is an error before a condition that checks for loading will now keep showing the
+error during a refetch, instead of showing the loading spinner.
+* **use-data-query:** There have been issues reported where yarn v1 had trouble installing the correct
+babel dependencies. For the situations where that occured, deduplicating the yarn.lock resolved the
+issue.
+* **use-data-query:** There is a rare but unresolved issue where it's possible for the timing in tests
+to behave differently from the timing in apps. This happens for tests that expect loading to be set
+to true immediately after calling refetch. Changing such an assertion to an assertion that waits
+for loading to eventually be true, i.e. @testing-library/react's waitFor(), resolves this issue.
+
 # [2.12.0-beta.1](https://github.com/dhis2/app-runtime/compare/v2.11.1...v2.12.0-beta.1) (2021-09-02)
 
 
