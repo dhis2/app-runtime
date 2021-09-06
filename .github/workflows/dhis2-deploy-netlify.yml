@@ -32,8 +32,8 @@ jobs:
             - run: yarn install --frozen-lockfile
 
             - run: |
-                yarn build
-                yarn docs:build
+                  yarn build
+                  yarn docs:build
 
             - uses: nwtgck/actions-netlify@v1.1
               with:
