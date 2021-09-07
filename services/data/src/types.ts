@@ -13,9 +13,7 @@ export interface ContextInput {
     apiVersion: number
 }
 
-export interface RefetchOptions {
-    variables?: QueryVariables
-}
+export type RefetchOptions = QueryVariables
 export type RefetchFunction<ReturnType> = (
     options?: RefetchOptions
 ) => Promise<ReturnType>
@@ -45,6 +43,7 @@ export interface ExecuteHookResult<ReturnType> {
 export interface QueryState {
     called: boolean
     loading: boolean
+    fetching: boolean
     error?: FetchError
     data?: QueryResult
 }
