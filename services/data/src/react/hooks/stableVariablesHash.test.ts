@@ -38,7 +38,7 @@ describe('stableVariablesHash', () => {
         expect(stableVariablesHash(five)).toMatchInlineSnapshot(`"true"`)
     })
 
-    it('throws a clear error when something goes wrong', () => {
+    it('throws a clear error when the variables contain a circular reference', () => {
         const unserializable = {
             value: 'value',
         }
