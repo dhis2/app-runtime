@@ -1,3 +1,18 @@
+# [3.0.0-beta.2](https://github.com/dhis2/app-runtime/compare/v3.0.0-beta.1...v3.0.0-beta.2) (2021-09-07)
+
+
+### Bug Fixes
+
+* **use-data-query:** enable swr by default ([76cb34a](https://github.com/dhis2/app-runtime/commit/76cb34abcec9f76f371b1f7f70cedeafc9ccd600))
+
+
+### BREAKING CHANGES
+
+* **use-data-query:** loading will only be set to true when fetching and if there is no data. If there
+is data, loading will be false during fetching. This means that stale data will be shown during
+fetches by default. If you'd like to opt out of showing stale data during loading you can use the
+new `fetching` attribute that is now returned by the useDataQuery hook instead.
+
 # [3.0.0-beta.1](https://github.com/dhis2/app-runtime/compare/v2.12.0-beta.1...v3.0.0-beta.1) (2021-09-02)
 
 
