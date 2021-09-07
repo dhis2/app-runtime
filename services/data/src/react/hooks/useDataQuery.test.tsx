@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react-hooks'
-import React from 'react'
+import * as React from 'react'
 import { CustomDataProvider } from '../components/CustomDataProvider'
 import { useDataQuery } from './useDataQuery'
 
@@ -471,7 +471,8 @@ describe('useDataQuery', () => {
 
             expect(mockSpy).toHaveBeenCalledTimes(2)
             expect(result.current).toMatchObject({
-                loading: true,
+                loading: false,
+                fetching: true,
                 called: true,
                 data: { x: 42 },
             })
@@ -481,6 +482,7 @@ describe('useDataQuery', () => {
             expect(mockSpy).toHaveBeenCalledTimes(2)
             expect(result.current).toMatchObject({
                 loading: false,
+                fetching: false,
                 called: true,
                 data: { x: 43 },
             })
