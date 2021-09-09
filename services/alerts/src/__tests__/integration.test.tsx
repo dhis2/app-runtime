@@ -187,9 +187,11 @@ describe('useAlert and useAlerts used together', () => {
         })
 
         expect(result.current.alerts).toHaveLength(1)
+        // ID is updated so it shows on top of the alert stack
+        expect(result.current.alerts[0].id).toBe(2)
     })
 
-    it('Will update the alert if show is called with different arguments', () => {
+    it('Will update the alert and move it to the top if show is called with different arguments', () => {
         const wrapper = ({ children }: { children?: ReactNode }) => (
             <AlertsProvider>{children}</AlertsProvider>
         )
@@ -238,7 +240,7 @@ describe('useAlert and useAlerts used together', () => {
         expect(result.current.alerts).toHaveLength(1)
         expect(result.current.alerts[0]).toEqual({
             ...payload2,
-            id: 1,
+            id: 2,
             remove: expect.any(Function),
             options: {
                 ...payload2.options,
@@ -302,7 +304,6 @@ describe('useAlert and useAlerts used together', () => {
         act(() => {
             result.current.alert2.hide()
         })
-
         expect(result.current.alerts).toHaveLength(2)
 
         expect(result.current.alerts[0].id).toBe(1)
