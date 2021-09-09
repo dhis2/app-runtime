@@ -5,21 +5,11 @@ const toVisibleAlertsArray = (alertsMap: AlertsMap) =>
         (a, b) => (a.id as number) - (b.id as number)
     )
 
-const createRemoveFactory = (
-    alertsMap: AlertsMap,
-    setAlerts: React.Dispatch<React.SetStateAction<Alert[]>>
-) => (id: number, alertRef: AlertRef) => () => {
-    alertsMap.delete(id)
-    alertRef.current = null
-    setAlerts(toVisibleAlertsArray(alertsMap))
-}
-
 export const makeAlertsManager = (
     setAlerts: React.Dispatch<React.SetStateAction<Alert[]>>
 ): AlertsManager => {
     const alertsMap: AlertsMap = new Map()
     let id = 0
-    const createRemove = createRemoveFactory(alertsMap, setAlerts)
 
     const add = (alert: Alert, alertRef: AlertRef) => {
         id++
@@ -29,10 +19,16 @@ export const makeAlertsManager = (
             alertsMap.delete(alert.id)
         }
 
+        const alertId = id
+
         const alertsMapAlert = {
             ...alert,
-            id,
-            remove: createRemove(id, alertRef),
+            id: alertId,
+            remove: () => {
+                alertsMap.delete(alertId)
+                alertRef.current = null
+                setAlerts(toVisibleAlertsArray(alertsMap))
+            },
         }
 
         alertsMap.set(alertsMapAlert.id, alertsMapAlert)
