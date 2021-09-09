@@ -13,7 +13,7 @@
 
 The DHIS2 app-shell comes with the alerts provider and a component to show `AlertBar`s in an `AlertStack` (`@dhis2/ui` components), so in a typical DHIS2 platform-app only the `useAlert` hook is used and it can be imported from `@dhis2/app-runtime`.
 
-When used in a platform-app, the `options` argument should be an object with properties that match the [props of of an `AlertBar`](https://ui.dhis2.nu/#/api?id=coresrcalertbaralertbarproptypes-object).
+When used in a platform-app, the `options` argument should be an object with properties that match the [props of of an `AlertBar`](https://ui.dhis2.nu/#/api?id=alertbar).
 
 ## Usage of the returned `show` function
 
