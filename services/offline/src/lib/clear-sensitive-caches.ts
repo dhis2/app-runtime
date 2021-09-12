@@ -9,6 +9,12 @@ const KEEPABLE_CACHES = [
     /other-assets/, // static assets cached at runtime - shouldn't be sensitive
 ]
 
+declare global {
+    interface IDBFactory {
+        databases(): Promise<[{ name: string; version: number }]>
+    }
+}
+
 /*
  * Clears the 'sections-db' IndexedDB if it exists. Designed to avoid opening
  * a new DB if it doesn't exist yet. Firefox can't check if 'sections-db'
@@ -24,7 +30,7 @@ const clearDB = async (): Promise<void> => {
         return
     }
 
-    const dbs: [{ name: string; version: number }] = await indexedDB.databases()
+    const dbs = await window.indexedDB.databases()
     if (!dbs.find(({ name }) => name === SECTIONS_DB)) {
         // Sections-db is not created; nothing to do here
         return
