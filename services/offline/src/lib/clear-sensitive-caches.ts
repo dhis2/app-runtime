@@ -55,9 +55,9 @@ const clearDB = async (dbName: string): Promise<void> => {
     })
 }
 
-/*
- * Used to clear caches and IndexedDB when a user logs out or a different
- * user logs in to prevent someone from accessing a different user's
+/**
+ * Used to clear caches and 'sections-db' IndexedDB when a user logs out or a
+ * different user logs in to prevent someone from accessing a different user's
  * caches. Should be able to be used in a non-PWA app.
  */
 export async function clearSensitiveCaches(

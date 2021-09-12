@@ -1,6 +1,13 @@
-// import { openDB } from 'idb'
+import FDBFactory from 'fake-indexeddb/lib/FDBFactory'
+import { openDB } from 'idb'
 import 'fake-indexeddb/auto'
-import { clearSensitiveCaches } from '../clear-sensitive-caches'
+import {
+    clearSensitiveCaches,
+    SECTIONS_DB,
+    SECTIONS_STORE,
+} from '../clear-sensitive-caches'
+
+// Mocks for CacheStorage API
 
 const keysMockDefault = jest.fn().mockImplementation(async () => [])
 const deleteMockDefault = jest.fn().mockImplementation(async () => null)
@@ -10,7 +17,6 @@ const cachesDefault = {
 }
 window.caches = cachesDefault
 
-// todo: set up DB for tests; tear down when necessary
 afterEach(() => {
     window.caches = cachesDefault
     jest.clearAllMocks()
@@ -31,16 +37,8 @@ afterAll(() => {
     ;(console.debug as jest.Mock).mockRestore()
 })
 
-// todo: remove after test db is set up
-test('mocks exists', () => {
-    expect(indexedDB).toBeDefined()
-    expect(window.indexedDB).toBeDefined()
-    expect('databases' in window.indexedDB).toBe(true)
-    expect(window.caches).toBeDefined()
-})
-
 it('does not fail if there are no caches or no sections-db', () => {
-    expect(async () => await clearSensitiveCaches()).not.toThrow()
+    return expect(clearSensitiveCaches()).resolves.toBeDefined()
 })
 
 it('clears potentially sensitive caches', async () => {
@@ -80,9 +78,65 @@ it('preserves keepable caches', async () => {
     )
 })
 
-// todo:
-it.todo('clears sections-db if it exists')
-it.todo(
-    "doesn't clear sections-db if it doesn't exist and doesn't open a new one"
-)
-it.todo("doesn't handle IDB if 'databases' property is not on window.indexedDB")
+describe('clears sections-db', () => {
+    // Test DB
+    function openTestDB(dbName: string) {
+        // simplified version of app platform openDB logic
+        return openDB(dbName, 1, {
+            upgrade(db) {
+                db.createObjectStore(SECTIONS_STORE, { keyPath: 'sectionId' })
+            },
+        })
+    }
+
+    afterEach(() => {
+        // reset indexedDB state
+        window.indexedDB = new FDBFactory()
+    })
+
+    it('clears sections-db if it exists', async () => {
+        // Open and populate test DB
+        const db = await openTestDB(SECTIONS_DB)
+        await db.put(SECTIONS_STORE, {
+            sectionId: 'id-1',
+            lastUpdated: new Date(),
+            requests: 3,
+        })
+        await db.put(SECTIONS_STORE, {
+            sectionId: 'id-2',
+            lastUpdated: new Date(),
+            requests: 3,
+        })
+
+        await clearSensitiveCaches()
+
+        // Sections-db should be cleared
+        const allSections = await db.getAll(SECTIONS_STORE)
+        expect(allSections).toHaveLength(0)
+    })
+
+    it("doesn't clear sections-db if it doesn't exist and doesn't open a new one", async () => {
+        const openMock = jest.fn()
+        window.indexedDB.open = openMock
+
+        expect(await indexedDB.databases()).not.toContain(SECTIONS_DB)
+
+        await clearSensitiveCaches()
+
+        expect(openMock).not.toHaveBeenCalled()
+        return expect(await indexedDB.databases()).not.toContain(SECTIONS_DB)
+    })
+
+    it("doesn't handle IDB if 'databases' property is not on window.indexedDB", async () => {
+        // Open DB -- 'indexedDB.open' would get called if databases property exists
+        await openTestDB(SECTIONS_DB)
+
+        delete Object.getPrototypeOf(window.indexedDB).databases
+        const openMock = jest.fn()
+        window.indexedDB.open = openMock
+
+        expect('databases' in window.indexedDB).toBe(false)
+        await expect(clearSensitiveCaches()).resolves.toBeDefined()
+        expect(openMock).not.toHaveBeenCalled()
+    })
+})
