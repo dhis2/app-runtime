@@ -23,7 +23,7 @@ declare global {
  * of recorded sections), and the OfflineInterface handles discrepancies
  * between CacheStorage and IndexedDB.
  */
-const clearDB = async (): Promise<void> => {
+const clearDB = async (dbName: string): Promise<void> => {
     if (!('databases' in indexedDB)) {
         // FF does not have indexedDB.databases. For that, just clear caches,
         // and offline interface will handle discrepancies in PWA apps.
@@ -31,14 +31,14 @@ const clearDB = async (): Promise<void> => {
     }
 
     const dbs = await window.indexedDB.databases()
-    if (!dbs.find(({ name }) => name === SECTIONS_DB)) {
+    if (!dbs.find(({ name }) => name === dbName)) {
         // Sections-db is not created; nothing to do here
         return
     }
 
     return new Promise((resolve, reject) => {
         // IndexedDB fun:
-        const openDBRequest = indexedDB.open(SECTIONS_DB)
+        const openDBRequest = indexedDB.open(dbName)
         openDBRequest.onsuccess = e => {
             const db = (e.target as IDBOpenDBRequest).result
             const tx = db.transaction(SECTIONS_STORE, 'readwrite')
@@ -60,12 +60,14 @@ const clearDB = async (): Promise<void> => {
  * user logs in to prevent someone from accessing a different user's
  * caches. Should be able to be used in a non-PWA app.
  */
-export async function clearSensitiveCaches(): Promise<any> {
+export async function clearSensitiveCaches(
+    dbName: string = SECTIONS_DB
+): Promise<any> {
     console.debug('Clearing sensitive caches')
 
     const cacheKeys = await caches.keys()
     return Promise.all([
-        clearDB(),
+        clearDB(dbName),
         // remove caches if not in keepable list
         ...cacheKeys.map(key => {
             if (!KEEPABLE_CACHES.some(pattern => pattern.test(key))) {
