@@ -1,6 +1,6 @@
 // IndexedDB names; should be the same as in @dhis2/pwa
-const SECTIONS_DB = 'sections-db'
-const SECTIONS_STORE = 'sections-store'
+export const SECTIONS_DB = 'sections-db'
+export const SECTIONS_STORE = 'sections-store'
 
 // Non-sensitive caches that can be kept:
 const KEEPABLE_CACHES = [
@@ -61,7 +61,7 @@ const clearDB = async (): Promise<void> => {
  * caches. Should be able to be used in a non-PWA app.
  */
 export async function clearSensitiveCaches(): Promise<any> {
-    console.debug('[SW] Clearing sensitive caches')
+    console.debug('Clearing sensitive caches')
 
     const cacheKeys = await caches.keys()
     return Promise.all([
