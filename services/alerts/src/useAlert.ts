@@ -1,27 +1,39 @@
-import { useContext } from 'react'
+import { useContext, useRef, useCallback } from 'react'
 import { AlertsManagerContext } from './AlertsManagerContext'
-import { Alert, AlertOptions } from './types'
+import type { AlertOptions, Alert, AlertsManager } from './types'
 
 export const useAlert = (
     message: string | ((props: any) => string),
     options: AlertOptions | ((props: any) => AlertOptions) = {}
-) => {
-    const alertsManager = useContext(AlertsManagerContext)
+): { show: (props?: any) => void; hide: () => void } => {
+    const { add }: AlertsManager = useContext(AlertsManagerContext)
+    const alertRef = useRef(<Alert | null>null)
 
-    const show = (props?: any) => {
-        const resolvedMessage = String(
-            typeof message === 'function' ? message(props) : message
-        )
-        const resolvedOptions =
-            typeof options === 'function' ? options(props) : options
+    const show = useCallback(
+        (props?) => {
+            const resolvedMessage = String(
+                typeof message === 'function' ? message(props) : message
+            )
+            const resolvedOptions =
+                typeof options === 'function' ? options(props) : options
 
-        const alert: Alert = {
-            message: resolvedMessage,
-            options: resolvedOptions,
-        }
+            alertRef.current = add(
+                {
+                    message: resolvedMessage,
+                    options: resolvedOptions,
+                },
+                alertRef
+            )
+        },
+        [add, message, options]
+    )
 
-        alertsManager.add(alert)
+    const hide = useCallback(() => {
+        alertRef.current?.remove?.()
+    }, [])
+
+    return {
+        show,
+        hide,
     }
-
-    return { show }
 }

@@ -1,3 +1,4 @@
+import { AlertsProvider } from '@dhis2/app-service-alerts'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
 import {
@@ -73,10 +74,12 @@ const TestSection = ({
 const TestSingleSection = (props?: any) => {
     // Props are spread so they can be overwritten
     return (
-        <OfflineProvider offlineInterface={mockOfflineInterface} {...props}>
-            <TestControls id={'1'} {...props} />
-            <TestSection id={'1'} {...props} />
-        </OfflineProvider>
+        <AlertsProvider>
+            <OfflineProvider offlineInterface={mockOfflineInterface} {...props}>
+                <TestControls id={'1'} {...props} />
+                <TestSection id={'1'} {...props} />
+            </OfflineProvider>
+        </AlertsProvider>
     )
 }
 
@@ -231,12 +234,14 @@ describe('Coordination between useCacheableSection and CacheableSection', () => 
 
 const TwoTestSections = (props?: any) => (
     // Props are spread so they can be overwritten (but only on one section)
-    <OfflineProvider offlineInterface={mockOfflineInterface} {...props}>
-        <TestControls id={'1'} {...props} />
-        <TestSection id={'1'} {...props} />
-        <TestControls id={'2'} />
-        <TestSection id={'2'} />
-    </OfflineProvider>
+    <AlertsProvider>
+        <OfflineProvider offlineInterface={mockOfflineInterface} {...props}>
+            <TestControls id={'1'} {...props} />
+            <TestSection id={'1'} {...props} />
+            <TestControls id={'2'} />
+            <TestSection id={'2'} />
+        </OfflineProvider>
+    </AlertsProvider>
 )
 
 // test that other sections don't rerender when one section does
@@ -285,11 +290,16 @@ describe('useCacheableSection can be used inside a child of CacheableSection', (
     const ChildTest = (props?: any) => {
         // Props are spread so they can be overwritten
         return (
-            <OfflineProvider offlineInterface={mockOfflineInterface} {...props}>
-                <TestSection id={'1'} {...props}>
-                    <TestControls id={'1'} {...props} />
-                </TestSection>
-            </OfflineProvider>
+            <AlertsProvider>
+                <OfflineProvider
+                    offlineInterface={mockOfflineInterface}
+                    {...props}
+                >
+                    <TestSection id={'1'} {...props}>
+                        <TestControls id={'1'} {...props} />
+                    </TestSection>
+                </OfflineProvider>
+            </AlertsProvider>
         )
     }
 

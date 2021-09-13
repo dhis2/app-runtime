@@ -1,36 +1,33 @@
-import { Alert, AlertsManager, AlertsManagerAlert } from './types'
+import type { Alert, AlertRef, AlertsManager, AlertsMap } from './types'
 
-type SetAlertsFunction = React.Dispatch<
-    React.SetStateAction<AlertsManagerAlert[]>
->
-
-const createAlertManagerAlert = (
-    alert: Alert,
-    id: number,
-    remove: (id: number) => void
-): AlertsManagerAlert => ({
-    ...alert,
-    id,
-    remove: () => remove(id),
-})
+const toVisibleAlertsArray = (alertsMap: AlertsMap) =>
+    Array.from(alertsMap.values())
 
 export const makeAlertsManager = (
-    setAlerts: SetAlertsFunction
+    setAlerts: React.Dispatch<React.SetStateAction<Alert[]>>
 ): AlertsManager => {
+    const alertsMap: AlertsMap = new Map()
     let id = 0
 
-    const remove = (id: number) => {
-        setAlerts(alerts => alerts.filter(alert => alert.id !== id))
-    }
-    const add = (alert: Alert) => {
-        setAlerts(alerts => [
-            ...alerts,
-            createAlertManagerAlert(alert, ++id, remove),
-        ])
+    const add = (alert: Alert, alertRef: AlertRef) => {
+        const alertId = alertRef.current?.id ?? ++id
+        const alertsMapAlert = {
+            ...alert,
+            id: alertId,
+            remove: () => {
+                alertsMap.delete(alertId)
+                alertRef.current = null
+                setAlerts(toVisibleAlertsArray(alertsMap))
+            },
+        }
+
+        alertsMap.set(alertId, alertsMapAlert)
+        setAlerts(toVisibleAlertsArray(alertsMap))
+
+        return alertsMapAlert
     }
 
     return {
-        remove,
         add,
     }
 }

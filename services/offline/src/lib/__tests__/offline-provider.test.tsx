@@ -1,3 +1,4 @@
+import { AlertsProvider } from '@dhis2/app-service-alerts'
 import { render, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 import { mockOfflineInterface } from '../../utils/test-mocks'
@@ -26,16 +27,22 @@ afterEach(() => {
 describe('Testing offline provider', () => {
     it('Should render without failing', () => {
         render(
-            <OfflineProvider offlineInterface={mockOfflineInterface}>
-                <div data-testid="test-div" />
-            </OfflineProvider>
+            <AlertsProvider>
+                <OfflineProvider offlineInterface={mockOfflineInterface}>
+                    <div data-testid="test-div" />
+                </OfflineProvider>
+            </AlertsProvider>
         )
 
         expect(screen.getByTestId('test-div')).toBeInTheDocument()
     })
 
     it('Should initialize the offline interface with an update prompt', () => {
-        render(<OfflineProvider offlineInterface={mockOfflineInterface} />)
+        render(
+            <AlertsProvider>
+                <OfflineProvider offlineInterface={mockOfflineInterface} />
+            </AlertsProvider>
+        )
 
         expect(mockOfflineInterface.init).toHaveBeenCalledTimes(1)
 
@@ -64,9 +71,11 @@ describe('Testing offline provider', () => {
         }
 
         render(
-            <OfflineProvider offlineInterface={testOfflineInterface}>
-                <CachedSections />
-            </OfflineProvider>
+            <AlertsProvider>
+                <OfflineProvider offlineInterface={testOfflineInterface}>
+                    <CachedSections />
+                </OfflineProvider>
+            </AlertsProvider>
         )
 
         const { getByTestId } = screen
@@ -93,9 +102,11 @@ describe('Testing offline provider', () => {
         }
 
         render(
-            <OfflineProvider offlineInterface={mockOfflineInterface}>
-                <TestConsumer />
-            </OfflineProvider>
+            <AlertsProvider>
+                <OfflineProvider offlineInterface={mockOfflineInterface}>
+                    <TestConsumer />
+                </OfflineProvider>
+            </AlertsProvider>
         )
 
         expect(screen.getByTestId('test-div')).toBeInTheDocument()
@@ -103,9 +114,11 @@ describe('Testing offline provider', () => {
 
     it('Should render without failing when no offlineInterface is provided', () => {
         render(
-            <OfflineProvider>
-                <div data-testid="test-div" />
-            </OfflineProvider>
+            <AlertsProvider>
+                <OfflineProvider>
+                    <div data-testid="test-div" />
+                </OfflineProvider>
+            </AlertsProvider>
         )
         expect(screen.getByTestId('test-div')).toBeInTheDocument()
     })
@@ -116,9 +129,11 @@ describe('Testing offline provider', () => {
             pwaEnabled: false,
         }
         render(
-            <OfflineProvider offlineInterface={testOfflineInterface}>
-                <div data-testid="test-div" />
-            </OfflineProvider>
+            <AlertsProvider>
+                <OfflineProvider offlineInterface={testOfflineInterface}>
+                    <div data-testid="test-div" />
+                </OfflineProvider>
+            </AlertsProvider>
         )
 
         // Init should still be called - see comments in offline-provider.js
