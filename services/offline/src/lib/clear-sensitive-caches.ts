@@ -5,7 +5,6 @@ export const SECTIONS_STORE = 'sections-store'
 // Non-sensitive caches that can be kept:
 const KEEPABLE_CACHES = [
     /^workbox-precache/, // precached static assets
-    /^app-shell/, // will be immediately overwritten by network-first strategy
     /^other-assets/, // static assets cached at runtime - shouldn't be sensitive
 ]
 
@@ -75,5 +74,10 @@ export async function clearSensitiveCaches(
                 return caches.delete(key).then(() => undefined)
             }
         }),
-    ])
+    ]).then(responses => {
+        // Return true if any caches have been cleared
+        // (caches.delete() returns true if a cache is deleted successfully)
+        // PWA apps can reload to restore their app shell cache
+        return responses.some(response => response)
+    })
 }

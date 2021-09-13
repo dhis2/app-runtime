@@ -44,14 +44,15 @@ it('does not fail if there are no caches or no sections-db', () => {
 it('clears potentially sensitive caches', async () => {
     const keysMock = jest
         .fn()
-        .mockImplementation(async () => ['cache1', 'cache2'])
+        .mockImplementation(async () => ['cache1', 'cache2', 'app-shell'])
     window.caches = { ...cachesDefault, keys: keysMock }
 
     await clearSensitiveCaches()
 
-    expect(deleteMockDefault).toHaveBeenCalledTimes(2)
+    expect(deleteMockDefault).toHaveBeenCalledTimes(3)
     expect(deleteMockDefault.mock.calls[0][0]).toBe('cache1')
     expect(deleteMockDefault.mock.calls[1][0]).toBe('cache2')
+    expect(deleteMockDefault.mock.calls[2][0]).toBe('app-shell')
 })
 
 it('preserves keepable caches', async () => {
@@ -68,10 +69,10 @@ it('preserves keepable caches', async () => {
 
     await clearSensitiveCaches()
 
-    expect(deleteMockDefault).toHaveBeenCalledTimes(2)
+    expect(deleteMockDefault).toHaveBeenCalledTimes(3)
     expect(deleteMockDefault.mock.calls[0][0]).toBe('cache1')
     expect(deleteMockDefault.mock.calls[1][0]).toBe('cache2')
-    expect(deleteMockDefault).not.toHaveBeenCalledWith('app-shell')
+    expect(deleteMockDefault.mock.calls[2][0]).toBe('app-shell')
     expect(deleteMockDefault).not.toHaveBeenCalledWith('other-assets')
     expect(deleteMockDefault).not.toHaveBeenCalledWith(
         'workbox-precache-v2-https://hey.howareya.now/'
