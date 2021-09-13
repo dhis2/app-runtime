@@ -1,3 +1,10 @@
+# [3.1.0](https://github.com/dhis2/app-runtime/compare/v3.0.0...v3.1.0) (2021-09-13)
+
+
+### Features
+
+* **alerts-service:** let useAlert return a hide function (LIBS-114) ([3436312](https://github.com/dhis2/app-runtime/commit/34363125c9df295eb4d304f05adc4913231d6093))
+
 # [3.0.0](https://github.com/dhis2/app-runtime/compare/v2.11.1...v3.0.0) (2021-09-07)
 
 
