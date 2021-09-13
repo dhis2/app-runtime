@@ -128,15 +128,24 @@ describe('clears sections-db', () => {
     })
 
     it("doesn't handle IDB if 'databases' property is not on window.indexedDB", async () => {
-        // Open DB -- 'indexedDB.open' would get called if databases property exists
+        // Open DB -- 'indexedDB.open' _would_ get called in this test
+        // if 'databases' property exists
         await openTestDB(SECTIONS_DB)
-
-        delete Object.getPrototypeOf(window.indexedDB).databases
         const openMock = jest.fn()
         window.indexedDB.open = openMock
+
+        // Remove 'databases' from indexedDB prototype for this test
+        // (simulates Firefox environment)
+        const idbProto = Object.getPrototypeOf(window.indexedDB)
+        const databases = idbProto.databases
+        delete idbProto.databases
 
         expect('databases' in window.indexedDB).toBe(false)
         await expect(clearSensitiveCaches()).resolves.toBeDefined()
         expect(openMock).not.toHaveBeenCalled()
+
+        // Restore indexedDB prototype for later tests
+        idbProto.databases = databases
+        expect('databases' in window.indexedDB).toBe(true)
     })
 })
