@@ -30,7 +30,7 @@ const clearDB = async (dbName: string): Promise<void> => {
     }
 
     const dbs = await window.indexedDB.databases()
-    if (!dbs.find(({ name }) => name === dbName)) {
+    if (!dbs.some(({ name }) => name === dbName)) {
         // Sections-db is not created; nothing to do here
         return
     }
