@@ -17,6 +17,7 @@ export {
     useCacheableSection,
     CacheableSection,
     useCachedSections,
+    clearSensitiveCaches,
 } from '@dhis2/app-service-offline'
 
 export { Provider } from './Provider'
