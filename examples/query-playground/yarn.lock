@@ -1792,24 +1792,24 @@
     "@dhis2/app-service-data" "2.8.0"
 
 "@dhis2/app-runtime@^2.2.2", "@dhis2/app-runtime@file:../../runtime":
-  version "2.11.1"
+  version "2.10.0-pwa.4"
   dependencies:
-    "@dhis2/app-service-alerts" "2.11.1"
-    "@dhis2/app-service-config" "2.11.1"
-    "@dhis2/app-service-data" "2.11.1"
-    "@dhis2/app-service-offline" "2.11.1"
+    "@dhis2/app-service-alerts" "2.10.0-pwa.4"
+    "@dhis2/app-service-config" "2.10.0-pwa.4"
+    "@dhis2/app-service-data" "2.10.0-pwa.4"
+    "@dhis2/app-service-offline" "2.10.0-pwa.4"
 
-"@dhis2/app-service-alerts@2.11.1", "@dhis2/app-service-alerts@2.8.0", "@dhis2/app-service-alerts@file:../../services/alerts":
-  version "2.11.1"
+"@dhis2/app-service-alerts@2.10.0-pwa.4", "@dhis2/app-service-alerts@2.8.0", "@dhis2/app-service-alerts@file:../../services/alerts":
+  version "2.10.0-pwa.4"
 
-"@dhis2/app-service-config@2.11.1", "@dhis2/app-service-config@2.8.0", "@dhis2/app-service-config@file:../../services/config":
-  version "2.11.1"
+"@dhis2/app-service-config@2.10.0-pwa.4", "@dhis2/app-service-config@2.8.0", "@dhis2/app-service-config@file:../../services/config":
+  version "2.10.0-pwa.4"
 
-"@dhis2/app-service-data@2.11.1", "@dhis2/app-service-data@2.8.0", "@dhis2/app-service-data@file:../../services/data":
-  version "2.11.1"
+"@dhis2/app-service-data@2.10.0-pwa.4", "@dhis2/app-service-data@2.8.0", "@dhis2/app-service-data@file:../../services/data":
+  version "2.10.0-pwa.4"
 
-"@dhis2/app-service-offline@2.11.1", "@dhis2/app-service-offline@file:../../services/offline":
-  version "2.11.1"
+"@dhis2/app-service-offline@2.10.0-pwa.4", "@dhis2/app-service-offline@file:../../services/offline":
+  version "2.10.0-pwa.4"
   dependencies:
     lodash "^4.17.21"
 
