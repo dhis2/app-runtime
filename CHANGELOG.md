@@ -1,3 +1,10 @@
+# [2.12.0](https://github.com/dhis2/app-runtime/compare/v2.11.1...v2.12.0) (2021-09-15)
+
+
+### Features
+
+* **offline:** add 'clear sensitive caches' function ([#1002](https://github.com/dhis2/app-runtime/issues/1002)) ([bb85fe9](https://github.com/dhis2/app-runtime/commit/bb85fe9e98c2921e7cf48abcf9a472d89f1cce78))
+
 ## [2.11.1](https://github.com/dhis2/app-runtime/compare/v2.11.0...v2.11.1) (2021-09-02)
 
 
