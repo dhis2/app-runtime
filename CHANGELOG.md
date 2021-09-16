@@ -1,3 +1,10 @@
+## [2.12.1](https://github.com/dhis2/app-runtime/compare/v2.12.0...v2.12.1) (2021-09-16)
+
+
+### Bug Fixes
+
+* **offline:** return correct value from clearSensitiveCaches ([#1008](https://github.com/dhis2/app-runtime/issues/1008)) ([02c2c6c](https://github.com/dhis2/app-runtime/commit/02c2c6c2486475184ba224ca95802c6afb347ff5))
+
 # [2.12.0](https://github.com/dhis2/app-runtime/compare/v2.11.1...v2.12.0) (2021-09-15)
 
 
