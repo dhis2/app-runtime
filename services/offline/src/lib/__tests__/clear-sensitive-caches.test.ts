@@ -9,8 +9,15 @@ import {
 
 // Mocks for CacheStorage API
 
+// Returns true if an existing cache is deleted
+const makeCachesDeleteMock = (keys: string[]) => {
+    return jest
+        .fn()
+        .mockImplementation(key => Promise.resolve(keys.includes(key)))
+}
+
 const keysMockDefault = jest.fn().mockImplementation(async () => [])
-const deleteMockDefault = jest.fn().mockImplementation(async () => null)
+const deleteMockDefault = makeCachesDeleteMock([])
 const cachesDefault = {
     keys: keysMockDefault,
     delete: deleteMockDefault,
@@ -38,21 +45,24 @@ afterAll(() => {
 })
 
 it('does not fail if there are no caches or no sections-db', () => {
-    return expect(clearSensitiveCaches()).resolves.toBeDefined()
+    return expect(clearSensitiveCaches()).resolves.toBe(false)
 })
 
 it('clears potentially sensitive caches', async () => {
+    const testKeys = ['cache1', 'cache2', 'app-shell']
     const keysMock = jest
         .fn()
-        .mockImplementation(async () => ['cache1', 'cache2', 'app-shell'])
-    window.caches = { ...cachesDefault, keys: keysMock }
+        .mockImplementation(() => Promise.resolve(testKeys))
+    const deleteMock = makeCachesDeleteMock(testKeys)
+    window.caches = { keys: keysMock, delete: deleteMock }
 
-    await clearSensitiveCaches()
+    const cachesDeleted = await clearSensitiveCaches()
+    expect(cachesDeleted).toBe(true)
 
-    expect(deleteMockDefault).toHaveBeenCalledTimes(3)
-    expect(deleteMockDefault.mock.calls[0][0]).toBe('cache1')
-    expect(deleteMockDefault.mock.calls[1][0]).toBe('cache2')
-    expect(deleteMockDefault.mock.calls[2][0]).toBe('app-shell')
+    expect(deleteMock).toHaveBeenCalledTimes(3)
+    expect(deleteMock.mock.calls[0][0]).toBe('cache1')
+    expect(deleteMock.mock.calls[1][0]).toBe('cache2')
+    expect(deleteMock.mock.calls[2][0]).toBe('app-shell')
 })
 
 it('preserves keepable caches', async () => {

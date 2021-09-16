@@ -66,13 +66,14 @@ export async function clearSensitiveCaches(
 
     const cacheKeys = await caches.keys()
     return Promise.all([
-        clearDB(dbName),
-        // remove caches if not in keepable list
+        // (Resolves to 'false' because this can't detect if anything was deleted):
+        clearDB(dbName).then(() => false),
+        // Remove caches if not in keepable list
         ...cacheKeys.map(key => {
             if (!KEEPABLE_CACHES.some(pattern => pattern.test(key))) {
-                // .then() satisfies typescript
-                return caches.delete(key).then(() => undefined)
+                return caches.delete(key)
             }
+            return false
         }),
     ]).then(responses => {
         // Return true if any caches have been cleared
