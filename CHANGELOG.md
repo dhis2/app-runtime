@@ -1,3 +1,15 @@
+# [3.2.0](https://github.com/dhis2/app-runtime/compare/v3.1.0...v3.2.0) (2021-09-17)
+
+
+### Bug Fixes
+
+* **offline:** return correct value from clearSensitiveCaches ([#1008](https://github.com/dhis2/app-runtime/issues/1008)) ([4b68b22](https://github.com/dhis2/app-runtime/commit/4b68b22cf7adc5c335c98d4746e20f602ecbbc85))
+
+
+### Features
+
+* **offline:** add 'clear sensitive caches' function ([01749aa](https://github.com/dhis2/app-runtime/commit/01749aa9fe16e6b2329bc7bea76e05cf81e39757))
+
 # [3.1.0](https://github.com/dhis2/app-runtime/compare/v3.0.0...v3.1.0) (2021-09-13)
 
 
