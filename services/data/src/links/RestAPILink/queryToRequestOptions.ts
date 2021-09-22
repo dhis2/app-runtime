@@ -20,12 +20,20 @@ const getMethod = (type: FetchType): string => {
     }
 }
 
-export const queryToRequestOptions = (
-    type: FetchType,
-    query: ResolvedResourceQuery,
+type Options = {
+    type: FetchType
+    query: ResolvedResourceQuery
+    apiVersion: number
     signal?: AbortSignal
-): RequestInit => {
-    const contentType = requestContentType(type, query)
+}
+
+export const queryToRequestOptions = ({
+    type,
+    query,
+    apiVersion,
+    signal,
+}: Options): RequestInit => {
+    const contentType = requestContentType(type, query, apiVersion)
 
     return {
         method: getMethod(type),

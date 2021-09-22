@@ -4,9 +4,13 @@ import * as textPlainMatchers from './textPlainMatchers'
 
 type RequestContentType =
     | 'application/json'
+    | 'application/json-patch+json'
     | 'text/plain'
     | 'multipart/form-data'
     | null
+
+const isJsonPatchMutation = (type: FetchType, apiVersion: number) =>
+    type === 'update' && apiVersion >= 37
 
 const resourceExpectsTextPlain = (
     type: FetchType,
@@ -42,10 +46,15 @@ const convertToFormData = (data: Record<string, any>): FormData => {
 
 export const requestContentType = (
     type: FetchType,
-    query: ResolvedResourceQuery
-) => {
+    query: ResolvedResourceQuery,
+    apiVersion: number
+): null | RequestContentType => {
     if (!query.data) {
         return null
+    }
+
+    if (isJsonPatchMutation(type, apiVersion)) {
+        return 'application/json-patch+json'
     }
 
     if (resourceExpectsTextPlain(type, query)) {
@@ -61,7 +70,7 @@ export const requestContentType = (
 
 export const requestHeadersForContentType = (
     contentType: RequestContentType
-) => {
+): undefined | Record<'Content-Type', string> => {
     /*
      * Explicitely setting Content-Type to 'multipart/form-data' produces
      * a "multipart boundary not found" error. By not setting a Content-Type
@@ -79,7 +88,7 @@ export const requestHeadersForContentType = (
 export const requestBodyForContentType = (
     contentType: RequestContentType,
     { data }: ResolvedResourceQuery
-) => {
+): undefined | string | FormData => {
     if (typeof data === 'undefined') {
         return undefined
     }
