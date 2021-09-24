@@ -21,6 +21,16 @@ interface OfflineInterfaceProviderInput {
     children: React.ReactNode
 }
 
+interface AlertAction {
+    label: string
+    onClick: () => void
+}
+
+interface PromptUpdateAlertOptions {
+    message: string
+    actions: AlertAction[]
+}
+
 /**
  * Receives an OfflineInterface instance as a prop (presumably from the app
  * adapter) and provides it as context for other offline tools.
@@ -34,9 +44,9 @@ export function OfflineInterfaceProvider({
     children,
 }: OfflineInterfaceProviderInput): JSX.Element {
     const { show } = useAlert(
-        ({ message }) => message,
-        ({ action, onConfirm }) => ({
-            actions: [{ label: action, onClick: onConfirm }],
+        ({ message }: PromptUpdateAlertOptions) => message,
+        ({ actions }: PromptUpdateAlertOptions) => ({
+            actions,
             permanent: true,
         })
     )
