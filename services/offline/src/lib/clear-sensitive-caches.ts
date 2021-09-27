@@ -63,8 +63,17 @@ export async function clearSensitiveCaches(
     dbName: string = SECTIONS_DB
 ): Promise<any> {
     console.debug('Clearing sensitive caches')
+    let cacheKeys
 
-    const cacheKeys = await caches.keys()
+    // caches.keys can fail in insecure contexts, see:
+    // https://developer.mozilla.org/en-US/docs/Web/API/CacheStorage
+    try {
+        cacheKeys = await caches.keys()
+    } catch (e) {
+        // Return false since no caches have been cleared
+        return false
+    }
+
     return Promise.all([
         // (Resolves to 'false' because this can't detect if anything was deleted):
         clearDB(dbName).then(() => false),
