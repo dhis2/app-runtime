@@ -48,6 +48,20 @@ it('does not fail if there are no caches or no sections-db', () => {
     return expect(clearSensitiveCaches()).resolves.toBe(false)
 })
 
+it('returns false if caches.keys throws', async () => {
+    const spy = jest.fn(() => {
+        throw new Error('Security Error')
+    })
+    window.caches = {
+        keys: spy,
+    }
+
+    const result = await clearSensitiveCaches()
+
+    expect(spy).toHaveBeenCalled()
+    expect(result).toBe(false)
+})
+
 it('clears potentially sensitive caches', async () => {
     const testKeys = ['cache1', 'cache2', 'app-shell']
     const keysMock = jest
