@@ -1,3 +1,10 @@
+## [3.2.1](https://github.com/dhis2/app-runtime/compare/v3.2.0...v3.2.1) (2021-09-27)
+
+
+### Bug Fixes
+
+* **clear-caches:** allow caches.keys to fail ([885ff81](https://github.com/dhis2/app-runtime/commit/885ff810a178ebfff3dd81a059539f6fb5ff723c))
+
 # [3.2.0](https://github.com/dhis2/app-runtime/compare/v3.1.0...v3.2.0) (2021-09-17)
 
 
