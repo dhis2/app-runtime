@@ -1,3 +1,11 @@
+## [2.12.2](https://github.com/dhis2/app-runtime/compare/v2.12.1...v2.12.2) (2021-09-28)
+
+
+### Bug Fixes
+
+* **clear-caches:** allow caches.keys to fail ([c8daea7](https://github.com/dhis2/app-runtime/commit/c8daea7a9de20ee6667cbabdad5b9f4e269ebd9b))
+* **offline-interface:** improve SW update message ([25e5552](https://github.com/dhis2/app-runtime/commit/25e5552ab537226926618bb73652c2f87da0df2f))
+
 ## [2.12.1](https://github.com/dhis2/app-runtime/compare/v2.12.0...v2.12.1) (2021-09-16)
 
 
