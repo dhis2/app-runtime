@@ -1,3 +1,10 @@
+## [3.2.2](https://github.com/dhis2/app-runtime/compare/v3.2.1...v3.2.2) (2021-09-28)
+
+
+### Bug Fixes
+
+* **offline-interface:** improve SW update message ([d2f4631](https://github.com/dhis2/app-runtime/commit/d2f463112a1e74497c1ae5c43412bbdeb2de8a26))
+
 ## [3.2.1](https://github.com/dhis2/app-runtime/compare/v3.2.0...v3.2.1) (2021-09-27)
 
 
