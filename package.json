@@ -1,5 +1,5 @@
 {
-    "version": "3.2.1",
+    "version": "3.2.2",
     "description": "A singular runtime dependency for applications on the DHIS2 platform",
     "repository": "https://github.com/dhis2/app-runtime.git",
     "author": "Austin McGee <austin@dhis2.org>",
@@ -24,7 +24,7 @@
         "@types/testing-library__dom": "^7.5.0",
         "@typescript-eslint/eslint-plugin": "^4.7.0",
         "@typescript-eslint/parser": "^4.7.0",
-        "concurrently": "^5.0.2",
+        "concurrently": "^6.2.2",
         "eslint-config-prettier": "^6.15.0",
         "eslint-plugin-react-hooks": "^4.2.0",
         "fake-indexeddb": "^3.1.3",
