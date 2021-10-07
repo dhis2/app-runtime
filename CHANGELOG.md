@@ -1,3 +1,10 @@
+## [2.12.3](https://github.com/dhis2/app-runtime/compare/v2.12.2...v2.12.3) (2021-10-07)
+
+
+### Bug Fixes
+
+* **offline:** remove offlineInterface.init() functionality ([bb96613](https://github.com/dhis2/app-runtime/commit/bb96613dd556b6b3c830450f40786bed19ea838b))
+
 ## [2.12.2](https://github.com/dhis2/app-runtime/compare/v2.12.1...v2.12.2) (2021-09-28)
 
 
