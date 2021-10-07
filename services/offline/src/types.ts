@@ -35,10 +35,6 @@ export interface GlobalStateStore {
 
 // Offline Interface types
 
-interface PromptUpdate {
-    (params: { message: string; action: string; onConfirm: () => void }): void
-}
-
 interface StartRecording {
     (params: {
         sectionId: string
@@ -58,7 +54,6 @@ export interface IndexedDBCachedSection {
 
 export interface OfflineInterface {
     readonly pwaEnabled: boolean
-    init: (params: { promptUpdate: PromptUpdate }) => () => void
     startRecording: StartRecording
     getCachedSections: () => Promise<IndexedDBCachedSection[]>
     removeSection: (id: string) => Promise<boolean>
