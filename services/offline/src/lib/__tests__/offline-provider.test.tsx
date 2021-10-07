@@ -34,17 +34,6 @@ describe('Testing offline provider', () => {
         expect(screen.getByTestId('test-div')).toBeInTheDocument()
     })
 
-    it('Should initialize the offline interface with an update prompt', () => {
-        render(<OfflineProvider offlineInterface={mockOfflineInterface} />)
-
-        expect(mockOfflineInterface.init).toHaveBeenCalledTimes(1)
-
-        // Expect to have been called with a 'promptUpdate' function
-        const arg = mockOfflineInterface.init.mock.calls[0][0]
-        expect(arg).toHaveProperty('promptUpdate')
-        expect(typeof arg['promptUpdate']).toBe('function')
-    })
-
     it('Should sync cached sections with indexedDB', async () => {
         const testOfflineInterface = {
             ...mockOfflineInterface,
@@ -121,8 +110,6 @@ describe('Testing offline provider', () => {
             </OfflineProvider>
         )
 
-        // Init should still be called - see comments in offline-provider.js
-        expect(testOfflineInterface.init).toHaveBeenCalled()
         expect(screen.getByTestId('test-div')).toBeInTheDocument()
     })
 })

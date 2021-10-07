@@ -1,4 +1,3 @@
-import { useAlert } from '@dhis2/app-service-alerts'
 import PropTypes from 'prop-types'
 import React, { createContext, useContext } from 'react'
 import { OfflineInterface } from '../types'
@@ -6,7 +5,6 @@ import { OfflineInterface } from '../types'
 // This is to prevent 'offlineInterface could be null' type-checking errors
 const noopOfflineInterface: OfflineInterface = {
     pwaEnabled: false,
-    init: () => () => null,
     startRecording: async () => undefined,
     getCachedSections: async () => [],
     removeSection: async () => false,
@@ -21,16 +19,6 @@ interface OfflineInterfaceProviderInput {
     children: React.ReactNode
 }
 
-interface AlertAction {
-    label: string
-    onClick: () => void
-}
-
-interface PromptUpdateAlertOptions {
-    message: string
-    actions: AlertAction[]
-}
-
 /**
  * Receives an OfflineInterface instance as a prop (presumably from the app
  * adapter) and provides it as context for other offline tools.
@@ -43,19 +31,6 @@ export function OfflineInterfaceProvider({
     offlineInterface,
     children,
 }: OfflineInterfaceProviderInput): JSX.Element {
-    const { show } = useAlert(
-        ({ message }: PromptUpdateAlertOptions) => message,
-        ({ actions }: PromptUpdateAlertOptions) => ({
-            actions,
-            permanent: true,
-        })
-    )
-
-    React.useEffect(() => {
-        // Init returns a tear-down function
-        return offlineInterface.init({ promptUpdate: show })
-    }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
     return (
         <OfflineInterfaceContext.Provider value={offlineInterface}>
             {children}
