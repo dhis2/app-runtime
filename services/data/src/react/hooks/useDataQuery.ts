@@ -28,6 +28,7 @@ export const useDataQuery = (
         onError: userOnError,
         variables: initialVariables = {},
         lazy: initialLazy = false,
+        keepPreviousData = false,
     }: QueryOptions = {}
 ): QueryRenderInput => {
     const variablesHash = useRef<string | null>(null)
@@ -84,6 +85,7 @@ export const useDataQuery = (
         enabled,
         onSuccess,
         onError,
+        keepPreviousData,
     })
 
     /**
