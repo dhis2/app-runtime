@@ -9,9 +9,6 @@ type RequestContentType =
     | 'multipart/form-data'
     | null
 
-const isJsonPatchMutation = (type: FetchType, apiVersion: number) =>
-    type === 'update' && apiVersion >= 37
-
 const resourceExpectsTextPlain = (
     type: FetchType,
     query: ResolvedResourceQuery
@@ -46,14 +43,13 @@ const convertToFormData = (data: Record<string, any>): FormData => {
 
 export const requestContentType = (
     type: FetchType,
-    query: ResolvedResourceQuery,
-    apiVersion: number
+    query: ResolvedResourceQuery
 ): null | RequestContentType => {
     if (!query.data) {
         return null
     }
 
-    if (isJsonPatchMutation(type, apiVersion)) {
+    if (type === 'jsonPatch') {
         return 'application/json-patch+json'
     }
 

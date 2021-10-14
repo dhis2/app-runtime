@@ -12,28 +12,23 @@ const getMethod = (type: FetchType): string => {
         case 'read':
             return 'GET'
         case 'update':
+        case 'jsonPatch':
             return 'PATCH'
         case 'replace':
             return 'PUT'
         case 'delete':
             return 'DELETE'
+        default:
+            return ''
     }
 }
 
-type Options = {
-    type: FetchType
-    query: ResolvedResourceQuery
-    apiVersion: number
+export const queryToRequestOptions = (
+    type: FetchType,
+    query: ResolvedResourceQuery,
     signal?: AbortSignal
-}
-
-export const queryToRequestOptions = ({
-    type,
-    query,
-    apiVersion,
-    signal,
-}: Options): RequestInit => {
-    const contentType = requestContentType(type, query, apiVersion)
+): RequestInit => {
+    const contentType = requestContentType(type, query)
 
     return {
         method: getMethod(type),
