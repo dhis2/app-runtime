@@ -11,6 +11,11 @@ describe('requestContentType', () => {
             requestContentType('create', { resource: 'test', data: 'test' })
         ).toEqual('application/json')
     })
+    it('returns "application/json-patch+json" when the fetch type is "jsonPatch"', () => {
+        expect(
+            requestContentType('jsonPatch', { resource: 'test', data: 'test' })
+        ).toEqual('application/json-patch+json')
+    })
     it('returns "multipart/form-data" for a specific resource that expects it', () => {
         expect(
             requestContentType('create', {
