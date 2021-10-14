@@ -19,7 +19,7 @@ const getMethod = (type: FetchType): string => {
         case 'delete':
             return 'DELETE'
         default:
-            return ''
+            throw new Error(`Unknown type ${type}`)
     }
 }
 
