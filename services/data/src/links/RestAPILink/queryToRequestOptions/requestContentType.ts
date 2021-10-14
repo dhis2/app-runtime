@@ -89,7 +89,10 @@ export const requestBodyForContentType = (
         return undefined
     }
 
-    if (contentType === 'application/json') {
+    if (
+        contentType === 'application/json' ||
+        contentType === 'application/json-patch+json'
+    ) {
         return JSON.stringify(data)
     }
 

@@ -54,10 +54,7 @@ describe('queryToRequestOptions', () => {
         })
         expect(options).toMatchInlineSnapshot(`
             Object {
-              "body": Object {
-                "answer": 42,
-                "foo": "bar",
-              },
+              "body": "{\\"answer\\":42,\\"foo\\":\\"bar\\"}",
               "headers": Object {
                 "Content-Type": "application/json-patch+json",
               },
