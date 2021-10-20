@@ -1,3 +1,10 @@
+## [2.12.4](https://github.com/dhis2/app-runtime/compare/v2.12.3...v2.12.4) (2021-10-20)
+
+
+### Bug Fixes
+
+* **offline-provider:** avoid side-effects if PWA is disabled ([eb54aaf](https://github.com/dhis2/app-runtime/commit/eb54aaf857ca7a0d1903ae7a45bddda068cb1bfe))
+
 ## [2.12.3](https://github.com/dhis2/app-runtime/compare/v2.12.2...v2.12.3) (2021-10-07)
 
 
