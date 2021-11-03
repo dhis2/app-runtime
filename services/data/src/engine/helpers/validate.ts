@@ -2,7 +2,14 @@ import { InvalidQueryError } from '../types/InvalidQueryError'
 import { ResolvedResourceQuery } from '../types/Query'
 
 const validQueryKeys = ['resource', 'id', 'params', 'data']
-const validTypes = ['read', 'create', 'update', 'replace', 'delete']
+const validTypes = [
+    'read',
+    'create',
+    'update',
+    'replace',
+    'delete',
+    'jsonPatch',
+]
 
 export const getResourceQueryErrors = (
     type: string,
