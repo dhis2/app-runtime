@@ -16,7 +16,7 @@ export function OfflineProvider({
 }: OfflineProviderInput): JSX.Element {
     // If an offline interface is not provided, or if one is provided and PWA
     // is not enabled, skip adding context providers
-    if (!offlineInterface) {
+    if (!offlineInterface || !offlineInterface.pwaEnabled) {
         return <>{children}</>
     }
 
