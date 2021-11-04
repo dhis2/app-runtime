@@ -42,6 +42,11 @@ export const getResourceQueryErrors = (
     if (type === 'delete' && query.data) {
         errors.push("Mutation type 'delete' does not support property 'data'")
     }
+    if (type === 'jsonPatch' && !Array.isArray(query.data)) {
+        errors.push(
+            "Mutation type 'jsonPatch' requires property 'data' to be of type Array"
+        )
+    }
     const invalidKeys = Object.keys(query).filter(
         k => !validQueryKeys.includes(k)
     )
