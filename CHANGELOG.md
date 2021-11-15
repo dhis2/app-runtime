@@ -1,3 +1,10 @@
+## [3.2.5](https://github.com/dhis2/app-runtime/compare/v3.2.4...v3.2.5) (2021-11-15)
+
+
+### Bug Fixes
+
+* **use-data-query:** memoize refetch function ([1b7a42f](https://github.com/dhis2/app-runtime/commit/1b7a42f3592074bbe0fc2798a60b81423159962a))
+
 ## [3.2.4](https://github.com/dhis2/app-runtime/compare/v3.2.3...v3.2.4) (2021-10-20)
 
 
