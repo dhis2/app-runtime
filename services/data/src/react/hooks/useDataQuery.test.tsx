@@ -426,6 +426,42 @@ describe('useDataQuery', () => {
     })
 
     describe('return values: refetch', () => {
+        it('Should have a stable identity if the variables have not changed', async () => {
+            const data = {
+                answer: () => 42,
+            }
+            const query = { x: { resource: 'answer' } }
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
+
+            const { result, waitForNextUpdate, rerender } = renderHook(
+                () => useDataQuery(query),
+                {
+                    wrapper,
+                }
+            )
+
+            const firstRefetch = result.current.refetch
+
+            await waitForNextUpdate()
+
+            act(() => {
+                result.current.refetch()
+
+                /**
+                 * FIXME: https://github.com/tannerlinsley/react-query/issues/2481
+                 * This forced rerender is not necessary in the app, just when testing.
+                 * It is unclear why.
+                 */
+                rerender()
+            })
+
+            await waitForNextUpdate()
+
+            expect(result.current.refetch).toBe(firstRefetch)
+        })
+
         it('Should return stale data and set loading to true on refetch', async () => {
             const answers = [42, 43]
             const mockSpy = jest.fn(() => Promise.resolve(answers.shift()))
