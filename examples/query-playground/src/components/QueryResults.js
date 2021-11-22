@@ -7,8 +7,8 @@ import styles from './QueryResults.module.css'
 export const QueryResults = ({ result }) => {
     return (
         <div className={styles.results}>
-            <style jsx>{styles}</style>
             <Editor
+                className={styles.results}
                 value={result}
                 theme="github"
                 readOnly={true}

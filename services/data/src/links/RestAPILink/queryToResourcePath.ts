@@ -69,12 +69,30 @@ const makeActionPath = (resource: string) =>
         `${resource.substr(actionPrefix.length)}.action`
     )
 
+const resolveResource = ({
+    resource,
+    resourceParams,
+}: ResolvedResourceQuery): string => {
+    if (!resourceParams || !resourceParams.length) {
+        return resource
+    }
+    let resolvedResource = `${resource}`
+    for (let i = 0; i < resourceParams.length; ++i) {
+        resolvedResource = resolvedResource.replace(
+            `{${i + 1}}`,
+            resourceParams[i]
+        )
+    }
+    return resolvedResource
+}
+
 export const queryToResourcePath = (
     apiPath: string,
     query: ResolvedResourceQuery,
     type: FetchType
 ): string => {
-    const { resource, id, params = {} } = query
+    const { id, params = {} } = query
+    const resource = resolveResource(query)
     const base = isAction(resource)
         ? makeActionPath(resource)
         : joinPath(apiPath, resource, id)
