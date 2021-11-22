@@ -1,13 +1,13 @@
 import { useContext, useRef, useCallback } from 'react'
 import { AlertsManagerContext } from './AlertsManagerContext'
-import type { AlertOptions, Alert, AlertsManager } from './types'
+import type { AlertOptions, AlertsManager, AlertRef } from './types'
 
 export const useAlert = (
     message: string | ((props: any) => string),
     options: AlertOptions | ((props: any) => AlertOptions) = {}
 ): { show: (props?: any) => void; hide: () => void } => {
     const { add }: AlertsManager = useContext(AlertsManagerContext)
-    const alertRef = useRef(<Alert | null>null)
+    const alertRef: AlertRef = useRef()
 
     const show = useCallback(
         (props?) => {

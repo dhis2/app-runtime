@@ -9,10 +9,10 @@ export type Alert = {
     options: AlertOptions
 }
 
-export type AlertRef = MutableRefObject<Alert | null>
+export type AlertRef = MutableRefObject<Alert | undefined>
 
 export type AlertsMap = Map<number, Alert>
 
 export type AlertsManager = {
-    add: (alert: Alert, alertRef: AlertRef) => Alert
+    add: (alert: Alert, alertRef: AlertRef) => Alert | undefined
 }

@@ -89,9 +89,9 @@ export const getResourceQueryErrors = (
 
     if (!query.resource || typeof query.resource !== 'string') {
         errors.push('Property resource must be a string')
+    } else {
+        errors.push(...getResourceParamErrors(query))
     }
-
-    errors.push(...getResourceParamErrors(query))
 
     if (type === 'create' && query.id) {
         errors.push("Mutation type 'create' does not support property 'id'")

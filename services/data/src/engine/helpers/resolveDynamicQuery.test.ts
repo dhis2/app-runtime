@@ -41,7 +41,8 @@ describe('resolveDynamicQuery', () => {
         }
 
         expect(resolveDynamicQuery(query, vars)).toStrictEqual({
-            resource: 'test',
+            resource: 'test/{1}/child',
+            resourceParams: ['trap'],
             id: '42',
             params: {
                 page: 3,
