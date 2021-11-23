@@ -1,3 +1,11 @@
+## [3.2.6](https://github.com/dhis2/app-runtime/compare/v3.2.5...v3.2.6) (2021-11-23)
+
+
+### Bug Fixes
+
+* **data-service:** identify interpretation update requests correctly ([38045a3](https://github.com/dhis2/app-runtime/commit/38045a33f271c56640d2580609c00a75053ccb9c))
+* **data-service:** identify interpretation update requests correctly ([63d4ea2](https://github.com/dhis2/app-runtime/commit/63d4ea228c521227d9bca0221a0d3d475025a907))
+
 ## [3.2.5](https://github.com/dhis2/app-runtime/compare/v3.2.4...v3.2.5) (2021-11-15)
 
 
