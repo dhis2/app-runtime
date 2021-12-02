@@ -30,6 +30,8 @@ export const useDataQuery = (
         lazy: initialLazy = false,
     }: QueryOptions = {}
 ): QueryRenderInput => {
+    console.log('Rendered')
+
     const variablesHash = useRef<string | null>(null)
     const [variables, setVariables] = useState(initialVariables)
     const [enabled, setEnabled] = useState(!initialLazy)
@@ -97,6 +99,8 @@ export const useDataQuery = (
 
     const refetch: QueryRefetchFunction = useCallback(
         newVariables => {
+            console.log('Refetch called')
+
             /**
              * If there are no updates that will trigger an automatic refetch
              * we'll need to call react-query's refetch directly
@@ -113,6 +117,8 @@ export const useDataQuery = (
             }
 
             if (newVariables) {
+                console.log('Got new variables')
+
                 // Use cached hash if it exists
                 const currentHash =
                     variablesHash.current || stableVariablesHash(variables)
@@ -122,12 +128,16 @@ export const useDataQuery = (
                 const identical = currentHash === mergedHash
 
                 if (identical) {
+                    console.log('Merged to identical vars')
+
                     // If the variables are identical we'll need to trigger the refetch manually
                     return queryRefetch({
                         cancelRefetch: true,
                         throwOnError: false,
                     }).then(({ data }) => data)
                 } else {
+                    console.log('Merged to new vars')
+
                     variablesHash.current = mergedHash
                     setVariables(mergedVariables)
                 }

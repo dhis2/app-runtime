@@ -1,7 +1,30 @@
 import { renderHook, act } from '@testing-library/react-hooks'
+import { rest } from 'msw'
+import { setupServer } from 'msw/node'
 import * as React from 'react'
 import { CustomDataProvider } from '../components/CustomDataProvider'
+import { DataProvider } from '../components/DataProvider'
 import { useDataQuery } from './useDataQuery'
+
+require('isomorphic-fetch')
+
+const server = setupServer(
+    rest.get('http://dhis2.test/api/38/answer/:id', (req, res, ctx) => {
+        console.log('Intercepted request')
+
+        const { id } = req.params
+
+        if (id === '1') {
+            return res(ctx.status(200), ctx.json(42))
+        }
+
+        return res(ctx.status(200), ctx.json(0))
+    })
+)
+
+beforeAll(() => server.listen())
+afterEach(() => server.resetHandlers())
+afterAll(() => server.close())
 
 describe('useDataQuery', () => {
     describe('parameters: onComplete', () => {
@@ -425,23 +448,15 @@ describe('useDataQuery', () => {
         })
     })
 
-    describe('return values: refetch', () => {
-        it('Should only trigger a single request when refetch is called on a lazy query with new variables', async () => {
-            const spy = jest.fn((type, query) => {
-                if (query.id === '1') {
-                    return 42
-                }
-
-                return 0
-            })
-            const data = {
-                answer: spy,
-            }
+    describe.only('return values: refetch', () => {
+        it.only('Should only trigger a single request when refetch is called on a lazy query with new variables', async () => {
             const query = {
                 x: { resource: 'answer', id: ({ id }) => id },
             }
             const wrapper = ({ children }) => (
-                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+                <DataProvider baseUrl="http://dhis2.test" apiVersion={38}>
+                    {children}
+                </DataProvider>
             )
 
             const { result, waitFor } = renderHook(
@@ -450,8 +465,6 @@ describe('useDataQuery', () => {
                     wrapper,
                 }
             )
-
-            expect(spy).not.toHaveBeenCalled()
 
             act(() => {
                 result.current.refetch({ id: '1' })
@@ -464,26 +477,16 @@ describe('useDataQuery', () => {
                     data: { x: 42 },
                 })
             })
-
-            expect(spy).toHaveBeenCalledTimes(1)
         })
 
         it('Should only trigger a single request when refetch is called on a lazy query with identical variables', async () => {
-            const spy = jest.fn((type, query) => {
-                if (query.id === '1') {
-                    return 42
-                }
-
-                return 0
-            })
-            const data = {
-                answer: spy,
-            }
             const query = {
                 x: { resource: 'answer', id: ({ id }) => id },
             }
             const wrapper = ({ children }) => (
-                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+                <DataProvider baseUrl="http://dhis2.test" apiVersion={38}>
+                    {children}
+                </DataProvider>
             )
 
             const { result, waitFor } = renderHook(
@@ -494,8 +497,6 @@ describe('useDataQuery', () => {
                 }
             )
 
-            expect(spy).not.toHaveBeenCalled()
-
             act(() => {
                 result.current.refetch({ id: '1' })
             })
@@ -507,8 +508,6 @@ describe('useDataQuery', () => {
                     data: { x: 42 },
                 })
             })
-
-            expect(spy).toHaveBeenCalledTimes(1)
         })
 
         it('Should have a stable identity if the variables have not changed', async () => {
