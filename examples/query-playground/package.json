@@ -29,6 +29,7 @@
         "@dhis2/app-service-alerts": "file:../../services/alerts",
         "@dhis2/app-service-config": "file:../../services/config",
         "@dhis2/app-service-data": "file:../../services/data",
-        "@dhis2/app-service-offline": "file:../../services/offline"
+        "@dhis2/app-service-offline": "file:../../services/offline",
+        "@dhis2/app-service-feature-toggling": "file:../../services/feature-toggling"
     }
 }

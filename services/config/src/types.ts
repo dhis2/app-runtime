@@ -15,4 +15,6 @@ export interface Config {
     apiVersion: number
     serverVersion?: ServerVersion
     systemInfo?: SystemInfo
+    minDHIS2Version?: string
+    maxDHIS2Version?: string
 }

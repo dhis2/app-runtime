@@ -4,6 +4,7 @@ import { Alerts } from './components/Alerts'
 import { ConfigConsumer } from './components/ConfigConsumer'
 import { IndicatorList } from './components/IndicatorList'
 import { OnlineStatus } from './components/OnlineStatus'
+import { ServerVersionToggle } from './components/ServerVersionToggle'
 import { SwitchableProvider } from './components/SwitchableProvider'
 
 const config = {
@@ -24,6 +25,7 @@ const App = () => {
                     <ConfigConsumer />
                     <IndicatorList />
                     <Alerts />
+                    <ServerVersionToggle />
                 </header>
             </div>
         </SwitchableProvider>
