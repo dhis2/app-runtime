@@ -13,10 +13,7 @@ const systemInfoQuery = {
 }
 export const ServerVersionToggle = () => {
     const parentConfig = useConfig()
-    const { loading, data } = useDataQuery(systemInfoQuery, {
-        onComplete: console.log,
-        onError: console.error,
-    }) // Only necessary because this isn't a platform application
+    const { loading, data } = useDataQuery(systemInfoQuery) // Only necessary because this isn't a platform application
     return (
         <ConfigProvider config={{ ...parentConfig, systemInfo: data?.sysinfo }}>
             <span>Server version:</span>
