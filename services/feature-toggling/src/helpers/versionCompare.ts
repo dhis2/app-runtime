@@ -7,8 +7,9 @@ export const parseVersionString = (v: string): (number | null)[] => {
 export const versionCompare = (a: string, b: string) => {
     const parsedA = parseVersionString(a)
     const parsedB = parseVersionString(b)
+    const maxLength = Math.max(parsedA.length, parsedB.length)
     let index = 0
-    while (index < parsedA.length) {
+    while (index < maxLength) {
         const aValue = parsedA[index] ?? null
         const bValue = parsedB[index] ?? null
         if (aValue !== bValue) {

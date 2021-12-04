@@ -49,6 +49,15 @@ describe('versionCompare', () => {
         expect(versionCompare('2.35.6', '2.35.3')).toBe(1)
     })
 
+    it('Should treat short versions as if they are "before" the .0 version', () => {
+        expect(versionCompare('2.35', '2.35.0')).toBe(-1)
+        expect(versionCompare('2.35.0', '2.35')).toBe(1)
+        expect(versionCompare('2.35', '2.35.3')).toBe(-1)
+        expect(versionCompare('2.35.3', '2.35')).toBe(1)
+        expect(versionCompare('2.35', '2.36.4')).toBe(-1)
+        expect(versionCompare('2.35', '2.34.999')).toBe(1)
+    })
+
     it('Should correctly handle postfixed versions', () => {
         expect(versionCompare('2.36.10-beta.3', '2.36.10.0.3')).toBe(-1)
         expect(versionCompare('2.36.10-beta.3', '2.36.10-beta.5')).toBe(-1)
