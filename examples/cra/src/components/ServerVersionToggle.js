@@ -30,7 +30,7 @@ export const ServerVersionToggle = () => {
                     <ServerVersionCase min="2.37" max="2.37">
                         37
                     </ServerVersionCase>
-                    <ServerVersionCase min="2.38">&gt;= 38</ServerVersionCase>
+                    <ServerVersionCase>&gt;= 38 (default)</ServerVersionCase>
                 </ServerVersionSwitch>
             )}
         </ConfigProvider>
