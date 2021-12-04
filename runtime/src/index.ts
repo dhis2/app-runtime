@@ -23,6 +23,7 @@ export {
 export {
     ServerVersionSwitch,
     ServerVersionCase,
+    useServerVersionRange,
 } from '@dhis2/app-service-feature-toggling'
 
 export { Provider } from './Provider'
