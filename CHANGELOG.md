@@ -1,3 +1,10 @@
+## [3.2.7](https://github.com/dhis2/app-runtime/compare/v3.2.6...v3.2.7) (2021-12-07)
+
+
+### Bug Fixes
+
+* **use-data-query:** prevent double request on refetch with new variables ([#1086](https://github.com/dhis2/app-runtime/issues/1086)) ([4f4663c](https://github.com/dhis2/app-runtime/commit/4f4663c375ce2ccaf61137939f9e9256661a13f0))
+
 ## [3.2.6](https://github.com/dhis2/app-runtime/compare/v3.2.5...v3.2.6) (2021-11-23)
 
 
