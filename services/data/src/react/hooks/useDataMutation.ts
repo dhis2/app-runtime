@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useMutation } from 'react-query'
-import { QueryOptions, Mutation } from '../../engine'
+import { JsonValue, QueryVariables, QueryOptions, Mutation } from '../../engine'
 import { MutationRenderInput } from '../../types'
 import { useDataEngine } from './useDataEngine'
 import { useStaticInput } from './useStaticInput'
@@ -21,21 +21,19 @@ export const useDataMutation = (
         name: 'mutation',
     })
 
-    const mutationFn = variables =>
+    const mutationFn = (variables: QueryVariables): Promise<JsonValue> =>
         engine.mutate(theMutation, { ...initialVariables, ...variables })
-    const { data, mutateAsync, error, isLoading, isIdle } = useMutation(
-        mutationFn,
-        {
-            onSuccess,
-            onError,
-        }
-    )
+    // FIXME: JsonValue and react-query's JsonMap aren't compatible
+    const { data, mutate, error, isLoading, isIdle } = useMutation(mutationFn, {
+        onSuccess,
+        onError,
+    })
 
     if (shouldMutateNow) {
         setShouldMutateNow(false)
 
         // Not passing variables since they're already present in initialVariables
-        mutateAsync({})
+        mutate({})
     }
 
     /**
@@ -45,7 +43,8 @@ export const useDataMutation = (
     const ourError = error || undefined
 
     return [
-        mutateAsync,
+        // FIXME: the signature of react-query's mutate is slightly different
+        mutate,
         { engine, called: !isIdle, loading: isLoading, error: ourError, data },
     ]
 }
