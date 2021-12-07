@@ -1054,26 +1054,30 @@
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
 "@dhis2/app-runtime@file:../../runtime":
-  version "3.2.0"
+  version "3.2.6"
   dependencies:
-    "@dhis2/app-service-alerts" "3.2.0"
-    "@dhis2/app-service-config" "3.2.0"
-    "@dhis2/app-service-data" "3.2.0"
-    "@dhis2/app-service-offline" "3.2.0"
+    "@dhis2/app-service-alerts" "3.2.6"
+    "@dhis2/app-service-config" "3.2.6"
+    "@dhis2/app-service-data" "3.2.6"
+    "@dhis2/app-service-feature-toggling" "3.2.6"
+    "@dhis2/app-service-offline" "3.2.6"
 
-"@dhis2/app-service-alerts@3.2.0", "@dhis2/app-service-alerts@file:../../services/alerts":
-  version "3.2.0"
+"@dhis2/app-service-alerts@3.2.6", "@dhis2/app-service-alerts@file:../../services/alerts":
+  version "3.2.6"
 
-"@dhis2/app-service-config@3.2.0", "@dhis2/app-service-config@file:../../services/config":
-  version "3.2.0"
+"@dhis2/app-service-config@3.2.6", "@dhis2/app-service-config@file:../../services/config":
+  version "3.2.6"
 
-"@dhis2/app-service-data@3.2.0", "@dhis2/app-service-data@file:../../services/data":
-  version "3.2.0"
+"@dhis2/app-service-data@3.2.6", "@dhis2/app-service-data@file:../../services/data":
+  version "3.2.6"
   dependencies:
     react-query "^3.13.11"
 
-"@dhis2/app-service-offline@3.2.0", "@dhis2/app-service-offline@file:../../services/offline":
-  version "3.2.0"
+"@dhis2/app-service-feature-toggling@3.2.6", "@dhis2/app-service-feature-toggling@file:../../services/feature-toggling":
+  version "3.2.6"
+
+"@dhis2/app-service-offline@3.2.6", "@dhis2/app-service-offline@file:../../services/offline":
+  version "3.2.6"
   dependencies:
     lodash "^4.17.21"
 
