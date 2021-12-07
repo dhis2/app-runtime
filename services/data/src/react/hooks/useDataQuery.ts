@@ -108,10 +108,6 @@ export const useDataQuery = (
                 }).then(({ data }) => data)
             }
 
-            if (!enabled) {
-                setEnabled(true)
-            }
-
             if (newVariables) {
                 // Use cached hash if it exists
                 const currentHash =
@@ -121,8 +117,11 @@ export const useDataQuery = (
                 const mergedHash = stableVariablesHash(mergedVariables)
                 const identical = currentHash === mergedHash
 
-                if (identical) {
-                    // If the variables are identical we'll need to trigger the refetch manually
+                if (identical && enabled) {
+                    /**
+                     * If the variables are identical and the query is enabled
+                     * we'll need to trigger the refetch manually
+                     */
                     return queryRefetch({
                         cancelRefetch: true,
                         throwOnError: false,
@@ -131,6 +130,11 @@ export const useDataQuery = (
                     variablesHash.current = mergedHash
                     setVariables(mergedVariables)
                 }
+            }
+
+            // Enable the query after the variables have been set to prevent extra request
+            if (!enabled) {
+                setEnabled(true)
             }
 
             // This promise does not currently reject on errors
