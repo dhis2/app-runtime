@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useMutation } from 'react-query'
-import { JsonValue, QueryVariables, QueryOptions, Mutation } from '../../engine'
+import { QueryVariables, QueryOptions, Mutation } from '../../engine'
 import { MutationRenderInput } from '../../types'
 import { useDataEngine } from './useDataEngine'
 import { useStaticInput } from './useStaticInput'
@@ -21,10 +21,10 @@ export const useDataMutation = (
         name: 'mutation',
     })
 
-    const mutationFn = (variables: QueryVariables): Promise<JsonValue> =>
+    const mutationFn = (variables: QueryVariables): Promise<any> =>
         engine.mutate(theMutation, { ...initialVariables, ...variables })
-    // FIXME: JsonValue and react-query's JsonMap aren't compatible
-    const { data, mutate, error, isLoading, isIdle } = useMutation(mutationFn, {
+
+    const result = useMutation(mutationFn, {
         onSuccess,
         onError,
     })
@@ -32,19 +32,28 @@ export const useDataMutation = (
     if (shouldMutateNow) {
         setShouldMutateNow(false)
 
-        // Not passing variables since they're already present in initialVariables
-        mutate({})
+        // Not passing variables since we only have initialVariables at this point
+        result.mutate({})
     }
 
     /**
      * react-query returns null or an error, but we return undefined
      * or an error, so this ensures consistency with the other types.
      */
-    const ourError = error || undefined
+    const ourError = result.error || undefined
+
+    // This restricts access to react-query's other mutation options
+    const ourMutate = (variables: QueryVariables = {}) =>
+        result.mutateAsync(variables)
 
     return [
-        // FIXME: the signature of react-query's mutate is slightly different
-        mutate,
-        { engine, called: !isIdle, loading: isLoading, error: ourError, data },
+        ourMutate,
+        {
+            engine,
+            called: !result.isIdle,
+            loading: result.isLoading,
+            error: ourError,
+            data: result.data,
+        },
     ]
 }
