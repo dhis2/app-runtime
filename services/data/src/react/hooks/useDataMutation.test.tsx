@@ -291,4 +291,82 @@ describe('useDataMutation', () => {
             expect(mutatePromise).resolves.toBe(42)
         })
     })
+
+    it('should call onComplete on success', async () => {
+        const onComplete = jest.fn()
+        const mutation: CreateMutation = {
+            type: 'create',
+            resource: 'answer',
+            data: { answer: 42 },
+        }
+        const data = { answer: 42 }
+        const wrapper = ({ children }) => (
+            <CustomDataProvider data={data}>{children}</CustomDataProvider>
+        )
+
+        const { result, waitFor } = renderHook(
+            () => useDataMutation(mutation, { onComplete }),
+            { wrapper }
+        )
+
+        expect(onComplete).toHaveBeenCalledTimes(0)
+        const [mutate] = result.current
+        act(() => {
+            mutate()
+        })
+
+        await waitFor(() => {
+            const [, state] = result.current
+            expect(state).toMatchObject({
+                loading: false,
+                called: true,
+                data: 42,
+            })
+            expect(onComplete).toHaveBeenCalledTimes(1)
+            expect(onComplete).toHaveBeenLastCalledWith(42)
+        })
+    })
+
+    it('should call onError on error', async () => {
+        const error = new Error('Something went wrong')
+        const onError = jest.fn()
+        const mutation: CreateMutation = {
+            type: 'create',
+            resource: 'answer',
+            data: { answer: 42 },
+        }
+        const data = {
+            answer: () => {
+                throw error
+            },
+        }
+        const wrapper = ({ children }) => (
+            <CustomDataProvider data={data}>{children}</CustomDataProvider>
+        )
+
+        const { result, waitFor } = renderHook(
+            () => useDataMutation(mutation, { onError }),
+            { wrapper }
+        )
+
+        expect(onError).toHaveBeenCalledTimes(0)
+        const [mutate] = result.current
+
+        act(() => {
+            mutate().catch(() => {
+                // Ignore the error
+            })
+        })
+
+        await waitFor(() => {
+            const [, state] = result.current
+            expect(state).toMatchObject({
+                loading: false,
+                called: true,
+                error,
+            })
+        })
+        expect(onError).toHaveBeenCalledTimes(1)
+        expect(onError).toHaveBeenLastCalledWith(error)
+    })
 })

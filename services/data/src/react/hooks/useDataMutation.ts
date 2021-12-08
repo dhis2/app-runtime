@@ -1,15 +1,29 @@
 import { useState } from 'react'
-import { useMutation } from 'react-query'
+import { useMutation, setLogger } from 'react-query'
 import { QueryVariables, QueryOptions, Mutation } from '../../engine'
 import { MutationRenderInput } from '../../types'
 import { useDataEngine } from './useDataEngine'
 import { useStaticInput } from './useStaticInput'
 
+const noop = () => {
+    /**
+     * Used to silence the default react-query logger. Eventually we
+     * could expose the setLogger functionality and remove the call
+     * to setLogger here.
+     */
+}
+
+setLogger({
+    log: noop,
+    warn: noop,
+    error: noop,
+})
+
 export const useDataMutation = (
     mutation: Mutation,
     {
-        onComplete: onSuccess,
-        onError,
+        onComplete: userOnComplete,
+        onError: userOnError,
         variables: initialVariables = {},
         lazy = true,
     }: QueryOptions = {}
@@ -20,6 +34,15 @@ export const useDataMutation = (
         warn: true,
         name: 'mutation',
     })
+
+    // Ensure we call the supplied onComplete only with the data
+    const onSuccess = (data: any) => {
+        userOnComplete && userOnComplete(data)
+    }
+    // Ensure we call the supplied onError only with the error
+    const onError = (error: any) => {
+        userOnError && userOnError(error)
+    }
 
     const mutationFn = (variables: QueryVariables): Promise<any> =>
         engine.mutate(theMutation, { ...initialVariables, ...variables })
