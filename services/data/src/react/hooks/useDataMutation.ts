@@ -29,6 +29,7 @@ export const useDataMutation = (
     }: QueryOptions = {}
 ): MutationRenderInput => {
     const engine = useDataEngine()
+    const [variables, setVariables] = useState(initialVariables)
     const [shouldMutateNow, setShouldMutateNow] = useState(!lazy)
     const [theMutation] = useStaticInput<Mutation>(mutation, {
         warn: true,
@@ -44,8 +45,12 @@ export const useDataMutation = (
         userOnError && userOnError(error)
     }
 
-    const mutationFn = (variables: QueryVariables): Promise<any> =>
-        engine.mutate(theMutation, { ...initialVariables, ...variables })
+    const mutationFn = (newVariables: QueryVariables): Promise<any> => {
+        const mergedVariables = { ...variables, ...newVariables }
+
+        setVariables(mergedVariables)
+        return engine.mutate(theMutation, { variables: mergedVariables })
+    }
 
     const result = useMutation(mutationFn, {
         onSuccess,
