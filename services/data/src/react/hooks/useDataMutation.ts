@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useMutation, setLogger } from 'react-query'
 import { QueryVariables, QueryOptions, Mutation } from '../../engine'
 import { MutationRenderInput } from '../../types'
@@ -71,8 +71,11 @@ export const useDataMutation = (
     const ourError = result.error || undefined
 
     // This restricts access to react-query's other mutation options
-    const ourMutate = (variables: QueryVariables = {}) =>
-        result.mutateAsync(variables)
+    const { mutateAsync } = result
+    const ourMutate = useCallback(
+        (variables: QueryVariables = {}) => mutateAsync(variables),
+        [mutateAsync]
+    )
 
     return [
         ourMutate,
