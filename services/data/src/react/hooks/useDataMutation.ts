@@ -73,7 +73,10 @@ export const useDataMutation = (
     // This restricts access to react-query's other mutation options
     const { mutateAsync } = result
     const ourMutate = useCallback(
-        (variables: QueryVariables = {}) => mutateAsync(variables),
+        (variables: QueryVariables = {}) =>
+            mutateAsync(variables).catch(() => {
+                // Ignore the error
+            }),
         [mutateAsync]
     )
 
