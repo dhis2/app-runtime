@@ -1,23 +1,9 @@
 import { useState, useCallback } from 'react'
-import { useMutation, setLogger } from 'react-query'
+import { useMutation } from 'react-query'
 import { QueryVariables, QueryOptions, Mutation } from '../../engine'
 import { MutationRenderInput } from '../../types'
 import { useDataEngine } from './useDataEngine'
 import { useStaticInput } from './useStaticInput'
-
-const noop = () => {
-    /**
-     * Used to silence the default react-query logger. Eventually we
-     * could expose the setLogger functionality and remove the call
-     * to setLogger here.
-     */
-}
-
-setLogger({
-    log: noop,
-    warn: noop,
-    error: noop,
-})
 
 export const useDataMutation = (
     mutation: Mutation,
