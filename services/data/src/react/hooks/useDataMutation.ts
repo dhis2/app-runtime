@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useMutation } from 'react-query'
 import { QueryVariables, QueryOptions, Mutation } from '../../engine'
 import { MutationRenderInput } from '../../types'
@@ -16,7 +16,6 @@ export const useDataMutation = (
 ): MutationRenderInput => {
     const engine = useDataEngine()
     const [variables, setVariables] = useState(initialVariables)
-    const [shouldMutateNow, setShouldMutateNow] = useState(!lazy)
     const [theMutation] = useStaticInput<Mutation>(mutation, {
         warn: true,
         name: 'mutation',
@@ -43,12 +42,13 @@ export const useDataMutation = (
         onError,
     })
 
-    if (shouldMutateNow) {
-        setShouldMutateNow(false)
-
-        // Not passing variables since we only have initialVariables at this point
-        result.mutate({})
-    }
+    useEffect(() => {
+        if (!lazy) {
+            // Not passing variables since we only have initialVariables at the first render
+            result.mutate({})
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     /**
      * react-query returns null or an error, but we return undefined

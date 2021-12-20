@@ -66,10 +66,12 @@ describe('useDataMutation', () => {
             { wrapper }
         )
 
-        const [, duringMutation] = result.current
-        expect(duringMutation).toMatchObject({
-            loading: true,
-            called: true,
+        await waitFor(() => {
+            const [, duringMutation] = result.current
+            expect(duringMutation).toMatchObject({
+                loading: true,
+                called: true,
+            })
         })
 
         await waitFor(() => {
