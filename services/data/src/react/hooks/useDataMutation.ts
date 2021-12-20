@@ -58,7 +58,7 @@ export const useDataMutation = (
 
     // This restricts access to react-query's other mutation options
     const { mutateAsync } = result
-    const ourMutate = useCallback(
+    const mutate = useCallback(
         (variables: QueryVariables = {}) =>
             mutateAsync(variables).catch(() => {
                 // Ignore the error
@@ -67,7 +67,7 @@ export const useDataMutation = (
     )
 
     return [
-        ourMutate,
+        mutate,
         {
             engine,
             called: !result.isIdle,
