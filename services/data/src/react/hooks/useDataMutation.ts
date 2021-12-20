@@ -16,7 +16,7 @@ export const useDataMutation = (
 ): MutationRenderInput => {
     const engine = useDataEngine()
     const [variables, setVariables] = useState(initialVariables)
-    const [theMutation] = useStaticInput<Mutation>(mutation, {
+    const [staticMutation] = useStaticInput<Mutation>(mutation, {
         warn: true,
         name: 'mutation',
     })
@@ -34,7 +34,7 @@ export const useDataMutation = (
         const mergedVariables = { ...variables, ...newVariables }
 
         setVariables(mergedVariables)
-        return engine.mutate(theMutation, { variables: mergedVariables })
+        return engine.mutate(staticMutation, { variables: mergedVariables })
     }
 
     const result = useMutation(mutationFn, {
