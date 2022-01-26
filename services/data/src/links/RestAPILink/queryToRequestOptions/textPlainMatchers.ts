@@ -31,7 +31,7 @@ export const isCreateInterpretation = (
     type: FetchType,
     { resource }: ResolvedResourceQuery
 ): boolean => {
-    const pattern = /^interpretations\/(?:reportTable|chart|visualization|map|eventReport|eventChart|dataSetReport)\/[a-zA-Z0-9]{11}$/
+    const pattern = /^interpretations\/(?:reportTable|chart|visualization|map|eventVisualization|eventReport|eventChart|dataSetReport)\/[a-zA-Z0-9]{11}$/
     return type === 'create' && pattern.test(resource)
 }
 
