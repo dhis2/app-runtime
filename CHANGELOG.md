@@ -1,3 +1,10 @@
+## [3.2.8](https://github.com/dhis2/app-runtime/compare/v3.2.7...v3.2.8) (2022-01-27)
+
+
+### Bug Fixes
+
+* match also eventVisualization in isCreateInterpretation ([f630a78](https://github.com/dhis2/app-runtime/commit/f630a78767705751e2d9b2bf4a72fd9dcdbbead4))
+
 ## [3.2.7](https://github.com/dhis2/app-runtime/compare/v3.2.6...v3.2.7) (2021-12-07)
 
 
