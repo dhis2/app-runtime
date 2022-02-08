@@ -43,7 +43,7 @@ export class CustomDataLink implements DataEngineLink {
         }
 
         const customResource = this.data[query.resource]
-        if (!customResource) {
+        if (customResource === undefined) {
             if (this.failOnMiss) {
                 throw new Error(
                     `No data provided for resource type ${query.resource}!`
