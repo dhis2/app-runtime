@@ -1,3 +1,10 @@
+## [3.2.9](https://github.com/dhis2/app-runtime/compare/v3.2.8...v3.2.9) (2022-02-08)
+
+
+### Bug Fixes
+
+* **custom-data-link:** allow falsey values for resources ([#1112](https://github.com/dhis2/app-runtime/issues/1112)) ([75f3528](https://github.com/dhis2/app-runtime/commit/75f3528fe588d1ec95d657d5cbbca7896e549305))
+
 ## [3.2.8](https://github.com/dhis2/app-runtime/compare/v3.2.7...v3.2.8) (2022-01-27)
 
 
