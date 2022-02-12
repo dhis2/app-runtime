@@ -16,7 +16,7 @@ export const makeAlertsManager = (
             id: alertId,
             remove: () => {
                 alertsMap.delete(alertId)
-                alertRef.current = null
+                alertRef.current = undefined
                 setAlerts(toVisibleAlertsArray(alertsMap))
             },
         }

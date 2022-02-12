@@ -21,6 +21,10 @@ export type QueryRefetchFunction = RefetchFunction<QueryResult>
 export type MutationFunction = RefetchFunction<JsonValue>
 
 export type ExecuteFunction<T> = (options: QueryExecuteOptions) => Promise<T>
+export type ShowAlertsOptions = {
+    success: boolean | string | ((data: any) => string)
+    error: boolean | string | ((error: FetchError) => string)
+}
 export interface ExecuteHookInput<ReturnType> {
     execute: ExecuteFunction<ReturnType>
     variables: QueryVariables
@@ -29,6 +33,7 @@ export interface ExecuteHookInput<ReturnType> {
     transformData?: (data: JsonValue[]) => JsonValue
     onComplete?: (data: any) => void
     onError?: (error: FetchError) => void
+    showAlerts?: ShowAlertsOptions
 }
 
 export interface ExecuteHookResult<ReturnType> {

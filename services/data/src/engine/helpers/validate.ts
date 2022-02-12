@@ -1,8 +1,78 @@
 import { InvalidQueryError } from '../types/InvalidQueryError'
 import { ResolvedResourceQuery } from '../types/Query'
 
-const validQueryKeys = ['resource', 'id', 'params', 'data']
+const validQueryKeys = ['resource', 'resourceParams', 'id', 'params', 'data']
 const validTypes = ['read', 'create', 'update', 'replace', 'delete']
+
+const getResourceParamErrors = (query: ResolvedResourceQuery): string[] => {
+    if (query.resource.match(/^{\d+}$/)) {
+        return [`Query resource ${query.resource} is invalid`]
+    }
+    const resourcePlaceholders = [...query.resource.matchAll(/{(\d+)}/gi)]
+
+    const errors = []
+    let placeholderIndex = 0
+
+    if (
+        query.resourceParams &&
+        (!Array.isArray(query.resourceParams) ||
+            query.resourceParams.some(param => typeof param !== 'string'))
+    ) {
+        return ['Query field resourceParams must be an array of strings']
+    }
+    if (!resourcePlaceholders.length) {
+        if (query.resourceParams?.length) {
+            return [
+                'Query field resourceParams is only applicable with a parameterized resource string',
+            ]
+        }
+    } else if (resourcePlaceholders.length !== query.resourceParams?.length) {
+        return [
+            `Found ${resourcePlaceholders.length} placeholders in the resource string but ${query.resourceParams?.length} resourceParams were provided`,
+        ]
+    }
+    while (resourcePlaceholders[placeholderIndex]) {
+        const fromOneIndex = placeholderIndex + 1
+        const placeholderMatch = resourcePlaceholders[placeholderIndex]
+        const placeholderValue = placeholderMatch[1]
+
+        if (placeholderMatch.index || placeholderMatch.index === 0) {
+            const end = placeholderMatch.index + placeholderMatch[0].length
+            if (
+                (placeholderMatch.index > 0 &&
+                    query.resource[placeholderMatch.index - 1] !== '/') ||
+                (end < query.resource.length && query.resource[end] !== '/')
+            ) {
+                errors.push(
+                    `Resource parameter ${placeholderMatch[0]} must be preceded and followed by / characters`
+                )
+            }
+        }
+
+        if (placeholderValue !== String(fromOneIndex)) {
+            return [
+                'Resource contains parameters which are not in increasing order',
+            ]
+        }
+        const resourceParam = query.resourceParams?.[placeholderIndex]
+
+        if (!resourceParam) {
+            errors.push(
+                `Resource contains parameter {${placeholderValue}}, but no matching resourceParam was provided`
+            )
+        }
+
+        if (resourceParam?.includes('/')) {
+            errors.push(
+                `Resource parameter ${resourceParam} cannot contain a / character`
+            )
+        }
+
+        placeholderIndex += 1
+    }
+
+    return errors
+}
 
 export const getResourceQueryErrors = (
     type: string,
@@ -19,6 +89,8 @@ export const getResourceQueryErrors = (
 
     if (!query.resource || typeof query.resource !== 'string') {
         errors.push('Property resource must be a string')
+    } else {
+        errors.push(...getResourceParamErrors(query))
     }
 
     if (type === 'create' && query.id) {

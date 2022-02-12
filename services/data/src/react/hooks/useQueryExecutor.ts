@@ -1,6 +1,10 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { FetchError, QueryExecuteOptions } from '../../engine'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import i18n from '../../locales/index.js'
 import { ExecuteHookInput, ExecuteHookResult } from '../../types'
+import { useQueryAlert } from './useQueryAlert'
 import { useStaticInput } from './useStaticInput'
 
 interface StateType<T> {
@@ -17,6 +21,7 @@ export const useQueryExecutor = <ReturnType>({
     immediate,
     onComplete,
     onError,
+    showAlerts = { success: false, error: true },
 }: ExecuteHookInput<ReturnType>): ExecuteHookResult<ReturnType> => {
     const [theExecute] = useStaticInput(execute)
     const [state, setState] = useState<StateType<ReturnType>>({
@@ -31,6 +36,15 @@ export const useQueryExecutor = <ReturnType>({
         abortControllersRef.current.forEach(controller => controller.abort())
         abortControllersRef.current = []
     }, [])
+
+    const { show: showSuccessAlert } = useQueryAlert(
+        showAlerts.success,
+        i18n.t('Request succeeded')
+    )
+    const { show: showFailureAlert } = useQueryAlert(
+        showAlerts.error,
+        i18n.t('Request failed')
+    )
 
     const manualAbort = useCallback(() => {
         abort()
@@ -71,6 +85,7 @@ export const useQueryExecutor = <ReturnType>({
                 .then((data: ReturnType) => {
                     if (!controller.signal.aborted) {
                         setState({ called: true, loading: false, data })
+                        showSuccessAlert(data)
                         return data
                     }
                     return new Promise<ReturnType>(() => undefined) // Wait forever
@@ -78,11 +93,20 @@ export const useQueryExecutor = <ReturnType>({
                 .catch((error: FetchError) => {
                     if (!controller.signal.aborted) {
                         setState({ called: true, loading: false, error })
+                        showFailureAlert(error)
                     }
                     return new Promise<ReturnType>(() => undefined) // Don't throw errors in refetch promises, wait forever
                 })
         },
-        [abort, onComplete, onError, singular, theExecute]
+        [
+            abort,
+            onComplete,
+            onError,
+            singular,
+            theExecute,
+            showSuccessAlert,
+            showFailureAlert,
+        ]
     )
 
     // Don't include immediate or refetch as deps, otherwise unintentional refetches

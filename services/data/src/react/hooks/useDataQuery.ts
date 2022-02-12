@@ -2,11 +2,17 @@ import { useState, useRef, useCallback } from 'react'
 import { useQuery, setLogger } from 'react-query'
 import { Query, QueryOptions } from '../../engine'
 import { FetchError } from '../../engine/types/FetchError'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import i18n from '../../locales/index.js'
 import { QueryRenderInput, QueryRefetchFunction } from '../../types'
 import { stableVariablesHash } from './stableVariablesHash'
 import { useDataEngine } from './useDataEngine'
+import { useQueryAlert } from './useQueryAlert'
 import { useStaticInput } from './useStaticInput'
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 const noop = () => {
     /**
      * Used to silence the default react-query logger. Eventually we
@@ -28,6 +34,7 @@ export const useDataQuery = (
         onError: userOnError,
         variables: initialVariables = {},
         lazy: initialLazy = false,
+        showAlerts = { success: false, error: true },
     }: QueryOptions = {}
 ): QueryRenderInput => {
     const variablesHash = useRef<string | null>(null)
@@ -37,6 +44,15 @@ export const useDataQuery = (
         warn: true,
         name: 'query',
     })
+
+    const { show: showSuccessAlert } = useQueryAlert(
+        showAlerts.success,
+        i18n.t('Request succeeded')
+    )
+    const { show: showFailureAlert } = useQueryAlert(
+        showAlerts.error,
+        i18n.t('Request failed')
+    )
 
     /**
      * User callbacks and refetch handling
@@ -49,6 +65,8 @@ export const useDataQuery = (
             refetchCallback.current = null
         }
 
+        showSuccessAlert(data)
+
         if (userOnSuccess) {
             userOnSuccess(data)
         }
@@ -59,6 +77,8 @@ export const useDataQuery = (
         if (refetchCallback.current) {
             refetchCallback.current = null
         }
+
+        showFailureAlert(error)
 
         if (userOnError) {
             userOnError(error)
