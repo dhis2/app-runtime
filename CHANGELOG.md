@@ -1,3 +1,10 @@
+# [3.3.0](https://github.com/dhis2/app-runtime/compare/v3.2.9...v3.3.0) (2022-02-26)
+
+
+### Features
+
+* use form-data for dataValues endpoints ([#1133](https://github.com/dhis2/app-runtime/issues/1133)) ([a67b926](https://github.com/dhis2/app-runtime/commit/a67b926db147ab880df9a23a02e3c41d47e845dc))
+
 ## [3.2.9](https://github.com/dhis2/app-runtime/compare/v3.2.8...v3.2.9) (2022-02-08)
 
 
