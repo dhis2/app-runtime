@@ -6,6 +6,15 @@ import { ResolvedResourceQuery, FetchType } from '../../../engine'
  * https://docs.dhis2.org/master/en/developer/html/dhis2_developer_manual_full.html
  */
 
+// Post to 'dataValues' (send/update a data value; endpoint doesn't support JSON)
+// For file-uploads too
+export const isDataValue = (
+    type: FetchType,
+    { resource }: ResolvedResourceQuery
+) =>
+    type === 'create' &&
+    (resource === 'dataValues' || resource === 'dataValues/file')
+
 // POST to 'fileResources' (upload a file resource)
 export const isFileResourceUpload = (
     type: FetchType,
