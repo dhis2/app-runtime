@@ -12,7 +12,7 @@ const getMethod = (type: FetchType): string => {
         case 'read':
             return 'GET'
         case 'update':
-        case 'jsonPatch':
+        case 'json-patch':
             return 'PATCH'
         case 'replace':
             return 'PUT'

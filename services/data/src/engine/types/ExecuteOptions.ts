@@ -5,7 +5,7 @@ export type FetchType =
     | 'create'
     | 'read'
     | 'update'
-    | 'jsonPatch'
+    | 'json-patch'
     | 'replace'
     | 'delete'
 export interface QueryExecuteOptions {

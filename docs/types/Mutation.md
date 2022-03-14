@@ -8,7 +8,7 @@ A mutation defines a destructive operation performed on a collection or instance
 
 |   Property   |              Type              |              | Description                                                                                                                                                |
 | :----------: | :----------------------------: | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|   **type**   |            _string_            | **required** | The type of mutation to perform, must be one of `create`, `update`, `jsonPatch`\*, or `delete`.                                                            |
+|   **type**   |            _string_            | **required** | The type of mutation to perform, must be one of `create`, `update`, `json-patch`\*, or `delete`.                                                           |
 | **resource** |            _string_            | **required** | The path to the resource being requested, i.e. `indicators`.                                                                                               |
 |    **id**    | _string_ **or** _() => string_ |              | Required for `update` and `delete` mutations, not allowed for `create` mutations. Indicates that a particular **instance** of a collection will be mutated |
 | **partial**  |           _boolean_            |              | If performing an `update` mutation, set `partial: true` to replace only the provided fields of the target object.                                          |
@@ -17,7 +17,7 @@ A mutation defines a destructive operation performed on a collection or instance
 
 > See the [Mutation type definition](https://github.com/dhis2/app-runtime/blob/master/services/data/src/engine/types/Mutation.ts) for more information
 
-> \* When choosing the `jsonPatch` type, a PATCH request with content-type `application/json-patch+json` will be sent and the server will expect the "body" of the mutation to be a "patch document" (i.e. an array of operations). See [jsonpatch.com](http://jsonpatch.com) for a brief overview, or JSON Patch specifications in [RFC 6902](http://tools.ietf.org/html/rfc6902) for full details.
+> \* When choosing the `json-patch` type, a PATCH request with content-type `application/json-patch+json` will be sent and the server will expect the "body" of the mutation to be a "patch document" (i.e. an array of operations). See [jsonpatch.com](http://jsonpatch.com) for a brief overview, or JSON Patch specifications in [RFC 6902](http://tools.ietf.org/html/rfc6902) for full details.
 
 ## Examples
 

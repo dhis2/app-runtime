@@ -49,7 +49,7 @@ export const requestContentType = (
         return null
     }
 
-    if (type === 'jsonPatch') {
+    if (type === 'json-patch') {
         return 'application/json-patch+json'
     }
 

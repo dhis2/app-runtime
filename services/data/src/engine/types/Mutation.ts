@@ -4,7 +4,7 @@ import { ResourceQuery, QueryVariables } from './Query'
 export type MutationType =
     | 'create'
     | 'update'
-    | 'jsonPatch'
+    | 'json-patch'
     | 'replace'
     | 'delete'
 export interface MutationData {
@@ -18,7 +18,7 @@ export interface CreateMutation extends BaseMutation {
     data: MutationData
 }
 export interface UpdateMutation extends BaseMutation {
-    type: 'update' | 'replace' | 'jsonPatch'
+    type: 'update' | 'replace' | 'json-patch'
     id: string
     partial?: boolean
     data: MutationData

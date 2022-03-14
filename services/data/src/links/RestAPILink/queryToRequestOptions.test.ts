@@ -47,8 +47,8 @@ describe('queryToRequestOptions', () => {
         `)
     })
 
-    it('should return a valid Fetch option object for jsonPatch request', () => {
-        const options = queryToRequestOptions('jsonPatch', {
+    it('should return a valid Fetch option object for json-patch request', () => {
+        const options = queryToRequestOptions('json-patch', {
             resource: 'test',
             data: { answer: 42, foo: 'bar' },
         })

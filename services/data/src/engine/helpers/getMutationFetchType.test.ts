@@ -10,11 +10,11 @@ describe('getMutationFetchType', () => {
         ).toBe('delete')
         expect(
             getMutationFetchType({
-                type: 'jsonPatch',
+                type: 'json-patch',
                 resource: 'test',
                 data: {},
             })
-        ).toBe('jsonPatch')
+        ).toBe('json-patch')
     })
     it('should return `replace` for non-partial `update`', () => {
         expect(
