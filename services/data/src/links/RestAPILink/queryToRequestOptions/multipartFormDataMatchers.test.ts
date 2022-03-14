@@ -4,7 +4,24 @@ import {
     isStaticContentUpload,
     isAppInstall,
     isSvgConversion,
+    isDataValue,
 } from './multipartFormDataMatchers'
+
+describe('isDataValue', () => {
+    it('returns true for a POST to "dataValues"', () => {
+        expect(isDataValue('create', { resource: 'dataValues' })).toEqual(true)
+    })
+    it('returns true for a POST to "dataValues/file"', () => {
+        expect(isDataValue('create', { resource: 'dataValues/file' })).toEqual(
+            true
+        )
+    })
+    it('returns false for a POST to a different resource', () => {
+        expect(isDataValue('create', { resource: 'somethingElse' })).toEqual(
+            false
+        )
+    })
+})
 
 describe('isFileResourceUpload', () => {
     it('returns true for a POST to "fileResources"', () => {

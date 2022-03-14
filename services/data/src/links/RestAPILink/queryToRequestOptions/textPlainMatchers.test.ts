@@ -1,7 +1,8 @@
 import {
     isReplyToMessageConversation,
     isCreateFeedbackMessage,
-    isCreateOrUpdateInterpretation,
+    isCreateInterpretation,
+    isUpdateInterpretation,
     isCommentOnInterpretation,
     isInterpretationCommentUpdate,
     isAddOrUpdateSystemOrUserSetting,
@@ -43,39 +44,78 @@ describe('isCreateFeedbackMessage', () => {
     })
 })
 
-describe('isCreateOrUpdateInterpretation', () => {
+describe('isCreateInterpretation', () => {
     it('returns true for a POST to "interpretations/chart/${id}"', () => {
         expect(
-            isCreateOrUpdateInterpretation('create', {
+            isCreateInterpretation('create', {
                 resource: 'interpretations/chart/oXD88WWSQpR',
             })
         ).toEqual(true)
     })
-    it('returns true for a PUT to "interpretations/chart/${id}"', () => {
+    it('returns false for a PUT to "interpretations/chart/${id}"', () => {
         expect(
-            isCreateOrUpdateInterpretation('replace', {
+            isCreateInterpretation('replace', {
                 resource: 'interpretations/chart/oXD88WWSQpR',
             })
-        ).toEqual(true)
-    })
-    it('returns true for PUT with populated query.id', () => {
-        expect(
-            isCreateOrUpdateInterpretation('replace', {
-                resource: 'interpretations/chart',
-                id: 'oXD88WWSQpR',
-            })
-        ).toEqual(true)
+        ).toEqual(false)
     })
     it('retuns false for PATCH requests with a valid query', () => {
         expect(
-            isCreateOrUpdateInterpretation('update', {
+            isCreateInterpretation('update', {
                 resource: 'interpretations/chart/oXD88WWSQpR',
             })
         ).toEqual(false)
     })
     it('returns false for a request to a different resource', () => {
         expect(
-            isCreateOrUpdateInterpretation('create', {
+            isCreateInterpretation('create', {
+                resource: 'interpretations/dummy/oXD88WWSQpR',
+            })
+        ).toEqual(false)
+    })
+})
+
+describe('isUpdateInterpretation', () => {
+    it('returns true for a PUT to "interpretations/${id}"', () => {
+        expect(
+            isUpdateInterpretation('replace', {
+                resource: 'interpretations/oXD88WWSQpR',
+            })
+        ).toEqual(true)
+    })
+    it('returns true for PUT with populated query.id', () => {
+        expect(
+            isUpdateInterpretation('replace', {
+                resource: 'interpretations',
+                id: 'oXD88WWSQpR',
+            })
+        ).toEqual(true)
+    })
+    it('returns false for a POST to "interpretations/${id}"', () => {
+        expect(
+            isUpdateInterpretation('create', {
+                resource: 'interpretations/oXD88WWSQpR',
+            })
+        ).toEqual(false)
+    })
+    it('returns false for a PATCH to "interpretations/${id}"', () => {
+        expect(
+            isUpdateInterpretation('update', {
+                resource: 'interpretations/oXD88WWSQpR',
+            })
+        ).toEqual(false)
+    })
+    it('returns false for PATCH with populated query.id', () => {
+        expect(
+            isUpdateInterpretation('update', {
+                resource: 'interpretations',
+                id: 'oXD88WWSQpR',
+            })
+        ).toEqual(false)
+    })
+    it('returns false for a request to a different resource', () => {
+        expect(
+            isUpdateInterpretation('create', {
                 resource: 'interpretations/dummy/oXD88WWSQpR',
             })
         ).toEqual(false)

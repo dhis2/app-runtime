@@ -1,3 +1,46 @@
+# [3.3.0](https://github.com/dhis2/app-runtime/compare/v3.2.9...v3.3.0) (2022-02-26)
+
+
+### Features
+
+* use form-data for dataValues endpoints ([#1133](https://github.com/dhis2/app-runtime/issues/1133)) ([a67b926](https://github.com/dhis2/app-runtime/commit/a67b926db147ab880df9a23a02e3c41d47e845dc))
+
+## [3.2.9](https://github.com/dhis2/app-runtime/compare/v3.2.8...v3.2.9) (2022-02-08)
+
+
+### Bug Fixes
+
+* **custom-data-link:** allow falsey values for resources ([#1112](https://github.com/dhis2/app-runtime/issues/1112)) ([75f3528](https://github.com/dhis2/app-runtime/commit/75f3528fe588d1ec95d657d5cbbca7896e549305))
+
+## [3.2.8](https://github.com/dhis2/app-runtime/compare/v3.2.7...v3.2.8) (2022-01-27)
+
+
+### Bug Fixes
+
+* match also eventVisualization in isCreateInterpretation ([f630a78](https://github.com/dhis2/app-runtime/commit/f630a78767705751e2d9b2bf4a72fd9dcdbbead4))
+
+## [3.2.7](https://github.com/dhis2/app-runtime/compare/v3.2.6...v3.2.7) (2021-12-07)
+
+
+### Bug Fixes
+
+* **use-data-query:** prevent double request on refetch with new variables ([#1086](https://github.com/dhis2/app-runtime/issues/1086)) ([4f4663c](https://github.com/dhis2/app-runtime/commit/4f4663c375ce2ccaf61137939f9e9256661a13f0))
+
+## [3.2.6](https://github.com/dhis2/app-runtime/compare/v3.2.5...v3.2.6) (2021-11-23)
+
+
+### Bug Fixes
+
+* **data-service:** identify interpretation update requests correctly ([38045a3](https://github.com/dhis2/app-runtime/commit/38045a33f271c56640d2580609c00a75053ccb9c))
+* **data-service:** identify interpretation update requests correctly ([63d4ea2](https://github.com/dhis2/app-runtime/commit/63d4ea228c521227d9bca0221a0d3d475025a907))
+
+## [3.2.5](https://github.com/dhis2/app-runtime/compare/v3.2.4...v3.2.5) (2021-11-15)
+
+
+### Bug Fixes
+
+* **use-data-query:** memoize refetch function ([1b7a42f](https://github.com/dhis2/app-runtime/commit/1b7a42f3592074bbe0fc2798a60b81423159962a))
+
 ## [3.2.4](https://github.com/dhis2/app-runtime/compare/v3.2.3...v3.2.4) (2021-10-20)
 
 

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { useQuery, setLogger } from 'react-query'
 import { Query, QueryOptions } from '../../engine'
 import { FetchError } from '../../engine/types/FetchError'
@@ -89,52 +89,63 @@ export const useDataQuery = (
     /**
      * Refetch allows a user to update the variables or just
      * trigger a refetch of the query with the current variables.
+     *
+     * We're using useCallback to make the identity of the function
+     * as stable as possible, so that it won't trigger excessive
+     * rerenders when used for side-effects.
      */
 
-    const refetch: QueryRefetchFunction = newVariables => {
-        /**
-         * If there are no updates that will trigger an automatic refetch
-         * we'll need to call react-query's refetch directly
-         */
-        if (enabled && !newVariables) {
-            return queryRefetch({
-                cancelRefetch: true,
-                throwOnError: false,
-            }).then(({ data }) => data)
-        }
-
-        if (!enabled) {
-            setEnabled(true)
-        }
-
-        if (newVariables) {
-            // Use cached hash if it exists
-            const currentHash =
-                variablesHash.current || stableVariablesHash(variables)
-
-            const mergedVariables = { ...variables, ...newVariables }
-            const mergedHash = stableVariablesHash(mergedVariables)
-            const identical = currentHash === mergedHash
-
-            if (identical) {
-                // If the variables are identical we'll need to trigger the refetch manually
+    const refetch: QueryRefetchFunction = useCallback(
+        newVariables => {
+            /**
+             * If there are no updates that will trigger an automatic refetch
+             * we'll need to call react-query's refetch directly
+             */
+            if (enabled && !newVariables) {
                 return queryRefetch({
                     cancelRefetch: true,
                     throwOnError: false,
                 }).then(({ data }) => data)
-            } else {
-                variablesHash.current = mergedHash
-                setVariables(mergedVariables)
             }
-        }
 
-        // This promise does not currently reject on errors
-        return new Promise(resolve => {
-            refetchCallback.current = data => {
-                resolve(data)
+            if (newVariables) {
+                // Use cached hash if it exists
+                const currentHash =
+                    variablesHash.current || stableVariablesHash(variables)
+
+                const mergedVariables = { ...variables, ...newVariables }
+                const mergedHash = stableVariablesHash(mergedVariables)
+                const identical = currentHash === mergedHash
+
+                if (identical && enabled) {
+                    /**
+                     * If the variables are identical and the query is enabled
+                     * we'll need to trigger the refetch manually
+                     */
+                    return queryRefetch({
+                        cancelRefetch: true,
+                        throwOnError: false,
+                    }).then(({ data }) => data)
+                } else {
+                    variablesHash.current = mergedHash
+                    setVariables(mergedVariables)
+                }
             }
-        })
-    }
+
+            // Enable the query after the variables have been set to prevent extra request
+            if (!enabled) {
+                setEnabled(true)
+            }
+
+            // This promise does not currently reject on errors
+            return new Promise(resolve => {
+                refetchCallback.current = data => {
+                    resolve(data)
+                }
+            })
+        },
+        [enabled, queryRefetch, variables]
+    )
 
     /**
      * react-query returns null or an error, but we return undefined
