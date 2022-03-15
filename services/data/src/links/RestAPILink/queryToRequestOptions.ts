@@ -12,11 +12,14 @@ const getMethod = (type: FetchType): string => {
         case 'read':
             return 'GET'
         case 'update':
+        case 'json-patch':
             return 'PATCH'
         case 'replace':
             return 'PUT'
         case 'delete':
             return 'DELETE'
+        default:
+            throw new Error(`Unknown type ${type}`)
     }
 }
 

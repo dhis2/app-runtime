@@ -8,6 +8,13 @@ describe('getMutationFetchType', () => {
         expect(
             getMutationFetchType({ type: 'delete', resource: 'test', id: 'id' })
         ).toBe('delete')
+        expect(
+            getMutationFetchType({
+                type: 'json-patch',
+                resource: 'test',
+                data: {},
+            })
+        ).toBe('json-patch')
     })
     it('should return `replace` for non-partial `update`', () => {
         expect(
