@@ -1,3 +1,10 @@
+# [3.4.0](https://github.com/dhis2/app-runtime/compare/v3.3.0...v3.4.0) (2022-03-15)
+
+
+### Features
+
+* **data-service:** add json-patch support ([#1023](https://github.com/dhis2/app-runtime/issues/1023)) ([cdcdf24](https://github.com/dhis2/app-runtime/commit/cdcdf24ecb1ae810ab4985d15fe49939da097c90))
+
 # [3.3.0](https://github.com/dhis2/app-runtime/compare/v3.2.9...v3.3.0) (2022-02-26)
 
 
