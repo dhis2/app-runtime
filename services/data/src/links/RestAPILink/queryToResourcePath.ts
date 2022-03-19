@@ -87,11 +87,11 @@ export const queryToResourcePath = (
     type: FetchType
 ): string => {
     const { resource, id, params = {} } = query
-    
+
     const apiBase = skipApiVersion(resource, link.config)
         ? link.unversionedApiPath
         : link.versionedApiPath
-    
+
     const base = isAction(resource)
         ? makeActionPath(resource)
         : joinPath(apiBase, resource, id)

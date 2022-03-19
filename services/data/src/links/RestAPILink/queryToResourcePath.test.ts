@@ -10,8 +10,8 @@ const defaultConfig: Config = {
     serverVersion: {
         major: 2,
         minor: 37,
-        patch: 11
-    }
+        patch: 11,
+    },
 }
 const link = createLink(defaultConfig)
 const apiPath = link.versionedApiPath
@@ -170,7 +170,7 @@ describe('queryToResourcePath', () => {
 
     it('should return an unversioned endpoint for the new tracker importer (in version 2.37)', () => {
         const query: ResolvedResourceQuery = {
-            resource: 'tracker'
+            resource: 'tracker',
         }
         expect(queryToResourcePath(link, query, 'read')).toBe(
             `${link.unversionedApiPath}/tracker`
@@ -179,15 +179,15 @@ describe('queryToResourcePath', () => {
 
     it('should return a VERSIONED endpoint for the new tracker importer (in version 2.38)', () => {
         const query: ResolvedResourceQuery = {
-            resource: 'tracker'
+            resource: 'tracker',
         }
         const v38config: Config = {
             ...defaultConfig,
             serverVersion: {
                 major: 2,
                 minor: 38,
-                patch: 0
-            }
+                patch: 0,
+            },
         }
         expect(queryToResourcePath(createLink(v38config), query, 'read')).toBe(
             `${link.versionedApiPath}/tracker`
