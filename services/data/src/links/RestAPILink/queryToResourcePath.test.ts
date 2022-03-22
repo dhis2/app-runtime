@@ -1,7 +1,20 @@
+import { Config } from '@dhis2/app-service-config'
 import { ResolvedResourceQuery } from '../../engine'
+import { RestAPILink } from '../RestAPILink'
 import { queryToResourcePath } from './queryToResourcePath'
 
-const apiPath = '<api>'
+const createLink = config => new RestAPILink(config)
+const defaultConfig: Config = {
+    basePath: '<base>',
+    apiVersion: '37',
+    serverVersion: {
+        major: 2,
+        minor: 37,
+        patch: 11,
+    },
+}
+const link = createLink(defaultConfig)
+const apiPath = link.versionedApiPath
 
 const actionPrefix = `dhis-web-commons/`
 const actionPostfix = '.action'
@@ -12,7 +25,7 @@ describe('queryToResourcePath', () => {
             const query: ResolvedResourceQuery = {
                 resource: 'action::test',
             }
-            expect(queryToResourcePath(apiPath, query)).toBe(
+            expect(queryToResourcePath(link, query, 'read')).toBe(
                 `${actionPrefix}test${actionPostfix}`
             )
         })
@@ -23,7 +36,7 @@ describe('queryToResourcePath', () => {
                     key: 'value',
                 },
             }
-            expect(queryToResourcePath(apiPath, query)).toBe(
+            expect(queryToResourcePath(link, query, 'read')).toBe(
                 `${actionPrefix}test${actionPostfix}?key=value`
             )
         })
@@ -33,7 +46,7 @@ describe('queryToResourcePath', () => {
             const query: ResolvedResourceQuery = {
                 resource: 'svg.pdf',
             }
-            expect(queryToResourcePath(apiPath, query)).toBe(
+            expect(queryToResourcePath(link, query, 'read')).toBe(
                 `${apiPath}/svg.pdf`
             )
         })
@@ -42,7 +55,7 @@ describe('queryToResourcePath', () => {
         const query: ResolvedResourceQuery = {
             resource: 'test',
         }
-        expect(queryToResourcePath(apiPath, query)).toBe(`${apiPath}/test`)
+        expect(queryToResourcePath(link, query, 'read')).toBe(`${apiPath}/test`)
     })
     it('should return resource url and singular parameter separated by ?', () => {
         const query: ResolvedResourceQuery = {
@@ -51,7 +64,7 @@ describe('queryToResourcePath', () => {
                 key: 'value',
             },
         }
-        expect(queryToResourcePath(apiPath, query)).toBe(
+        expect(queryToResourcePath(link, query, 'read')).toBe(
             `${apiPath}/test?key=value`
         )
     })
@@ -63,7 +76,7 @@ describe('queryToResourcePath', () => {
                 param: 'value2',
             },
         }
-        expect(queryToResourcePath(apiPath, query)).toBe(
+        expect(queryToResourcePath(link, query, 'read')).toBe(
             `${apiPath}/test?key=value&param=value2`
         )
     })
@@ -74,7 +87,7 @@ describe('queryToResourcePath', () => {
                 'key=42&val': 'value',
             },
         }
-        expect(queryToResourcePath(apiPath, query)).toBe(
+        expect(queryToResourcePath(link, query, 'read')).toBe(
             `${apiPath}/test?key%3D42%26val=value`
         )
     })
@@ -86,7 +99,7 @@ describe('queryToResourcePath', () => {
                 param: 'value2&& 53',
             },
         }
-        expect(queryToResourcePath(apiPath, query)).toBe(
+        expect(queryToResourcePath(link, query, 'read')).toBe(
             `${apiPath}/test?key=value%3F%3D42&param=value2%26%26%2053`
         )
     })
@@ -98,7 +111,7 @@ describe('queryToResourcePath', () => {
                 param: 193.75,
             },
         }
-        expect(queryToResourcePath(apiPath, query)).toBe(
+        expect(queryToResourcePath(link, query, 'read')).toBe(
             `${apiPath}/test?key=42&param=193.75`
         )
     })
@@ -110,7 +123,7 @@ describe('queryToResourcePath', () => {
                 someflag: true,
             },
         }
-        expect(queryToResourcePath(apiPath, query)).toBe(
+        expect(queryToResourcePath(link, query, 'read')).toBe(
             `${apiPath}/test?key=42&someflag=true`
         )
     })
@@ -121,7 +134,7 @@ describe('queryToResourcePath', () => {
                 key: ['asdf', 123],
             },
         }
-        expect(queryToResourcePath(apiPath, query)).toBe(
+        expect(queryToResourcePath(link, query, 'read')).toBe(
             `${apiPath}/test?key=asdf,123`
         )
     })
@@ -132,7 +145,7 @@ describe('queryToResourcePath', () => {
                 filter: ['asdf', 123],
             },
         }
-        expect(queryToResourcePath(apiPath, query)).toBe(
+        expect(queryToResourcePath(link, query, 'read')).toBe(
             `${apiPath}/test?filter=asdf&filter=123`
         )
     })
@@ -143,7 +156,7 @@ describe('queryToResourcePath', () => {
                 key: { asdf: 'fdsa' },
             },
         }
-        expect(() => queryToResourcePath(apiPath, query)).toThrow()
+        expect(() => queryToResourcePath(link, query, 'read')).toThrow()
     })
     it('should throw if passed something crazy like a function', () => {
         const query: ResolvedResourceQuery = {
@@ -152,6 +165,32 @@ describe('queryToResourcePath', () => {
                 key: ((a: any) => a) as any,
             },
         }
-        expect(() => queryToResourcePath(apiPath, query)).toThrow()
+        expect(() => queryToResourcePath(link, query, 'read')).toThrow()
+    })
+
+    it('should return an unversioned endpoint for the new tracker importer (in version 2.37)', () => {
+        const query: ResolvedResourceQuery = {
+            resource: 'tracker',
+        }
+        expect(queryToResourcePath(link, query, 'read')).toBe(
+            `${link.unversionedApiPath}/tracker`
+        )
+    })
+
+    it('should return a VERSIONED endpoint for the new tracker importer (in version 2.38)', () => {
+        const query: ResolvedResourceQuery = {
+            resource: 'tracker',
+        }
+        const v38config: Config = {
+            ...defaultConfig,
+            serverVersion: {
+                major: 2,
+                minor: 38,
+                patch: 0,
+            },
+        }
+        expect(queryToResourcePath(createLink(v38config), query, 'read')).toBe(
+            `${link.versionedApiPath}/tracker`
+        )
     })
 })

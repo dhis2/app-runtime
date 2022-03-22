@@ -1,9 +1,11 @@
+import type { Config } from '@dhis2/app-service-config'
 import {
     ResolvedResourceQuery,
     QueryParameters,
     QueryParameterValue,
     FetchType,
 } from '../../engine'
+import { RestAPILink } from '../RestAPILink'
 import { joinPath } from './path'
 import { validateResourceQuery } from './validateQuery'
 
@@ -69,15 +71,30 @@ const makeActionPath = (resource: string) =>
         `${resource.substr(actionPrefix.length)}.action`
     )
 
+const skipApiVersion = (resource: string, config: Config): boolean => {
+    if (resource === 'tracker') {
+        if (!config.serverVersion?.minor || config.serverVersion?.minor < 38) {
+            return true
+        }
+    }
+
+    return false
+}
+
 export const queryToResourcePath = (
-    apiPath: string,
+    link: RestAPILink,
     query: ResolvedResourceQuery,
     type: FetchType
 ): string => {
     const { resource, id, params = {} } = query
+
+    const apiBase = skipApiVersion(resource, link.config)
+        ? link.unversionedApiPath
+        : link.versionedApiPath
+
     const base = isAction(resource)
         ? makeActionPath(resource)
-        : joinPath(apiPath, resource, id)
+        : joinPath(apiBase, resource, id)
 
     validateResourceQuery(query, type)
 
