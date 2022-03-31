@@ -72,7 +72,7 @@ const makeActionPath = (resource: string) =>
     )
 
 const skipApiVersion = (resource: string, config: Config): boolean => {
-    if (resource === 'tracker') {
+    if (resource === 'tracker' || resource.startsWith('tracker/')) {
         if (!config.serverVersion?.minor || config.serverVersion?.minor < 38) {
             return true
         }
