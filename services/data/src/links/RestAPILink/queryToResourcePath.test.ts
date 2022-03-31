@@ -179,10 +179,10 @@ describe('queryToResourcePath', () => {
     
     it('should return an unversioned endpoint sub-resources of the new tracker importer (in version 2.37)', () => {
         const query: ResolvedResourceQuery = {
-            resource: 'tracker/xxx',
+            resource: 'tracker/test',
         }
         expect(queryToResourcePath(link, query, 'read')).toBe(
-            `${link.unversionedApiPath}/tracker/xxx`
+            `${link.unversionedApiPath}/tracker/test`
         )
     })
 
