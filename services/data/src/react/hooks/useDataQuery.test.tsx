@@ -166,7 +166,7 @@ describe('useDataQuery', () => {
     })
 
     describe('internal: caching', () => {
-        it.only('Should return data from the cache if it is not stale', async () => {
+        it('Should return data from the cache if it is not stale', async () => {
             // Keep cached data forever, see: https://react-query.tanstack.com/reference/useQuery
             const queryClientOptions = {
                 defaultOptions: {
