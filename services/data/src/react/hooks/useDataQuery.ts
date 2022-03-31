@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from 'react'
 import { useQuery, setLogger } from 'react-query'
-import { Query, QueryOptions } from '../../engine'
+import { Query, QueryOptions, QueryVariables } from '../../engine'
 import { FetchError } from '../../engine/types/FetchError'
 import { QueryRenderInput, QueryRefetchFunction } from '../../types'
 import { stableVariablesHash } from './stableVariablesHash'
@@ -21,6 +21,43 @@ setLogger({
     error: noop,
 })
 
+type QueryState = {
+    enabled: boolean
+    variables?: QueryVariables
+    variablesHash?: string
+    refetchCallback?: (data: any) => void
+}
+
+const mergeAndCompareVariables = (
+    previousVariables?: QueryVariables,
+    newVariables?: QueryVariables,
+    previousHash?: string
+) => {
+    if (!newVariables) {
+        return {
+            identical: true,
+            mergedVariablesHash: previousHash,
+            mergedVariables: previousVariables,
+        }
+    }
+
+    // Use cached hash if it exists
+    const currentHash = previousHash || stableVariablesHash(previousVariables)
+
+    const mergedVariables = {
+        ...previousVariables,
+        ...newVariables,
+    }
+    const mergedVariablesHash = stableVariablesHash(mergedVariables)
+    const identical = currentHash === mergedVariablesHash
+
+    return {
+        identical,
+        mergedVariablesHash,
+        mergedVariables,
+    }
+}
+
 export const useDataQuery = (
     query: Query,
     {
@@ -30,9 +67,13 @@ export const useDataQuery = (
         lazy: initialLazy = false,
     }: QueryOptions = {}
 ): QueryRenderInput => {
-    const variablesHash = useRef<string | null>(null)
-    const [variables, setVariables] = useState(initialVariables)
-    const [enabled, setEnabled] = useState(!initialLazy)
+    const queryState = useRef<QueryState>({
+        variables: initialVariables,
+        variablesHash: undefined,
+        enabled: !initialLazy,
+        refetchCallback: undefined,
+    })
+    const [, /* refetchCount (not used)*/ setRefetchCount] = useState(0)
     const [staticQuery] = useStaticInput<Query>(query, {
         warn: true,
         name: 'query',
@@ -42,11 +83,10 @@ export const useDataQuery = (
      * User callbacks and refetch handling
      */
 
-    const refetchCallback = useRef<((data: any) => void) | null>(null)
     const onSuccess = (data: any) => {
-        if (refetchCallback.current) {
-            refetchCallback.current(data)
-            refetchCallback.current = null
+        if (queryState.current.refetchCallback) {
+            queryState.current.refetchCallback(data)
+            queryState.current.refetchCallback = undefined
         }
 
         if (userOnSuccess) {
@@ -56,8 +96,8 @@ export const useDataQuery = (
 
     const onError = (error: FetchError) => {
         // If we'd want to reject on errors we'd call the cb with the error here
-        if (refetchCallback.current) {
-            refetchCallback.current = null
+        if (queryState.current.refetchCallback) {
+            queryState.current.refetchCallback = undefined
         }
 
         if (userOnError) {
@@ -70,8 +110,9 @@ export const useDataQuery = (
      */
 
     const engine = useDataEngine()
-    const queryKey = [staticQuery, variables]
-    const queryFn = () => engine.query(staticQuery, { variables })
+    const queryKey = [staticQuery, queryState.current.variables]
+    const queryFn = () =>
+        engine.query(staticQuery, { variables: queryState.current.variables })
 
     const {
         isIdle,
@@ -81,7 +122,7 @@ export const useDataQuery = (
         data,
         refetch: queryRefetch,
     } = useQuery(queryKey, queryFn, {
-        enabled,
+        enabled: queryState.current.enabled,
         onSuccess,
         onError,
     })
@@ -97,54 +138,44 @@ export const useDataQuery = (
 
     const refetch: QueryRefetchFunction = useCallback(
         newVariables => {
+            const {
+                identical,
+                mergedVariables,
+                mergedVariablesHash,
+            } = mergeAndCompareVariables(
+                queryState.current.variables,
+                newVariables,
+                queryState.current.variablesHash
+            )
+
             /**
              * If there are no updates that will trigger an automatic refetch
              * we'll need to call react-query's refetch directly
              */
-            if (enabled && !newVariables) {
+            if (queryState.current.enabled && identical) {
                 return queryRefetch({
                     cancelRefetch: true,
                     throwOnError: false,
                 }).then(({ data }) => data)
             }
 
-            if (newVariables) {
-                // Use cached hash if it exists
-                const currentHash =
-                    variablesHash.current || stableVariablesHash(variables)
-
-                const mergedVariables = { ...variables, ...newVariables }
-                const mergedHash = stableVariablesHash(mergedVariables)
-                const identical = currentHash === mergedHash
-
-                if (identical && enabled) {
-                    /**
-                     * If the variables are identical and the query is enabled
-                     * we'll need to trigger the refetch manually
-                     */
-                    return queryRefetch({
-                        cancelRefetch: true,
-                        throwOnError: false,
-                    }).then(({ data }) => data)
-                } else {
-                    variablesHash.current = mergedHash
-                    setVariables(mergedVariables)
-                }
-            }
-
-            // Enable the query after the variables have been set to prevent extra request
-            if (!enabled) {
-                setEnabled(true)
-            }
+            queryState.current.variables = mergedVariables
+            queryState.current.variablesHash = mergedVariablesHash
+            queryState.current.enabled = true
 
             // This promise does not currently reject on errors
-            return new Promise(resolve => {
-                refetchCallback.current = data => {
+            const refetchPromise = new Promise(resolve => {
+                queryState.current.refetchCallback = data => {
                     resolve(data)
                 }
             })
+
+            // Trigger a react-query refetch by incrementing refetchCount state
+            setRefetchCount(prevCount => prevCount + 1)
+
+            return refetchPromise
         },
-        [enabled, queryRefetch, variables]
+        [queryRefetch]
     )
 
     /**
