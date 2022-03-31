@@ -84,10 +84,8 @@ export const useDataQuery = (
      */
 
     const onSuccess = (data: any) => {
-        if (queryState.current.refetchCallback) {
-            queryState.current.refetchCallback(data)
-            queryState.current.refetchCallback = undefined
-        }
+        queryState.current.refetchCallback?.(data)
+        queryState.current.refetchCallback = undefined
 
         if (userOnSuccess) {
             userOnSuccess(data)
@@ -96,9 +94,7 @@ export const useDataQuery = (
 
     const onError = (error: FetchError) => {
         // If we'd want to reject on errors we'd call the cb with the error here
-        if (queryState.current.refetchCallback) {
-            queryState.current.refetchCallback = undefined
-        }
+        queryState.current.refetchCallback = undefined
 
         if (userOnError) {
             userOnError(error)
