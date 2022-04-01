@@ -150,7 +150,7 @@ export const useDataQuery = (
                 }
             })
 
-            // Trigger a react-query refetch by incrementing refetchCount state
+            // Trigger a react-query refetch by incrementing variablesUpdateCount state
             setVariablesUpdateCount(prevCount => prevCount + 1)
 
             return refetchPromise
