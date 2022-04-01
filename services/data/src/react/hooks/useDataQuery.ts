@@ -41,7 +41,7 @@ export const useDataQuery = (
         warn: true,
         name: 'query',
     })
-    const [refetchCount, setRefetchCount] = useState(0)
+    const [variablesUpdateCount, setVariablesUpdateCount] = useState(0)
 
     const queryState = useRef<QueryState>({
         variables: initialVariables,
@@ -56,7 +56,7 @@ export const useDataQuery = (
 
     useDebugValue(
         {
-            refetchCount,
+            variablesUpdateCount,
             enabled: queryState.current.enabled,
             variables: queryState.current.variables,
         },
@@ -151,7 +151,7 @@ export const useDataQuery = (
             })
 
             // Trigger a react-query refetch by incrementing refetchCount state
-            setRefetchCount(prevCount => prevCount + 1)
+            setVariablesUpdateCount(prevCount => prevCount + 1)
 
             return refetchPromise
         },
