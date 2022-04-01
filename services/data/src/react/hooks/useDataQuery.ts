@@ -1,9 +1,9 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useDebugValue } from 'react'
 import { useQuery, setLogger } from 'react-query'
-import { Query, QueryOptions, QueryVariables } from '../../engine'
+import type { Query, QueryOptions, QueryVariables } from '../../engine'
 import { FetchError } from '../../engine/types/FetchError'
-import { QueryRenderInput, QueryRefetchFunction } from '../../types'
-import { stableVariablesHash } from './stableVariablesHash'
+import type { QueryRenderInput, QueryRefetchFunction } from '../../types'
+import { mergeAndCompareVariables } from './mergeAndCompareVariables'
 import { useDataEngine } from './useDataEngine'
 import { useStaticInput } from './useStaticInput'
 
@@ -28,36 +28,6 @@ type QueryState = {
     refetchCallback?: (data: any) => void
 }
 
-const mergeAndCompareVariables = (
-    previousVariables?: QueryVariables,
-    newVariables?: QueryVariables,
-    previousHash?: string
-) => {
-    if (!newVariables) {
-        return {
-            identical: true,
-            mergedVariablesHash: previousHash,
-            mergedVariables: previousVariables,
-        }
-    }
-
-    // Use cached hash if it exists
-    const currentHash = previousHash || stableVariablesHash(previousVariables)
-
-    const mergedVariables = {
-        ...previousVariables,
-        ...newVariables,
-    }
-    const mergedVariablesHash = stableVariablesHash(mergedVariables)
-    const identical = currentHash === mergedVariablesHash
-
-    return {
-        identical,
-        mergedVariablesHash,
-        mergedVariables,
-    }
-}
-
 export const useDataQuery = (
     query: Query,
     {
@@ -67,17 +37,31 @@ export const useDataQuery = (
         lazy: initialLazy = false,
     }: QueryOptions = {}
 ): QueryRenderInput => {
+    const [staticQuery] = useStaticInput<Query>(query, {
+        warn: true,
+        name: 'query',
+    })
+    const [refetchCount, setRefetchCount] = useState(0)
+
     const queryState = useRef<QueryState>({
         variables: initialVariables,
         variablesHash: undefined,
         enabled: !initialLazy,
         refetchCallback: undefined,
     })
-    const [, /* refetchCount (not used)*/ setRefetchCount] = useState(0)
-    const [staticQuery] = useStaticInput<Query>(query, {
-        warn: true,
-        name: 'query',
-    })
+
+    /**
+     * Display current query state and refetch count in React DevTools
+     */
+
+    useDebugValue(
+        {
+            refetchCount,
+            enabled: queryState.current.enabled,
+            variables: queryState.current.variables,
+        },
+        debugValue => JSON.stringify(debugValue)
+    )
 
     /**
      * User callbacks and refetch handling
