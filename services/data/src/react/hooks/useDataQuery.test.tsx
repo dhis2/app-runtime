@@ -426,7 +426,7 @@ describe('useDataQuery', () => {
     })
 
     describe('return values: refetch', () => {
-        it('Should trigger a request for identical variables even if stale', async () => {
+        it('Should be stable if the query variables change', async () => {
             let count = 0
             const spy = jest.fn(() => {
                 count++
@@ -451,9 +451,9 @@ describe('useDataQuery', () => {
 
             expect(spy).not.toHaveBeenCalled()
 
-            const staleRefetch = result.current.refetch
+            const initialRefetch = result.current.refetch
             act(() => {
-                staleRefetch()
+                initialRefetch()
             })
 
             await waitFor(() => {
@@ -467,7 +467,7 @@ describe('useDataQuery', () => {
             expect(spy).toHaveBeenCalledTimes(1)
 
             act(() => {
-                staleRefetch()
+                initialRefetch()
             })
 
             await waitFor(() => {
@@ -479,6 +479,7 @@ describe('useDataQuery', () => {
             })
 
             expect(spy).toHaveBeenCalledTimes(2)
+            expect(initialRefetch).toBe(result.current.refetch)
         })
 
         it('Should only trigger a single request when refetch is called on a lazy query with new variables', async () => {
