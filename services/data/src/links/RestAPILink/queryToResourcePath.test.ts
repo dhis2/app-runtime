@@ -176,7 +176,7 @@ describe('queryToResourcePath', () => {
             `${link.unversionedApiPath}/tracker`
         )
     })
-    
+
     it('should return an unversioned endpoint sub-resources of the new tracker importer (in version 2.37)', () => {
         const query: ResolvedResourceQuery = {
             resource: 'tracker/test',
@@ -185,7 +185,6 @@ describe('queryToResourcePath', () => {
             `${link.unversionedApiPath}/tracker/test`
         )
     })
-
 
     it('should return a VERSIONED endpoint for the new tracker importer (in version 2.38)', () => {
         const query: ResolvedResourceQuery = {
