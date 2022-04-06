@@ -1,3 +1,10 @@
+## [3.4.3](https://github.com/dhis2/app-runtime/compare/v3.4.2...v3.4.3) (2022-04-06)
+
+
+### Bug Fixes
+
+* use unversioned api endpoint for tracker sub-resources ([#1158](https://github.com/dhis2/app-runtime/issues/1158)) ([1af1ca7](https://github.com/dhis2/app-runtime/commit/1af1ca7024eb0b1b7172cfa82a573cd3d5684aa9))
+
 ## [3.4.2](https://github.com/dhis2/app-runtime/compare/v3.4.1...v3.4.2) (2022-04-05)
 
 
