@@ -1,3 +1,10 @@
+## [3.4.2](https://github.com/dhis2/app-runtime/compare/v3.4.1...v3.4.2) (2022-04-05)
+
+
+### Bug Fixes
+
+* ensure refetch function has stable identity ([9fc3cb4](https://github.com/dhis2/app-runtime/commit/9fc3cb4537d07f89d4501a08fb513f3f491971ac))
+
 ## [3.4.1](https://github.com/dhis2/app-runtime/compare/v3.4.0...v3.4.1) (2022-03-22)
 
 

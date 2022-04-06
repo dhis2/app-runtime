@@ -426,6 +426,62 @@ describe('useDataQuery', () => {
     })
 
     describe('return values: refetch', () => {
+        it('Should be stable if the query variables change', async () => {
+            let count = 0
+            const spy = jest.fn(() => {
+                count++
+                return count
+            })
+            const data = {
+                answer: spy,
+            }
+            const query = {
+                x: { resource: 'answer' },
+            }
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
+
+            const { result, waitFor } = renderHook(
+                () => useDataQuery(query, { lazy: true }),
+                {
+                    wrapper,
+                }
+            )
+
+            expect(spy).not.toHaveBeenCalled()
+
+            const initialRefetch = result.current.refetch
+            act(() => {
+                initialRefetch()
+            })
+
+            await waitFor(() => {
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    called: true,
+                    data: { x: 1 },
+                })
+            })
+
+            expect(spy).toHaveBeenCalledTimes(1)
+
+            act(() => {
+                initialRefetch()
+            })
+
+            await waitFor(() => {
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    called: true,
+                    data: { x: 2 },
+                })
+            })
+
+            expect(spy).toHaveBeenCalledTimes(2)
+            expect(initialRefetch).toBe(result.current.refetch)
+        })
+
         it('Should only trigger a single request when refetch is called on a lazy query with new variables', async () => {
             const spy = jest.fn((type, query) => {
                 if (query.id === '1') {
