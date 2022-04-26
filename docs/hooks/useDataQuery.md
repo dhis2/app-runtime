@@ -37,6 +37,8 @@ const { loading, error, data, refetch } = useDataQuery(query, options)
 
 ### Static query
 
+This is a minimal example showing how to fetch the first page of indicators with a descending order.
+
 ```jsx
 import React from 'react'
 import { useDataQuery } from '@dhis2/app-runtime'
@@ -73,6 +75,8 @@ export const IndicatorList = () => {
 
 ### Dynamic Query
 
+This example is similar to the previous one but builds on top of it by showing how to fetch new pages of data using dynamic variables. A similar approach can be used implement dynamic filtering, ordering, etc.
+
 ```jsx
 import React from "react";
 import { useDataQuery } from "@dhis2/app-runtime";
@@ -80,6 +84,7 @@ import { Pagination, CircularLoader } from "@dhis2/ui";
 
 const PAGE_SIZE = 10;
 const query = {
+    // "page" variable below can be dinamically passed via refetch (see "handlePageChange" below)
     indicators: {
         resource: 'indicators.json',
         params: ({ page }) => ({
@@ -97,6 +102,7 @@ export const IndicatorList = () => {
     const hasNextPage = pager?.nextPage;
 
     const handlePageChange = (nextPage) => {
+        // "page" variable in query is passed via refetch below
         refetch({ page: nextPage });
     };
 
