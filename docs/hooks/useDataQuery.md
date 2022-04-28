@@ -64,7 +64,7 @@ export const IndicatorList = () => {
             {data && (
                 <pre>
                     {data.indicators.indicators
-                        .map((ind) => ind.displayName)
+                        .map(ind => ind.displayName)
                         .join('\n')}
                 </pre>
             )}
@@ -101,7 +101,7 @@ export const IndicatorList = () => {
     const pager = data?.indicators?.pager
     const hasNextPage = pager?.nextPage
 
-    const handlePageChange = (nextPage) => {
+    const handlePageChange = nextPage => {
         // "page" variable in query is passed via refetch below
         refetch({ page: nextPage })
     }
@@ -114,7 +114,7 @@ export const IndicatorList = () => {
             {data && (
                 <pre>
                     {data.indicators.indicators
-                        .map((ind) => ind.displayName)
+                        .map(ind => ind.displayName)
                         .join('\n')}
                 </pre>
             )}
