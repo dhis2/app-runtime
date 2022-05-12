@@ -108,14 +108,14 @@ describe('networkFetch', () => {
 
     describe('fetchData', () => {
         const headers: Record<string, (type: string) => string> = {
-            'Content-Type': type =>
+            'Content-Type': (type) =>
                 type === 'json'
                     ? 'application/json'
                     : type === 'text'
                     ? 'text/plain'
                     : 'some/other-content-type',
         }
-        const mockFetch = jest.fn(async url => ({
+        const mockFetch = jest.fn(async (url) => ({
             status: 200,
             headers: {
                 get: (name: string) => headers[name] && headers[name](url),

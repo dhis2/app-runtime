@@ -4,7 +4,7 @@ import React from 'react'
 export const Alerts = () => {
     const alerts = useAlerts()
 
-    return alerts.map(alert => (
+    return alerts.map((alert) => (
         <div key={alert.id}>
             {alert.message}
             <button onClick={alert.remove}>hide</button>

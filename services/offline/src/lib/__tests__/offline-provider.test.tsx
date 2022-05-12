@@ -9,7 +9,8 @@ import { OfflineProvider } from '../offline-provider'
 const originalError = console.error
 beforeEach(() => {
     jest.spyOn(console, 'error').mockImplementation((...args) => {
-        const pattern = /Warning: An update to .* inside a test was not wrapped in act/
+        const pattern =
+            /Warning: An update to .* inside a test was not wrapped in act/
         if (typeof args[0] === 'string' && pattern.test(args[0])) {
             return
         }

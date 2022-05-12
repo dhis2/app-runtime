@@ -28,13 +28,13 @@ export const useQueryExecutor = <ReturnType>({
 
     const abortControllersRef = useRef<AbortController[]>([])
     const abort = useCallback(() => {
-        abortControllersRef.current.forEach(controller => controller.abort())
+        abortControllersRef.current.forEach((controller) => controller.abort())
         abortControllersRef.current = []
     }, [])
 
     const manualAbort = useCallback(() => {
         abort()
-        setState(state => ({
+        setState((state) => ({
             called: state.called,
             loading: false,
             error: new FetchError({ type: 'aborted', message: 'Aborted' }),
@@ -43,7 +43,7 @@ export const useQueryExecutor = <ReturnType>({
 
     const refetch = useCallback(
         (newVariables = {}) => {
-            setState(state =>
+            setState((state) =>
                 !state.called || !state.loading
                     ? { called: true, loading: true }
                     : state

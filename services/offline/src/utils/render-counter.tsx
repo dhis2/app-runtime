@@ -11,9 +11,11 @@ export const RenderCounter = ({
     id: string
     countsObj: RenderCounts
 }): JSX.Element => {
-    if (!(id in countsObj)) countsObj[id] = 0
+    if (!(id in countsObj)) {
+        countsObj[id] = 0
+    }
     return <div data-testid={id}>{++countsObj[id]}</div>
 }
 
 export const resetRenderCounts = (renderCounts: RenderCounts): void =>
-    Object.keys(renderCounts).forEach(key => (renderCounts[key] = 0))
+    Object.keys(renderCounts).forEach((key) => (renderCounts[key] = 0))

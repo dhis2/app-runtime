@@ -16,7 +16,7 @@ const query = {
 
 export const IndicatorList = () => {
     const { loading, error, data, refetch } = useDataQuery(query)
-    const { show } = useAlert(id => `Created indicator ${id}`)
+    const { show } = useAlert((id) => `Created indicator ${id}`)
     return (
         <div>
             <h3>Indicators</h3>
@@ -25,7 +25,7 @@ export const IndicatorList = () => {
             {data && (
                 <>
                     <pre>
-                        {data.indicators.indicators.map(ind => (
+                        {data.indicators.indicators.map((ind) => (
                             <Indicator
                                 key={ind.id}
                                 indicator={ind}
@@ -46,7 +46,7 @@ export const IndicatorList = () => {
                         &lt;- Previous
                     </button>
                     <AddButton
-                        onCreate={result => {
+                        onCreate={(result) => {
                             show(result.response.uid)
                             refetch()
                         }}

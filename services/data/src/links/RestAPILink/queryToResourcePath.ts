@@ -36,7 +36,7 @@ const queryParametersMapToArray = (
     Object.keys(params).reduce((out, key) => {
         const value = params[key]
         if (key === 'filter' && Array.isArray(value)) {
-            value.forEach(item => {
+            value.forEach((item) => {
                 out.push({
                     key: 'filter',
                     value: item,

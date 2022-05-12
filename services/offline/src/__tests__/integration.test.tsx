@@ -25,13 +25,8 @@ const TestControls = ({
     id: string
     makeRecordingHandler?: (cb?: any) => () => Promise<any>
 }) => {
-    const {
-        startRecording,
-        remove,
-        isCached,
-        lastUpdated,
-        recordingState,
-    } = useCacheableSection(id)
+    const { startRecording, remove, isCached, lastUpdated, recordingState } =
+        useCacheableSection(id)
 
     return (
         <>
@@ -89,7 +84,8 @@ beforeEach(() => {
     // This is done before each because the 'recording error' test uses its own
     // spy on console.error
     jest.spyOn(console, 'error').mockImplementation((...args) => {
-        const pattern = /Warning: An update to .* inside a test was not wrapped in act/
+        const pattern =
+            /Warning: An update to .* inside a test was not wrapped in act/
         if (typeof args[0] === 'string' && pattern.test(args[0])) {
             return
         }
@@ -116,7 +112,7 @@ describe('Coordination between useCacheableSection and CacheableSection', () => 
         expect(getByTestId(/controls-rc/)).toBeInTheDocument()
     })
 
-    it('handles a successful recording', async done => {
+    it('handles a successful recording', async (done) => {
         const { getByTestId, queryByTestId } = screen
 
         const onStarted = () => {
@@ -151,10 +147,11 @@ describe('Coordination between useCacheableSection and CacheableSection', () => 
         expect.assertions(7)
     })
 
-    it('handles a recording that encounters an error', async done => {
+    it('handles a recording that encounters an error', async (done) => {
         // Suppress the expected error from console (in addition to 'act' warning)
         jest.spyOn(console, 'error').mockImplementation((...args) => {
-            const actPattern = /Warning: An update to .* inside a test was not wrapped in act/
+            const actPattern =
+                /Warning: An update to .* inside a test was not wrapped in act/
             const errPattern = /Error during recording/
             const matchesPattern =
                 actPattern.test(args[0]) || errPattern.test(args[0])
@@ -197,7 +194,7 @@ describe('Coordination between useCacheableSection and CacheableSection', () => 
 
     // ! After bumping testing-library versions, something about this test
     // ! causes the following ones to mysteriously fail 😤
-    it.skip('handles an error starting the recording', async done => {
+    it.skip('handles an error starting the recording', async (done) => {
         const { getByTestId } = screen
         const testOfflineInterface = {
             ...mockOfflineInterface,
@@ -258,7 +255,7 @@ describe('Performant state management', () => {
         expect(getByTestId('section-rc-2')).toHaveTextContent('1')
     })
 
-    it('isolates rerenders from other consumers', async done => {
+    it('isolates rerenders from other consumers', async (done) => {
         const { getByTestId } = screen
         // Make assertions
         const onCompleted = () => {
@@ -273,9 +270,9 @@ describe('Performant state management', () => {
             done()
         }
 
-        const makeRecordingHandler = (
-            startRecording: CacheableSectionStartRecording
-        ) => () => startRecording({ onCompleted })
+        const makeRecordingHandler =
+            (startRecording: CacheableSectionStartRecording) => () =>
+                startRecording({ onCompleted })
         render(<TwoTestSections makeRecordingHandler={makeRecordingHandler} />)
 
         await act(async () => {
@@ -303,7 +300,7 @@ describe('useCacheableSection can be used inside a child of CacheableSection', (
         )
     }
 
-    it('handles a successful recording', async done => {
+    it('handles a successful recording', async (done) => {
         const { getByTestId, queryByTestId } = screen
 
         const onStarted = () => {

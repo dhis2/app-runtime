@@ -71,13 +71,8 @@ export function CacheableSectionWrapper({ id }) {
 import { useCacheableSections } from '@dhis2/app-runtime'
 
 function DemoComponent() {
-    const {
-        startRecording,
-        remove,
-        lastUpdated,
-        isCached,
-        recordingState,
-    } = useCacheableSection(id)
+    const { startRecording, remove, lastUpdated, isCached, recordingState } =
+        useCacheableSection(id)
 }
 ```
 
@@ -115,11 +110,11 @@ function StartRecordingButton({ id }) {
         startRecording({
             onStarted: () => console.log('Recording started'),
             onCompleted: () => console.log('Recording completed'),
-            onError: err => console.error(err),
+            onError: (err) => console.error(err),
             recordingTimeoutDelay: 1000, // the default
         })
             .then(() => console.log('startRecording signal sent successfully'))
-            .catch(err =>
+            .catch((err) =>
                 console.error(`Error when starting recording: ${err}`)
             )
     }

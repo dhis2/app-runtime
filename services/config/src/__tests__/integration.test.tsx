@@ -22,7 +22,7 @@ const mockConfig: Config = {
 describe('Testing custom config provider', () => {
     it('Should render without failing', async () => {
         const consumerFunction = jest.fn(
-            config => `${config.baseUrl}:${config.apiVersion}`
+            (config) => `${config.baseUrl}:${config.apiVersion}`
         )
         const { getByText } = render(
             <ConfigProvider config={mockConfig}>
