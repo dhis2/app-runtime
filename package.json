@@ -48,11 +48,11 @@
         "test:services": "loop \"yarn test\" --cwd ./services --exit-on-error",
         "test:runtime": "cd runtime && yarn test",
         "test": "yarn test:services && yarn test:runtime",
-        "format": "d2-style js apply --all --no-stage && d2-style text apply --all --no-stage",
+        "format": "d2-style apply js --all --no-stage && d2-style apply text --all --no-stage",
         "start": "yarn build && cd examples/query-playground && yarn start",
         "docs:build": "d2-utils-docsite build ./docs -o ./dist && yarn build:playground",
         "docs:serve": "d2-utils-docsite serve ./docs -o ./dist",
-        "lint": "d2-style check js && d2-style text check"
+        "lint": "d2-style check js && d2-style check text"
     },
     "d2": {
         "docsite": {
