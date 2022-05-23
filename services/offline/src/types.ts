@@ -54,6 +54,15 @@ export interface IndexedDBCachedSection {
 
 export interface OfflineInterface {
     readonly pwaEnabled: boolean
+    subscribeToDhis2ConnectionStatus: ({
+        onChange,
+    }: {
+        onChange: ({
+            isConnectedToDhis2,
+        }: {
+            isConnectedToDhis2: boolean
+        }) => void
+    }) => () => void
     startRecording: StartRecording
     getCachedSections: () => Promise<IndexedDBCachedSection[]>
     removeSection: (id: string) => Promise<boolean>

@@ -14,6 +14,7 @@ export { useAlerts, useAlert } from '@dhis2/app-service-alerts'
 
 export {
     useOnlineStatus,
+    useDhis2ConnectionStatus,
     useCacheableSection,
     CacheableSection,
     useCachedSections,
