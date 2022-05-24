@@ -1,9 +1,20 @@
+import { useDataQuery } from '@dhis2/app-service-data'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { useOfflineInterface } from './offline-interface.js'
 
 interface Dhis2ConnectionStatusContextValue {
     isConnectedToDhis2: boolean
+}
+
+// todo: probably a better option; maybe make a server-health endpoint
+const pingQuery = {
+    ping: {
+        resource: 'me',
+        params: {
+            fields: 'id',
+        },
+    },
 }
 
 const Dhis2ConnectionStatusContext = React.createContext({
@@ -15,20 +26,43 @@ export const Dhis2ConnectionStatusProvider = ({
 }: {
     children: React.ReactNode
 }): JSX.Element => {
-    // todo: what should this value initialize to?
+    // todo: what boolean should isConnected initialize to?
     const [isConnected, setIsConnected] = React.useState(false)
     const offlineInterface = useOfflineInterface()
+    const { refetch: ping } = useDataQuery(pingQuery, { lazy: true })
+    const pingTimeoutRef = React.useRef((null as unknown) as NodeJS.Timeout) // silly types juggling
+
+    // A timeout is used instead of an interval for handling slow execution
+    // https://developer.mozilla.org/en-US/docs/Web/API/setInterval#ensure_that_execution_duration_is_shorter_than_interval_frequency
+    // After this executes, the 'onStatusChange' callback should start the timer again
+    function startPingTimer() {
+        clearTimeout(pingTimeoutRef.current)
+        pingTimeoutRef.current = setTimeout(() => {
+            ping()
+        }, 120 * 1000)
+    }
+
+    function onStatusChange({
+        isConnectedToDhis2,
+    }: Dhis2ConnectionStatusContextValue) {
+        setIsConnected(isConnectedToDhis2)
+        startPingTimer()
+    }
 
     React.useEffect(() => {
+        if (!pingTimeoutRef.current) {
+            startPingTimer()
+        }
+
         const unsubscribe = offlineInterface.subscribeToDhis2ConnectionStatus({
-            onChange: ({
-                isConnectedToDhis2,
-            }: Dhis2ConnectionStatusContextValue) => {
-                setIsConnected(isConnectedToDhis2)
-            },
+            onChange: onStatusChange,
         })
-        return unsubscribe
-    }, [offlineInterface])
+
+        return () => {
+            unsubscribe()
+            clearTimeout(pingTimeoutRef.current)
+        }
+    }, [offlineInterface]) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Dhis2ConnectionStatusContext.Provider
