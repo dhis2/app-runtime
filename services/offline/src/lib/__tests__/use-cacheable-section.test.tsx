@@ -1,5 +1,3 @@
-/* eslint-disable react/display-name, react/prop-types */
-
 import { AlertsProvider } from '@dhis2/app-service-alerts'
 import { renderHook, act } from '@testing-library/react-hooks'
 import React from 'react'
