@@ -1,7 +1,7 @@
 import { useDataQuery } from '@dhis2/app-service-data'
 import PropTypes from 'prop-types'
 import React from 'react'
-import { useOfflineInterface } from './offline-interface.js'
+import { useOfflineInterface } from './offline-interface'
 
 /**
  * Provides a boolean indicating client's connection to the DHIS2 server,
