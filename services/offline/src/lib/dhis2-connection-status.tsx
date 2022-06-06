@@ -10,10 +10,7 @@ interface Dhis2ConnectionStatusContextValue {
 // todo: probably a better option; maybe make a server-health endpoint
 const pingQuery = {
     ping: {
-        resource: 'me',
-        params: {
-            fields: 'id',
-        },
+        resource: 'system/ping',
     },
 }
 
@@ -39,7 +36,7 @@ export const Dhis2ConnectionStatusProvider = ({
         clearTimeout(pingTimeoutRef.current)
         pingTimeoutRef.current = setTimeout(() => {
             ping()
-        }, 120 * 1000)
+        }, 30 * 1000) // todo: examine time
     }
 
     function onStatusChange({
