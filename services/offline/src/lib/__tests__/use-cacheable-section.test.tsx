@@ -1,6 +1,7 @@
 /* eslint-disable react/display-name, react/prop-types */
 
 import { AlertsProvider } from '@dhis2/app-service-alerts'
+import { CustomDataProvider } from '@dhis2/app-service-data'
 import { renderHook, act } from '@testing-library/react-hooks'
 import React from 'react'
 import {
@@ -10,6 +11,12 @@ import {
 } from '../../utils/test-mocks'
 import { useCacheableSection } from '../cacheable-section'
 import { OfflineProvider } from '../offline-provider'
+
+const ServiceProvider = ({ children }) => (
+    <AlertsProvider>
+        <CustomDataProvider data={{}}>{children}</CustomDataProvider>
+    </AlertsProvider>
+)
 
 // Suppress 'act' warning for these tests
 const originalError = console.error
@@ -32,11 +39,11 @@ afterEach(() => {
 it('renders in the default state initially', () => {
     const { result } = renderHook(() => useCacheableSection('one'), {
         wrapper: ({ children }) => (
-            <AlertsProvider>
+            <ServiceProvider>
                 <OfflineProvider offlineInterface={mockOfflineInterface}>
                     {children}
                 </OfflineProvider>
-            </AlertsProvider>
+            </ServiceProvider>
         ),
     })
 
@@ -60,11 +67,11 @@ it('handles a successful recording', async done => {
         () => useCacheableSection(sectionId),
         {
             wrapper: ({ children }) => (
-                <AlertsProvider>
+                <ServiceProvider>
                     <OfflineProvider offlineInterface={testOfflineInterface}>
                         {children}
                     </OfflineProvider>
-                </AlertsProvider>
+                </ServiceProvider>
             ),
         }
     )
@@ -126,11 +133,11 @@ it('handles a recording that encounters an error', async done => {
     }
     const { result } = renderHook(() => useCacheableSection('one'), {
         wrapper: ({ children }) => (
-            <AlertsProvider>
+            <ServiceProvider>
                 <OfflineProvider offlineInterface={testOfflineInterface}>
                     {children}
                 </OfflineProvider>
-            </AlertsProvider>
+            </ServiceProvider>
         ),
     })
 
@@ -173,11 +180,11 @@ it('handles an error starting the recording', async () => {
     }
     const { result } = renderHook(() => useCacheableSection('err'), {
         wrapper: ({ children }) => (
-            <AlertsProvider>
+            <ServiceProvider>
                 <OfflineProvider offlineInterface={testOfflineInterface}>
                     {children}
                 </OfflineProvider>
-            </AlertsProvider>
+            </ServiceProvider>
         ),
     })
 
@@ -201,11 +208,11 @@ it('handles remove and updates sections', async () => {
         () => useCacheableSection(sectionId),
         {
             wrapper: ({ children }) => (
-                <AlertsProvider>
+                <ServiceProvider>
                     <OfflineProvider offlineInterface={testOfflineInterface}>
                         {children}
                     </OfflineProvider>
-                </AlertsProvider>
+                </ServiceProvider>
             ),
         }
     )
@@ -239,11 +246,11 @@ it('handles a change in ID', async () => {
         (...args) => useCacheableSection(...args),
         {
             wrapper: ({ children }) => (
-                <AlertsProvider>
+                <ServiceProvider>
                     <OfflineProvider offlineInterface={testOfflineInterface}>
                         {children}
                     </OfflineProvider>
-                </AlertsProvider>
+                </ServiceProvider>
             ),
             initialProps: 'id-one',
         }
