@@ -3,6 +3,16 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { useOfflineInterface } from './offline-interface.js'
 
+/**
+ * Provides a boolean indicating client's connection to the DHIS2 server,
+ * which is different from connection to the internet.
+ *
+ * The context provider subscribes to messages from the SW tracking successes
+ * and failures of requests to the DHIS2 server to determine connection status,
+ * and then will initiate periodic pings if there are no incidental requests in
+ * order to check the connection consistently
+ */
+
 interface Dhis2ConnectionStatusContextValue {
     isConnectedToDhis2: boolean
 }
