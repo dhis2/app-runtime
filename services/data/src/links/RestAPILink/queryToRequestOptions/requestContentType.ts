@@ -114,6 +114,6 @@ export const requestBodyForContentType = (
         return convertToFormData(data)
     }
 
-    // 'text/plain'
+    // 'text/plain' || 'application/x-www-form-urlencoded'
     return data
 }
