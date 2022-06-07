@@ -1,12 +1,14 @@
 import { ResolvedResourceQuery, FetchType } from '../../../engine'
 import * as multipartFormDataMatchers from './multipartFormDataMatchers'
 import * as textPlainMatchers from './textPlainMatchers'
+import * as xWwwFormUrlencodedMatchers from './xWwwFormUrlencodedMatchers'
 
 type RequestContentType =
     | 'application/json'
     | 'application/json-patch+json'
     | 'text/plain'
     | 'multipart/form-data'
+    | 'application/x-www-form-urlencoded'
     | null
 
 const resourceExpectsTextPlain = (
@@ -23,6 +25,14 @@ const resourceExpectsMultipartFormData = (
 ) =>
     Object.values(multipartFormDataMatchers).some(multipartFormDataMatcher =>
         multipartFormDataMatcher(type, query)
+    )
+
+const resourceExpectsXWwwFormUrlencoded = (
+    type: FetchType,
+    query: ResolvedResourceQuery
+) =>
+    Object.values(xWwwFormUrlencodedMatchers).some(xWwwFormUrlencodedMatcher =>
+        xWwwFormUrlencodedMatcher(type, query)
     )
 
 export const FORM_DATA_ERROR_MSG =
@@ -59,6 +69,10 @@ export const requestContentType = (
 
     if (resourceExpectsMultipartFormData(type, query)) {
         return 'multipart/form-data'
+    }
+
+    if (resourceExpectsXWwwFormUrlencoded(type, query)) {
+        return 'application/x-www-form-urlencoded'
     }
 
     return 'application/json'
