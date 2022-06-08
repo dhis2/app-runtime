@@ -2,7 +2,6 @@ import {
     requestContentType,
     requestHeadersForContentType,
     requestBodyForContentType,
-    FORM_DATA_ERROR_MSG,
 } from './requestContentType'
 
 describe('requestContentType', () => {
@@ -91,7 +90,37 @@ describe('requestBodyForContentType', () => {
                 resource: 'test',
                 data: new File(['foo'], 'foo.txt', { type: 'text/plain' }),
             })
-        }).toThrow(new Error(FORM_DATA_ERROR_MSG))
+        }).toThrow(
+            new Error(
+                'Could not convert data to FormData: object does not have own enumerable string-keyed properties'
+            )
+        )
+    })
+    it('converts to URLSearchParams if contentType is "application/x-www-form-urlencoded"', () => {
+        const data = { a: 'AAA' }
+
+        const result = requestBodyForContentType(
+            'application/x-www-form-urlencoded',
+            {
+                resource: 'test',
+                data,
+            }
+        )
+
+        expect(result instanceof URLSearchParams).toEqual(true)
+        expect(result.get('a')).toEqual('AAA')
+    })
+    it('throws an error if contentType is "application/x-www-form-urlencoded" and data does have own string-keyd properties', () => {
+        expect(() => {
+            requestBodyForContentType('application/x-www-form-urlencoded', {
+                resource: 'test',
+                data: new File(['foo'], 'foo.txt', { type: 'text/plain' }),
+            })
+        }).toThrow(
+            new Error(
+                'Could not convert data to URLSearchParams: object does not have own enumerable string-keyed properties'
+            )
+        )
     })
     it('returns the data as received if contentType is "text/plain"', () => {
         const data = 'Something'
