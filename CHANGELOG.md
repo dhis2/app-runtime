@@ -1,3 +1,10 @@
+## [3.4.4](https://github.com/dhis2/app-runtime/compare/v3.4.3...v3.4.4) (2022-06-08)
+
+
+### Bug Fixes
+
+* **data-service:** application/x-www-form-urlencoded for svg conversion ([5e2818c](https://github.com/dhis2/app-runtime/commit/5e2818c8d63f9ede61d65ca431f0604201d31531))
+
 ## [3.4.3](https://github.com/dhis2/app-runtime/compare/v3.4.2...v3.4.3) (2022-04-06)
 
 
