@@ -35,20 +35,25 @@ const resourceExpectsXWwwFormUrlencoded = (
         xWwwFormUrlencodedMatcher(type, query)
     )
 
-export const FORM_DATA_ERROR_MSG =
-    'Could not convert data to FormData: object does not have own enumerable string-keyed properties'
+export const getConversionErrorMessage = (outputType: string): string =>
+    `Could not convert data to ${outputType}: object does not have own enumerable string-keyed properties`
 
-const convertToFormData = (data: Record<string, any>): FormData => {
+const convertData = (
+    data: Record<string, any>,
+    initialValue: FormData | URLSearchParams
+): FormData | URLSearchParams => {
     const dataEntries = Object.entries(data)
 
     if (dataEntries.length === 0) {
-        throw new Error(FORM_DATA_ERROR_MSG)
+        throw new Error(
+            getConversionErrorMessage(initialValue.constructor.name)
+        )
     }
 
-    return dataEntries.reduce((formData, [key, value]) => {
-        formData.append(key, value)
-        return formData
-    }, new FormData())
+    return dataEntries.reduce((convertedData, [key, value]) => {
+        convertedData.append(key, value)
+        return convertedData
+    }, initialValue)
 }
 
 export const requestContentType = (
@@ -98,7 +103,7 @@ export const requestHeadersForContentType = (
 export const requestBodyForContentType = (
     contentType: RequestContentType,
     { data }: ResolvedResourceQuery
-): undefined | string | FormData => {
+): undefined | string | FormData | URLSearchParams => {
     if (typeof data === 'undefined') {
         return undefined
     }
@@ -111,9 +116,13 @@ export const requestBodyForContentType = (
     }
 
     if (contentType === 'multipart/form-data') {
-        return convertToFormData(data)
+        return convertData(data, new FormData())
     }
 
-    // 'text/plain' || 'application/x-www-form-urlencoded'
+    if (contentType === 'application/x-www-form-urlencoded') {
+        return convertData(data, new URLSearchParams())
+    }
+
+    // 'text/plain'
     return data
 }
