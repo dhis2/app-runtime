@@ -1,12 +1,14 @@
 import { ResolvedResourceQuery, FetchType } from '../../../engine'
 import * as multipartFormDataMatchers from './multipartFormDataMatchers'
 import * as textPlainMatchers from './textPlainMatchers'
+import * as xWwwFormUrlencodedMatchers from './xWwwFormUrlencodedMatchers'
 
 type RequestContentType =
     | 'application/json'
     | 'application/json-patch+json'
     | 'text/plain'
     | 'multipart/form-data'
+    | 'application/x-www-form-urlencoded'
     | null
 
 const resourceExpectsTextPlain = (
@@ -25,20 +27,33 @@ const resourceExpectsMultipartFormData = (
         multipartFormDataMatcher(type, query)
     )
 
-export const FORM_DATA_ERROR_MSG =
-    'Could not convert data to FormData: object does not have own enumerable string-keyed properties'
+const resourceExpectsXWwwFormUrlencoded = (
+    type: FetchType,
+    query: ResolvedResourceQuery
+) =>
+    Object.values(xWwwFormUrlencodedMatchers).some(xWwwFormUrlencodedMatcher =>
+        xWwwFormUrlencodedMatcher(type, query)
+    )
 
-const convertToFormData = (data: Record<string, any>): FormData => {
+export const getConversionErrorMessage = (outputType: string): string =>
+    `Could not convert data to ${outputType}: object does not have own enumerable string-keyed properties`
+
+const convertData = (
+    data: Record<string, any>,
+    initialValue: FormData | URLSearchParams
+): FormData | URLSearchParams => {
     const dataEntries = Object.entries(data)
 
     if (dataEntries.length === 0) {
-        throw new Error(FORM_DATA_ERROR_MSG)
+        throw new Error(
+            getConversionErrorMessage(initialValue.constructor.name)
+        )
     }
 
-    return dataEntries.reduce((formData, [key, value]) => {
-        formData.append(key, value)
-        return formData
-    }, new FormData())
+    return dataEntries.reduce((convertedData, [key, value]) => {
+        convertedData.append(key, value)
+        return convertedData
+    }, initialValue)
 }
 
 export const requestContentType = (
@@ -59,6 +74,10 @@ export const requestContentType = (
 
     if (resourceExpectsMultipartFormData(type, query)) {
         return 'multipart/form-data'
+    }
+
+    if (resourceExpectsXWwwFormUrlencoded(type, query)) {
+        return 'application/x-www-form-urlencoded'
     }
 
     return 'application/json'
@@ -84,7 +103,7 @@ export const requestHeadersForContentType = (
 export const requestBodyForContentType = (
     contentType: RequestContentType,
     { data }: ResolvedResourceQuery
-): undefined | string | FormData => {
+): undefined | string | FormData | URLSearchParams => {
     if (typeof data === 'undefined') {
         return undefined
     }
@@ -97,7 +116,11 @@ export const requestBodyForContentType = (
     }
 
     if (contentType === 'multipart/form-data') {
-        return convertToFormData(data)
+        return convertData(data, new FormData())
+    }
+
+    if (contentType === 'application/x-www-form-urlencoded') {
+        return convertData(data, new URLSearchParams())
     }
 
     // 'text/plain'

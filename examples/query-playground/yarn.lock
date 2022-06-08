@@ -1790,26 +1790,26 @@
     moment "^2.24.0"
 
 "@dhis2/app-runtime@*", "@dhis2/app-runtime@^2.2.2", "@dhis2/app-runtime@file:../../runtime":
-  version "3.4.1"
+  version "3.4.3"
   dependencies:
-    "@dhis2/app-service-alerts" "3.4.1"
-    "@dhis2/app-service-config" "3.4.1"
-    "@dhis2/app-service-data" "3.4.1"
-    "@dhis2/app-service-offline" "3.4.1"
+    "@dhis2/app-service-alerts" "3.4.3"
+    "@dhis2/app-service-config" "3.4.3"
+    "@dhis2/app-service-data" "3.4.3"
+    "@dhis2/app-service-offline" "3.4.3"
 
-"@dhis2/app-service-alerts@3.4.1", "@dhis2/app-service-alerts@file:../../services/alerts":
-  version "3.4.1"
+"@dhis2/app-service-alerts@3.4.3", "@dhis2/app-service-alerts@file:../../services/alerts":
+  version "3.4.3"
 
-"@dhis2/app-service-config@3.4.1", "@dhis2/app-service-config@file:../../services/config":
-  version "3.4.1"
+"@dhis2/app-service-config@3.4.3", "@dhis2/app-service-config@file:../../services/config":
+  version "3.4.3"
 
-"@dhis2/app-service-data@3.4.1", "@dhis2/app-service-data@file:../../services/data":
-  version "3.4.1"
+"@dhis2/app-service-data@3.4.3", "@dhis2/app-service-data@file:../../services/data":
+  version "3.4.3"
   dependencies:
     react-query "^3.13.11"
 
-"@dhis2/app-service-offline@3.4.1", "@dhis2/app-service-offline@file:../../services/offline":
-  version "3.4.1"
+"@dhis2/app-service-offline@3.4.3", "@dhis2/app-service-offline@file:../../services/offline":
+  version "3.4.3"
   dependencies:
     lodash "^4.17.21"
 
