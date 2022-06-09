@@ -6,20 +6,20 @@ describe('isSvgConversion', () => {
             isSvgConversion('create', {
                 resource: 'svg.png',
             })
-        ).toEqual(true)
+        ).toBe(true)
     })
     it('returns true for a POST to "svg.pdf"', () => {
         expect(
             isSvgConversion('create', {
                 resource: 'svg.pdf',
             })
-        ).toEqual(true)
+        ).toBe(true)
     })
     it('retuns false for a POST to a different resource', () => {
         expect(
             isSvgConversion('create', {
                 resource: 'notSvg',
             })
-        ).toEqual(false)
+        ).toBe(false)
     })
 })
