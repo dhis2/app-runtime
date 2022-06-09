@@ -90,10 +90,8 @@ describe('requestBodyForContentType', () => {
                 resource: 'test',
                 data: new File(['foo'], 'foo.txt', { type: 'text/plain' }),
             })
-        }).toThrow(
-            new Error(
-                'Could not convert data to FormData: object does not have own enumerable string-keyed properties'
-            )
+        }).toThrowErrorMatchingInlineSnapshot(
+            `"Could not convert data to FormData: object does not have own enumerable string-keyed properties"`
         )
     })
     it('converts to URLSearchParams if contentType is "application/x-www-form-urlencoded"', () => {
@@ -116,10 +114,8 @@ describe('requestBodyForContentType', () => {
                 resource: 'test',
                 data: new File(['foo'], 'foo.txt', { type: 'text/plain' }),
             })
-        }).toThrow(
-            new Error(
-                'Could not convert data to URLSearchParams: object does not have own enumerable string-keyed properties'
-            )
+        }).toThrowErrorMatchingInlineSnapshot(
+            `"Could not convert data to URLSearchParams: object does not have own enumerable string-keyed properties"`
         )
     })
     it('returns the data as received if contentType is "text/plain"', () => {
