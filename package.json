@@ -11,14 +11,14 @@
     ],
     "devDependencies": {
         "@dhis2/cli-app-scripts": "^6.2.0",
-        "@dhis2/cli-style": "^7.2.2",
+        "@dhis2/cli-style": "^10.4.1",
         "@dhis2/cli-utils-docsite": "^2.0.3",
         "@testing-library/jest-dom": "^5.14.1",
         "@testing-library/react": "^12.0.0",
         "@testing-library/react-hooks": "^7.0.1",
         "@types/jest": "^24.9.0",
         "@types/lodash": "^4.14.171",
-        "@types/node": "^13.1.8",
+        "@types/node": "^17.0.42",
         "@types/react": "^16.9.18",
         "@types/react-dom": "^16.9.5",
         "@types/testing-library__dom": "^7.5.0",
@@ -48,11 +48,11 @@
         "test:services": "loop \"yarn test\" --cwd ./services --exit-on-error",
         "test:runtime": "cd runtime && yarn test",
         "test": "yarn test:services && yarn test:runtime",
-        "format": "d2-style js apply --all --no-stage && d2-style text apply --all --no-stage",
+        "format": "d2-style apply js --all --no-stage && d2-style apply text --all --no-stage",
         "start": "yarn build && cd examples/query-playground && yarn start",
         "docs:build": "d2-utils-docsite build ./docs -o ./dist && yarn build:playground",
         "docs:serve": "d2-utils-docsite serve ./docs -o ./dist",
-        "lint": "d2-style js check && d2-style text check"
+        "lint": "d2-style check js && d2-style check text"
     },
     "d2": {
         "docsite": {
