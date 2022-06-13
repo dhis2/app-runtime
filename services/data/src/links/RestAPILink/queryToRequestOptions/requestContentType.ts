@@ -35,9 +35,6 @@ const resourceExpectsXWwwFormUrlencoded = (
         xWwwFormUrlencodedMatcher(type, query)
     )
 
-export const getConversionErrorMessage = (outputType: string): string =>
-    `Could not convert data to ${outputType}: object does not have own enumerable string-keyed properties`
-
 const convertData = (
     data: Record<string, any>,
     initialValue: FormData | URLSearchParams
@@ -46,7 +43,7 @@ const convertData = (
 
     if (dataEntries.length === 0) {
         throw new Error(
-            getConversionErrorMessage(initialValue.constructor.name)
+            `Could not convert data to ${initialValue.constructor.name}: object does not have own enumerable string-keyed properties`
         )
     }
 

@@ -8,17 +8,15 @@ import {
 
 describe('isDataValue', () => {
     it('returns true for a POST to "dataValues"', () => {
-        expect(isDataValue('create', { resource: 'dataValues' })).toEqual(true)
+        expect(isDataValue('create', { resource: 'dataValues' })).toBe(true)
     })
     it('returns true for a POST to "dataValues/file"', () => {
-        expect(isDataValue('create', { resource: 'dataValues/file' })).toEqual(
+        expect(isDataValue('create', { resource: 'dataValues/file' })).toBe(
             true
         )
     })
     it('returns false for a POST to a different resource', () => {
-        expect(isDataValue('create', { resource: 'somethingElse' })).toEqual(
-            false
-        )
+        expect(isDataValue('create', { resource: 'somethingElse' })).toBe(false)
     })
 })
 
@@ -28,14 +26,14 @@ describe('isFileResourceUpload', () => {
             isFileResourceUpload('create', {
                 resource: 'fileResources',
             })
-        ).toEqual(true)
+        ).toBe(true)
     })
     it('retuns false for a POST to a different resource', () => {
         expect(
             isFileResourceUpload('create', {
                 resource: 'notFileResources',
             })
-        ).toEqual(false)
+        ).toBe(false)
     })
 })
 
@@ -45,14 +43,14 @@ describe('isMessageConversationAttachment', () => {
             isMessageConversationAttachment('create', {
                 resource: 'messageConversations/attachments',
             })
-        ).toEqual(true)
+        ).toBe(true)
     })
     it('retuns false for a POST to a different resource', () => {
         expect(
             isMessageConversationAttachment('create', {
                 resource: 'messageConversations/notAttachments',
             })
-        ).toEqual(false)
+        ).toBe(false)
     })
 })
 
@@ -62,21 +60,21 @@ describe('isStaticContentUpload', () => {
             isStaticContentUpload('create', {
                 resource: 'staticContent/logo_banner',
             })
-        ).toEqual(true)
+        ).toBe(true)
     })
     it('returns true for a POST to "staticContent/logo_front"', () => {
         expect(
             isStaticContentUpload('create', {
                 resource: 'staticContent/logo_front',
             })
-        ).toEqual(true)
+        ).toBe(true)
     })
     it('returns false for a request to a different resource', () => {
         expect(
             isStaticContentUpload('create', {
                 resource: 'staticContent/no_logo',
             })
-        ).toEqual(false)
+        ).toBe(false)
     })
 })
 
@@ -86,13 +84,13 @@ describe('isAppInstall', () => {
             isAppInstall('create', {
                 resource: 'apps',
             })
-        ).toEqual(true)
+        ).toBe(true)
     })
     it('retuns false for a POST to a different resource', () => {
         expect(
             isAppInstall('create', {
                 resource: 'notApps',
             })
-        ).toEqual(false)
+        ).toBe(false)
     })
 })
