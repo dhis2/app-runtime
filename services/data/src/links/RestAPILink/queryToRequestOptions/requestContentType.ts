@@ -31,8 +31,8 @@ const resourceExpectsXWwwFormUrlencoded = (
     type: FetchType,
     query: ResolvedResourceQuery
 ) =>
-    Object.values(xWwwFormUrlencodedMatchers).some(xWwwFormUrlencodedMatcher =>
-        xWwwFormUrlencodedMatcher(type, query)
+    Object.values(xWwwFormUrlencodedMatchers).some(
+        (xWwwFormUrlencodedMatcher) => xWwwFormUrlencodedMatcher(type, query)
     )
 
 const convertData = (
