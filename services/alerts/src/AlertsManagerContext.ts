@@ -11,6 +11,5 @@ const defaultAlertsManager: AlertsManager = {
     add: placeholder,
 }
 
-export const AlertsManagerContext = React.createContext<AlertsManager>(
-    defaultAlertsManager
-)
+export const AlertsManagerContext =
+    React.createContext<AlertsManager>(defaultAlertsManager)

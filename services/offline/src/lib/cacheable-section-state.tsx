@@ -78,8 +78,8 @@ export function CacheableSectionProvider({
     // On load, get sections and add to store
     React.useEffect(() => {
         if (offlineInterface) {
-            offlineInterface.getCachedSections().then(sections => {
-                store.mutate(state => ({
+            offlineInterface.getCachedSections().then((sections) => {
+                store.mutate((state) => ({
                     ...state,
                     cachedSections: getSectionsById(sections),
                 }))
@@ -107,12 +107,14 @@ interface RecordingStateControls {
  * @returns {Object} { recordingState: String, setRecordingState: Function, removeRecordingState: Function}
  */
 export function useRecordingState(id: string): RecordingStateControls {
-    const [recordingState] = useGlobalState(state => state.recordingStates[id])
-    const setRecordingState = useGlobalStateMutation(newState => state => ({
+    const [recordingState] = useGlobalState(
+        (state) => state.recordingStates[id]
+    )
+    const setRecordingState = useGlobalStateMutation((newState) => (state) => ({
         ...state,
         recordingStates: { ...state.recordingStates, [id]: newState },
     }))
-    const removeRecordingState = useGlobalStateMutation(() => state => {
+    const removeRecordingState = useGlobalStateMutation(() => (state) => {
         const recordingStates = { ...state.recordingStates }
         delete recordingStates[id]
         return { ...state, recordingStates }
@@ -130,7 +132,7 @@ export function useRecordingState(id: string): RecordingStateControls {
 function useSyncCachedSections() {
     const offlineInterface = useOfflineInterface()
     const setCachedSections = useGlobalStateMutation(
-        cachedSections => state => ({
+        (cachedSections) => (state) => ({
             ...state,
             cachedSections,
         })
@@ -154,7 +156,7 @@ interface CachedSectionsControls {
  * @returns {Object} { cachedSections: Object, removeSection: Function }
  */
 export function useCachedSections(): CachedSectionsControls {
-    const [cachedSections] = useGlobalState(state => state.cachedSections)
+    const [cachedSections] = useGlobalState((state) => state.cachedSections)
     const syncCachedSections = useSyncCachedSections()
     const offlineInterface = useOfflineInterface()
 
@@ -195,7 +197,7 @@ interface CachedSectionControls {
  * @returns {Object} { lastUpdated: Date, remove: Function }
  */
 export function useCachedSection(id: string): CachedSectionControls {
-    const [status] = useGlobalState(state => state.cachedSections[id])
+    const [status] = useGlobalState((state) => state.cachedSections[id])
     const syncCachedSections = useSyncCachedSections()
     const offlineInterface = useOfflineInterface()
 

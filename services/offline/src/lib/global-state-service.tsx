@@ -20,13 +20,13 @@ export const createStore = (initialState = {}): GlobalStateStore => {
 
     return {
         getState: () => state,
-        subscribe: callback => {
+        subscribe: (callback) => {
             subscriptions.add(callback)
         },
-        unsubscribe: callback => {
+        unsubscribe: (callback) => {
             subscriptions.delete(callback)
         },
-        mutate: mutation => {
+        mutate: (mutation) => {
             state = mutation(state)
             for (const callback of subscriptions) {
                 callback(state)
@@ -71,8 +71,9 @@ export const useGlobalState = (
             if (
                 !isEqual(selectedState, newSelectedState) ||
                 selectedState === undefined
-            )
+            ) {
                 setSelectedState(newSelectedState)
+            }
         }
         store.subscribe(callback)
         // Make sure to update state when selector changes

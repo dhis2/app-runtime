@@ -16,10 +16,16 @@ export const useDataMutation = (
         name: 'mutation',
     })
     const execute = useCallback(
-        options => engine.mutate(theMutation, options),
+        (options) => engine.mutate(theMutation, options),
         [engine, theMutation]
     )
-    const { refetch: mutate, called, loading, error, data } = useQueryExecutor({
+    const {
+        refetch: mutate,
+        called,
+        loading,
+        error,
+        data,
+    } = useQueryExecutor({
         execute,
         variables,
         singular: false,

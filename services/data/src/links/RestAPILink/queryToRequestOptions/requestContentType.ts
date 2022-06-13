@@ -15,7 +15,7 @@ const resourceExpectsTextPlain = (
     type: FetchType,
     query: ResolvedResourceQuery
 ) =>
-    Object.values(textPlainMatchers).some(textPlainMatcher =>
+    Object.values(textPlainMatchers).some((textPlainMatcher) =>
         textPlainMatcher(type, query)
     )
 
@@ -23,7 +23,7 @@ const resourceExpectsMultipartFormData = (
     type: FetchType,
     query: ResolvedResourceQuery
 ) =>
-    Object.values(multipartFormDataMatchers).some(multipartFormDataMatcher =>
+    Object.values(multipartFormDataMatchers).some((multipartFormDataMatcher) =>
         multipartFormDataMatcher(type, query)
     )
 
@@ -31,8 +31,8 @@ const resourceExpectsXWwwFormUrlencoded = (
     type: FetchType,
     query: ResolvedResourceQuery
 ) =>
-    Object.values(xWwwFormUrlencodedMatchers).some(xWwwFormUrlencodedMatcher =>
-        xWwwFormUrlencodedMatcher(type, query)
+    Object.values(xWwwFormUrlencodedMatchers).some(
+        (xWwwFormUrlencodedMatcher) => xWwwFormUrlencodedMatcher(type, query)
     )
 
 const convertData = (

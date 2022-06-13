@@ -13,7 +13,7 @@ import {
 const makeCachesDeleteMock = (keys: string[]) => {
     return jest
         .fn()
-        .mockImplementation(key => Promise.resolve(keys.includes(key)))
+        .mockImplementation((key) => Promise.resolve(keys.includes(key)))
 }
 
 const keysMockDefault = jest.fn().mockImplementation(async () => [])

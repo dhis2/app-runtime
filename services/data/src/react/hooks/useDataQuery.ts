@@ -60,7 +60,7 @@ export const useDataQuery = (
             enabled: queryState.current.enabled,
             variables: queryState.current.variables,
         },
-        debugValue => JSON.stringify(debugValue)
+        (debugValue) => JSON.stringify(debugValue)
     )
 
     /**
@@ -117,16 +117,13 @@ export const useDataQuery = (
      */
 
     const refetch: QueryRefetchFunction = useCallback(
-        newVariables => {
-            const {
-                identical,
-                mergedVariables,
-                mergedVariablesHash,
-            } = mergeAndCompareVariables(
-                queryState.current.variables,
-                newVariables,
-                queryState.current.variablesHash
-            )
+        (newVariables) => {
+            const { identical, mergedVariables, mergedVariablesHash } =
+                mergeAndCompareVariables(
+                    queryState.current.variables,
+                    newVariables,
+                    queryState.current.variablesHash
+                )
 
             /**
              * If there are no updates that will trigger an automatic refetch
@@ -144,14 +141,14 @@ export const useDataQuery = (
             queryState.current.enabled = true
 
             // This promise does not currently reject on errors
-            const refetchPromise = new Promise(resolve => {
-                queryState.current.refetchCallback = data => {
+            const refetchPromise = new Promise((resolve) => {
+                queryState.current.refetchCallback = (data) => {
                     resolve(data)
                 }
             })
 
             // Trigger a react-query refetch by incrementing variablesUpdateCount state
-            setVariablesUpdateCount(prevCount => prevCount + 1)
+            setVariablesUpdateCount((prevCount) => prevCount + 1)
 
             return refetchPromise
         },
