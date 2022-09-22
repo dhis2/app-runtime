@@ -1,4 +1,5 @@
-type ServerVersion = {
+type Version = {
+    full: string
     major: number
     minor: number
     patch?: number
@@ -11,8 +12,10 @@ interface SystemInfo {
 }
 
 export interface Config {
+    appName: string,
+    appVersion: Version,
     baseUrl: string
     apiVersion: number
-    serverVersion?: ServerVersion
+    serverVersion?: Version
     systemInfo?: SystemInfo
 }
