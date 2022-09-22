@@ -12,10 +12,10 @@ interface SystemInfo {
 }
 
 export interface Config {
-    appName: string,
-    appVersion: Version,
     baseUrl: string
     apiVersion: number
+    appName?: string,
+    appVersion?: Version,
     serverVersion?: Version
     systemInfo?: SystemInfo
 }
