@@ -15,6 +15,7 @@
         "@dhis2/app-runtime": "file:../../runtime",
         "@dhis2/app-service-alerts": "file:../../services/alerts",
         "@dhis2/app-service-config": "file:../../services/config",
+        "@dhis2/app-service-connected-status": "file:../../services/connected-status",
         "@dhis2/app-service-data": "file:../../services/data",
         "@dhis2/app-service-offline": "file:../../services/offline"
     },
