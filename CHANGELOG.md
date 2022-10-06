@@ -1,3 +1,10 @@
+# [3.5.0](https://github.com/dhis2/app-runtime/compare/v3.4.4...v3.5.0) (2022-10-06)
+
+
+### Features
+
+* extended config type to include app name, version, and version strings ([#1252](https://github.com/dhis2/app-runtime/issues/1252)) ([4170674](https://github.com/dhis2/app-runtime/commit/4170674e39f70c5af6760f0e19d9e1555714e1d2))
+
 ## [3.4.4](https://github.com/dhis2/app-runtime/compare/v3.4.3...v3.4.4) (2022-06-08)
 
 
