@@ -1,7 +1,6 @@
 import { AlertsProvider } from '@dhis2/app-service-alerts'
 import { ConfigProvider } from '@dhis2/app-service-config'
 import { Config } from '@dhis2/app-service-config/build/types/types'
-import { ConnectedStatusProvider } from '@dhis2/app-service-connected-status'
 import { DataProvider } from '@dhis2/app-service-data'
 import { OfflineProvider } from '@dhis2/app-service-offline'
 import React from 'react'
@@ -20,9 +19,7 @@ export const Provider = ({
         <AlertsProvider>
             <DataProvider>
                 <OfflineProvider offlineInterface={offlineInterface}>
-                    <ConnectedStatusProvider>
-                        {children}
-                    </ConnectedStatusProvider>
+                    {children}
                 </OfflineProvider>
             </DataProvider>
         </AlertsProvider>

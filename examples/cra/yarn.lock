@@ -1058,7 +1058,6 @@
   dependencies:
     "@dhis2/app-service-alerts" "3.4.4"
     "@dhis2/app-service-config" "3.4.4"
-    "@dhis2/app-service-connected-status" "3.4.4"
     "@dhis2/app-service-data" "3.4.4"
     "@dhis2/app-service-offline" "3.4.4"
 
@@ -1066,9 +1065,6 @@
   version "3.4.4"
 
 "@dhis2/app-service-config@3.4.4", "@dhis2/app-service-config@file:../../services/config":
-  version "3.4.4"
-
-"@dhis2/app-service-connected-status@3.4.4", "@dhis2/app-service-connected-status@file:../../services/connected-status":
   version "3.4.4"
 
 "@dhis2/app-service-data@3.4.4", "@dhis2/app-service-data@file:../../services/data":

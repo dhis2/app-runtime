@@ -3,6 +3,7 @@ import React from 'react'
 import { OfflineInterface } from '../types'
 import { CacheableSectionProvider } from './cacheable-section-state'
 import { OfflineInterfaceProvider } from './offline-interface'
+import { OnlineStatusMessageProvider } from './online-status-message'
 
 interface OfflineProviderInput {
     offlineInterface?: OfflineInterface
@@ -22,7 +23,11 @@ export function OfflineProvider({
 
     return (
         <OfflineInterfaceProvider offlineInterface={offlineInterface}>
-            <CacheableSectionProvider>{children}</CacheableSectionProvider>
+            <CacheableSectionProvider>
+                <OnlineStatusMessageProvider>
+                    {children}
+                </OnlineStatusMessageProvider>
+            </CacheableSectionProvider>
         </OfflineInterfaceProvider>
     )
 }
