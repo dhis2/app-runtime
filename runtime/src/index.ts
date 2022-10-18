@@ -3,6 +3,7 @@ export {
     DataProvider,
     DataQuery,
     DataMutation,
+    FetchError,
     useDataQuery,
     useDataMutation,
     useDataEngine,

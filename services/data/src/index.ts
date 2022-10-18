@@ -6,3 +6,5 @@ export {
 } from './react'
 
 export { useDataEngine, useDataQuery, useDataMutation } from './react'
+
+export { FetchError } from './engine'
