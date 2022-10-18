@@ -13,7 +13,7 @@ import {
 const makeCachesDeleteMock = (keys: string[]) => {
     return jest
         .fn()
-        .mockImplementation((key) => Promise.resolve(keys.includes(key)))
+        .mockImplementation(key => Promise.resolve(keys.includes(key)))
 }
 
 const keysMockDefault = jest.fn().mockImplementation(async () => [])
@@ -21,6 +21,10 @@ const deleteMockDefault = makeCachesDeleteMock([])
 const cachesDefault = {
     keys: keysMockDefault,
     delete: deleteMockDefault,
+    // the following to satisfy types:
+    has: () => Promise.resolve(true),
+    open: () => Promise.resolve(new Cache()),
+    match: () => Promise.resolve(new Response()),
 }
 window.caches = cachesDefault
 
@@ -53,6 +57,7 @@ it('returns false if caches.keys throws', async () => {
         throw new Error('Security Error')
     })
     window.caches = {
+        ...cachesDefault,
         keys: spy,
     }
 
@@ -63,20 +68,21 @@ it('returns false if caches.keys throws', async () => {
 })
 
 it('clears potentially sensitive caches', async () => {
-    const testKeys = ['cache1', 'cache2', 'app-shell']
+    const testKeys = ['cache1', 'cache2', 'app-shell', 'other-assets']
     const keysMock = jest
         .fn()
         .mockImplementation(() => Promise.resolve(testKeys))
     const deleteMock = makeCachesDeleteMock(testKeys)
-    window.caches = { keys: keysMock, delete: deleteMock }
+    window.caches = { ...cachesDefault, keys: keysMock, delete: deleteMock }
 
     const cachesDeleted = await clearSensitiveCaches()
     expect(cachesDeleted).toBe(true)
 
-    expect(deleteMock).toHaveBeenCalledTimes(3)
+    expect(deleteMock).toHaveBeenCalledTimes(4)
     expect(deleteMock.mock.calls[0][0]).toBe('cache1')
     expect(deleteMock.mock.calls[1][0]).toBe('cache2')
     expect(deleteMock.mock.calls[2][0]).toBe('app-shell')
+    expect(deleteMock.mock.calls[3][0]).toBe('other-assets')
 })
 
 it('preserves keepable caches', async () => {
@@ -93,11 +99,11 @@ it('preserves keepable caches', async () => {
 
     await clearSensitiveCaches()
 
-    expect(deleteMockDefault).toHaveBeenCalledTimes(3)
+    expect(deleteMockDefault).toHaveBeenCalledTimes(4)
     expect(deleteMockDefault.mock.calls[0][0]).toBe('cache1')
     expect(deleteMockDefault.mock.calls[1][0]).toBe('cache2')
     expect(deleteMockDefault.mock.calls[2][0]).toBe('app-shell')
-    expect(deleteMockDefault).not.toHaveBeenCalledWith('other-assets')
+    expect(deleteMockDefault.mock.calls[3][0]).toBe('other-assets')
     expect(deleteMockDefault).not.toHaveBeenCalledWith(
         'workbox-precache-v2-https://hey.howareya.now/'
     )
