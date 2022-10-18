@@ -1789,37 +1789,27 @@
   dependencies:
     moment "^2.24.0"
 
-"@dhis2/app-runtime@*":
+"@dhis2/app-runtime@*", "@dhis2/app-runtime@^2.2.2", "@dhis2/app-runtime@file:../../runtime":
   version "3.5.0"
-  resolved "https://registry.yarnpkg.com/@dhis2/app-runtime/-/app-runtime-3.5.0.tgz#e4416e12b76749965eed333b6f95b2c52a42a2ce"
-  integrity sha512-WnaosdNSyaJ2q5TU5RUnsg+rQX03oayuo/37BnJbGZI1DeGEUT/7K3gd1wSTSPFM+zN6rm+rkbIXs/C3WgRRAQ==
   dependencies:
     "@dhis2/app-service-alerts" "3.5.0"
     "@dhis2/app-service-config" "3.5.0"
     "@dhis2/app-service-data" "3.5.0"
     "@dhis2/app-service-offline" "3.5.0"
 
-"@dhis2/app-runtime@^2.2.2", "@dhis2/app-runtime@file:../../runtime":
-  version "3.4.4"
-  dependencies:
-    "@dhis2/app-service-alerts" "3.4.4"
-    "@dhis2/app-service-config" "3.4.4"
-    "@dhis2/app-service-data" "3.4.4"
-    "@dhis2/app-service-offline" "3.4.4"
+"@dhis2/app-service-alerts@3.5.0", "@dhis2/app-service-alerts@file:../../services/alerts":
+  version "3.5.0"
 
-"@dhis2/app-service-alerts@3.4.4", "@dhis2/app-service-alerts@3.5.0", "@dhis2/app-service-alerts@file:../../services/alerts":
-  version "3.4.4"
+"@dhis2/app-service-config@3.5.0", "@dhis2/app-service-config@file:../../services/config":
+  version "3.5.0"
 
-"@dhis2/app-service-config@3.4.4", "@dhis2/app-service-config@3.5.0", "@dhis2/app-service-config@file:../../services/config":
-  version "3.4.4"
-
-"@dhis2/app-service-data@3.4.4", "@dhis2/app-service-data@3.5.0", "@dhis2/app-service-data@file:../../services/data":
-  version "3.4.4"
+"@dhis2/app-service-data@3.5.0", "@dhis2/app-service-data@file:../../services/data":
+  version "3.5.0"
   dependencies:
     react-query "^3.13.11"
 
-"@dhis2/app-service-offline@3.4.4", "@dhis2/app-service-offline@3.5.0", "@dhis2/app-service-offline@file:../../services/offline":
-  version "3.4.4"
+"@dhis2/app-service-offline@3.5.0", "@dhis2/app-service-offline@file:../../services/offline":
+  version "3.5.0"
   dependencies:
     lodash "^4.17.21"
 
