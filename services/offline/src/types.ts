@@ -59,8 +59,6 @@ export interface OfflineInterface {
     startRecording: StartRecording
     getCachedSections: () => Promise<IndexedDBCachedSection[]>
     removeSection: (id: string) => Promise<boolean>
-    appStatus?: ReactNode
-    setAppStatus?: (appStatus: ReactNode) => void
 }
 
 export type OnlineStatusMessageContextAPI = {
