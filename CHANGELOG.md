@@ -1,3 +1,10 @@
+# [3.6.0](https://github.com/dhis2/app-runtime/compare/v3.5.0...v3.6.0) (2022-10-19)
+
+
+### Features
+
+* offline status messaging ([#1258](https://github.com/dhis2/app-runtime/issues/1258)) ([f22e1f3](https://github.com/dhis2/app-runtime/commit/f22e1f3aeb944a952999cb0cf2ae200a834099a5))
+
 # [3.5.0](https://github.com/dhis2/app-runtime/compare/v3.4.4...v3.5.0) (2022-10-06)
 
 
