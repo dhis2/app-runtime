@@ -5,7 +5,6 @@ export const SECTIONS_STORE = 'sections-store'
 // Non-sensitive caches that can be kept:
 const KEEPABLE_CACHES = [
     /^workbox-precache/, // precached static assets
-    /^other-assets/, // static assets cached at runtime - shouldn't be sensitive
 ]
 
 declare global {
