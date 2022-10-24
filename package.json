@@ -1,5 +1,5 @@
 {
-    "version": "3.6.0",
+    "version": "3.6.1",
     "description": "A singular runtime dependency for applications on the DHIS2 platform",
     "repository": "https://github.com/dhis2/app-runtime.git",
     "author": "Austin McGee <austin@dhis2.org>",

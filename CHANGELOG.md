@@ -1,3 +1,10 @@
+## [3.6.1](https://github.com/dhis2/app-runtime/compare/v3.6.0...v3.6.1) (2022-10-24)
+
+
+### Bug Fixes
+
+* **offline:** clear SWR caches betwen users [LIBS-358] ([#1268](https://github.com/dhis2/app-runtime/issues/1268)) ([fc0d143](https://github.com/dhis2/app-runtime/commit/fc0d143261c580df44ec8a492673847fbb72c3f6))
+
 # [3.6.0](https://github.com/dhis2/app-runtime/compare/v3.5.0...v3.6.0) (2022-10-19)
 
 
