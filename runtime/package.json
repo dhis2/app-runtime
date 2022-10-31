@@ -37,6 +37,8 @@
         "build:types": "tsc --emitDeclarationOnly --outDir ./build/types",
         "build:package": "d2-app-scripts build",
         "build": "concurrently -n build,types \"yarn build:package\" \"yarn build:types\"",
-        "test": "echo \"No tests yet!\""
+        "test": "echo \"No tests yet!\"",
+        "link": "yarn link",
+        "unlink": "yarn unlink"
     }
 }

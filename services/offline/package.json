@@ -30,7 +30,9 @@
         "type-check": "tsc --noEmit --allowJs --checkJs",
         "type-check:watch": "yarn type-check --watch",
         "test": "d2-app-scripts test",
-        "coverage": "yarn test --coverage"
+        "coverage": "yarn test --coverage",
+        "link": "yarn link",
+        "unlink": "yarn unlink"
     },
     "peerDependencies": {
         "@dhis2/app-service-alerts": "3.6.1",
