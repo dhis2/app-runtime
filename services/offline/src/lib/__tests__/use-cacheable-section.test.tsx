@@ -1,7 +1,7 @@
-import { AlertsProvider } from '@dhis2/app-service-alerts'
 import { CustomDataProvider } from '@dhis2/app-service-data'
 import { renderHook, act } from '@testing-library/react-hooks'
-import React from 'react'
+import PropTypes from 'prop-types'
+import React, { FC } from 'react'
 import {
     errorRecordingMock,
     failedMessageRecordingMock,
@@ -10,11 +10,10 @@ import {
 import { useCacheableSection } from '../cacheable-section'
 import { OfflineProvider } from '../offline-provider'
 
-const ServiceProvider = ({ children }) => (
-    <AlertsProvider>
-        <CustomDataProvider data={{}}>{children}</CustomDataProvider>
-    </AlertsProvider>
+const ServiceProvider: FC = ({ children }) => (
+    <CustomDataProvider data={{}}>{children}</CustomDataProvider>
 )
+ServiceProvider.propTypes = { children: PropTypes.node }
 
 // Suppress 'act' warning for these tests
 const originalError = console.error
@@ -36,15 +35,15 @@ afterEach(() => {
 })
 
 it('renders in the default state initially', () => {
-    const { result } = renderHook(() => useCacheableSection('one'), {
-        wrapper: ({ children }) => (
-            <ServiceProvider>
-                <OfflineProvider offlineInterface={mockOfflineInterface}>
-                    {children}
-                </OfflineProvider>
-            </ServiceProvider>
-        ),
-    })
+    const wrapper: FC = ({ children }) => (
+        <ServiceProvider>
+            <OfflineProvider offlineInterface={mockOfflineInterface}>
+                {children}
+            </OfflineProvider>
+        </ServiceProvider>
+    )
+
+    const { result } = renderHook(() => useCacheableSection('one'), { wrapper })
 
     expect(result.current.recordingState).toBe('default')
     expect(result.current.isCached).toBe(false)
@@ -62,17 +61,16 @@ it('handles a successful recording', async (done) => {
                 { sectionId: sectionId, lastUpdated: new Date() },
             ]),
     }
+    const wrapper: FC = ({ children }) => (
+        <ServiceProvider>
+            <OfflineProvider offlineInterface={testOfflineInterface}>
+                {children}
+            </OfflineProvider>
+        </ServiceProvider>
+    )
     const { result, waitFor } = renderHook(
         () => useCacheableSection(sectionId),
-        {
-            wrapper: ({ children }) => (
-                <ServiceProvider>
-                    <OfflineProvider offlineInterface={testOfflineInterface}>
-                        {children}
-                    </OfflineProvider>
-                </ServiceProvider>
-            ),
-        }
+        { wrapper }
     )
 
     const assertRecordingStarted = () => {
@@ -131,15 +129,14 @@ it('handles a recording that encounters an error', async (done) => {
         ...mockOfflineInterface,
         startRecording: errorRecordingMock,
     }
-    const { result } = renderHook(() => useCacheableSection('one'), {
-        wrapper: ({ children }) => (
-            <ServiceProvider>
-                <OfflineProvider offlineInterface={testOfflineInterface}>
-                    {children}
-                </OfflineProvider>
-            </ServiceProvider>
-        ),
-    })
+    const wrapper: FC = ({ children }) => (
+        <ServiceProvider>
+            <OfflineProvider offlineInterface={testOfflineInterface}>
+                {children}
+            </OfflineProvider>
+        </ServiceProvider>
+    )
+    const { result } = renderHook(() => useCacheableSection('one'), { wrapper })
 
     const assertRecordingStarted = () => {
         expect(result.current.recordingState).toBe('recording')
@@ -178,15 +175,14 @@ it('handles an error starting the recording', async () => {
         ...mockOfflineInterface,
         startRecording: failedMessageRecordingMock,
     }
-    const { result } = renderHook(() => useCacheableSection('err'), {
-        wrapper: ({ children }) => (
-            <ServiceProvider>
-                <OfflineProvider offlineInterface={testOfflineInterface}>
-                    {children}
-                </OfflineProvider>
-            </ServiceProvider>
-        ),
-    })
+    const wrapper: FC = ({ children }) => (
+        <ServiceProvider>
+            <OfflineProvider offlineInterface={testOfflineInterface}>
+                {children}
+            </OfflineProvider>
+        </ServiceProvider>
+    )
+    const { result } = renderHook(() => useCacheableSection('err'), { wrapper })
 
     await expect(result.current.startRecording()).rejects.toThrow(
         'Failed message' // from failedMessageRecordingMock
@@ -204,17 +200,16 @@ it('handles remove and updates sections', async () => {
             ])
             .mockResolvedValueOnce([]),
     }
+    const wrapper: FC = ({ children }) => (
+        <ServiceProvider>
+            <OfflineProvider offlineInterface={testOfflineInterface}>
+                {children}
+            </OfflineProvider>
+        </ServiceProvider>
+    )
     const { result, waitFor } = renderHook(
         () => useCacheableSection(sectionId),
-        {
-            wrapper: ({ children }) => (
-                <ServiceProvider>
-                    <OfflineProvider offlineInterface={testOfflineInterface}>
-                        {children}
-                    </OfflineProvider>
-                </ServiceProvider>
-            ),
-        }
+        { wrapper }
     )
 
     // Wait for state to sync with indexedDB
@@ -242,18 +237,16 @@ it('handles a change in ID', async () => {
                 { sectionId: 'id-one', lastUpdated: new Date() },
             ]),
     }
+    const wrapper: FC = ({ children }) => (
+        <ServiceProvider>
+            <OfflineProvider offlineInterface={testOfflineInterface}>
+                {children}
+            </OfflineProvider>
+        </ServiceProvider>
+    )
     const { result, waitFor, rerender } = renderHook(
-        (...args) => useCacheableSection(...args),
-        {
-            wrapper: ({ children }) => (
-                <ServiceProvider>
-                    <OfflineProvider offlineInterface={testOfflineInterface}>
-                        {children}
-                    </OfflineProvider>
-                </ServiceProvider>
-            ),
-            initialProps: 'id-one',
-        }
+        (id: any) => useCacheableSection(id),
+        { wrapper, initialProps: 'id-one' }
     )
 
     // Wait for state to sync with indexedDB
