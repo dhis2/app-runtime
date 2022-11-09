@@ -1,3 +1,4 @@
+import { CustomDataProvider } from '@dhis2/app-service-data'
 import { renderHook, act } from '@testing-library/react-hooks'
 import React, { FC } from 'react'
 import { mockOfflineInterface } from '../../utils/test-mocks'
@@ -7,9 +8,11 @@ import { useOnlineStatusMessage } from '../online-status-message'
 describe('useOnlineStatusMessage', () => {
     it('should allow the online status to be updated ', () => {
         const wrapper: FC = ({ children }) => (
-            <OfflineProvider offlineInterface={mockOfflineInterface}>
-                {children}
-            </OfflineProvider>
+            <CustomDataProvider data={{}}>
+                <OfflineProvider offlineInterface={mockOfflineInterface}>
+                    {children}
+                </OfflineProvider>
+            </CustomDataProvider>
         )
 
         const { result } = renderHook(() => useOnlineStatusMessage(), {
