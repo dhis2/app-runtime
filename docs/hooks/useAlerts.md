@@ -35,7 +35,7 @@ const Alerter = () => {
 const Alerts = () => {
     const alerts = useAlerts()
 
-    return alerts.map(alert => (
+    return alerts.map((alert) => (
         <div key={alert.id}>
             {alert.message}
             <button onClick={alert.remove}>hide</button>

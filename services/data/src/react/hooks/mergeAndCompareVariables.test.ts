@@ -1,7 +1,7 @@
 import { mergeAndCompareVariables } from './mergeAndCompareVariables'
 import { stableVariablesHash } from './stableVariablesHash'
 jest.mock('./stableVariablesHash', () => ({
-    stableVariablesHash: object => JSON.stringify(object),
+    stableVariablesHash: (object) => JSON.stringify(object),
 }))
 
 const testVariables = {

@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unused-prop-types */
+
 import { useConfig } from '@dhis2/app-service-config'
 import React from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'

@@ -3,7 +3,7 @@ import { ResolvedResourceQuery } from '../../engine'
 import { RestAPILink } from '../RestAPILink'
 import { queryToResourcePath } from './queryToResourcePath'
 
-const createLink = config => new RestAPILink(config)
+const createLink = (config) => new RestAPILink(config)
 const defaultConfig: Config = {
     basePath: '<base>',
     apiVersion: '37',

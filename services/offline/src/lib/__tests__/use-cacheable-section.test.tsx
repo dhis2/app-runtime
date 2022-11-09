@@ -1,5 +1,3 @@
-/* eslint-disable react/display-name, react/prop-types */
-
 import { AlertsProvider } from '@dhis2/app-service-alerts'
 import { CustomDataProvider } from '@dhis2/app-service-data'
 import { renderHook, act } from '@testing-library/react-hooks'
@@ -22,7 +20,8 @@ const ServiceProvider = ({ children }) => (
 const originalError = console.error
 beforeEach(() => {
     jest.spyOn(console, 'error').mockImplementation((...args) => {
-        const pattern = /Warning: An update to .* inside a test was not wrapped in act/
+        const pattern =
+            /Warning: An update to .* inside a test was not wrapped in act/
         if (typeof args[0] === 'string' && pattern.test(args[0])) {
             return
         }
@@ -52,7 +51,7 @@ it('renders in the default state initially', () => {
     expect(result.current.lastUpdated).toBeUndefined()
 })
 
-it('handles a successful recording', async done => {
+it('handles a successful recording', async (done) => {
     const [sectionId, timeoutDelay] = ['one', 1234]
     const testOfflineInterface = {
         ...mockOfflineInterface,
@@ -115,10 +114,11 @@ it('handles a successful recording', async done => {
     expect.assertions(11)
 })
 
-it('handles a recording that encounters an error', async done => {
+it('handles a recording that encounters an error', async (done) => {
     // Suppress the expected error from console (in addition to 'act' warning)
     jest.spyOn(console, 'error').mockImplementation((...args) => {
-        const actPattern = /Warning: An update to .* inside a test was not wrapped in act/
+        const actPattern =
+            /Warning: An update to .* inside a test was not wrapped in act/
         const errPattern = /Error during recording/
         const matchesPattern =
             actPattern.test(args[0]) || errPattern.test(args[0])

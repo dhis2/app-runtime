@@ -11,7 +11,10 @@ export const useStaticInput = <T>(
     const originalValue = useRef(staticValue)
     const [value, setValue] = useState<T>(() => originalValue.current)
 
-    useDebugValue(value, debugValue => `${name}: ${JSON.stringify(debugValue)}`)
+    useDebugValue(
+        value,
+        (debugValue) => `${name}: ${JSON.stringify(debugValue)}`
+    )
 
     useEffect(() => {
         if (warn && originalValue.current !== staticValue) {

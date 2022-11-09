@@ -98,7 +98,7 @@ describe('useDataQuery', () => {
             }
 
             const { result, waitForNextUpdate, rerender } = renderHook(
-                props => useDataQuery(props.query, props.options),
+                (props) => useDataQuery(props.query, props.options),
                 {
                     wrapper,
                     initialProps,
@@ -952,7 +952,7 @@ describe('useDataQuery', () => {
             }
 
             const { result, waitForNextUpdate } = renderHook(
-                props => useDataQuery(props.query, props.options),
+                (props) => useDataQuery(props.query, props.options),
                 {
                     wrapper,
                     initialProps,

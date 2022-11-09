@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+
 import { Provider, DataProvider } from '@dhis2/app-runtime'
 import React from 'react'
 

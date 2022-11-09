@@ -4,6 +4,7 @@ import { OfflineInterface } from '../types'
 import { CacheableSectionProvider } from './cacheable-section-state'
 import { Dhis2ConnectionStatusProvider } from './dhis2-connection-status'
 import { OfflineInterfaceProvider } from './offline-interface'
+import { OnlineStatusMessageProvider } from './online-status-message'
 
 interface OfflineProviderInput {
     offlineInterface?: OfflineInterface
@@ -24,7 +25,11 @@ export function OfflineProvider({
     return (
         <OfflineInterfaceProvider offlineInterface={offlineInterface}>
             <Dhis2ConnectionStatusProvider>
-                <CacheableSectionProvider>{children}</CacheableSectionProvider>
+                <CacheableSectionProvider>
+                    <OnlineStatusMessageProvider>
+                        {children}
+                    </OnlineStatusMessageProvider>
+                </CacheableSectionProvider>
             </Dhis2ConnectionStatusProvider>
         </OfflineInterfaceProvider>
     )

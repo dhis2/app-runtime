@@ -11,9 +11,8 @@ const noopOfflineInterface: OfflineInterface = {
     removeSection: async () => false,
 }
 
-const OfflineInterfaceContext = createContext<OfflineInterface>(
-    noopOfflineInterface
-)
+const OfflineInterfaceContext =
+    createContext<OfflineInterface>(noopOfflineInterface)
 
 interface OfflineInterfaceProviderInput {
     offlineInterface: OfflineInterface

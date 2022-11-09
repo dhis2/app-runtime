@@ -48,9 +48,9 @@ export const getResourceQueryErrors = (
         )
     }
     const invalidKeys = Object.keys(query).filter(
-        k => !validQueryKeys.includes(k)
+        (k) => !validQueryKeys.includes(k)
     )
-    invalidKeys.forEach(k => {
+    invalidKeys.forEach((k) => {
         errors.push(`Property ${k} is not supported`)
     })
 
@@ -70,7 +70,7 @@ export const validateResourceQueries = (
         (errors: string[], query, i) =>
             errors.concat(
                 getResourceQueryErrors('read', query).map(
-                    e => `[${names[i]}] ${e}`
+                    (e) => `[${names[i]}] ${e}`
                 )
             ),
         []

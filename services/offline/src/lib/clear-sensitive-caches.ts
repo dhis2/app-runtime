@@ -5,7 +5,6 @@ export const SECTIONS_STORE = 'sections-store'
 // Non-sensitive caches that can be kept:
 const KEEPABLE_CACHES = [
     /^workbox-precache/, // precached static assets
-    /^other-assets/, // static assets cached at runtime - shouldn't be sensitive
 ]
 
 declare global {
@@ -38,17 +37,17 @@ const clearDB = async (dbName: string): Promise<void> => {
     return new Promise((resolve, reject) => {
         // IndexedDB fun:
         const openDBRequest = indexedDB.open(dbName)
-        openDBRequest.onsuccess = e => {
+        openDBRequest.onsuccess = (e) => {
             const db = (e.target as IDBOpenDBRequest).result
             const tx = db.transaction(SECTIONS_STORE, 'readwrite')
             // When the transaction completes is when the operation is done:
             tx.oncomplete = () => resolve()
-            tx.onerror = e => reject((e.target as IDBRequest).error)
+            tx.onerror = (e) => reject((e.target as IDBRequest).error)
             const os = tx.objectStore(SECTIONS_STORE)
             const clearReq = os.clear()
-            clearReq.onerror = e => reject((e.target as IDBRequest).error)
+            clearReq.onerror = (e) => reject((e.target as IDBRequest).error)
         }
-        openDBRequest.onerror = e => {
+        openDBRequest.onerror = (e) => {
             reject((e.target as IDBOpenDBRequest).error)
         }
     })
@@ -78,16 +77,16 @@ export async function clearSensitiveCaches(
         // (Resolves to 'false' because this can't detect if anything was deleted):
         clearDB(dbName).then(() => false),
         // Remove caches if not in keepable list
-        ...cacheKeys.map(key => {
-            if (!KEEPABLE_CACHES.some(pattern => pattern.test(key))) {
+        ...cacheKeys.map((key) => {
+            if (!KEEPABLE_CACHES.some((pattern) => pattern.test(key))) {
                 return caches.delete(key)
             }
             return false
         }),
-    ]).then(responses => {
+    ]).then((responses) => {
         // Return true if any caches have been cleared
         // (caches.delete() returns true if a cache is deleted successfully)
         // PWA apps can reload to restore their app shell cache
-        return responses.some(response => response)
+        return responses.some((response) => response)
     })
 }

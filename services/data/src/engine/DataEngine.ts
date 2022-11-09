@@ -33,24 +33,24 @@ export class DataEngine {
     ): Promise<JsonMap> {
         const names = Object.keys(query)
         const queries = names
-            .map(name => query[name])
-            .map(q => resolveDynamicQuery(q, variables))
+            .map((name) => query[name])
+            .map((q) => resolveDynamicQuery(q, variables))
 
         validateResourceQueries(queries, names)
 
         return Promise.all(
-            queries.map(q => {
+            queries.map((q) => {
                 return this.link.executeResourceQuery('read', q, {
                     signal,
                 })
             })
         )
-            .then(results => {
+            .then((results) => {
                 const data = reduceResponses(results, names)
                 onComplete && onComplete(data)
                 return data
             })
-            .catch(error => {
+            .catch((error) => {
                 onError && onError(error)
                 throw error
             })
@@ -74,11 +74,11 @@ export class DataEngine {
             signal,
         })
         return result
-            .then(data => {
+            .then((data) => {
                 onComplete && onComplete(data)
                 return data
             })
-            .catch(error => {
+            .catch((error) => {
                 onError && onError(error)
                 throw error
             })

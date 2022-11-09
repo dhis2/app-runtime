@@ -1,3 +1,31 @@
+## [3.6.1](https://github.com/dhis2/app-runtime/compare/v3.6.0...v3.6.1) (2022-10-24)
+
+
+### Bug Fixes
+
+* **offline:** clear SWR caches betwen users [LIBS-358] ([#1268](https://github.com/dhis2/app-runtime/issues/1268)) ([fc0d143](https://github.com/dhis2/app-runtime/commit/fc0d143261c580df44ec8a492673847fbb72c3f6))
+
+# [3.6.0](https://github.com/dhis2/app-runtime/compare/v3.5.0...v3.6.0) (2022-10-19)
+
+
+### Features
+
+* offline status messaging ([#1258](https://github.com/dhis2/app-runtime/issues/1258)) ([f22e1f3](https://github.com/dhis2/app-runtime/commit/f22e1f3aeb944a952999cb0cf2ae200a834099a5))
+
+# [3.5.0](https://github.com/dhis2/app-runtime/compare/v3.4.4...v3.5.0) (2022-10-06)
+
+
+### Features
+
+* extended config type to include app name, version, and version strings ([#1252](https://github.com/dhis2/app-runtime/issues/1252)) ([4170674](https://github.com/dhis2/app-runtime/commit/4170674e39f70c5af6760f0e19d9e1555714e1d2))
+
+## [3.4.4](https://github.com/dhis2/app-runtime/compare/v3.4.3...v3.4.4) (2022-06-08)
+
+
+### Bug Fixes
+
+* **data-service:** application/x-www-form-urlencoded for svg conversion ([5e2818c](https://github.com/dhis2/app-runtime/commit/5e2818c8d63f9ede61d65ca431f0604201d31531))
+
 ## [3.4.3](https://github.com/dhis2/app-runtime/compare/v3.4.2...v3.4.3) (2022-04-06)
 
 
