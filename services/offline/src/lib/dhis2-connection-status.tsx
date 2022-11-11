@@ -1,7 +1,8 @@
 import { useDataQuery } from '@dhis2/app-service-data'
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useOfflineInterface } from './offline-interface'
+import useSmartIntervals from './use-progressive-interval'
 
 /**
  * Provides a boolean indicating client's connection to the DHIS2 server,
@@ -17,7 +18,7 @@ interface Dhis2ConnectionStatusContextValue {
     isConnectedToDhis2: boolean
 }
 
-// todo: probably a better option; maybe make a server-health endpoint
+// todo: maybe make a server-health endpoint
 const pingQuery = {
     ping: {
         resource: 'system/ping',
@@ -33,41 +34,46 @@ export const Dhis2ConnectionStatusProvider = ({
 }: {
     children: React.ReactNode
 }): JSX.Element => {
-    // todo: what boolean should isConnected initialize to?
-    const [isConnected, setIsConnected] = React.useState(false)
+    const [isConnected, setIsConnected] = React.useState(true)
     const offlineInterface = useOfflineInterface()
     const { refetch: ping } = useDataQuery(pingQuery, { lazy: true })
-    const pingTimeoutRef = React.useRef((null as unknown) as NodeJS.Timeout) // silly types juggling
+    const { pause, resume, snooze, resetBackoff } = useSmartIntervals({
+        // not perfect, but there's no 'window.focused' variable:
+        initialPauseValue: document.visibilityState === 'visible',
+        callback: ping as any,
+    })
 
-    // A timeout is used instead of an interval for handling slow execution
-    // https://developer.mozilla.org/en-US/docs/Web/API/setInterval#ensure_that_execution_duration_is_shorter_than_interval_frequency
-    // After this executes, the 'onStatusChange' callback should start the timer again
-    function startPingTimer() {
-        clearTimeout(pingTimeoutRef.current)
-        pingTimeoutRef.current = setTimeout(() => {
-            ping()
-        }, 30 * 1000) // todo: examine time
+    const handleChange = useCallback(
+        ({ isConnectedToDhis2: newStatus }) => {
+            // If value changed, set ping interval back to initial
+            if (newStatus !== isConnected) {
+                resetBackoff()
+                setIsConnected(newStatus)
+            }
+            // Either way, snooze ping timer
+            snooze()
+        },
+        [isConnected, resetBackoff, snooze]
+    )
+    const handleBlur = () => {
+        pause()
     }
-
-    function onStatusChange({
-        isConnectedToDhis2,
-    }: Dhis2ConnectionStatusContextValue) {
-        setIsConnected(isConnectedToDhis2)
-        startPingTimer()
+    const handleFocus = () => {
+        resume()
     }
 
     React.useEffect(() => {
-        if (!pingTimeoutRef.current) {
-            startPingTimer()
-        }
-
         const unsubscribe = offlineInterface.subscribeToDhis2ConnectionStatus({
-            onChange: onStatusChange,
+            onChange: handleChange,
         })
+
+        window.addEventListener('blur', handleBlur)
+        window.addEventListener('focus', handleFocus)
 
         return () => {
             unsubscribe()
-            clearTimeout(pingTimeoutRef.current)
+            window.removeEventListener('blur', handleBlur)
+            window.removeEventListener('focus', handleFocus)
         }
     }, [offlineInterface]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -83,14 +89,15 @@ Dhis2ConnectionStatusProvider.propTypes = {
     children: PropTypes.node,
 }
 
-export const useDhis2ConnectionStatus = (): Dhis2ConnectionStatusContextValue => {
-    const context = React.useContext(Dhis2ConnectionStatusContext)
+export const useDhis2ConnectionStatus =
+    (): Dhis2ConnectionStatusContextValue => {
+        const context = React.useContext(Dhis2ConnectionStatusContext)
 
-    if (!context) {
-        throw new Error(
-            'useDhis2ConnectionStatus must be used within a Dhis2ConnectionStatus provider'
-        )
+        if (!context) {
+            throw new Error(
+                'useDhis2ConnectionStatus must be used within a Dhis2ConnectionStatus provider'
+            )
+        }
+
+        return context
     }
-
-    return context
-}
