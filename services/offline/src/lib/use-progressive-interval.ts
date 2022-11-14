@@ -1,6 +1,6 @@
 import { useRef, useCallback, useEffect, useState } from 'react'
 
-const ONE_SECOND = 1000
+const FIVE_SECONDS = 5000
 const FIVE_MINUTES = 1000 * 60 * 5
 const DEFAULT_INCREMENT_FACTOR = 1.2
 const throwErrorIfNoCallbackIsProvided = () => {
@@ -11,21 +11,21 @@ const throwErrorIfNoCallbackIsProvided = () => {
 
 /**
  * Functions returned:
- * 
+ *
  * pause(): don't change the timer; set a flag. If still 'paused' when timer function is up,
  * set 'standby' flag and stop timer instead of executing callback (and restarting timer) normally.
  * See 'resume()'
- * 
+ *
  * resume(): removes 'paused' flag. If 'standby' flag is set, triggers callback and starts timer
- * 
+ *
  * snooze(): restart timer that would trigger callback, using the current `delay` duration
  * (expected to be called to delay a ping in response to incidental network traffic)
- * 
+ *
  * resetBackoff(): set delay back to initial (expected to be used if online value changes)
  * -- this could maybe draw on a return value from callback to decide to increment or not
  */
 export default function useSmartIntervals({
-    initialDelay = ONE_SECOND,
+    initialDelay = FIVE_SECONDS,
     maxDelay = FIVE_MINUTES,
     delayIncrementFactor = DEFAULT_INCREMENT_FACTOR,
     initialPauseValue = false,
@@ -36,16 +36,25 @@ export default function useSmartIntervals({
     const [paused, setPaused] = useState(initialPauseValue)
     const [standby, setStandby] = useState(false)
 
+    const recursiveFunctionRef = useRef((): void => undefined)
+
     const incrementDelay = useCallback(() => {
-        setDelay((currDelay) =>
+        setDelay((currDelay) => {
             // Increment delay up to the max value
-            Math.min(currDelay * delayIncrementFactor, maxDelay)
-        )
+            const newDelay = Math.min(
+                currDelay * delayIncrementFactor,
+                maxDelay
+            )
+            console.log({ currDelay, newDelay })
+            return newDelay
+        })
     }, [maxDelay, delayIncrementFactor])
 
     /**
      * If callback returns a truthy value, increment delay.
      * Otherwise, reset it to its initial value
+     * TODO: Maybe don't need these; 'handleChange' can use `snooze()`.
+     * TODO: Otherwise, handle async callbacks
      */
     const invokeCallbackAndHandleDelay = useCallback(() => {
         const result = callback()
@@ -58,7 +67,10 @@ export default function useSmartIntervals({
         }
     }, [callback, incrementDelay, initialDelay])
 
-    const clearTimeoutAndStart = useCallback(() => {
+    // const clearTimeoutAndStart = useCallback(() => {
+    recursiveFunctionRef.current = useCallback(() => {
+        console.log('clear and start', { delay, paused, standby })
+
         // Prevent parallel timeouts from occuring
         clearTimeout(timeoutRef.current)
 
@@ -67,21 +79,25 @@ export default function useSmartIntervals({
         timeoutRef.current = setTimeout(() => {
             // Schedule callback to be executed after current delay
             if (paused) {
+                console.log('entering standby')
+
                 // Set this hook into a 'standby' state, ready to execute when
                 // 'resume' is called (See `resume()` below)
-                setStandby(true)
+                setStandby(() => true)
             } else {
                 // Invoke callback
                 invokeCallbackAndHandleDelay()
                 // Start process over again
-                clearTimeoutAndStart()
+                recursiveFunctionRef.current()
             }
         }, delay)
-    }, [delay, invokeCallbackAndHandleDelay, paused])
+    }, [delay, invokeCallbackAndHandleDelay, paused, standby, setStandby])
+
+    // const clearTimeoutAndStart = () => recursiveFunctionRef.current()
 
     useEffect(() => {
         // Start timer on mount
-        clearTimeoutAndStart()
+        recursiveFunctionRef.current()
 
         return () => {
             // Clear timeout when component unmounts
@@ -90,20 +106,28 @@ export default function useSmartIntervals({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const pause = useCallback(() => setPaused(true), [])
+    const pause = useCallback(() => {
+        console.log('pause')
+
+        setPaused(true)
+    }, [])
     const resume = useCallback(() => {
+        console.log('resume', { standby })
+
         setPaused(false)
         if (standby) {
+            setStandby(() => false)
             // (Same execution as in clearTimeoutAndStart)
             invokeCallbackAndHandleDelay()
-            clearTimeoutAndStart()
+            recursiveFunctionRef.current()
         }
-    }, [standby, invokeCallbackAndHandleDelay, clearTimeoutAndStart])
-    const resetBackoff = useCallback(
-        () => setDelay(initialDelay),
-        [initialDelay]
-    )
-    const snooze = clearTimeoutAndStart
+    }, [standby, invokeCallbackAndHandleDelay])
+    const resetBackoff = useCallback(() => {
+        console.log('reset backoff')
+
+        setDelay(initialDelay)
+    }, [initialDelay])
+    const snooze = () => recursiveFunctionRef.current()
 
     return {
         pause,

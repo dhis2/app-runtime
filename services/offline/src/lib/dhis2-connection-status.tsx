@@ -29,6 +29,8 @@ const Dhis2ConnectionStatusContext = React.createContext({
     isConnectedToDhis2: false,
 })
 
+// todo: ping when network conditions change?
+
 export const Dhis2ConnectionStatusProvider = ({
     children,
 }: {
@@ -37,9 +39,10 @@ export const Dhis2ConnectionStatusProvider = ({
     const [isConnected, setIsConnected] = React.useState(true)
     const offlineInterface = useOfflineInterface()
     const { refetch: ping } = useDataQuery(pingQuery, { lazy: true })
+
     const { pause, resume, snooze, resetBackoff } = useSmartIntervals({
         // not perfect, but there's no 'window.focused' variable:
-        initialPauseValue: document.visibilityState === 'visible',
+        initialPauseValue: document.visibilityState !== 'visible',
         callback: ping as any,
     })
 
@@ -55,17 +58,22 @@ export const Dhis2ConnectionStatusProvider = ({
         },
         [isConnected, resetBackoff, snooze]
     )
-    const handleBlur = () => {
-        pause()
-    }
-    const handleFocus = () => {
-        resume()
-    }
 
+    // These functions are grouped together because their dependencies likely
+    // change at the same time, because they mostly come from useSmartIntervals
     React.useEffect(() => {
         const unsubscribe = offlineInterface.subscribeToDhis2ConnectionStatus({
             onChange: handleChange,
         })
+
+        const handleBlur = () => {
+            console.log('blur')
+            pause()
+        }
+        const handleFocus = () => {
+            console.log('focus')
+            resume()
+        }
 
         window.addEventListener('blur', handleBlur)
         window.addEventListener('focus', handleFocus)
@@ -75,7 +83,8 @@ export const Dhis2ConnectionStatusProvider = ({
             window.removeEventListener('blur', handleBlur)
             window.removeEventListener('focus', handleFocus)
         }
-    }, [offlineInterface]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [offlineInterface, handleChange, pause, resume]) 
+    // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Dhis2ConnectionStatusContext.Provider
