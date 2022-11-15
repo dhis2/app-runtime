@@ -33,10 +33,10 @@ export default function useSmartIntervals({
 } = {}): any {
     const timeoutRef = useRef(null as any)
     const [delay, setDelay] = useState(initialDelay)
-    const [paused, setPaused] = useState(initialPauseValue)
     const [standby, setStandby] = useState(false)
 
     const recursiveFunctionRef = useRef((): void => undefined)
+    const pausedRef = useRef(initialPauseValue)
 
     const incrementDelay = useCallback(() => {
         setDelay((currDelay) => {
@@ -69,7 +69,7 @@ export default function useSmartIntervals({
 
     // const clearTimeoutAndStart = useCallback(() => {
     recursiveFunctionRef.current = useCallback(() => {
-        console.log('clear and start', { delay, paused, standby })
+        console.log('clear and start', { delay, standby })
 
         // Prevent parallel timeouts from occuring
         clearTimeout(timeoutRef.current)
@@ -78,7 +78,7 @@ export default function useSmartIntervals({
         // https://developer.mozilla.org/en-US/docs/Web/API/setInterval#ensure_that_execution_duration_is_shorter_than_interval_frequency
         timeoutRef.current = setTimeout(() => {
             // Schedule callback to be executed after current delay
-            if (paused) {
+            if (pausedRef.current) {
                 console.log('entering standby')
 
                 // Set this hook into a 'standby' state, ready to execute when
@@ -91,7 +91,7 @@ export default function useSmartIntervals({
                 recursiveFunctionRef.current()
             }
         }, delay)
-    }, [delay, invokeCallbackAndHandleDelay, paused, standby, setStandby])
+    }, [delay, invokeCallbackAndHandleDelay, standby, setStandby])
 
     // const clearTimeoutAndStart = () => recursiveFunctionRef.current()
 
@@ -109,12 +109,12 @@ export default function useSmartIntervals({
     const pause = useCallback(() => {
         console.log('pause')
 
-        setPaused(true)
+        pausedRef.current = true
     }, [])
     const resume = useCallback(() => {
         console.log('resume', { standby })
 
-        setPaused(false)
+        pausedRef.current = false
         if (standby) {
             setStandby(() => false)
             // (Same execution as in clearTimeoutAndStart)
