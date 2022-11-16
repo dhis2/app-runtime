@@ -1,6 +1,6 @@
 {
     "name": "@dhis2/app-service-alerts",
-    "version": "3.6.1",
+    "version": "3.6.2",
     "main": "./build/cjs/index.js",
     "module": "./build/es/index.js",
     "types": "./build/types/index.d.ts",
