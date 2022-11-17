@@ -41,7 +41,9 @@
         "type-check": "tsc --noEmit --allowJs --checkJs",
         "type-check:watch": "yarn type-check --watch",
         "test": "d2-app-scripts test",
-        "coverage": "yarn test --coverage"
+        "coverage": "yarn test --coverage",
+        "link": "yarn link",
+        "unlink": "yarn unlink"
     },
     "dependencies": {
         "react-query": "^3.13.11"

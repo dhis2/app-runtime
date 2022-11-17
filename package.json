@@ -52,7 +52,9 @@
         "start": "yarn build && cd examples/query-playground && yarn start",
         "docs:build": "d2-utils-docsite build ./docs -o ./dist && yarn build:playground",
         "docs:serve": "d2-utils-docsite serve ./docs -o ./dist",
-        "lint": "d2-style check js && d2-style check text"
+        "lint": "d2-style check js && d2-style check text",
+        "link:all": "yarn workspaces run link",
+        "unlink:all": "yarn workspaces run unlink"
     },
     "d2": {
         "docsite": {
