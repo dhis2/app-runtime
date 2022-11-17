@@ -1,3 +1,10 @@
+# [3.7.0](https://github.com/dhis2/app-runtime/compare/v3.6.2...v3.7.0) (2022-11-17)
+
+
+### Features
+
+* **fetch-error:** expose fetch-error ([bcb913c](https://github.com/dhis2/app-runtime/commit/bcb913c4910d42a5300752f43d7636e7cf950f8a))
+
 ## [3.6.2](https://github.com/dhis2/app-runtime/compare/v3.6.1...v3.6.2) (2022-11-16)
 
 
