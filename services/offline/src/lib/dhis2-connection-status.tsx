@@ -40,19 +40,20 @@ export const Dhis2ConnectionStatusProvider = ({
     const offlineInterface = useOfflineInterface()
     const { refetch: ping } = useDataQuery(pingQuery, { lazy: true })
 
-    const { pause, resume, snooze, resetBackoff } = useSmartIntervals({
-        // don't ping if window isn't focused or visible
-        initialPauseValue:
-            !document.hasFocus() || document.visibilityState !== 'visible',
-        callback: ping as any,
-    })
+    const { invokeCallbackImmediately, pause, resume, snooze, resetBackoff } =
+        useSmartIntervals({
+            // don't ping if window isn't focused or visible
+            initialPauseValue:
+                !document.hasFocus() || document.visibilityState !== 'visible',
+            callback: ping as any,
+        })
 
     const handleChange = useCallback(
         ({ isConnectedToDhis2: newStatus }) => {
-            // If value changed, set ping interval back to initial
             if (newStatus !== isConnected) {
-                resetBackoff()
                 setIsConnected(newStatus)
+                // If value changed, set ping interval back to initial
+                resetBackoff()
             }
             // Either way, snooze ping timer
             snooze()
@@ -67,6 +68,7 @@ export const Dhis2ConnectionStatusProvider = ({
             onChange: handleChange,
         })
 
+        // todo: remove console logs & simplify these
         const handleBlur = () => {
             console.log('blur')
             pause()
@@ -75,16 +77,32 @@ export const Dhis2ConnectionStatusProvider = ({
             console.log('focus')
             resume()
         }
+        // On network change, ping immediately to test server connection
+        // todo: debounce
+        const handleNetworkChange = (e: Event) => {
+            console.log('network change:', e.type)
+            invokeCallbackImmediately()
+        }
 
         window.addEventListener('blur', handleBlur)
         window.addEventListener('focus', handleFocus)
+        window.addEventListener('online', handleNetworkChange)
+        window.addEventListener('offline', handleNetworkChange)
 
         return () => {
             unsubscribe()
             window.removeEventListener('blur', handleBlur)
             window.removeEventListener('focus', handleFocus)
+            window.removeEventListener('online', handleNetworkChange)
+            window.removeEventListener('offline', handleNetworkChange)
         }
-    }, [offlineInterface, handleChange, pause, resume])
+    }, [
+        offlineInterface,
+        handleChange,
+        pause,
+        resume,
+        invokeCallbackImmediately,
+    ])
 
     return (
         <Dhis2ConnectionStatusContext.Provider
