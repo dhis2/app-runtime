@@ -103,7 +103,6 @@ export default function useSmartIntervals({
             // Clear timeout when component unmounts
             clearTimeout(timeoutRef.current)
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const pause = useCallback(() => {
