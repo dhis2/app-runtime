@@ -41,8 +41,9 @@ export const Dhis2ConnectionStatusProvider = ({
     const { refetch: ping } = useDataQuery(pingQuery, { lazy: true })
 
     const { pause, resume, snooze, resetBackoff } = useSmartIntervals({
-        // not perfect, but there's no 'window.focused' variable:
-        initialPauseValue: document.visibilityState !== 'visible',
+        // don't ping if window isn't focused or visible
+        initialPauseValue:
+            !document.hasFocus() || document.visibilityState !== 'visible',
         callback: ping as any,
     })
 
@@ -83,8 +84,7 @@ export const Dhis2ConnectionStatusProvider = ({
             window.removeEventListener('blur', handleBlur)
             window.removeEventListener('focus', handleFocus)
         }
-    }, [offlineInterface, handleChange, pause, resume]) 
-    // eslint-disable-line react-hooks/exhaustive-deps
+    }, [offlineInterface, handleChange, pause, resume])
 
     return (
         <Dhis2ConnectionStatusContext.Provider
