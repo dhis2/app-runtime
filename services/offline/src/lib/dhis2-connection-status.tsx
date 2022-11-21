@@ -42,6 +42,7 @@ export const Dhis2ConnectionStatusProvider = ({
 
     const { invokeCallbackImmediately, pause, resume, snooze, resetBackoff } =
         useSmartIntervals({
+            initialDelay: 15000,
             // don't ping if window isn't focused or visible
             initialPauseValue:
                 !document.hasFocus() || document.visibilityState !== 'visible',
@@ -81,6 +82,7 @@ export const Dhis2ConnectionStatusProvider = ({
         // todo: debounce
         const handleNetworkChange = (e: Event) => {
             console.log('network change:', e.type)
+            
             invokeCallbackImmediately()
         }
 

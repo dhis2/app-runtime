@@ -91,19 +91,19 @@ export default function useSmartIntervals({
         // A timeout is used instead of an interval for handling slow execution
         // https://developer.mozilla.org/en-US/docs/Web/API/setInterval#ensure_that_execution_duration_is_shorter_than_interval_frequency
         timeoutRef.current = setTimeout(() => {
-            // Schedule callback to be executed after current delay
+            // If paused, set this hook into a 'standby' state, ready to
+            // execute when 'resume' is called (See `resume()` below)
             if (pausedRef.current) {
                 console.log('entering standby')
 
-                // Set this hook into a 'standby' state, ready to execute when
-                // 'resume' is called (See `resume()` below)
                 setStandby(() => true)
-            } else {
-                // Invoke callback
-                invokeCallbackAndHandleDelay()
-                // Start process over again
-                clearTimeoutAndStartFnRef.current()
+                return
             }
+
+            // Otherwise, invoke callback
+            invokeCallbackAndHandleDelay()
+            // and start process over again
+            clearTimeoutAndStartFnRef.current()
         }, delay)
     }, [delay, invokeCallbackAndHandleDelay, standby, setStandby])
 
@@ -118,6 +118,14 @@ export default function useSmartIntervals({
     }, [])
 
     const invokeCallbackImmediately = useCallback(() => {
+        if (pausedRef.current) { // See setTimeout call above
+            console.log('entering standby')
+
+            clearTimeout(timeoutRef.current)
+            setStandby(() => true)
+            return
+        }
+
         // Invoke callback and start timer without incrementing
         callback()
         clearTimeoutAndStartFnRef.current()
