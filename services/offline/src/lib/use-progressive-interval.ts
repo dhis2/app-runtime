@@ -45,10 +45,10 @@ export default function useSmartIntervals({
 } = {}): any {
     const timeoutRef = useRef(null as any)
 
-    // todo: use refs for these
+    // todo: use refs for this
     const [delay, setDelay] = useState(initialDelay)
-    const [standby, setStandby] = useState(false)
 
+    const standbyCallbackRef = useRef(null as null | (() => void))
     const clearTimeoutAndStartFnRef = useRef((): void => undefined)
     const pausedRef = useRef(initialPauseValue)
 
@@ -59,7 +59,7 @@ export default function useSmartIntervals({
                 currDelay * delayIncrementFactor,
                 maxDelay
             )
-            console.log({ currDelay, newDelay })
+            console.log('incrementing delay', { currDelay, newDelay })
             return newDelay
         })
     }, [maxDelay, delayIncrementFactor])
@@ -83,7 +83,7 @@ export default function useSmartIntervals({
     }, [callback, incrementDelay, initialDelay])
 
     clearTimeoutAndStartFnRef.current = useCallback(() => {
-        console.log('clear and start', { delay, standby })
+        console.log('clear and start', { delay /* standby */ })
 
         // Prevent parallel timeouts from occuring
         clearTimeout(timeoutRef.current)
@@ -91,12 +91,18 @@ export default function useSmartIntervals({
         // A timeout is used instead of an interval for handling slow execution
         // https://developer.mozilla.org/en-US/docs/Web/API/setInterval#ensure_that_execution_duration_is_shorter_than_interval_frequency
         timeoutRef.current = setTimeout(() => {
-            // If paused, set this hook into a 'standby' state, ready to
-            // execute when 'resume' is called (See `resume()` below)
+            // If paused, prepare a 'standby callback' to be invoked when
+            // `resume()` is called (see its definition below).
+            // The timer will not be started again until the standbyCallback
+            // is invoked.
             if (pausedRef.current) {
-                console.log('entering standby')
+                console.log('entering regular standby')
 
-                setStandby(() => true)
+                standbyCallbackRef.current = () => {
+                    invokeCallbackAndHandleDelay()
+                    clearTimeoutAndStartFnRef.current()
+                }
+
                 return
             }
 
@@ -105,7 +111,7 @@ export default function useSmartIntervals({
             // and start process over again
             clearTimeoutAndStartFnRef.current()
         }, delay)
-    }, [delay, invokeCallbackAndHandleDelay, standby, setStandby])
+    }, [delay, invokeCallbackAndHandleDelay])
 
     useEffect(() => {
         // Start timer on mount
@@ -119,11 +125,24 @@ export default function useSmartIntervals({
 
     const invokeCallbackImmediately = useCallback(() => {
         if (pausedRef.current) {
-            // See setTimeout call above
-            console.log('entering standby')
+            if (standbyCallbackRef.current === null) {
+                // If there is not existing standbyCallback,
+                // set standby function to be called upon `resume()`
+                // (don't overwrite a previous callback).
+                // See setTimeout call above too.
+                // The timed out function set in `clearTimeoutAndStart` may
+                // overwrite this callback if the timer elapses, so that the
+                // timeout delay gets incremented appropriately.
+                console.log('entering standby without timer increment')
 
-            clearTimeout(timeoutRef.current)
-            setStandby(() => true)
+                standbyCallbackRef.current = () => {
+                    // Invoke callback and start timer without incrementing
+                    callback()
+                    clearTimeoutAndStartFnRef.current()
+                }
+            }
+
+            // Skip rest of execution while paused
             return
         }
 
@@ -139,16 +158,20 @@ export default function useSmartIntervals({
     }, [])
 
     const resume = useCallback(() => {
-        console.log('resume', { standby })
+        console.log('resume', { standbyCb: standbyCallbackRef.current })
 
+        // Clear paused state
         pausedRef.current = false
-        if (standby) {
-            setStandby(() => false)
-            // (Same execution as in clearTimeoutAndStart)
-            invokeCallbackAndHandleDelay()
-            clearTimeoutAndStartFnRef.current()
+
+        // If in standby, invoke the saved callback
+        // (invokeCallbackImmediately and clearTimeoutAndStart can set a
+        // standby callback)
+        if (standbyCallbackRef.current !== null) {
+            standbyCallbackRef.current()
+            // Remove existing standbyCallback
+            standbyCallbackRef.current = null
         }
-    }, [standby, invokeCallbackAndHandleDelay])
+    }, [])
 
     const resetBackoff = useCallback(() => {
         console.log('reset backoff')

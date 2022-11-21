@@ -52,6 +52,11 @@ export const Dhis2ConnectionStatusProvider = ({
     const handleChange = useCallback(
         ({ isConnectedToDhis2: newStatus }) => {
             if (newStatus !== isConnected) {
+                console.log(
+                    'status changed; resetting backoff. connected:',
+                    newStatus
+                )
+
                 setIsConnected(newStatus)
                 // If value changed, set ping interval back to initial
                 resetBackoff()
@@ -88,7 +93,7 @@ export const Dhis2ConnectionStatusProvider = ({
 
         window.addEventListener('blur', handleBlur)
         window.addEventListener('focus', handleFocus)
-        // Only ping when going offline -- it's theoretically no-cost 
+        // Only ping when going offline -- it's theoretically no-cost
         // for both online and offline servers. Pinging when going online
         // can be costly for clients connecting over the internet to online
         // servers.
