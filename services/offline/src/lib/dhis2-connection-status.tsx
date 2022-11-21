@@ -88,14 +88,16 @@ export const Dhis2ConnectionStatusProvider = ({
 
         window.addEventListener('blur', handleBlur)
         window.addEventListener('focus', handleFocus)
-        window.addEventListener('online', handleNetworkChange)
+        // Only ping when going offline -- it's theoretically no-cost 
+        // for both online and offline servers. Pinging when going online
+        // can be costly for clients connecting over the internet to online
+        // servers.
         window.addEventListener('offline', handleNetworkChange)
 
         return () => {
             unsubscribe()
             window.removeEventListener('blur', handleBlur)
             window.removeEventListener('focus', handleFocus)
-            window.removeEventListener('online', handleNetworkChange)
             window.removeEventListener('offline', handleNetworkChange)
         }
     }, [
