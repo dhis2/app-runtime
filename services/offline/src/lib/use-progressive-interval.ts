@@ -118,7 +118,8 @@ export default function useSmartIntervals({
     }, [])
 
     const invokeCallbackImmediately = useCallback(() => {
-        if (pausedRef.current) { // See setTimeout call above
+        if (pausedRef.current) {
+            // See setTimeout call above
             console.log('entering standby')
 
             clearTimeout(timeoutRef.current)

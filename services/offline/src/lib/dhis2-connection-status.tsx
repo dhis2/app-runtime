@@ -82,7 +82,7 @@ export const Dhis2ConnectionStatusProvider = ({
         // todo: debounce
         const handleNetworkChange = (e: Event) => {
             console.log('network change:', e.type)
-            
+
             invokeCallbackImmediately()
         }
 
