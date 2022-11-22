@@ -2,7 +2,7 @@ import { useDataQuery } from '@dhis2/app-service-data'
 import PropTypes from 'prop-types'
 import React, { useCallback } from 'react'
 import { useOfflineInterface } from './offline-interface'
-import useSmartIntervals from './use-progressive-interval'
+import SmartInterval from './smart-interval'
 
 /**
  * Provides a boolean indicating client's connection to the DHIS2 server,
@@ -13,7 +13,6 @@ import useSmartIntervals from './use-progressive-interval'
  * and then will initiate periodic pings if there are no incidental requests in
  * order to check the connection consistently
  */
-
 interface Dhis2ConnectionStatusContextValue {
     isConnectedToDhis2: boolean
 }
@@ -29,8 +28,6 @@ const Dhis2ConnectionStatusContext = React.createContext({
     isConnectedToDhis2: false,
 })
 
-// todo: ping when network conditions change?
-
 export const Dhis2ConnectionStatusProvider = ({
     children,
 }: {
@@ -40,17 +37,13 @@ export const Dhis2ConnectionStatusProvider = ({
     const offlineInterface = useOfflineInterface()
     const { refetch: ping } = useDataQuery(pingQuery, { lazy: true })
 
-    const { invokeCallbackImmediately, pause, resume, snooze, resetBackoff } =
-        useSmartIntervals({
-            initialDelay: 15000,
-            // don't ping if window isn't focused or visible
-            initialPauseValue:
-                !document.hasFocus() || document.visibilityState !== 'visible',
-            callback: ping as any,
-        })
+    const smartIntervalRef = React.useRef(null as null | SmartInterval)
 
     const handleChange = useCallback(
         ({ isConnectedToDhis2: newStatus }) => {
+            console.log('handling change')
+            const smartInterval = smartIntervalRef.current
+
             if (newStatus !== isConnected) {
                 console.log(
                     'status changed; resetting backoff. connected:',
@@ -59,36 +52,38 @@ export const Dhis2ConnectionStatusProvider = ({
 
                 setIsConnected(newStatus)
                 // If value changed, set ping interval back to initial
-                resetBackoff()
+                smartInterval?.resetBackoff()
             }
             // Either way, snooze ping timer
-            snooze()
+            smartInterval?.snooze()
         },
-        [isConnected, resetBackoff, snooze]
+        [isConnected]
     )
 
-    // These functions are grouped together because their dependencies likely
-    // change at the same time, because they mostly come from useSmartIntervals
     React.useEffect(() => {
-        const unsubscribe = offlineInterface.subscribeToDhis2ConnectionStatus({
-            onChange: handleChange,
+        const smartInterval = new SmartInterval({
+            initialDelay: 5000,
+            // don't ping if window isn't focused or visible
+            initialPauseValue:
+                !document.hasFocus() || document.visibilityState !== 'visible',
+            callback: ping as any,
         })
+        smartIntervalRef.current = smartInterval
 
         // todo: remove console logs & simplify these
         const handleBlur = () => {
-            console.log('blur')
-            pause()
+            console.log('handling blur')
+            smartInterval.pause()
         }
         const handleFocus = () => {
-            console.log('focus')
-            resume()
+            console.log('handling focus')
+            smartInterval.resume()
         }
         // On network change, ping immediately to test server connection
-        // todo: debounce
-        const handleNetworkChange = (e: Event) => {
-            console.log('network change:', e.type)
-
-            invokeCallbackImmediately()
+        // todo: debounce?
+        const handleNetworkChange = () => {
+            console.log('handling offline')
+            smartInterval.invokeCallbackImmediately()
         }
 
         window.addEventListener('blur', handleBlur)
@@ -100,18 +95,25 @@ export const Dhis2ConnectionStatusProvider = ({
         window.addEventListener('offline', handleNetworkChange)
 
         return () => {
-            unsubscribe()
             window.removeEventListener('blur', handleBlur)
             window.removeEventListener('focus', handleFocus)
             window.removeEventListener('offline', handleNetworkChange)
+
+            // clean up smart interval
+            smartInterval.clear()
         }
-    }, [
-        offlineInterface,
-        handleChange,
-        pause,
-        resume,
-        invokeCallbackImmediately,
-    ])
+    }, [ping])
+
+    React.useEffect(() => {
+        const unsubscribe = offlineInterface.subscribeToDhis2ConnectionStatus({
+            onChange: handleChange,
+        })
+        return () => {
+            unsubscribe()
+        }
+    }, [offlineInterface, handleChange])
+
+    console.log('provider rerender')
 
     return (
         <Dhis2ConnectionStatusContext.Provider
