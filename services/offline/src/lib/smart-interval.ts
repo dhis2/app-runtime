@@ -1,7 +1,8 @@
+// todo: adjust defaults (e.g. 30 sec/5 min/1.5x)
 const FIVE_SECONDS = 5000
 const FIVE_MINUTES = 1000 * 60 * 5
 const DEFAULT_INCREMENT_FACTOR = 1.2
-const throwErrorIfNoCallbackIsProvided = () => {
+const throwErrorIfNoCallbackIsProvided = (): void => {
     throw new Error('Provide a callback')
 }
 
@@ -25,13 +26,13 @@ class SmartInterval {
         initialPauseValue = false,
         callback = throwErrorIfNoCallbackIsProvided,
     } = {}) {
-        // initialize static parameters
+        // initialize static properties
         this.initialDelay = initialDelay
         this.maxDelay = maxDelay
         this.delayIncrementFactor = delayIncrementFactor
         this.callback = callback
 
-        // initialize dynamic parameters
+        // initialize dynamic properties
         this.paused = initialPauseValue
         this.delay = initialDelay
 

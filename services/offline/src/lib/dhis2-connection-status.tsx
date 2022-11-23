@@ -1,4 +1,4 @@
-import { useDataQuery } from '@dhis2/app-service-data'
+import { useDataEngine } from '@dhis2/app-service-data'
 import PropTypes from 'prop-types'
 import React, { useCallback } from 'react'
 import { useOfflineInterface } from './offline-interface'
@@ -35,9 +35,34 @@ export const Dhis2ConnectionStatusProvider = ({
 }): JSX.Element => {
     const [isConnected, setIsConnected] = React.useState(true)
     const offlineInterface = useOfflineInterface()
-    const { refetch: ping } = useDataQuery(pingQuery, { lazy: true })
+    const engine = useDataEngine()
 
     const smartIntervalRef = React.useRef(null as null | SmartInterval)
+
+    const ping = useCallback(() => {
+        engine.query(pingQuery).catch((err) => {
+            if (/Unexpected token 'p'/.test(err.message)) {
+                // Everything's fine; this is just a weird endpoint
+                // ('"pong" is not valid JSON')
+                // todo: maybe change link handling of this endpoint
+                return
+            }
+
+            if (/An unknown network error occurred/.test(err.message)) {
+                // This shouldn't normally occur if the service worker is
+                // active. Still, update connected status accordingly and
+                // reset interval backoff
+                if (isConnected) {
+                    console.log('status changed; resetting backoff')
+
+                    setIsConnected(false)
+                    // If value changed, set ping interval back to initial
+                    smartIntervalRef.current?.resetBackoff()
+                }
+                return
+            }
+        })
+    }, [engine, isConnected])
 
     const handleChange = useCallback(
         ({ isConnectedToDhis2: newStatus }) => {
@@ -66,7 +91,7 @@ export const Dhis2ConnectionStatusProvider = ({
             // don't ping if window isn't focused or visible
             initialPauseValue:
                 !document.hasFocus() || document.visibilityState !== 'visible',
-            callback: ping as any,
+            callback: ping,
         })
         smartIntervalRef.current = smartInterval
 
@@ -80,24 +105,23 @@ export const Dhis2ConnectionStatusProvider = ({
             smartInterval.resume()
         }
         // On network change, ping immediately to test server connection
-        // todo: debounce?
-        const handleNetworkChange = () => {
+        const handleOffline = () => {
             console.log('handling offline')
+            // Only ping when going offline -- it's theoretically no-cost
+            // for both online and offline servers. Pinging when going online
+            // can be costly for clients connecting over the internet to online
+            // servers.
             smartInterval.invokeCallbackImmediately()
         }
 
         window.addEventListener('blur', handleBlur)
         window.addEventListener('focus', handleFocus)
-        // Only ping when going offline -- it's theoretically no-cost
-        // for both online and offline servers. Pinging when going online
-        // can be costly for clients connecting over the internet to online
-        // servers.
-        window.addEventListener('offline', handleNetworkChange)
+        window.addEventListener('offline', handleOffline)
 
         return () => {
             window.removeEventListener('blur', handleBlur)
             window.removeEventListener('focus', handleFocus)
-            window.removeEventListener('offline', handleNetworkChange)
+            window.removeEventListener('offline', handleOffline)
 
             // clean up smart interval
             smartInterval.clear()
