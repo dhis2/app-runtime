@@ -7,17 +7,17 @@ const throwErrorIfNoCallbackIsProvided = (): void => {
 }
 
 class SmartInterval {
-    initialDelay
-    maxDelay
-    delayIncrementFactor
-    callback: () => void | Promise<void>
+    #initialDelay
+    #maxDelay
+    #delayIncrementFactor
+    #callback: () => void | Promise<void>
 
-    paused
-    delay
+    #paused
+    #delay
     // Timeout types are weird and initializing this to a dummy timeout
     // clears up some checks
-    timeout: NodeJS.Timeout = setTimeout(() => '', 0)
-    standbyCallback: (() => void) | null = null
+    #timeout: NodeJS.Timeout = setTimeout(() => '', 0)
+    #standbyCallback: (() => void) | null = null
 
     constructor({
         initialDelay = FIVE_SECONDS,
@@ -27,14 +27,14 @@ class SmartInterval {
         callback = throwErrorIfNoCallbackIsProvided,
     } = {}) {
         // initialize static properties
-        this.initialDelay = initialDelay
-        this.maxDelay = maxDelay
-        this.delayIncrementFactor = delayIncrementFactor
-        this.callback = callback
+        this.#initialDelay = initialDelay
+        this.#maxDelay = maxDelay
+        this.#delayIncrementFactor = delayIncrementFactor
+        this.#callback = callback
 
         // initialize dynamic properties
-        this.paused = initialPauseValue
-        this.delay = initialDelay
+        this.#paused = initialPauseValue
+        this.#delay = initialDelay
 
         this.clearTimeoutAndStart()
     }
@@ -42,11 +42,11 @@ class SmartInterval {
     /** Increment delay by the increment factor, up to a max value */
     private incrementDelay() {
         const newDelay = Math.min(
-            this.delay * this.delayIncrementFactor,
-            this.maxDelay
+            this.#delay * this.#delayIncrementFactor,
+            this.#maxDelay
         )
-        console.log('incrementing delay', { prev: this.delay, new: newDelay })
-        this.delay = newDelay
+        console.log('incrementing delay', { prev: this.#delay, new: newDelay })
+        this.#delay = newDelay
     }
 
     /**
@@ -56,29 +56,29 @@ class SmartInterval {
      * (maybe don't need this; a consumer can call 'snooze')
      */
     private invokeCallbackAndHandleDelay(): void {
-        this.callback()
+        this.#callback()
         this.incrementDelay()
     }
 
     private clearTimeoutAndStart(): void {
-        console.log('clearing and starting timeout', { delay: this.delay })
+        console.log('clearing and starting timeout', { delay: this.#delay })
 
         // Prevent parallel timeouts from occuring
         // (weird note: `if (this.timeout) { clearTimeout(this.timeout) }`
         // does NOT work for some reason)
-        clearTimeout(this.timeout)
+        clearTimeout(this.#timeout)
 
         // A timeout is used instead of an interval for handling slow execution
         // https://developer.mozilla.org/en-US/docs/Web/API/setInterval#ensure_that_execution_duration_is_shorter_than_interval_frequency
-        this.timeout = setTimeout(async () => {
-            if (this.paused) {
+        this.#timeout = setTimeout(async () => {
+            if (this.#paused) {
                 console.log('entering regular standby')
 
                 // If paused, prepare a 'standby callback' to be invoked when
                 // `resume()` is called (see its definition below).
                 // The timer will not be started again until the standbyCallback
                 // is invoked.
-                this.standbyCallback = (() => {
+                this.#standbyCallback = (() => {
                     this.invokeCallbackAndHandleDelay()
                     this.clearTimeoutAndStart()
                 }).bind(this)
@@ -90,12 +90,12 @@ class SmartInterval {
             this.invokeCallbackAndHandleDelay()
             // and start process over again
             this.clearTimeoutAndStart()
-        }, this.delay)
+        }, this.#delay)
     }
 
     /** Stop the interval. Used for cleaning up */
     clear(): void {
-        clearTimeout(this.timeout)
+        clearTimeout(this.#timeout)
     }
 
     /**
@@ -104,8 +104,8 @@ class SmartInterval {
      * (unless the timer fully elapses while this interval is paused)
      */
     invokeCallbackImmediately(): void {
-        if (this.paused) {
-            if (this.standbyCallback === null) {
+        if (this.#paused) {
+            if (this.#standbyCallback === null) {
                 // If there is not an existing standbyCallback,
                 // set one to be called upon `resume()`
                 // (but don't overwrite a previous callback).
@@ -115,9 +115,9 @@ class SmartInterval {
                 // timeout delay gets incremented appropriately.
                 console.log('entering standby without timer increment')
 
-                this.standbyCallback = () => {
+                this.#standbyCallback = () => {
                     // Invoke callback and start timer without incrementing
-                    this.callback()
+                    this.#callback()
                     this.clearTimeoutAndStart()
                 }
             }
@@ -127,7 +127,7 @@ class SmartInterval {
         }
 
         // Invoke callback and start timer without incrementing
-        this.callback()
+        this.#callback()
         this.clearTimeoutAndStart()
     }
 
@@ -144,7 +144,7 @@ class SmartInterval {
     pause(): void {
         console.log('pausing')
 
-        this.paused = true
+        this.#paused = true
     }
 
     /**
@@ -154,18 +154,18 @@ class SmartInterval {
      * which should start the interval timer again
      */
     resume(): void {
-        console.log('resuming', { standbyCb: this.standbyCallback })
+        console.log('resuming', { standbyCb: this.#standbyCallback })
 
         // Clear paused state
-        this.paused = false
+        this.#paused = false
 
         // If in standby, invoke the saved callback
         // (invokeCallbackImmediately and clearTimeoutAndStart can set a
         // standby callback)
-        if (this.standbyCallback !== null) {
-            this.standbyCallback()
+        if (this.#standbyCallback !== null) {
+            this.#standbyCallback()
             // Remove existing standbyCallback
-            this.standbyCallback = null
+            this.#standbyCallback = null
         }
     }
 
@@ -185,7 +185,7 @@ class SmartInterval {
     resetBackoff(): void {
         console.log('resetting backoff to initialDelay')
 
-        this.delay = this.initialDelay
+        this.#delay = this.#initialDelay
     }
 }
 
