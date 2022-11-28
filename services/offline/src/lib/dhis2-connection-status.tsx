@@ -40,29 +40,51 @@ export const Dhis2ConnectionStatusProvider = ({
     const smartIntervalRef = React.useRef(null as null | SmartInterval)
 
     const ping = useCallback(() => {
-        engine.query(pingQuery).catch((err) => {
-            if (/Unexpected token 'p'/.test(err.message)) {
-                // Everything's fine; this is just a weird endpoint
-                // ('"pong" is not valid JSON')
-                // todo: maybe change link handling of this endpoint
-                return
-            }
-
-            if (/An unknown network error occurred/.test(err.message)) {
-                // This shouldn't normally occur if the service worker is
-                // active. Still, update connected status accordingly and
-                // reset interval backoff
-                if (isConnected) {
-                    console.log('status changed; resetting backoff')
-
-                    setIsConnected(false)
-                    // If value changed, set ping interval back to initial
-                    smartIntervalRef.current?.resetBackoff()
+        engine
+            .query(pingQuery)
+            .catch((err) => {
+                if (/Unexpected token 'p'/.test(err.message)) {
+                    // The request succeeded; this is just a weird endpoint
+                    // (rest of the error is '"pong" is not valid JSON')
+                    // todo: maybe change link handling of this endpoint
+                    return
+                } else {
+                    // It's a different error; throw to the next catch handler
+                    throw err
                 }
-                return
-            }
-        })
-    }, [engine, isConnected])
+            })
+            .then(() => {
+                // Ping is successful; set 'connected'
+                setIsConnected((current) => {
+                    if (!current) {
+                        // If status has changed, reset ping delay to initial
+                        smartIntervalRef.current?.resetBackoff()
+                    }
+                    return true
+                })
+            })
+            .catch((err) => {
+                // Can get here if unauthorized, network error, etc.
+                console.error('Ping failed:', err.message)
+
+                // Unauthorized and network errors should change status
+                const errPatterns = [
+                    /^Unauthorized$/, // todo: check if we want this
+                    /^An unknown network error occurred$/,
+                ]
+                const aPatternMatches = errPatterns.some((pattern) =>
+                    pattern.test(err.message)
+                )
+                if (aPatternMatches) {
+                    setIsConnected((current) => {
+                        if (current) {
+                            smartIntervalRef.current?.resetBackoff()
+                        }
+                        return false
+                    })
+                }
+            })
+    }, [engine])
 
     const handleChange = useCallback(
         ({ isConnectedToDhis2: newStatus }) => {
