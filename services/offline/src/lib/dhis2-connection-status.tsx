@@ -39,6 +39,11 @@ export const Dhis2ConnectionStatusProvider = ({
 
     const smartIntervalRef = React.useRef(null as null | SmartInterval)
 
+    // Note that the SW is configured to not cache ping requests and won't
+    // trigger `handleChange` below to avoid redundant signals. This also
+    // helps to detect the connectivity status when the SW is not available
+    // for some reason (maybe private browsing, first installation, or
+    // insecure browser context)
     const ping = useCallback(() => {
         engine
             .query(pingQuery)
@@ -55,8 +60,8 @@ export const Dhis2ConnectionStatusProvider = ({
             })
             .then(() => {
                 // Ping is successful; set 'connected'
-                setIsConnected((current) => {
-                    if (!current) {
+                setIsConnected((currentIsConnected) => {
+                    if (!currentIsConnected) {
                         // If status has changed, reset ping delay to initial
                         smartIntervalRef.current?.resetBackoff()
                     }
@@ -67,17 +72,13 @@ export const Dhis2ConnectionStatusProvider = ({
                 // Can get here if unauthorized, network error, etc.
                 console.error('Ping failed:', err.message)
 
-                // Unauthorized and network errors should change status
-                const errPatterns = [
-                    /^Unauthorized$/, // todo: check if we want this
-                    /^An unknown network error occurred$/,
-                ]
-                const aPatternMatches = errPatterns.some((pattern) =>
-                    pattern.test(err.message)
+                // Only network errors should change status
+                const isNetworkErr = /^An unknown network error occurred$/.test(
+                    err.message
                 )
-                if (aPatternMatches) {
-                    setIsConnected((current) => {
-                        if (current) {
+                if (isNetworkErr) {
+                    setIsConnected((currentIsConnected) => {
+                        if (currentIsConnected) {
                             smartIntervalRef.current?.resetBackoff()
                         }
                         return false
