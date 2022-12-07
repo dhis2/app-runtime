@@ -33,7 +33,7 @@ type QueryState = {
     refetchCallback?: (data: any) => void
 }
 
-export const useDataQuery = <T = QueryResult>(
+export const useDataQuery = <TQueryResult = QueryResult>(
     query: Query,
     {
         onComplete: userOnSuccess,
@@ -41,7 +41,7 @@ export const useDataQuery = <T = QueryResult>(
         variables: initialVariables = {},
         lazy: initialLazy = false,
     }: QueryOptions = {}
-): QueryRenderInput<T> => {
+): QueryRenderInput<TQueryResult> => {
     const [staticQuery] = useStaticInput<Query>(query, {
         warn: true,
         name: 'query',
