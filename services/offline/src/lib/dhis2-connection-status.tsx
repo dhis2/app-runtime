@@ -14,7 +14,7 @@ import SmartInterval from './smart-interval'
  * order to check the connection consistently
  */
 interface Dhis2ConnectionStatusContextValue {
-    isConnectedToDhis2: boolean
+    isConnected: boolean
 }
 
 // todo: maybe make a server-health endpoint
@@ -25,7 +25,7 @@ const pingQuery = {
 }
 
 const Dhis2ConnectionStatusContext = React.createContext({
-    isConnectedToDhis2: false,
+    isConnected: false,
 })
 
 export const Dhis2ConnectionStatusProvider = ({
@@ -88,7 +88,7 @@ export const Dhis2ConnectionStatusProvider = ({
     }, [engine])
 
     const handleChange = useCallback(
-        ({ isConnectedToDhis2: newStatus }) => {
+        ({ isConnected: newStatus }) => {
             console.log('handling change')
             const smartInterval = smartIntervalRef.current
 
@@ -163,9 +163,7 @@ export const Dhis2ConnectionStatusProvider = ({
     console.log('provider rerender')
 
     return (
-        <Dhis2ConnectionStatusContext.Provider
-            value={{ isConnectedToDhis2: isConnected }}
-        >
+        <Dhis2ConnectionStatusContext.Provider value={{ isConnected }}>
             {children}
         </Dhis2ConnectionStatusContext.Provider>
     )
