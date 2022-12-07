@@ -9,6 +9,8 @@ type Version = {
 interface SystemInfo {
     version: string
     contextPath: string
+    dateFormat: string
+    serverTimeZoneId: string
 }
 
 export interface Config {
