@@ -6,6 +6,7 @@ import type { QueryRenderInput, QueryRefetchFunction } from '../../types'
 import { mergeAndCompareVariables } from './mergeAndCompareVariables'
 import { useDataEngine } from './useDataEngine'
 import { useStaticInput } from './useStaticInput'
+import {QueryResult} from "../../../build/types/engine";
 
 const noop = () => {
     /**
@@ -28,7 +29,7 @@ type QueryState = {
     refetchCallback?: (data: any) => void
 }
 
-export const useDataQuery = (
+export const useDataQuery = <T = QueryResult>(
     query: Query,
     {
         onComplete: userOnSuccess,
@@ -36,7 +37,7 @@ export const useDataQuery = (
         variables: initialVariables = {},
         lazy: initialLazy = false,
     }: QueryOptions = {}
-): QueryRenderInput => {
+): QueryRenderInput<T> => {
     const [staticQuery] = useStaticInput<Query>(query, {
         warn: true,
         name: 'query',

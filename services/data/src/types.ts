@@ -40,15 +40,15 @@ export interface ExecuteHookResult<ReturnType> {
     data?: ReturnType
 }
 
-export interface QueryState {
+export interface QueryState<T> {
     called: boolean
     loading: boolean
     fetching: boolean
     error?: FetchError
-    data?: QueryResult
+    data?: T
 }
 
-export interface QueryRenderInput extends QueryState {
+export interface QueryRenderInput<T = QueryResult> extends QueryState<T> {
     engine: DataEngine
     refetch: QueryRefetchFunction
 }
