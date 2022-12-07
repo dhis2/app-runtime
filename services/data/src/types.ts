@@ -48,7 +48,8 @@ export interface QueryState<TQueryResult> {
     data?: TQueryResult
 }
 
-export interface QueryRenderInput<TQueryResult = QueryResult> extends QueryState<TQueryResult> {
+export interface QueryRenderInput<TQueryResult = QueryResult>
+    extends QueryState<TQueryResult> {
     engine: DataEngine
     refetch: QueryRefetchFunction
 }
