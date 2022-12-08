@@ -6,6 +6,8 @@ const throwErrorIfNoCallbackIsProvided = (): void => {
     throw new Error('Provide a callback')
 }
 
+// todo: remove console logs; though they are useful for testing
+
 class SmartInterval {
     #initialDelay
     #maxDelay

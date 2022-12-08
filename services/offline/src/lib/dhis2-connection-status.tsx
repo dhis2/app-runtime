@@ -1,8 +1,40 @@
 import { useDataEngine } from '@dhis2/app-service-data'
 import PropTypes from 'prop-types'
-import React, { useCallback } from 'react'
+import React, {
+    useCallback,
+    useState,
+    useRef,
+    useMemo,
+    useEffect,
+    useContext,
+} from 'react'
 import { useOfflineInterface } from './offline-interface'
 import SmartInterval from './smart-interval'
+
+// Utils for saving 'last connected' datetime in local storage
+const lastConnectedKey = 'dhis2.lastConnected'
+const updateLastConnected = () => {
+    localStorage.setItem(lastConnectedKey, new Date(Date.now()).toUTCString())
+}
+const getLastConnected = () => {
+    const lastConnected = localStorage.getItem(lastConnectedKey)
+    return lastConnected ? new Date(lastConnected) : null
+}
+
+// todo: maybe make a server-health endpoint
+const pingQuery = { ping: { resource: 'system/ping' } }
+
+interface Dhis2ConnectionStatusContextValue {
+    isConnected: boolean
+    isDisconnected: boolean
+    lastConnected: Date | null
+}
+
+const Dhis2ConnectionStatusContext = React.createContext({
+    isConnected: true,
+    isDisconnected: false,
+    lastConnected: null,
+} as Dhis2ConnectionStatusContextValue)
 
 /**
  * Provides a boolean indicating client's connection to the DHIS2 server,
@@ -13,40 +45,16 @@ import SmartInterval from './smart-interval'
  * and then will initiate periodic pings if there are no incidental requests in
  * order to check the connection consistently
  */
-interface Dhis2ConnectionStatusContextValue {
-    isConnected: boolean
-    isDisconnected: boolean
-    lastConnected: Date | null
-}
-
-// todo: maybe make a server-health endpoint
-const pingQuery = { ping: { resource: 'system/ping' } }
-
-const Dhis2ConnectionStatusContext = React.createContext({
-    isConnected: true,
-    isDisconnected: false,
-    lastConnected: null,
-} as Dhis2ConnectionStatusContextValue)
-
-const lastConnectedKey = 'dhis2.lastConnected'
-const updateLastConnected = () => {
-    localStorage.setItem(lastConnectedKey, new Date(Date.now()).toUTCString())
-}
-const getLastConnected = () => {
-    const lastConnected = localStorage.getItem(lastConnectedKey)
-    return lastConnected ? new Date(lastConnected) : null
-}
-
 export const Dhis2ConnectionStatusProvider = ({
     children,
 }: {
     children: React.ReactNode
 }): JSX.Element => {
-    const [isConnected, setIsConnected] = React.useState(true)
+    const [isConnected, setIsConnected] = useState(true)
     const offlineInterface = useOfflineInterface()
     const engine = useDataEngine()
 
-    const smartIntervalRef = React.useRef(null as null | SmartInterval)
+    const smartIntervalRef = useRef(null as null | SmartInterval)
 
     /**
      * Update state and potentially reset ping backoff and update
@@ -117,7 +125,7 @@ export const Dhis2ConnectionStatusProvider = ({
         [updateConnectedState]
     )
 
-    React.useEffect(() => {
+    useEffect(() => {
         const smartInterval = new SmartInterval({
             initialDelay: 5000,
             // don't ping if window isn't focused or visible
@@ -134,11 +142,7 @@ export const Dhis2ConnectionStatusProvider = ({
         // for both online and offline servers. Pinging when going online
         // can be costly for clients connecting over the internet to online
         // servers.
-        const handleOffline = () => {
-            // todo: remove clg
-            console.log('handling offline')
-            smartInterval.invokeCallbackImmediately()
-        }
+        const handleOffline = () => smartInterval.invokeCallbackImmediately()
 
         window.addEventListener('blur', handleBlur)
         window.addEventListener('focus', handleFocus)
@@ -154,7 +158,7 @@ export const Dhis2ConnectionStatusProvider = ({
         }
     }, [ping])
 
-    React.useEffect(() => {
+    useEffect(() => {
         const unsubscribe = offlineInterface.subscribeToDhis2ConnectionStatus({
             onChange: onUpdate,
         })
@@ -163,10 +167,8 @@ export const Dhis2ConnectionStatusProvider = ({
         }
     }, [offlineInterface, onUpdate])
 
-    // todo: remove clg
-    console.log('provider rerender')
-
-    const contextValue = React.useMemo(
+    // Memoize this value to prevent unnecessary rerenders of context provider
+    const contextValue = useMemo(
         () => ({
             isConnected,
             isDisconnected: !isConnected,
@@ -188,7 +190,7 @@ Dhis2ConnectionStatusProvider.propTypes = {
 
 export const useDhis2ConnectionStatus =
     (): Dhis2ConnectionStatusContextValue => {
-        const context = React.useContext(Dhis2ConnectionStatusContext)
+        const context = useContext(Dhis2ConnectionStatusContext)
 
         if (!context) {
             throw new Error(
