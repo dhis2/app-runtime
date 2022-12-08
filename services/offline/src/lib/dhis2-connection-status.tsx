@@ -15,18 +15,27 @@ import SmartInterval from './smart-interval'
  */
 interface Dhis2ConnectionStatusContextValue {
     isConnected: boolean
+    isDisconnected: boolean
+    lastConnected: Date | null
 }
 
 // todo: maybe make a server-health endpoint
-const pingQuery = {
-    ping: {
-        resource: 'system/ping',
-    },
-}
+const pingQuery = { ping: { resource: 'system/ping' } }
 
 const Dhis2ConnectionStatusContext = React.createContext({
-    isConnected: false,
-})
+    isConnected: true,
+    isDisconnected: false,
+    lastConnected: null,
+} as Dhis2ConnectionStatusContextValue)
+
+const lastConnectedKey = 'dhis2.lastConnected'
+const updateLastConnected = () => {
+    localStorage.setItem(lastConnectedKey, new Date(Date.now()).toUTCString())
+}
+const getLastConnected = () => {
+    const lastConnected = localStorage.getItem(lastConnectedKey)
+    return lastConnected ? new Date(lastConnected) : null
+}
 
 export const Dhis2ConnectionStatusProvider = ({
     children,
@@ -38,6 +47,27 @@ export const Dhis2ConnectionStatusProvider = ({
     const engine = useDataEngine()
 
     const smartIntervalRef = React.useRef(null as null | SmartInterval)
+
+    /**
+     * Update state and potentially reset ping backoff and update
+     * the lastConnected value in localStorage
+     */
+    const updateConnectedState = useCallback((newIsConnected) => {
+        // use 'set' with a function as param to get latest isConnected
+        // without needing it as a dependency for useCallback
+        setIsConnected((prevIsConnected) => {
+            // if value changed, reset ping backoff to initial
+            if (newIsConnected !== prevIsConnected) {
+                smartIntervalRef.current?.resetBackoff()
+            }
+            // if disconnected and EITHER 1. coming from connected or
+            // 2. there is no last-connect val, update the val in localStorage
+            if (!newIsConnected && (prevIsConnected || !getLastConnected())) {
+                updateLastConnected()
+            }
+            return newIsConnected
+        })
+    }, [])
 
     // Note that the SW is configured to not cache ping requests and won't
     // trigger `handleChange` below to avoid redundant signals. This also
@@ -60,13 +90,7 @@ export const Dhis2ConnectionStatusProvider = ({
             })
             .then(() => {
                 // Ping is successful; set 'connected'
-                setIsConnected((currentIsConnected) => {
-                    if (!currentIsConnected) {
-                        // If status has changed, reset ping delay to initial
-                        smartIntervalRef.current?.resetBackoff()
-                    }
-                    return true
-                })
+                updateConnectedState(true)
             })
             .catch((err) => {
                 // Can get here if unauthorized, network error, etc.
@@ -77,35 +101,20 @@ export const Dhis2ConnectionStatusProvider = ({
                     err.message
                 )
                 if (isNetworkErr) {
-                    setIsConnected((currentIsConnected) => {
-                        if (currentIsConnected) {
-                            smartIntervalRef.current?.resetBackoff()
-                        }
-                        return false
-                    })
+                    updateConnectedState(false)
                 }
             })
-    }, [engine])
+    }, [engine, updateConnectedState])
 
-    const handleChange = useCallback(
-        ({ isConnected: newStatus }) => {
+    /** Called when SW reports updates from incidental network traffic */
+    const onUpdate = useCallback(
+        ({ isConnected: newIsConnected }) => {
             console.log('handling change')
-            const smartInterval = smartIntervalRef.current
-
-            if (newStatus !== isConnected) {
-                console.log(
-                    'status changed; resetting backoff. connected:',
-                    newStatus
-                )
-
-                setIsConnected(newStatus)
-                // If value changed, set ping interval back to initial
-                smartInterval?.resetBackoff()
-            }
-            // Either way, snooze ping timer
-            smartInterval?.snooze()
+            updateConnectedState(newIsConnected)
+            // Snooze ping timer to reduce pings since we know state from SW
+            smartIntervalRef.current?.snooze()
         },
-        [isConnected]
+        [updateConnectedState]
     )
 
     React.useEffect(() => {
@@ -118,22 +127,16 @@ export const Dhis2ConnectionStatusProvider = ({
         })
         smartIntervalRef.current = smartInterval
 
-        // todo: remove console logs & simplify these
-        const handleBlur = () => {
-            console.log('handling blur')
-            smartInterval.pause()
-        }
-        const handleFocus = () => {
-            console.log('handling focus')
-            smartInterval.resume()
-        }
-        // On network change, ping immediately to test server connection
+        const handleBlur = () => smartInterval.pause()
+        const handleFocus = () => smartInterval.resume()
+        // On offline event, ping immediately to test server connection.
+        // Only do this when going offline -- it's theoretically no-cost
+        // for both online and offline servers. Pinging when going online
+        // can be costly for clients connecting over the internet to online
+        // servers.
         const handleOffline = () => {
+            // todo: remove clg
             console.log('handling offline')
-            // Only ping when going offline -- it's theoretically no-cost
-            // for both online and offline servers. Pinging when going online
-            // can be costly for clients connecting over the internet to online
-            // servers.
             smartInterval.invokeCallbackImmediately()
         }
 
@@ -153,17 +156,28 @@ export const Dhis2ConnectionStatusProvider = ({
 
     React.useEffect(() => {
         const unsubscribe = offlineInterface.subscribeToDhis2ConnectionStatus({
-            onChange: handleChange,
+            onChange: onUpdate,
         })
         return () => {
             unsubscribe()
         }
-    }, [offlineInterface, handleChange])
+    }, [offlineInterface, onUpdate])
 
+    // todo: remove clg
     console.log('provider rerender')
 
+    const contextValue = React.useMemo(
+        () => ({
+            isConnected,
+            isDisconnected: !isConnected,
+            // Only evaluate if disconnected, since local storage is synchronous and disk-based
+            lastConnected: !isConnected ? getLastConnected() : null,
+        }),
+        [isConnected]
+    )
+
     return (
-        <Dhis2ConnectionStatusContext.Provider value={{ isConnected }}>
+        <Dhis2ConnectionStatusContext.Provider value={contextValue}>
             {children}
         </Dhis2ConnectionStatusContext.Provider>
     )
