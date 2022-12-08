@@ -160,7 +160,7 @@ export const Dhis2ConnectionStatusProvider = ({
 
     useEffect(() => {
         const unsubscribe = offlineInterface.subscribeToDhis2ConnectionStatus({
-            onChange: onUpdate,
+            onUpdate
         })
         return () => {
             unsubscribe()
