@@ -75,7 +75,7 @@ export const Dhis2ConnectionStatusProvider = ({
     // for some reason (maybe private browsing, first installation, or
     // insecure browser context)
     const ping = useCallback(() => {
-        engine
+        return engine
             .query(pingQuery)
             .catch((err) => {
                 if (/Unexpected token 'p'/.test(err.message)) {

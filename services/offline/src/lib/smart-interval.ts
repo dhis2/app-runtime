@@ -10,7 +10,7 @@ class SmartInterval {
     #initialDelay
     #maxDelay
     #delayIncrementFactor
-    #callback: () => void | Promise<void>
+    #callback: () => void | boolean | Promise<void> | Promise<boolean>
 
     #paused
     #delay
@@ -49,15 +49,11 @@ class SmartInterval {
         this.#delay = newDelay
     }
 
-    /**
-     * Optional extension to this:
-     * If callback returns (or resolves to) a truthy value, increment delay.
-     * Otherwise, reset it to its initial value.
-     * (maybe don't need this; a consumer can call 'snooze')
-     */
-    private invokeCallbackAndHandleDelay(): void {
-        this.#callback()
+    private async invokeCallbackAndHandleDelay(): Promise<void> {
+        // Increment delay before calling callback, so callback can potentially
+        // reset the delay to initial before starting the next timeout
         this.incrementDelay()
+        await this.#callback()
     }
 
     private clearTimeoutAndStart(): void {
@@ -78,8 +74,8 @@ class SmartInterval {
                 // `resume()` is called (see its definition below).
                 // The timer will not be started again until the standbyCallback
                 // is invoked.
-                this.#standbyCallback = (() => {
-                    this.invokeCallbackAndHandleDelay()
+                this.#standbyCallback = (async () => {
+                    await this.invokeCallbackAndHandleDelay()
                     this.clearTimeoutAndStart()
                 }).bind(this)
 
@@ -87,7 +83,7 @@ class SmartInterval {
             }
 
             // Otherwise, invoke callback
-            this.invokeCallbackAndHandleDelay()
+            await this.invokeCallbackAndHandleDelay()
             // and start process over again
             this.clearTimeoutAndStart()
         }, this.#delay)
@@ -103,7 +99,7 @@ class SmartInterval {
      * The timeout to the next invocation will not be increased
      * (unless the timer fully elapses while this interval is paused)
      */
-    invokeCallbackImmediately(): void {
+    async invokeCallbackImmediately(): Promise<void> {
         if (this.#paused) {
             if (this.#standbyCallback === null) {
                 // If there is not an existing standbyCallback,
@@ -127,7 +123,7 @@ class SmartInterval {
         }
 
         // Invoke callback and start timer without incrementing
-        this.#callback()
+        await this.#callback()
         this.clearTimeoutAndStart()
     }
 
