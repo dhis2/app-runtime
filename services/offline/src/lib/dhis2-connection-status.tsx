@@ -24,7 +24,7 @@ const getLastConnected = () => {
 // todo: maybe make a server-health endpoint
 const pingQuery = { ping: { resource: 'system/ping' } }
 
-interface Dhis2ConnectionStatusContextValue {
+export interface Dhis2ConnectionStatus {
     isConnected: boolean
     isDisconnected: boolean
     lastConnected: Date | null
@@ -34,7 +34,7 @@ const Dhis2ConnectionStatusContext = React.createContext({
     isConnected: true,
     isDisconnected: false,
     lastConnected: null,
-} as Dhis2ConnectionStatusContextValue)
+} as Dhis2ConnectionStatus)
 
 /**
  * Provides a boolean indicating client's connection to the DHIS2 server,
@@ -160,7 +160,7 @@ export const Dhis2ConnectionStatusProvider = ({
 
     useEffect(() => {
         const unsubscribe = offlineInterface.subscribeToDhis2ConnectionStatus({
-            onUpdate
+            onUpdate,
         })
         return () => {
             unsubscribe()
@@ -188,15 +188,14 @@ Dhis2ConnectionStatusProvider.propTypes = {
     children: PropTypes.node,
 }
 
-export const useDhis2ConnectionStatus =
-    (): Dhis2ConnectionStatusContextValue => {
-        const context = useContext(Dhis2ConnectionStatusContext)
+export const useDhis2ConnectionStatus = (): Dhis2ConnectionStatus => {
+    const context = useContext(Dhis2ConnectionStatusContext)
 
-        if (!context) {
-            throw new Error(
-                'useDhis2ConnectionStatus must be used within a Dhis2ConnectionStatus provider'
-            )
-        }
-
-        return context
+    if (!context) {
+        throw new Error(
+            'useDhis2ConnectionStatus must be used within a Dhis2ConnectionStatus provider'
+        )
     }
+
+    return context
+}
