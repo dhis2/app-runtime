@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { act, renderHook } from '@testing-library/react-hooks'
 import React from 'react'
-import { useOnlineStatus } from '../online-status'
+import { useNetworkStatus as useOnlineStatus } from '../network-status'
 
 interface CapturedEventListeners {
     [index: string]: EventListener
