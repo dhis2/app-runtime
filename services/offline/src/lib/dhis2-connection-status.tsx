@@ -117,7 +117,7 @@ export const Dhis2ConnectionStatusProvider = ({
     /** Called when SW reports updates from incidental network traffic */
     const onUpdate = useCallback(
         ({ isConnected: newIsConnected }) => {
-            console.log('handling change')
+            console.log('handling update from sw')
             updateConnectedState(newIsConnected)
             // Snooze ping timer to reduce pings since we know state from SW
             smartIntervalRef.current?.snooze()

@@ -175,7 +175,7 @@ class SmartInterval {
      * traffic, for example
      */
     snooze(): void {
-        console.log('snoozing')
+        console.log('snoozing timeout')
 
         this.clearTimeoutAndStart()
     }
