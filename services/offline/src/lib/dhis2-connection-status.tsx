@@ -66,7 +66,7 @@ export const Dhis2ConnectionStatusProvider = ({
         setIsConnected((prevIsConnected) => {
             // if value changed, reset ping backoff to initial
             if (newIsConnected !== prevIsConnected) {
-                smartIntervalRef.current?.resetBackoff()
+                smartIntervalRef.current?.resetDelayToInitial()
             }
             // if disconnected and EITHER 1. coming from connected or
             // 2. there is no last-connect val, update the val in localStorage

@@ -180,7 +180,7 @@ class SmartInterval {
         this.clearTimeoutAndStart()
     }
 
-    resetBackoff(): void {
+    resetDelayToInitial(): void {
         console.log('resetting backoff to initialDelay')
 
         this.#delay = this.#initialDelay
