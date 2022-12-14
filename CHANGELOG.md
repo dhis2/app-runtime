@@ -1,3 +1,17 @@
+# [3.7.0](https://github.com/dhis2/app-runtime/compare/v3.6.2...v3.7.0) (2022-11-17)
+
+
+### Features
+
+* **fetch-error:** expose fetch-error ([bcb913c](https://github.com/dhis2/app-runtime/commit/bcb913c4910d42a5300752f43d7636e7cf950f8a))
+
+## [3.6.2](https://github.com/dhis2/app-runtime/compare/v3.6.1...v3.6.2) (2022-11-16)
+
+
+### Bug Fixes
+
+* send POST body to indicators/expression/description as text plain ([#1286](https://github.com/dhis2/app-runtime/issues/1286)) ([82d26d4](https://github.com/dhis2/app-runtime/commit/82d26d425ecb035521e18e3f692279b15918025c))
+
 ## [3.6.1](https://github.com/dhis2/app-runtime/compare/v3.6.0...v3.6.1) (2022-10-24)
 
 

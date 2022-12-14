@@ -8,6 +8,7 @@ import {
     isAddOrUpdateSystemOrUserSetting,
     addOrUpdateConfigurationProperty,
     isMetadataPackageInstallation,
+    isExpressionDescriptionValidation,
 } from './textPlainMatchers'
 
 describe('isReplyToMessageConversation', () => {
@@ -237,6 +238,23 @@ describe('isMetadataPackageInstallation', () => {
         expect(
             isMetadataPackageInstallation('create', {
                 resource: 'synchronization/somethingelse',
+            })
+        ).toBe(false)
+    })
+})
+
+describe('isExpressionDescriptionValidation', () => {
+    it('returns true for a POST to "indicators/expression/description"', () => {
+        expect(
+            isExpressionDescriptionValidation('create', {
+                resource: 'indicators/expression/description',
+            })
+        ).toBe(true)
+    })
+    it('retuns false for a POST to a different resource', () => {
+        expect(
+            isMetadataPackageInstallation('create', {
+                resource: 'indicators/expression/somethingelse',
             })
         ).toBe(false)
     })
