@@ -23,10 +23,11 @@
         "build/**"
     ],
     "dependencies": {
+        "@dhis2/app-service-alerts": "3.7.0",
         "@dhis2/app-service-config": "3.7.0",
         "@dhis2/app-service-data": "3.7.0",
-        "@dhis2/app-service-alerts": "3.7.0",
-        "@dhis2/app-service-offline": "3.7.0"
+        "@dhis2/app-service-offline": "3.7.0",
+        "post-robot": "^10.0.46"
     },
     "peerDependencies": {
         "prop-types": "^15.7.2",
@@ -38,5 +39,8 @@
         "build:package": "d2-app-scripts build",
         "build": "concurrently -n build,types \"yarn build:package\" \"yarn build:types\"",
         "test": "echo \"No tests yet!\""
+    },
+    "devDependencies": {
+        "@types/post-robot": "^10.0.3"
     }
 }
