@@ -1,4 +1,3 @@
-import { useDataEngine } from '@dhis2/app-service-data'
 import PropTypes from 'prop-types'
 import React, {
     useCallback,
@@ -10,6 +9,7 @@ import React, {
 } from 'react'
 import { useOfflineInterface } from './offline-interface'
 import SmartInterval from './smart-interval'
+import { usePingQuery } from './use-ping-query'
 
 // Utils for saving 'last connected' datetime in local storage
 const lastConnectedKey = 'dhis2.lastConnected'
@@ -20,9 +20,6 @@ const getLastConnected = () => {
     const lastConnected = localStorage.getItem(lastConnectedKey)
     return lastConnected ? new Date(lastConnected) : null
 }
-
-// todo: maybe make a server-health endpoint
-const pingQuery = { ping: { resource: 'system/ping' } }
 
 export interface Dhis2ConnectionStatus {
     isConnected: boolean
@@ -52,7 +49,7 @@ export const Dhis2ConnectionStatusProvider = ({
 }): JSX.Element => {
     const [isConnected, setIsConnected] = useState(true)
     const offlineInterface = useOfflineInterface()
-    const engine = useDataEngine()
+    const ping = usePingQuery()
 
     const smartIntervalRef = useRef(null as null | SmartInterval)
 
@@ -82,20 +79,8 @@ export const Dhis2ConnectionStatusProvider = ({
     // helps to detect the connectivity status when the SW is not available
     // for some reason (maybe private browsing, first installation, or
     // insecure browser context)
-    const ping = useCallback(() => {
-        return engine
-            .query(pingQuery)
-            .catch((err) => {
-                if (/Unexpected token 'p'/.test(err.message)) {
-                    // The request succeeded; this is just a weird endpoint
-                    // (rest of the error is '"pong" is not valid JSON')
-                    // todo: maybe change link handling of this endpoint
-                    return
-                } else {
-                    // It's a different error; throw to the next catch handler
-                    throw err
-                }
-            })
+    const pingAndHandleStatus = useCallback(() => {
+        return ping()
             .then(() => {
                 // Ping is successful; set 'connected'
                 updateConnectedState(true)
@@ -112,7 +97,7 @@ export const Dhis2ConnectionStatusProvider = ({
                     updateConnectedState(false)
                 }
             })
-    }, [engine, updateConnectedState])
+    }, [ping, updateConnectedState])
 
     /** Called when SW reports updates from incidental network traffic */
     const onUpdate = useCallback(
@@ -131,7 +116,7 @@ export const Dhis2ConnectionStatusProvider = ({
             // don't ping if window isn't focused or visible
             initialPauseValue:
                 !document.hasFocus() || document.visibilityState !== 'visible',
-            callback: ping,
+            callback: pingAndHandleStatus,
         })
         smartIntervalRef.current = smartInterval
 
@@ -156,7 +141,7 @@ export const Dhis2ConnectionStatusProvider = ({
             // clean up smart interval
             smartInterval.clear()
         }
-    }, [ping])
+    }, [pingAndHandleStatus])
 
     useEffect(() => {
         const unsubscribe = offlineInterface.subscribeToDhis2ConnectionStatus({
