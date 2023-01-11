@@ -17,7 +17,9 @@ describe('useTimeZoneConversion', () => {
         const wrapper = ({ children }: { children?: ReactNode }) => (
             <ConfigProvider config={config}>{children}</ConfigProvider>
         )
-        const { result } = renderHook(() => useTimeZoneConversion(), { wrapper })
+        const { result } = renderHook(() => useTimeZoneConversion(), {
+            wrapper,
+        })
 
         expect(result.current).toHaveProperty('fromClientDate')
         expect(typeof result.current.fromClientDate).toBe('function')
@@ -34,7 +36,9 @@ describe('useTimeZoneConversion', () => {
         const wrapper = ({ children }: { children?: ReactNode }) => (
             <ConfigProvider config={config}>{children}</ConfigProvider>
         )
-        const { result } = renderHook(() => useTimeZoneConversion(), { wrapper })
+        const { result } = renderHook(() => useTimeZoneConversion(), {
+            wrapper,
+        })
 
         const serverDate = result.current.fromServerDate('2010-01-01')
         const expectedDateString = '2009-12-31T23:00:00.000'
@@ -47,7 +51,9 @@ describe('useTimeZoneConversion', () => {
         const wrapper = ({ children }: { children?: ReactNode }) => (
             <ConfigProvider config={config}>{children}</ConfigProvider>
         )
-        const { result } = renderHook(() => useTimeZoneConversion(), { wrapper })
+        const { result } = renderHook(() => useTimeZoneConversion(), {
+            wrapper,
+        })
 
         const dateString = '2010-01-01'
         const dateFromString = new Date('2010-01-01')
@@ -86,7 +92,9 @@ describe('useTimeZoneConversion', () => {
         const wrapper = ({ children }: { children?: ReactNode }) => (
             <ConfigProvider config={config}>{children}</ConfigProvider>
         )
-        const { result } = renderHook(() => useTimeZoneConversion(), { wrapper })
+        const { result } = renderHook(() => useTimeZoneConversion(), {
+            wrapper,
+        })
 
         const serverDate = result.current.fromServerDate('2010-01-01')
         const expectedDateString = '2010-01-01T00:00:00.000'
@@ -102,7 +110,9 @@ describe('useTimeZoneConversion', () => {
         const wrapper = ({ children }: { children?: ReactNode }) => (
             <ConfigProvider config={config}>{children}</ConfigProvider>
         )
-        const { result } = renderHook(() => useTimeZoneConversion(), { wrapper })
+        const { result } = renderHook(() => useTimeZoneConversion(), {
+            wrapper,
+        })
 
         const serverDate = result.current.fromServerDate('2015-03-03T12:00:00')
         const expectedDateString = '2015-03-03T12:00:00.000'
@@ -118,14 +128,20 @@ describe('useTimeZoneConversion', () => {
         const wrapper = ({ children }: { children?: ReactNode }) => (
             <ConfigProvider config={config}>{children}</ConfigProvider>
         )
-        const { result } = renderHook(() => useTimeZoneConversion(), { wrapper })
+        const { result } = renderHook(() => useTimeZoneConversion(), {
+            wrapper,
+        })
 
         const serverDate = result.current.fromClientDate('2018-08-15T12:00:00')
         const expectedClientDateString = '2018-08-15T12:00:00.000'
         const expectedServerDateString = '2018-08-15T06:00:00.000'
         const javascriptDate = new Date('2018-08-15T12:00:00')
-        expect(serverDate.getClientZonedISOString()).toBe(expectedClientDateString)
-        expect(serverDate.getServerZonedISOString()).toBe(expectedServerDateString)
+        expect(serverDate.getClientZonedISOString()).toBe(
+            expectedClientDateString
+        )
+        expect(serverDate.getServerZonedISOString()).toBe(
+            expectedServerDateString
+        )
         expect(serverDate.getTime()).toEqual(javascriptDate.getTime())
     })
 })
