@@ -9,7 +9,7 @@ export {
     useDataEngine,
 } from '@dhis2/app-service-data'
 
-export { useConfig, useDate } from '@dhis2/app-service-config'
+export { useConfig, useTimeZoneConversion } from '@dhis2/app-service-config'
 
 export { useAlerts, useAlert } from '@dhis2/app-service-alerts'
 

@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks'
 import React, { ReactNode } from 'react'
-import { ConfigProvider, useDate } from '../index'
+import { ConfigProvider, useTimeZoneConversion } from '../index'
 
 const defaultConfig = { baseUrl: '/', apiVersion: 40 }
 const defaultSystemInfo = {
@@ -11,13 +11,13 @@ const defaultSystemInfo = {
 
 // tests are set to run at UTC when running yarn test
 
-describe('useDate', () => {
+describe('useTimeZoneConversion', () => {
     it('Hook returns a fromClientDate and fromServerDate function', () => {
         const config = { baseUrl: '/', apiVersion: 30 }
         const wrapper = ({ children }: { children?: ReactNode }) => (
             <ConfigProvider config={config}>{children}</ConfigProvider>
         )
-        const { result } = renderHook(() => useDate(), { wrapper })
+        const { result } = renderHook(() => useTimeZoneConversion(), { wrapper })
 
         expect(result.current).toHaveProperty('fromClientDate')
         expect(typeof result.current.fromClientDate).toBe('function')
@@ -34,11 +34,11 @@ describe('useDate', () => {
         const wrapper = ({ children }: { children?: ReactNode }) => (
             <ConfigProvider config={config}>{children}</ConfigProvider>
         )
-        const { result } = renderHook(() => useDate(), { wrapper })
+        const { result } = renderHook(() => useTimeZoneConversion(), { wrapper })
 
         const serverDate = result.current.fromServerDate('2010-01-01')
         const expectedDateString = '2009-12-31T23:00:00.000'
-        expect(serverDate.getClientISOString()).toBe(expectedDateString)
+        expect(serverDate.getClientZonedISOString()).toBe(expectedDateString)
     })
 
     // fromServerDate accepts number, valid date string, or date object
@@ -47,7 +47,7 @@ describe('useDate', () => {
         const wrapper = ({ children }: { children?: ReactNode }) => (
             <ConfigProvider config={config}>{children}</ConfigProvider>
         )
-        const { result } = renderHook(() => useDate(), { wrapper })
+        const { result } = renderHook(() => useTimeZoneConversion(), { wrapper })
 
         const dateString = '2010-01-01'
         const dateFromString = new Date('2010-01-01')
@@ -68,7 +68,7 @@ describe('useDate', () => {
     //     const wrapper = ({ children }: { children?: ReactNode }) => (
     //         <ConfigProvider config={config}>{children}</ConfigProvider>
     //     )
-    //     const { result } = renderHook(() => useDate(), {wrapper})
+    //     const { result } = renderHook(() => useTimeZoneConversion(), {wrapper})
 
     //     const now = result.current.fromServerDate()
     //     const nowDirect = new Date()
@@ -86,11 +86,11 @@ describe('useDate', () => {
         const wrapper = ({ children }: { children?: ReactNode }) => (
             <ConfigProvider config={config}>{children}</ConfigProvider>
         )
-        const { result } = renderHook(() => useDate(), { wrapper })
+        const { result } = renderHook(() => useTimeZoneConversion(), { wrapper })
 
         const serverDate = result.current.fromServerDate('2010-01-01')
         const expectedDateString = '2010-01-01T00:00:00.000'
-        expect(serverDate.getClientISOString()).toBe(expectedDateString)
+        expect(serverDate.getClientZonedISOString()).toBe(expectedDateString)
     })
 
     it('returns fromServerDate with server date that matches passed time regardless of timezone', () => {
@@ -102,11 +102,11 @@ describe('useDate', () => {
         const wrapper = ({ children }: { children?: ReactNode }) => (
             <ConfigProvider config={config}>{children}</ConfigProvider>
         )
-        const { result } = renderHook(() => useDate(), { wrapper })
+        const { result } = renderHook(() => useTimeZoneConversion(), { wrapper })
 
         const serverDate = result.current.fromServerDate('2015-03-03T12:00:00')
         const expectedDateString = '2015-03-03T12:00:00.000'
-        expect(serverDate.getServerISOString()).toBe(expectedDateString)
+        expect(serverDate.getServerZonedISOString()).toBe(expectedDateString)
     })
 
     it('returns fromClientDate that reflects client time but makes server time string accessible', () => {
@@ -118,14 +118,14 @@ describe('useDate', () => {
         const wrapper = ({ children }: { children?: ReactNode }) => (
             <ConfigProvider config={config}>{children}</ConfigProvider>
         )
-        const { result } = renderHook(() => useDate(), { wrapper })
+        const { result } = renderHook(() => useTimeZoneConversion(), { wrapper })
 
         const serverDate = result.current.fromClientDate('2018-08-15T12:00:00')
         const expectedClientDateString = '2018-08-15T12:00:00.000'
         const expectedServerDateString = '2018-08-15T06:00:00.000'
         const javascriptDate = new Date('2018-08-15T12:00:00')
-        expect(serverDate.getClientISOString()).toBe(expectedClientDateString)
-        expect(serverDate.getServerISOString()).toBe(expectedServerDateString)
+        expect(serverDate.getClientZonedISOString()).toBe(expectedClientDateString)
+        expect(serverDate.getServerZonedISOString()).toBe(expectedServerDateString)
         expect(serverDate.getTime()).toEqual(javascriptDate.getTime())
     })
 })

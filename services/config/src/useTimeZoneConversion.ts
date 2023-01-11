@@ -48,12 +48,12 @@ class DHIS2Date extends Date {
         return `${year}-${month}-${days}T${hours}:${minutes}:${seconds}.${milliseconds}`
     }
 
-    public getServerISOString(): string {
+    public getServerZonedISOString(): string {
         const serverDate = new Date(this.getTime() - this.serverOffset)
         return this._getISOString(serverDate)
     }
 
-    public getClientISOString(): string {
+    public getClientZonedISOString(): string {
         return this._getISOString(this)
     }
 }
@@ -87,7 +87,7 @@ const useServerTimeOffset = (serverTimezone: string): number => {
     }, [serverTimezone])
 }
 
-export const useDate = (): {
+export const useTimeZoneConversion = (): {
     fromServerDate: (date?: DateInput) => DHIS2Date
     fromClientDate: (date?: DateInput) => DHIS2Date
 } => {
