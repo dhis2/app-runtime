@@ -1,6 +1,7 @@
-import { useCallback, useContext, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { ConfigContext } from './ConfigContext'
 import { DateComponents, DateInput } from './types'
+import { useConfig } from './useConfig'
 
 // extend date with extra methods
 class DHIS2Date extends Date {
@@ -91,13 +92,14 @@ export const useDate = (): {
     fromClientDate: (date?: DateInput) => DHIS2Date
 } => {
     const { systemInfo } = useConfig()
-    let serverTimezone
+    let serverTimezone: string
+    const clientTimezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone
     
     if (systemInfo?.serverTimeZoneId) {
         serverTimezone = systemInfo.serverTimeZoneId
     } else {
         // Fallback to client timezone
-        serverTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+        serverTimezone = clientTimezone
         console.warn('No server timezone ID found, falling back to client timezone. This could cause date conversion issues.')
     }
 
