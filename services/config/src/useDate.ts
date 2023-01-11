@@ -90,10 +90,15 @@ export const useDate = (): {
     fromServerDate: (date?: DateInput) => DHIS2Date
     fromClientDate: (date?: DateInput) => DHIS2Date
 } => {
-    const { systemInfo } = useContext(ConfigContext)
-    const clientTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
-    const { serverTimeZoneId: serverTimezone } = systemInfo || {
-        serverTimeZoneId: clientTimezone,
+    const { systemInfo } = useConfig()
+    let serverTimezone
+    
+    if (systemInfo?.serverTimeZoneId) {
+        serverTimezone = systemInfo.serverTimeZoneId
+    } else {
+        // Fallback to client timezone
+        serverTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+        console.warn('No server timezone ID found, falling back to client timezone. This could cause date conversion issues.')
     }
 
     const serverOffset = useServerTimeOffset(serverTimezone)
