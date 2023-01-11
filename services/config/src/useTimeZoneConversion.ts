@@ -93,14 +93,17 @@ export const useTimeZoneConversion = (): {
 } => {
     const { systemInfo } = useConfig()
     let serverTimezone: string
-    const clientTimezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone
-    
+    const clientTimezone: string =
+        Intl.DateTimeFormat().resolvedOptions().timeZone
+
     if (systemInfo?.serverTimeZoneId) {
         serverTimezone = systemInfo.serverTimeZoneId
     } else {
         // Fallback to client timezone
         serverTimezone = clientTimezone
-        console.warn('No server timezone ID found, falling back to client timezone. This could cause date conversion issues.')
+        console.warn(
+            'No server timezone ID found, falling back to client timezone. This could cause date conversion issues.'
+        )
     }
 
     const serverOffset = useServerTimeOffset(serverTimezone)
