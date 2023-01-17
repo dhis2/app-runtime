@@ -23,7 +23,7 @@ class DHIS2Date extends Date {
         if (date) {
             super(date)
         } else {
-            super()
+            super(Date.now())
         }
         this.serverOffset = serverOffset
         this.serverTimezone = serverTimezone

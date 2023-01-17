@@ -69,18 +69,24 @@ describe('useTimeZoneConversion', () => {
     })
 
     // returns current (client) date if no argument is provided
-    // it('returns fromServerDate which returns an invalid date if ', () => {
-    //     const config = {...defaultConfig,systemInfo: defaultSystemInfo}
-    //     const wrapper = ({ children }: { children?: ReactNode }) => (
-    //         <ConfigProvider config={config}>{children}</ConfigProvider>
-    //     )
-    //     const { result } = renderHook(() => useTimeZoneConversion(), {wrapper})
+    it('returns fromServerDate which returns current timestamp if no argument is passed', () => {
+        const config = { ...defaultConfig, systemInfo: defaultSystemInfo }
+        const wrapper = ({ children }: { children?: ReactNode }) => (
+            <ConfigProvider config={config}>{children}</ConfigProvider>
+        )
+        const { result } = renderHook(() => useTimeZoneConversion(), {
+            wrapper,
+        })
 
-    //     const now = result.current.fromServerDate()
-    //     const nowDirect = new Date()
+        // if no date-like is passed to fromSeverDate, Date.now() is used to initialize date
+        jest.spyOn(global.Date, 'now').mockImplementation(() =>
+            new Date('2020-10-15T12:00:00.000Z').valueOf()
+        )
 
-    //     expect(nowDirect.getTime()-now.getTime()).toBeLessThan(1000)
-    // })
+        const timeFromHook = result.current.fromServerDate()
+
+        expect(timeFromHook).toEqual(new Date('2020-10-15T12:00:00.000Z'))
+    })
 
     // fromServerDate defaults to client time zone if invalid server time zone provided
     it('returns fromServerDate that assumes no time zone difference if provided time zone is invalid', () => {
