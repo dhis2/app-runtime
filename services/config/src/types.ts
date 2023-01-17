@@ -8,16 +8,6 @@ type Version = {
 
 export type DateInput = string | Date | number | null
 
-export interface DateComponents {
-    year: string
-    month: string
-    days: string
-    hours: string
-    minutes: string
-    seconds: string
-    milliseconds: string
-}
-
 interface SystemInfo {
     version: string
     contextPath: string

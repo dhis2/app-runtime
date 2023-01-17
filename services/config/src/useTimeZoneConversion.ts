@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from 'react'
-import { ConfigContext } from './ConfigContext'
-import { DateComponents, DateInput } from './types'
+import { DateInput } from './types'
 import { useConfig } from './useConfig'
 
 // extend date with extra methods
@@ -28,10 +27,9 @@ class DHIS2Date extends Date {
         this.serverOffset = serverOffset
         this.serverTimezone = serverTimezone
         this.clientTimezone = clientTimezone
-        Object.setPrototypeOf(this, DHIS2Date.prototype)
     }
 
-    private _getTimeComponents(date: Date): DateComponents {
+    private _getISOString(date: Date): string {
         const year = date.getFullYear().toString().padStart(4, '0')
         const month = (date.getMonth() + 1).toString().padStart(2, '0')
         const days = date.getDate().toString().padStart(2, '0')
@@ -39,12 +37,6 @@ class DHIS2Date extends Date {
         const minutes = date.getMinutes().toString().padStart(2, '0')
         const seconds = date.getSeconds().toString().padStart(2, '0')
         const milliseconds = date.getMilliseconds().toString().padStart(3, '0')
-        return { year, month, days, hours, minutes, seconds, milliseconds }
-    }
-
-    private _getISOString(date: Date): string {
-        const { year, month, days, hours, minutes, seconds, milliseconds } =
-            this._getTimeComponents(date)
         return `${year}-${month}-${days}T${hours}:${minutes}:${seconds}.${milliseconds}`
     }
 
