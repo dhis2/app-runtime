@@ -1,3 +1,10 @@
+# [3.8.0](https://github.com/dhis2/app-runtime/compare/v3.7.0...v3.8.0) (2023-01-19)
+
+
+### Features
+
+* add hook to adjust for server time [LIBS-396] ([#1308](https://github.com/dhis2/app-runtime/issues/1308)) ([d511303](https://github.com/dhis2/app-runtime/commit/d51130336ce8ada00ef5e79884263c678e252302))
+
 # [3.7.0](https://github.com/dhis2/app-runtime/compare/v3.6.2...v3.7.0) (2022-11-17)
 
 
