@@ -1,7 +1,8 @@
+// Exported for tests
 // todo: adjust defaults (e.g. 30 sec/5 min/1.5x)
-const FIVE_SECONDS = 5000
-const FIVE_MINUTES = 1000 * 60 * 5
-const DEFAULT_INCREMENT_FACTOR = 1.2
+export const DEFAULT_INITIAL_DELAY_MS = 5000 // 5 sec
+export const DEFAULT_MAX_DELAY_MS = 1000 * 60 * 5 // 5 min
+export const DEFAULT_INCREMENT_FACTOR = 1.5
 const throwErrorIfNoCallbackIsProvided = (): void => {
     throw new Error('Provide a callback')
 }
@@ -22,8 +23,8 @@ class SmartInterval {
     #standbyCallback: (() => void) | null = null
 
     constructor({
-        initialDelay = FIVE_SECONDS,
-        maxDelay = FIVE_MINUTES,
+        initialDelay = DEFAULT_INITIAL_DELAY_MS,
+        maxDelay = DEFAULT_MAX_DELAY_MS,
         delayIncrementFactor = DEFAULT_INCREMENT_FACTOR,
         initialPauseValue = false,
         callback = throwErrorIfNoCallbackIsProvided,
