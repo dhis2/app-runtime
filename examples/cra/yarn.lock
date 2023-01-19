@@ -1054,26 +1054,26 @@
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
 "@dhis2/app-runtime@file:../../runtime":
-  version "3.5.0"
+  version "3.8.0"
   dependencies:
-    "@dhis2/app-service-alerts" "3.5.0"
-    "@dhis2/app-service-config" "3.5.0"
-    "@dhis2/app-service-data" "3.5.0"
-    "@dhis2/app-service-offline" "3.5.0"
+    "@dhis2/app-service-alerts" "3.8.0"
+    "@dhis2/app-service-config" "3.8.0"
+    "@dhis2/app-service-data" "3.8.0"
+    "@dhis2/app-service-offline" "3.8.0"
 
-"@dhis2/app-service-alerts@3.5.0", "@dhis2/app-service-alerts@file:../../services/alerts":
-  version "3.5.0"
+"@dhis2/app-service-alerts@3.8.0", "@dhis2/app-service-alerts@file:../../services/alerts":
+  version "3.8.0"
 
-"@dhis2/app-service-config@3.5.0", "@dhis2/app-service-config@file:../../services/config":
-  version "3.5.0"
+"@dhis2/app-service-config@3.8.0", "@dhis2/app-service-config@file:../../services/config":
+  version "3.8.0"
 
-"@dhis2/app-service-data@3.5.0", "@dhis2/app-service-data@file:../../services/data":
-  version "3.5.0"
+"@dhis2/app-service-data@3.8.0", "@dhis2/app-service-data@file:../../services/data":
+  version "3.8.0"
   dependencies:
     react-query "^3.13.11"
 
-"@dhis2/app-service-offline@3.5.0", "@dhis2/app-service-offline@file:../../services/offline":
-  version "3.5.0"
+"@dhis2/app-service-offline@3.8.0", "@dhis2/app-service-offline@file:../../services/offline":
+  version "3.8.0"
   dependencies:
     lodash "^4.17.21"
 
@@ -6807,9 +6807,9 @@ minimatch@3.0.4, minimatch@^3.0.4:
     brace-expansion "^1.1.7"
 
 minimist@^1.1.1, minimist@^1.2.0, minimist@^1.2.5:
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
-  integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
+  version "1.2.7"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.7.tgz#daa1c4d91f507390437c6a8bc01078e7000c4d18"
+  integrity sha512-bzfL1YUZsP41gmu/qjrEk0Q6i2ix/cVeAhbCbqH9u3zYutS1cLg00qhrD0M2MVdCcx4Sc0UpP2eBWo9rotpq6g==
 
 minipass-collect@^1.0.2:
   version "1.0.2"
