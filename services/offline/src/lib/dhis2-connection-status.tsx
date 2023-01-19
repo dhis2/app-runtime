@@ -99,6 +99,7 @@ export const Dhis2ConnectionStatusProvider = ({
     /** Called when SW reports updates from incidental network traffic */
     const onUpdate = useCallback(
         ({ isConnected: newIsConnected }) => {
+            // todo: remove console log after testing PR
             console.log('handling update from sw')
             updateConnectedState(newIsConnected)
             // Snooze ping timer to reduce pings since we know state from SW
