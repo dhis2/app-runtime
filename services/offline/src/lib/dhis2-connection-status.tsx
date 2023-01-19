@@ -90,10 +90,7 @@ export const Dhis2ConnectionStatusProvider = ({
                 console.error('Ping failed:', err.message)
 
                 // Only network errors should change status
-                const isNetworkErr = /^An unknown network error occurred$/.test(
-                    err.message
-                )
-                if (isNetworkErr) {
+                if (err.type === 'network') {
                     updateConnectedState(false)
                 }
             })
