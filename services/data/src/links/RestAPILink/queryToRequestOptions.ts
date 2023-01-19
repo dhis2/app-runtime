@@ -23,6 +23,19 @@ const getMethod = (type: FetchType): string => {
     }
 }
 
+/**
+ * Band-aid for the ping API, which can throw an error when being processed
+ * as JSON. Hopefully this will be superseded by a new ping endpoint:
+ * https://dhis2.atlassian.net/browse/DHIS2-14531
+ */
+const getAcceptHeader = (query: ResolvedResourceQuery): string => {
+    if (query.resource === 'system/ping') {
+        return 'text/plain'
+    }
+
+    return 'application/json'
+}
+
 export const queryToRequestOptions = (
     type: FetchType,
     query: ResolvedResourceQuery,
@@ -33,7 +46,10 @@ export const queryToRequestOptions = (
     return {
         method: getMethod(type),
         body: requestBodyForContentType(contentType, query),
-        headers: requestHeadersForContentType(contentType),
+        headers: {
+            ...requestHeadersForContentType(contentType),
+            Accept: getAcceptHeader(query),
+        },
         signal,
     }
 }
