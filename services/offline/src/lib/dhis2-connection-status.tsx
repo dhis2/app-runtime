@@ -8,7 +8,7 @@ import React, {
     useContext,
 } from 'react'
 import { useOfflineInterface } from './offline-interface'
-import SmartInterval from './smart-interval'
+import createSmartInterval from './smart-interval'
 import { usePingQuery } from './use-ping-query'
 
 // Utils for saving 'last connected' datetime in local storage
@@ -95,7 +95,7 @@ export const Dhis2ConnectionStatusProvider = ({
     }, [ping, updateConnectedState])
 
     const smartIntervalRef = useRef(
-        new SmartInterval({
+        createSmartInterval({
             initialDelay: 5000,
             // don't ping if window isn't focused or visible
             initialPauseValue:

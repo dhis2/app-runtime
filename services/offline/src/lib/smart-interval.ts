@@ -1,108 +1,89 @@
 // Exported for tests
 // todo: adjust defaults (e.g. 30 sec/5 min/1.5x)
 export const DEFAULT_INITIAL_DELAY_MS = 5000 // 5 sec
-export const DEFAULT_MAX_DELAY_MS = 1000 * 60 * 5 // 5 min
-export const DEFAULT_INCREMENT_FACTOR = 1.5
+export const DEFAULT_MAX_DELAY_MS = 1000 * 30 // 30 sec
+export const DEFAULT_INCREMENT_FACTOR = 2
 const throwErrorIfNoCallbackIsProvided = (): void => {
     throw new Error('Provide a callback')
 }
 
 // todo: remove console logs; though they are useful for testing
 
-class SmartInterval {
-    #initialDelay
-    #maxDelay
-    #delayIncrementFactor
-    #callback: () => void | boolean | Promise<void> | Promise<boolean>
-
-    #paused
-    #delay
-    // Timeout types are weird and initializing this to a dummy timeout
-    // clears up some checks
-    #timeout: NodeJS.Timeout = setTimeout(() => '', 0)
-    #standbyCallback: (() => void) | null = null
-
-    constructor({
-        initialDelay = DEFAULT_INITIAL_DELAY_MS,
-        maxDelay = DEFAULT_MAX_DELAY_MS,
-        delayIncrementFactor = DEFAULT_INCREMENT_FACTOR,
-        initialPauseValue = false,
-        callback = throwErrorIfNoCallbackIsProvided,
-    } = {}) {
-        // initialize static properties
-        this.#initialDelay = initialDelay
-        this.#maxDelay = maxDelay
-        this.#delayIncrementFactor = delayIncrementFactor
-        this.#callback = callback
-
-        // initialize dynamic properties
-        this.#paused = initialPauseValue
-        this.#delay = initialDelay
+export default function createSmartInterval({
+    initialDelay = DEFAULT_INITIAL_DELAY_MS,
+    maxDelay = DEFAULT_MAX_DELAY_MS,
+    delayIncrementFactor = DEFAULT_INCREMENT_FACTOR,
+    initialPauseValue = false,
+    callback = throwErrorIfNoCallbackIsProvided,
+} = {}) {
+    const state = {
+        paused: initialPauseValue,
+        delay: initialDelay,
+        // Timeout types are weird; this dummy timeout helps fix them:
+        timeout: setTimeout(() => '', 0),
+        standbyCallback: null as null | (() => void),
     }
 
     /** Increment delay by the increment factor, up to a max value */
-    private incrementDelay() {
-        const newDelay = Math.min(
-            this.#delay * this.#delayIncrementFactor,
-            this.#maxDelay
-        )
-        console.log('incrementing delay', { prev: this.#delay, new: newDelay })
-        this.#delay = newDelay
+    function incrementDelay() {
+        const newDelay = Math.min(state.delay * delayIncrementFactor, maxDelay)
+        console.log('incrementing delay', { prev: state.delay, new: newDelay })
+        state.delay = newDelay
     }
 
-    private async invokeCallbackAndHandleDelay(): Promise<void> {
+    async function invokeCallbackAndHandleDelay(): Promise<void> {
         // Increment delay before calling callback, so callback can potentially
         // reset the delay to initial before starting the next timeout
-        this.incrementDelay()
-        await this.#callback()
+        incrementDelay()
+        await callback()
     }
 
-    private clearTimeoutAndStart(): void {
-        console.log('clearing and starting timeout', { delay: this.#delay })
+    function clearTimeoutAndStart(): void {
+        console.log('clearing and starting timeout', { delay: state.delay })
 
         // Prevent parallel timeouts from occuring
         // (weird note: `if (this.timeout) { clearTimeout(this.timeout) }`
         // does NOT work for some reason)
-        clearTimeout(this.#timeout)
+        clearTimeout(state.timeout)
 
         // A timeout is used instead of an interval for handling slow execution
         // https://developer.mozilla.org/en-US/docs/Web/API/setInterval#ensure_that_execution_duration_is_shorter_than_interval_frequency
-        this.#timeout = setTimeout(async () => {
-            if (this.#paused) {
+        state.timeout = setTimeout(async () => {
+            if (state.paused) {
                 console.log('entering regular standby')
 
                 // If paused, prepare a 'standby callback' to be invoked when
                 // `resume()` is called (see its definition below).
                 // The timer will not be started again until the standbyCallback
                 // is invoked.
-                this.#standbyCallback = (async () => {
-                    await this.invokeCallbackAndHandleDelay()
-                    this.clearTimeoutAndStart()
-                }).bind(this)
+                state.standbyCallback = async () => {
+                    await invokeCallbackAndHandleDelay()
+                    clearTimeoutAndStart()
+                } // todo: check on .bind(this)
 
                 return
             }
 
             // Otherwise, invoke callback
-            await this.invokeCallbackAndHandleDelay()
+            await invokeCallbackAndHandleDelay()
             // and start process over again
-            this.clearTimeoutAndStart()
-        }, this.#delay)
+            clearTimeoutAndStart()
+        }, state.delay)
     }
 
     /**
      * Starts the interval.
      * Under the hood, has the same behavior as `snooze()`
      */
-    start(): void {
+    function start(): void {
         console.log('starting interval')
 
-        this.clearTimeoutAndStart()
+        clearTimeoutAndStart()
     }
 
     /** Stop the interval. Used for cleaning up */
-    clear(): void {
-        clearTimeout(this.#timeout)
+    function clear(): void {
+        clearTimeout(state.timeout)
     }
 
     /**
@@ -116,9 +97,9 @@ class SmartInterval {
      * elapses while paused, the regular standby is entered, overwriting this
      * partial standby.
      */
-    async invokeCallbackImmediately(): Promise<void> {
-        if (this.#paused) {
-            if (this.#standbyCallback === null) {
+    async function invokeCallbackImmediately(): Promise<void> {
+        if (state.paused) {
+            if (state.standbyCallback === null) {
                 // If there is not an existing standbyCallback,
                 // set one to be called upon `resume()`
                 // (but don't overwrite a previous callback).
@@ -128,10 +109,10 @@ class SmartInterval {
                 // timeout delay gets incremented appropriately.
                 console.log('entering standby without timer increment')
 
-                this.#standbyCallback = async () => {
+                state.standbyCallback = async () => {
                     // Invoke callback and start timer without incrementing
-                    await this.#callback()
-                    this.clearTimeoutAndStart()
+                    await callback()
+                    clearTimeoutAndStart()
                 }
             }
 
@@ -140,8 +121,8 @@ class SmartInterval {
         }
 
         // Invoke callback and start timer without incrementing
-        await this.#callback()
-        this.clearTimeoutAndStart()
+        await callback()
+        clearTimeoutAndStart()
     }
 
     /**
@@ -154,10 +135,10 @@ class SmartInterval {
      *
      * This decreases execution activity while 'paused'
      */
-    pause(): void {
+    function pause(): void {
         console.log('pausing')
 
-        this.#paused = true
+        state.paused = true
     }
 
     /**
@@ -166,19 +147,19 @@ class SmartInterval {
      * If the interval is in 'standby', trigger the saved 'standbyCallback',
      * which should start the interval timer again
      */
-    resume(): void {
-        console.log('resuming', { standbyCb: this.#standbyCallback })
+    function resume(): void {
+        console.log('resuming', { standbyCb: state.standbyCallback })
 
         // Clear paused state
-        this.#paused = false
+        state.paused = false
 
         // If in standby, invoke the saved callback
         // (invokeCallbackImmediately and clearTimeoutAndStart can set a
         // standby callback)
-        if (this.#standbyCallback !== null) {
-            this.#standbyCallback()
+        if (state.standbyCallback !== null) {
+            state.standbyCallback()
             // Remove existing standbyCallback
-            this.#standbyCallback = null
+            state.standbyCallback = null
         }
     }
 
@@ -189,17 +170,25 @@ class SmartInterval {
      * Expected to be called to delay a ping in response to incidental network
      * traffic, for example
      */
-    snooze(): void {
+    function snooze(): void {
         console.log('snoozing timeout')
 
-        this.clearTimeoutAndStart()
+        clearTimeoutAndStart()
     }
 
-    resetDelayToInitial(): void {
+    function resetDelayToInitial(): void {
         console.log('resetting backoff to initialDelay')
 
-        this.#delay = this.#initialDelay
+        state.delay = initialDelay
+    }
+
+    return {
+        start,
+        clear,
+        pause,
+        resume,
+        invokeCallbackImmediately,
+        snooze,
+        resetDelayToInitial,
     }
 }
-
-export default SmartInterval
