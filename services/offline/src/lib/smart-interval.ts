@@ -38,8 +38,6 @@ class SmartInterval {
         // initialize dynamic properties
         this.#paused = initialPauseValue
         this.#delay = initialDelay
-
-        this.clearTimeoutAndStart()
     }
 
     /** Increment delay by the increment factor, up to a max value */
@@ -92,6 +90,16 @@ class SmartInterval {
         }, this.#delay)
     }
 
+    /**
+     * Starts the interval.
+     * Under the hood, has the same behavior as `snooze()`
+     */
+    start(): void {
+        console.log('starting interval')
+
+        this.clearTimeoutAndStart()
+    }
+
     /** Stop the interval. Used for cleaning up */
     clear(): void {
         clearTimeout(this.#timeout)
@@ -100,7 +108,13 @@ class SmartInterval {
     /**
      * Invoke the provided callback immediately and start the timer over.
      * The timeout to the next invocation will not be increased
-     * (unless the timer fully elapses while this interval is paused)
+     * (unless the timer fully elapses while this interval is paused).
+     *
+     * If the interval is 'paused', it will not invoke the callback immediately,
+     * but enter a 'partial standby', which will invoke the callback upon
+     * resuming, but without incrementing the delay. If the regular timeout
+     * elapses while paused, the regular standby is entered, overwriting this
+     * partial standby.
      */
     async invokeCallbackImmediately(): Promise<void> {
         if (this.#paused) {
