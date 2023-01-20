@@ -128,9 +128,9 @@ class SmartInterval {
                 // timeout delay gets incremented appropriately.
                 console.log('entering standby without timer increment')
 
-                this.#standbyCallback = () => {
+                this.#standbyCallback = async () => {
                     // Invoke callback and start timer without incrementing
-                    this.#callback()
+                    await this.#callback()
                     this.clearTimeoutAndStart()
                 }
             }
