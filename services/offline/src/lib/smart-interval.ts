@@ -59,7 +59,7 @@ export default function createSmartInterval({
                 state.standbyCallback = async () => {
                     await invokeCallbackAndHandleDelay()
                     clearTimeoutAndStart()
-                } // todo: check on .bind(this)
+                }
 
                 return
             }
