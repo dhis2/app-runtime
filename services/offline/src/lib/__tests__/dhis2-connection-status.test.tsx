@@ -63,8 +63,6 @@ const wrapper: React.FC = ({ children }) => (
     </CustomDataProvider>
 )
 
-const setTimeoutSpy = jest.spyOn(window, 'setTimeout')
-
 beforeEach(() => {
     jest.useFakeTimers()
     // standby state is initialized to window visibility, which is 'false' by
@@ -89,32 +87,44 @@ describe('basic behavior', () => {
         expect(result.current.lastConnected).toBe(null)
     })
 
-    test.skip('the ping delay increases when idle', () => {
+    test.only('the ping delay increases when idle', async () => {
         const setTimeoutSpy = jest.spyOn(window, 'setTimeout')
 
         const { result } = renderHook(() => useDhis2ConnectionStatus(), {
             wrapper: wrapper,
         })
 
-        expect(mockPing).not.toHaveBeenCalled()
-        expect(setTimeoutSpy).toHaveBeenCalledTimes(2)
-
         expect(result.current.isConnected).toBe(true)
+        expect(mockPing).not.toHaveBeenCalled()
+        expect(setTimeoutSpy).toHaveBeenLastCalledWith(
+            expect.any(Function),
+            FIRST_INTERVAL_MS
+        )
 
-        jest.advanceTimersByTime(FIRST_INTERVAL_MS - 500) // Just under first interval
+        // Just under first interval
+        jest.advanceTimersByTime(FIRST_INTERVAL_MS - 500)
         expect(mockPing).not.toHaveBeenCalled()
 
-        setTimeoutSpy.mockClear()
-
-        jest.advanceTimersByTime(1000) // Just over first interval
-        expect(mockPing).toHaveBeenCalledTimes(1)
-        expect(setTimeoutSpy).toHaveBeenCalledTimes(1)
-
-        jest.advanceTimersByTime(SECOND_INTERVAL_MS - 1000) // just under second interval
+        // Just over first interval
+        // jest.advanceTimersByTime(1000)
+        jest.runOnlyPendingTimers()
         expect(mockPing).toHaveBeenCalledTimes(1)
 
-        jest.runAllTimers()
-        // jest.advanceTimersByTime(1000) // Just over second interval
+        // ! This fails, despite setTimeout seeming to be called based on
+        // ! 'timeout' variable incrementing (look for 'new timeout set')
+        // ! in the console
+        // expect(setTimeoutSpy).toHaveBeenLastCalledWith(
+        //     expect.any(Function),
+        //     SECOND_INTERVAL_MS
+        // )
+
+        // just under second interval
+        jest.advanceTimersByTime(SECOND_INTERVAL_MS - 1000)
+        expect(mockPing).toHaveBeenCalledTimes(1)
+
+        // Just over second interval
+        jest.advanceTimersByTime(100000) // (basically make sure it's enough time while debugging this test)
+        // ! This assertion fails:
         expect(mockPing).toHaveBeenCalledTimes(2)
 
         jest.advanceTimersByTime(THIRD_INTERVAL_MS - 1000) // just under third interval

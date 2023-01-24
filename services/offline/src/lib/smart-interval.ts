@@ -9,6 +9,22 @@ const throwErrorIfNoCallbackIsProvided = (): void => {
 
 // todo: remove console logs; though they are useful for testing
 
+// This is just a test of repeated intervals to see if they work in the jest
+// environment -- see the test in ./__tests__/smart-interval.test.ts
+// todo: remove after testing
+export const dumbInterval = ({ callback }: { callback: () => void }) => {
+    let currentDelay = DEFAULT_INITIAL_DELAY_MS
+    function doTheThing() {
+        console.log('doing the thing', { currentDelay })
+        setTimeout(() => {
+            currentDelay = currentDelay * DEFAULT_INCREMENT_FACTOR
+            callback()
+            doTheThing()
+        }, currentDelay)
+    }
+    doTheThing()
+}
+
 export default function createSmartInterval({
     initialDelay = DEFAULT_INITIAL_DELAY_MS,
     maxDelay = DEFAULT_MAX_DELAY_MS,
@@ -69,6 +85,9 @@ export default function createSmartInterval({
             // and start process over again
             clearTimeoutAndStart()
         }, state.delay)
+
+        // Check to see if the state.timeout var actually got assigned a new value
+        console.log('new timeout set', { timeout: state.timeout })
     }
 
     /**
