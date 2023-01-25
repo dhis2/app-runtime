@@ -61,9 +61,5 @@ export const PluginWrapper = ({
         return () => listener.cancel()
     }, [receivePropsFromParent])
 
-    useEffect(() => {
-        console.log('pluginwrapper rerender')
-    })
-
     return children({ ...propsFromParent })
 }

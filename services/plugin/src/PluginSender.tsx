@@ -57,7 +57,6 @@ export const PluginSender = ({
     )
 
     useEffect(() => {
-        console.log('pluginsender props update')
         if (iframeRef?.current) {
             const iframeProps = { ...propsToPass, updateMissingProps }
 
