@@ -1,6 +1,6 @@
 // Exported for tests
 // todo: adjust defaults (e.g. 30 sec/5 min/1.5x)
-export const DEFAULT_INITIAL_DELAY_MS = 5000 // 5 sec
+export const DEFAULT_INITIAL_DELAY_MS = 2000 // 2 sec
 export const DEFAULT_MAX_DELAY_MS = 1000 * 30 // 30 sec
 export const DEFAULT_INCREMENT_FACTOR = 2
 const throwErrorIfNoCallbackIsProvided = (): void => {
@@ -47,11 +47,11 @@ export default function createSmartInterval({
         state.delay = newDelay
     }
 
-    async function invokeCallbackAndHandleDelay(): Promise<void> {
+    function invokeCallbackAndHandleDelay(): void {
         // Increment delay before calling callback, so callback can potentially
         // reset the delay to initial before starting the next timeout
         incrementDelay()
-        await callback()
+        callback()
     }
 
     function clearTimeoutAndStart(): void {
@@ -64,7 +64,7 @@ export default function createSmartInterval({
 
         // A timeout is used instead of an interval for handling slow execution
         // https://developer.mozilla.org/en-US/docs/Web/API/setInterval#ensure_that_execution_duration_is_shorter_than_interval_frequency
-        state.timeout = setTimeout(async () => {
+        state.timeout = setTimeout(function callbackAndRestart() {
             if (state.paused) {
                 console.log('entering regular standby')
 
@@ -72,8 +72,8 @@ export default function createSmartInterval({
                 // `resume()` is called (see its definition below).
                 // The timer will not be started again until the standbyCallback
                 // is invoked.
-                state.standbyCallback = async () => {
-                    await invokeCallbackAndHandleDelay()
+                state.standbyCallback = () => {
+                    invokeCallbackAndHandleDelay()
                     clearTimeoutAndStart()
                 }
 
@@ -81,13 +81,10 @@ export default function createSmartInterval({
             }
 
             // Otherwise, invoke callback
-            await invokeCallbackAndHandleDelay()
+            invokeCallbackAndHandleDelay()
             // and start process over again
             clearTimeoutAndStart()
         }, state.delay)
-
-        // Check to see if the state.timeout var actually got assigned a new value
-        console.log('new timeout set', { timeout: state.timeout })
     }
 
     /**
@@ -116,7 +113,7 @@ export default function createSmartInterval({
      * elapses while paused, the regular standby is entered, overwriting this
      * partial standby.
      */
-    async function invokeCallbackImmediately(): Promise<void> {
+    function invokeCallbackImmediately(): void {
         if (state.paused) {
             if (state.standbyCallback === null) {
                 // If there is not an existing standbyCallback,
@@ -128,9 +125,9 @@ export default function createSmartInterval({
                 // timeout delay gets incremented appropriately.
                 console.log('entering standby without timer increment')
 
-                state.standbyCallback = async () => {
+                state.standbyCallback = () => {
                     // Invoke callback and start timer without incrementing
-                    await callback()
+                    callback()
                     clearTimeoutAndStart()
                 }
             }
@@ -140,7 +137,7 @@ export default function createSmartInterval({
         }
 
         // Invoke callback and start timer without incrementing
-        await callback()
+        callback()
         clearTimeoutAndStart()
     }
 
@@ -195,10 +192,14 @@ export default function createSmartInterval({
         clearTimeoutAndStart()
     }
 
-    function resetDelayToInitial(): void {
-        console.log('resetting backoff to initialDelay')
+    /**
+     * Cancels the current timeout and starts a new one with the initial delay
+     */
+    function reset(): void {
+        console.log('resetting interval from beginning')
 
         state.delay = initialDelay
+        clearTimeoutAndStart()
     }
 
     return {
@@ -208,6 +209,6 @@ export default function createSmartInterval({
         resume,
         invokeCallbackImmediately,
         snooze,
-        resetDelayToInitial,
+        reset,
     }
 }

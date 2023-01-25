@@ -59,9 +59,9 @@ export const Dhis2ConnectionStatusProvider = ({
         // use 'set' with a function as param to get latest isConnected
         // without needing it as a dependency for useCallback
         setIsConnected((prevIsConnected) => {
-            // if value changed, reset ping backoff to initial
+            // if value changed, reset ping interval to initial delay
             if (newIsConnected !== prevIsConnected) {
-                smartIntervalRef.current?.resetDelayToInitial()
+                smartIntervalRef.current?.reset()
             }
             // if disconnected and EITHER 1. coming from connected or
             // 2. there is no last-connect val, update the val in localStorage
@@ -96,7 +96,6 @@ export const Dhis2ConnectionStatusProvider = ({
 
     const smartIntervalRef = useRef(
         createSmartInterval({
-            initialDelay: 5000,
             // don't ping if window isn't focused or visible
             initialPauseValue:
                 !document.hasFocus() || document.visibilityState !== 'visible',
