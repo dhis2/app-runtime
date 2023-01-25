@@ -25,6 +25,7 @@ jest.mock('../use-ping-query.ts', () => ({
 const FIRST_INTERVAL_MS = DEFAULT_INITIAL_DELAY_MS
 const SECOND_INTERVAL_MS = FIRST_INTERVAL_MS * DEFAULT_INCREMENT_FACTOR
 const THIRD_INTERVAL_MS = SECOND_INTERVAL_MS * DEFAULT_INCREMENT_FACTOR
+const FOURTH_INTERVAL_MS = THIRD_INTERVAL_MS * DEFAULT_INCREMENT_FACTOR
 
 /**
  * Tools available:
@@ -87,7 +88,7 @@ describe('basic behavior', () => {
         expect(result.current.lastConnected).toBe(null)
     })
 
-    test.only('the ping delay increases when idle', async () => {
+    test.only('the ping delay increases when idle until the max is reached', async () => {
         const setTimeoutSpy = jest.spyOn(window, 'setTimeout')
 
         const { result } = renderHook(() => useDhis2ConnectionStatus(), {
@@ -101,81 +102,62 @@ describe('basic behavior', () => {
             FIRST_INTERVAL_MS
         )
 
-        // Just under first interval
+        // 500ms before first interval
         jest.advanceTimersByTime(FIRST_INTERVAL_MS - 500)
         expect(mockPing).not.toHaveBeenCalled()
-
-        // Just over first interval
-        // jest.advanceTimersByTime(1000)
-        jest.runOnlyPendingTimers()
+        // 500ms after first interval
+        jest.advanceTimersByTime(1000)
         expect(mockPing).toHaveBeenCalledTimes(1)
-
-        // ! This fails, despite setTimeout seeming to be called based on
-        // ! 'timeout' variable incrementing (look for 'new timeout set')
-        // ! in the console
-        // expect(setTimeoutSpy).toHaveBeenLastCalledWith(
-        //     expect.any(Function),
-        //     SECOND_INTERVAL_MS
-        // )
-
-        // just under second interval
-        jest.advanceTimersByTime(SECOND_INTERVAL_MS - 1000)
-        expect(mockPing).toHaveBeenCalledTimes(1)
-
-        // Just over second interval
-        jest.advanceTimersByTime(100000) // (basically make sure it's enough time while debugging this test)
-        // ! This assertion fails:
-        expect(mockPing).toHaveBeenCalledTimes(2)
-
-        jest.advanceTimersByTime(THIRD_INTERVAL_MS - 1000) // just under third interval
-        expect(mockPing).toHaveBeenCalledTimes(2)
-
-        jest.advanceTimersByTime(1000) // Just over third interval
-        expect(mockPing).toHaveBeenCalledTimes(3)
-
-        // ...etc
-    })
-
-    test.skip('the delay stops incrementing once it reaches a max', () => {
-        const { result } = renderHook(() => useDhis2ConnectionStatus(), {
-            wrapper: wrapper,
-        })
-
-        // The length of the Nth interval is:
-        // initialDelay * incrementFactor ^ (N - 1)
-        // Using some algebra and the law of logs, the Nth interval
-        // which is longer than the max delay is:
-        // N >= (ln (maxDelay / initialDelay) / ln (incrementFactor)) + 1
-        //  - then use Math.ceil to handle the 'greater than' effect
-        // ~ ~ ~
-        // Math! ⚛️ 🤓
-        const intervalsToReachMaxDelay = Math.ceil(
-            Math.log(DEFAULT_MAX_DELAY_MS / DEFAULT_INITIAL_DELAY_MS) /
-                Math.log(DEFAULT_INCREMENT_FACTOR) +
-                1
+        expect(setTimeoutSpy).toHaveBeenLastCalledWith(
+            expect.any(Function),
+            SECOND_INTERVAL_MS
         )
 
-        // Elapse enough intervals to get to the max delay (+1 just to be sure)
-        for (let i = 0; i <= intervalsToReachMaxDelay; i++) {
-            jest.runAllTimers()
-        }
-
-        // reset ping mock? or, make a note of how many times mock has been called now
-        expect(mockPing).toHaveBeenCalledTimes(5)
-
-        jest.advanceTimersByTime(DEFAULT_MAX_DELAY_MS - 500)
-        // expect mock to not have been called (or num times hasn't changed)
+        // 500ms before second interval
+        jest.advanceTimersByTime(SECOND_INTERVAL_MS - 1000)
+        expect(mockPing).toHaveBeenCalledTimes(1)
+        // 500ms after second interval
         jest.advanceTimersByTime(1000)
-        // expect mock to be called one more time
+        expect(mockPing).toHaveBeenCalledTimes(2)
+        expect(setTimeoutSpy).toHaveBeenLastCalledWith(
+            expect.any(Function),
+            THIRD_INTERVAL_MS
+        )
 
-        // Two more times, check if the ping delay is the max each time
-        for (let i = 1; i < 3; i++) {
-            // Note time is different than above
-            jest.advanceTimersByTime(DEFAULT_MAX_DELAY_MS - 1000)
-            // expect mock to have been called `i` times (or num times hasn't changed)
-            jest.advanceTimersByTime(1000)
-            // expect mock to be called one more time (i+1)
-        }
+        // 500ms before third interval
+        jest.advanceTimersByTime(THIRD_INTERVAL_MS - 1000)
+        expect(mockPing).toHaveBeenCalledTimes(2)
+        // 500ms after third interval
+        jest.advanceTimersByTime(1000)
+        expect(mockPing).toHaveBeenCalledTimes(3)
+        expect(setTimeoutSpy).toHaveBeenLastCalledWith(
+            expect.any(Function),
+            FOURTH_INTERVAL_MS
+        )
+
+        // 500ms before fourth interval
+        jest.advanceTimersByTime(FOURTH_INTERVAL_MS - 1000)
+        expect(mockPing).toHaveBeenCalledTimes(3)
+        // 500ms after fourth interval
+        jest.advanceTimersByTime(1000)
+        expect(mockPing).toHaveBeenCalledTimes(4)
+        expect(setTimeoutSpy).toHaveBeenLastCalledWith(
+            expect.any(Function),
+            // NOTE: no longer incrementing, max has been reached
+            DEFAULT_MAX_DELAY_MS
+        )
+
+        // 500ms before fifth interval
+        jest.advanceTimersByTime(DEFAULT_MAX_DELAY_MS - 1000)
+        expect(mockPing).toHaveBeenCalledTimes(4)
+        // 500ms after fifth interval
+        jest.advanceTimersByTime(1000)
+        expect(mockPing).toHaveBeenCalledTimes(5)
+        expect(setTimeoutSpy).toHaveBeenLastCalledWith(
+            expect.any(Function),
+            // NOTE: still not incrementing, max has been reached
+            DEFAULT_MAX_DELAY_MS
+        )
     })
 })
 
