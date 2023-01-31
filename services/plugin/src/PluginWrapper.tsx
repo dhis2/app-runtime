@@ -1,5 +1,6 @@
 import postRobot from 'post-robot'
-import { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
+import { PluginErrorBoundary } from './PluginErrorBoundary'
 
 export const PluginWrapper = ({
     requiredProps,
@@ -61,5 +62,9 @@ export const PluginWrapper = ({
         return () => listener.cancel()
     }, [receivePropsFromParent])
 
-    return children({ ...propsFromParent })
+    return (
+        <PluginErrorBoundary>
+            {children({ ...propsFromParent })}
+        </PluginErrorBoundary>
+    )
 }
