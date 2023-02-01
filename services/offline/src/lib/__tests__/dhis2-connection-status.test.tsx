@@ -81,7 +81,7 @@ beforeEach(() => {
     jest.useFakeTimers()
     // standby state is initialized to window visibility, which is 'false' by
     // default in tests. mock that here:
-    jest.spyOn(document, 'hasFocus').mockReturnValueOnce(true)
+    jest.spyOn(document, 'hasFocus').mockReturnValue(true)
 })
 afterEach(() => {
     jest.clearAllMocks()
@@ -199,9 +199,7 @@ describe('pings are delayed when offlineInterface sends status updates', () => {
 
     test('if the status is the same, the ping delay is reset to the current', () => {
         const setTimeoutSpy = jest.spyOn(window, 'setTimeout')
-        renderHook(() => useDhis2ConnectionStatus(), {
-            wrapper: wrapper,
-        })
+        renderHook(() => useDhis2ConnectionStatus(), { wrapper })
 
         // get onUpdate function passed to mockOfflineInterface
         const { onUpdate } =
@@ -268,9 +266,9 @@ describe('the ping interval resets to initial if the detected connection status 
             THIRD_INTERVAL_MS
         )
 
-        console.log('TRIGGERING ACT -----')
         // Trigger connection status change ('await' here fixes 'act' warnings)
         await act(async () => {
+            console.log('TRIGGERING ACT -----')
             onUpdate({ isConnected: false })
         })
 
@@ -345,14 +343,60 @@ describe('the ping interval resets to initial if the detected connection status 
 })
 
 describe('pings aren\'t sent when the app is not focused; "standby behavior"', () => {
-    test.todo("it doesn't ping when the app loses focus and is never refocused")
-    test.todo("it doesn't ping if the app is never focused (even upon startup)")
-    test.todo(
-        'if the app is defocused and refocused between two pings, pings happen normally'
-    )
-    test.todo(
-        'if the app is defocused until after a scheduled ping, that ping is not sent until the app is refocused'
-    )
+    test("it doesn't ping when the app loses focus and is never refocused", () => {
+        renderHook(() => useDhis2ConnectionStatus(), { wrapper })
+
+        window.dispatchEvent(new Event('blur'))
+
+        // This recursively executes all timers -- if it's not in standby,
+        // it will enter a loop
+        jest.runAllTimers()
+
+        expect(mockPing).not.toHaveBeenCalled()
+    })
+
+    test("it doesn't ping if the app is never focused (even upon startup)", () => {
+        jest.spyOn(document, 'hasFocus').mockReturnValue(false)
+        renderHook(() => useDhis2ConnectionStatus(), { wrapper })
+
+        // This recursively executes all timers
+        jest.runAllTimers()
+
+        expect(mockPing).not.toHaveBeenCalled()
+    })
+
+    test('if the app is defocused and refocused between two pings, pings happen normally', () => {
+        renderHook(() => useDhis2ConnectionStatus(), { wrapper })
+
+        window.dispatchEvent(new Event('blur'))
+        // wait half of the first interval
+        jest.advanceTimersByTime(FIRST_INTERVAL_MS / 2)
+        window.dispatchEvent(new Event('focus'))
+
+        // wait for just over the second half of the first interval
+        jest.advanceTimersByTime(FIRST_INTERVAL_MS / 2 + 50)
+
+        // ping should execute normally
+        expect(mockPing).toHaveBeenCalledTimes(1)
+    })
+
+    test('if the app is defocused until after a scheduled ping, that ping is not sent until the app is refocused', () => {
+        renderHook(() => useDhis2ConnectionStatus(), { wrapper })
+
+        window.dispatchEvent(new Event('blur'))
+
+        // wait for twice the first interval
+        jest.advanceTimersByTime(FIRST_INTERVAL_MS * 2)
+
+        // no pings should be sent since it's in standby
+        expect(mockPing).not.toHaveBeenCalled()
+
+        // refocus the page
+        window.dispatchEvent(new Event('focus'))
+
+        // ping should execute immediately
+        expect(mockPing).toHaveBeenCalledTimes(1)
+    })
 })
 
 describe('it pings when an offline event is detected', () => {
