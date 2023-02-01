@@ -325,13 +325,14 @@ describe('the ping interval resets to initial if the detected connection status 
         expect(result.current.isConnected).toBe(false)
         expect(mockPing).toHaveBeenCalledTimes(3)
         // asserting on setTimeoutSpy is flaky because something else
-        // in the test suite uses it
+        // in the test suite uses it with a '_flushCallback' function
         // expect(setTimeoutSpy).toHaveBeenLastCalledWith(
         //     expect.any(Function),
         //     FIRST_INTERVAL_MS
         // )
 
-        // ...instead, advance one "first interval" to test that the delay is correct
+        // ...instead, advance one "first interval" to test that the delay
+        // delay reset correctly
         jest.advanceTimersByTime(FIRST_INTERVAL_MS + 50)
         // Expect another execution
         expect(mockPing).toHaveBeenCalledTimes(4)
@@ -400,23 +401,171 @@ describe('pings aren\'t sent when the app is not focused; "standby behavior"', (
 })
 
 describe('it pings when an offline event is detected', () => {
-    test.todo('if the app is focused, it pings immediately')
+    test('if the app is focused, it pings immediately', () => {
+        renderHook(() => useDhis2ConnectionStatus(), { wrapper })
 
-    test.todo(
-        'if the app is not focused, it does not ping immediately, but pings immediately when refocused'
-    )
+        window.dispatchEvent(new Event('offline'))
+
+        // ping should execute immediately
+        expect(mockPing).toHaveBeenCalledTimes(1)
+    })
+
+    test('if the app is not focused, it does not ping immediately, but pings immediately when refocused', () => {
+        renderHook(() => useDhis2ConnectionStatus(), { wrapper })
+
+        window.dispatchEvent(new Event('blur'))
+        window.dispatchEvent(new Event('offline'))
+
+        // ping should not execute, but should be queued for refocus
+        expect(mockPing).toHaveBeenCalledTimes(0)
+
+        // upon refocus, the ping should execute immediately
+        // despite a full interval not elapsing
+        window.dispatchEvent(new Event('focus'))
+        expect(mockPing).toHaveBeenCalledTimes(1)
+    })
 
     describe('interval handling when pinging upon refocusing after offline event is detected while not focused', () => {
-        test.todo(
-            'if the app is refocused before the next "scheduled" ping, the timeout to the next ping is not increased'
-        )
-        test.todo('same as previous, but interval is reset if status changes')
-        test.todo(
-            'if the app is refocused after the next "scheduled" ping, increase the interval to the next ping if the status hasn\'t changed'
-        )
-        test.todo(
-            'the same as previous, but the interval is reset if status has changed'
-        )
+        test('if the app is refocused before the next "scheduled" ping, the timeout to the next ping is not increased', () => {
+            const setTimeoutSpy = jest.spyOn(window, 'setTimeout')
+            renderHook(() => useDhis2ConnectionStatus(), { wrapper })
+
+            window.dispatchEvent(new Event('blur'))
+            window.dispatchEvent(new Event('offline'))
+            window.dispatchEvent(new Event('focus'))
+            // upon refocus, the ping should execute immediately
+            // despite a full interval not elapsing
+            expect(mockPing).toHaveBeenCalledTimes(1)
+
+            // The delay should be the initial again -- it shouldn't increment
+            expect(setTimeoutSpy).toHaveBeenLastCalledWith(
+                expect.any(Function),
+                FIRST_INTERVAL_MS
+            )
+        })
+
+        test('same as previous, but interval is reset if status changes', async () => {
+            const setTimeoutSpy = jest.spyOn(window, 'setTimeout')
+            const { result } = renderHook(() => useDhis2ConnectionStatus(), {
+                wrapper: wrapper,
+            })
+
+            expect(result.current.isConnected).toBe(true)
+
+            // Get to third interval
+            jest.runOnlyPendingTimers()
+            jest.runOnlyPendingTimers()
+            expect(mockPing).toHaveBeenCalledTimes(2)
+            expect(setTimeoutSpy).toHaveBeenLastCalledWith(
+                expect.any(Function),
+                THIRD_INTERVAL_MS
+            )
+
+            // Mock a network error
+            mockPing.mockImplementationOnce(() =>
+                Promise.reject({
+                    message: 'this is a network error',
+                    type: 'network',
+                })
+            )
+
+            // Blur, trigger 'offline' event, and refocus to trigger a ping
+            window.dispatchEvent(new Event('blur'))
+            window.dispatchEvent(new Event('offline'))
+            await act(async () => {
+                window.dispatchEvent(new Event('focus'))
+            })
+
+            expect(result.current.isConnected).toBe(false)
+            expect(mockPing).toHaveBeenCalledTimes(3)
+
+            // asserting on setTimeoutSpy is flaky here because something else
+            // in the test suite uses it with a '_flushCallback' function
+            // ...instead, advance one "first interval" to test that the
+            // delay reset correctly
+            jest.advanceTimersByTime(FIRST_INTERVAL_MS + 50)
+            // Expect another execution
+            expect(mockPing).toHaveBeenCalledTimes(4)
+            expect(setTimeoutSpy).toHaveBeenLastCalledWith(
+                expect.any(Function),
+                SECOND_INTERVAL_MS
+            )
+        })
+
+        test('if the app is refocused after the next "scheduled" ping, increase the interval to the next ping if the status hasn\'t changed', () => {
+            const setTimeoutSpy = jest.spyOn(window, 'setTimeout')
+            renderHook(() => useDhis2ConnectionStatus(), { wrapper })
+
+            window.dispatchEvent(new Event('blur'))
+            window.dispatchEvent(new Event('offline'))
+
+            // Elapse twice one interval - it should enter full standby
+            jest.advanceTimersByTime(FIRST_INTERVAL_MS * 2)
+            expect(mockPing).toHaveBeenCalledTimes(0)
+
+            // Refocusing should trigger a ping from the full standby,
+            // not just the offline event
+            window.dispatchEvent(new Event('focus'))
+            expect(mockPing).toHaveBeenCalledTimes(1)
+
+            // The delay should increment this time, as it would from normal standby
+            expect(setTimeoutSpy).toHaveBeenLastCalledWith(
+                expect.any(Function),
+                SECOND_INTERVAL_MS
+            )
+        })
+
+        test('the same as previous, but the interval is reset if status has changed', async () => {
+            const setTimeoutSpy = jest.spyOn(window, 'setTimeout')
+            const { result } = renderHook(() => useDhis2ConnectionStatus(), {
+                wrapper: wrapper,
+            })
+
+            expect(result.current.isConnected).toBe(true)
+
+            // Get to third interval
+            jest.runOnlyPendingTimers()
+            jest.runOnlyPendingTimers()
+            expect(mockPing).toHaveBeenCalledTimes(2)
+            expect(setTimeoutSpy).toHaveBeenLastCalledWith(
+                expect.any(Function),
+                THIRD_INTERVAL_MS
+            )
+
+            // Blur and elapse twice the third interval --
+            // it should enter full standby
+            window.dispatchEvent(new Event('blur'))
+            window.dispatchEvent(new Event('offline'))
+            jest.advanceTimersByTime(THIRD_INTERVAL_MS * 2)
+
+            // Mock a network error for the next ping
+            mockPing.mockImplementationOnce(() =>
+                Promise.reject({
+                    message: 'this is a network error',
+                    type: 'network',
+                })
+            )
+
+            // Trigger a ping by refocusing
+            await act(async () => {
+                window.dispatchEvent(new Event('focus'))
+            })
+
+            expect(result.current.isConnected).toBe(false)
+            expect(mockPing).toHaveBeenCalledTimes(3)
+
+            // asserting on setTimeoutSpy is flaky here because something else
+            // in the test suite uses it with a '_flushCallback' function
+            // ...instead, advance one "first interval" to test that the
+            // delay reset correctly
+            jest.advanceTimersByTime(FIRST_INTERVAL_MS + 50)
+            // Expect another execution
+            expect(mockPing).toHaveBeenCalledTimes(4)
+            expect(setTimeoutSpy).toHaveBeenLastCalledWith(
+                expect.any(Function),
+                SECOND_INTERVAL_MS
+            )
+        })
     })
 })
 
