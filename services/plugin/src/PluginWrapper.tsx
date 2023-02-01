@@ -63,7 +63,7 @@ export const PluginWrapper = ({
     }, [receivePropsFromParent])
 
     return (
-        <PluginErrorBoundary>
+        <PluginErrorBoundary onCustomError={propsFromParent?.onError || null}>
             {children({ ...propsFromParent })}
         </PluginErrorBoundary>
     )
