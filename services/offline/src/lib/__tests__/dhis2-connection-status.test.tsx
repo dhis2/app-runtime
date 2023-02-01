@@ -56,6 +56,19 @@ const FOURTH_INTERVAL_MS = THIRD_INTERVAL_MS * DEFAULT_INCREMENT_FACTOR
  * * Mock setTimeout and can check the latest 'called with' second arg
  */
 
+// Math:
+// The length of the Nth interval is:
+// initialDelay * incrementFactor ^ (N - 1)
+// Using some algebra and the law of logs, the Nth interval
+// which is longer than the max delay is:
+// N >= (ln (maxDelay / initialDelay) / ln (incrementFactor)) + 1
+//  - then use Math.ceil to handle the 'greater than' effect
+const INTERVALS_TO_REACH_MAX_DELAY = Math.ceil(
+    Math.log(DEFAULT_MAX_DELAY_MS / DEFAULT_INITIAL_DELAY_MS) /
+        Math.log(DEFAULT_INCREMENT_FACTOR) +
+        1
+)
+
 const wrapper: React.FC = ({ children }) => (
     <CustomDataProvider data={{}}>
         <OfflineProvider offlineInterface={mockOfflineInterface}>
@@ -88,7 +101,7 @@ describe('basic behavior', () => {
         expect(result.current.lastConnected).toBe(null)
     })
 
-    test.only('the ping delay increases when idle until the max is reached', async () => {
+    test('the ping delay increases when idle until the max is reached', async () => {
         const setTimeoutSpy = jest.spyOn(window, 'setTimeout')
 
         const { result } = renderHook(() => useDhis2ConnectionStatus(), {
@@ -158,18 +171,21 @@ describe('basic behavior', () => {
             // NOTE: still not incrementing, max has been reached
             DEFAULT_MAX_DELAY_MS
         )
+
+        // todo: adapt to changing defaults using INTERVALS_TO_REACH_MAX_DELAY
     })
 })
 
 describe('pings are delayed when offlineInterface sends status updates', () => {
-    test.skip('if the status is the same', () => {
-        const { result } = renderHook(() => useDhis2ConnectionStatus(), {
+    test('updates postpone pings', () => {
+        renderHook(() => useDhis2ConnectionStatus(), {
             wrapper: wrapper,
         })
 
         // get onUpdate function passed to mockOfflineInterface
         const { onUpdate } =
-            mockOfflineInterface.subscribeToDhis2ConnectionStatus.mock.calls[0]
+            mockOfflineInterface.subscribeToDhis2ConnectionStatus.mock
+                .calls[0][0]
 
         // invoke it at a few intervals, before pings are scheduled
         for (let i = 0; i < 3; i++) {
@@ -178,23 +194,30 @@ describe('pings are delayed when offlineInterface sends status updates', () => {
         }
 
         // expect ping mock not to have been called
+        expect(mockPing).not.toHaveBeenCalled
     })
 
-    test.skip('the delay stays the same', () => {
-        const { result } = renderHook(() => useDhis2ConnectionStatus(), {
+    test('if the status is the same, the ping delay is reset to the current', () => {
+        const setTimeoutSpy = jest.spyOn(window, 'setTimeout')
+        renderHook(() => useDhis2ConnectionStatus(), {
             wrapper: wrapper,
         })
 
         // get onUpdate function passed to mockOfflineInterface
         const { onUpdate } =
-            mockOfflineInterface.subscribeToDhis2ConnectionStatus.mock.calls[0]
+            mockOfflineInterface.subscribeToDhis2ConnectionStatus.mock
+                .calls[0][0]
 
         // let two intervals pass to allow delay to increase
-        jest.runAllTimers()
-        jest.runAllTimers()
+        jest.advanceTimersByTime(FIRST_INTERVAL_MS + 50)
+        jest.advanceTimersByTime(SECOND_INTERVAL_MS)
 
         // ...delay should now be 'THIRD_INTERVAL_MS'
-        // todo: assert on setTimeout mock
+        expect(setTimeoutSpy).toHaveBeenLastCalledWith(
+            expect.any(Function),
+            THIRD_INTERVAL_MS
+        )
+        expect(mockPing).toHaveBeenCalledTimes(2)
 
         // simulate updates from the SW/offline interface several times
         // invoke it at a few intervals, before pings are scheduled
@@ -203,21 +226,29 @@ describe('pings are delayed when offlineInterface sends status updates', () => {
             onUpdate({ isConnected: true })
         }
 
-        // ping mock should only have been called twice
-        // expect(pingMock).toHaveBeenCalledTimes(2)
+        // ping mock should STILL only have been called twice
+        expect(mockPing).toHaveBeenCalledTimes(2)
 
         // the delay should still be THIRD_INTERVAL_MS
-        // todo: assert on setTimeout mock
+        expect(setTimeoutSpy).toHaveBeenLastCalledWith(
+            expect.any(Function),
+            THIRD_INTERVAL_MS
+        )
 
+        // The timer works as normal for the next tick --
+        // 500ms before the fourth interval:
         jest.advanceTimersByTime(THIRD_INTERVAL_MS - 500)
-        // expect(pingMock).toHaveBeenCalledTimes(2)
+        expect(mockPing).toHaveBeenCalledTimes(2)
+        // 500ms after the fourth interval
         jest.advanceTimersByTime(1000)
-        // expect(pingMock).toHaveBeenCalledTimes(3)
+        expect(mockPing).toHaveBeenCalledTimes(3)
     })
 })
 
 describe('the ping interval resets to initial if the detected connection status changes', () => {
-    test.todo('this happens when the offline interface issues an update')
+    test.skip('this happens when the offline interface issues an update', () => {
+        //todo
+    })
     test.todo('this happens if a ping detects a status change')
 })
 

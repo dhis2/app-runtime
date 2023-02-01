@@ -39,5 +39,8 @@ export const mockOfflineInterface = {
     startRecording: successfulRecordingMock,
     getCachedSections: jest.fn().mockResolvedValue([]),
     removeSection: jest.fn().mockResolvedValue(true),
-    subscribeToDhis2ConnectionStatus: jest.fn().mockReturnValue(() => ''),
+    // returns an unsubscribe function
+    subscribeToDhis2ConnectionStatus: jest
+        .fn()
+        .mockReturnValue(() => undefined),
 }
