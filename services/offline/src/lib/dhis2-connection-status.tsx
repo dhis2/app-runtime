@@ -8,7 +8,7 @@ import React, {
     useContext,
 } from 'react'
 import { useOfflineInterface } from './offline-interface'
-import createSmartInterval from './smart-interval'
+import createSmartInterval, { SmartInterval } from './smart-interval'
 import { usePingQuery } from './use-ping-query'
 
 // Utils for saving 'last connected' datetime in local storage
@@ -50,6 +50,7 @@ export const Dhis2ConnectionStatusProvider = ({
     const [isConnected, setIsConnected] = useState(true)
     const offlineInterface = useOfflineInterface()
     const ping = usePingQuery()
+    const smartIntervalRef = useRef(null as null | SmartInterval)
 
     /**
      * Update state and potentially reset ping backoff and update
@@ -94,15 +95,6 @@ export const Dhis2ConnectionStatusProvider = ({
             })
     }, [ping, updateConnectedState])
 
-    const smartIntervalRef = useRef(
-        createSmartInterval({
-            // don't ping if window isn't focused or visible
-            initialPauseValue:
-                !document.hasFocus() || document.visibilityState !== 'visible',
-            callback: pingAndHandleStatus,
-        })
-    )
-
     /** Called when SW reports updates from incidental network traffic */
     const onUpdate = useCallback(
         ({ isConnected: newIsConnected }) => {
@@ -116,8 +108,15 @@ export const Dhis2ConnectionStatusProvider = ({
     )
 
     useEffect(() => {
-        const smartInterval = smartIntervalRef.current
-        smartInterval.start()
+        // Only create the smart interval once
+        const smartInterval = createSmartInterval({
+            // don't ping if window isn't focused or visible
+            initialPauseValue:
+                !document.hasFocus() || document.visibilityState !== 'visible',
+            callback: pingAndHandleStatus,
+        })
+        smartIntervalRef.current = smartInterval
+        // smartInterval.start()
 
         const handleBlur = () => smartInterval.pause()
         const handleFocus = () => smartInterval.resume()

@@ -25,18 +25,30 @@ export const dumbInterval = ({ callback }: { callback: () => void }) => {
     doTheThing()
 }
 
+export interface SmartInterval {
+    clear: () => void
+    pause: () => void
+    resume: () => void
+    invokeCallbackImmediately: () => void
+    snooze: () => void
+    reset: () => void
+}
+
 export default function createSmartInterval({
     initialDelay = DEFAULT_INITIAL_DELAY_MS,
     maxDelay = DEFAULT_MAX_DELAY_MS,
     delayIncrementFactor = DEFAULT_INCREMENT_FACTOR,
     initialPauseValue = false,
     callback = throwErrorIfNoCallbackIsProvided,
-} = {}) {
+} = {}): SmartInterval {
     const state = {
         paused: initialPauseValue,
         delay: initialDelay,
         // Timeout types are weird; this dummy timeout helps fix them:
-        timeout: setTimeout(() => '', 0),
+        // (named to help debugging in tests)
+        timeout: setTimeout(function dummyTimeout() {
+            return
+        }, 0),
         standbyCallback: null as null | (() => void),
     }
 
@@ -202,8 +214,10 @@ export default function createSmartInterval({
         clearTimeoutAndStart()
     }
 
+    // Start the timer!
+    start()
+
     return {
-        start,
         clear,
         pause,
         resume,
