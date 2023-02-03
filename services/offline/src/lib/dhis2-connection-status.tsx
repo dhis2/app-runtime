@@ -12,7 +12,7 @@ import createSmartInterval, { SmartInterval } from './smart-interval'
 import { usePingQuery } from './use-ping-query'
 
 // Utils for saving 'last connected' datetime in local storage
-const lastConnectedKey = 'dhis2.lastConnected'
+export const lastConnectedKey = 'dhis2.lastConnected'
 const updateLastConnected = () => {
     localStorage.setItem(lastConnectedKey, new Date(Date.now()).toUTCString())
 }
@@ -47,7 +47,7 @@ export const Dhis2ConnectionStatusProvider = ({
 }: {
     children: React.ReactNode
 }): JSX.Element => {
-    const [isConnected, setIsConnected] = useState(true)
+    const [isConnected, setIsConnected] = useState()
     const offlineInterface = useOfflineInterface()
     const ping = usePingQuery()
     const smartIntervalRef = useRef(null as null | SmartInterval)
@@ -60,6 +60,8 @@ export const Dhis2ConnectionStatusProvider = ({
         // use 'set' with a function as param to get latest isConnected
         // without needing it as a dependency for useCallback
         setIsConnected((prevIsConnected) => {
+            // todo: remove log after testing
+            console.log('updating state:', { prevIsConnected, newIsConnected })
             // if value changed, reset ping interval to initial delay
             if (newIsConnected !== prevIsConnected) {
                 smartIntervalRef.current?.reset()
@@ -116,7 +118,6 @@ export const Dhis2ConnectionStatusProvider = ({
             callback: pingAndHandleStatus,
         })
         smartIntervalRef.current = smartInterval
-        // smartInterval.start()
 
         const handleBlur = () => smartInterval.pause()
         const handleFocus = () => smartInterval.resume()
@@ -153,8 +154,9 @@ export const Dhis2ConnectionStatusProvider = ({
     // Memoize this value to prevent unnecessary rerenders of context provider
     const contextValue = useMemo(
         () => ({
-            isConnected,
-            isDisconnected: !isConnected,
+            // let the returned value be 'true' for the moment it's still undefined internally
+            isConnected: isConnected ?? true,
+            isDisconnected: !(isConnected ?? true),
             // Only evaluate if disconnected, since local storage is synchronous and disk-based
             lastConnected: !isConnected ? getLastConnected() : null,
         }),
