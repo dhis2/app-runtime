@@ -3,7 +3,10 @@ import { renderHook, act } from '@testing-library/react-hooks'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { mockOfflineInterface } from '../../utils/test-mocks'
-import { useDhis2ConnectionStatus } from '../dhis2-connection-status'
+import {
+    lastConnectedKey,
+    useDhis2ConnectionStatus,
+} from '../dhis2-connection-status'
 import { OfflineProvider } from '../offline-provider'
 import {
     DEFAULT_INCREMENT_FACTOR,
@@ -26,25 +29,6 @@ const FIRST_INTERVAL_MS = DEFAULT_INITIAL_DELAY_MS
 const SECOND_INTERVAL_MS = FIRST_INTERVAL_MS * DEFAULT_INCREMENT_FACTOR
 const THIRD_INTERVAL_MS = SECOND_INTERVAL_MS * DEFAULT_INCREMENT_FACTOR
 const FOURTH_INTERVAL_MS = THIRD_INTERVAL_MS * DEFAULT_INCREMENT_FACTOR
-
-/**
- * Tools available:
- * * Timers
- * * Offline Interface mock (capture onUpdate callback)
- * * Blur, focus, and offline event listeners on window
- * * Mock data engine
- *
- */
-
-/**
- * Inputs:
- * useDataEngine => engine.query
- * useOfflineInterface => offlineInterface.sTDCS
- * time
- *
- * Outputs:
- * isConnected, isDisconnected, lastConnected
- */
 
 /**
  * To do:
@@ -78,6 +62,7 @@ const wrapper: React.FC = ({ children }) => (
 )
 
 beforeEach(() => {
+    // use fake timers
     jest.useFakeTimers()
     // standby state is initialized to window visibility, which is 'false' by
     // default in tests. mock that here:
@@ -317,7 +302,6 @@ describe('the ping interval resets to initial if the detected connection status 
             })
         )
 
-        // Trigger connection status change ('await' here fixes 'act' warnings)
         await act(async () => {
             jest.advanceTimersByTime(THIRD_INTERVAL_MS + 50)
         })
@@ -569,6 +553,132 @@ describe('it pings when an offline event is detected', () => {
     })
 })
 
-describe('lastConnected', () => {
-    // todo: see network status tests
+describe.only('lastConnected', () => {
+    const testCurrentDate = new Date('Fri, 03 Feb 2023 13:52:31 GMT')
+    beforeAll(() => {
+        // Need to call this again to mock Date.now()
+        jest.useFakeTimers()
+        jest.spyOn(Date, 'now').mockReturnValue(testCurrentDate.getTime())
+    })
+    afterEach(() => {
+        localStorage.clear()
+    })
+    afterAll(() => {
+        jest.resetAllMocks()
+    })
+
+    test('it sets lastConnected in localStorage when it becomes disconnected', async () => {
+        const { result } = renderHook(() => useDhis2ConnectionStatus(), {
+            wrapper: wrapper,
+        })
+
+        expect(result.current.isConnected).toBe(true)
+
+        // Mock a network error for the next ping
+        mockPing.mockImplementationOnce(() =>
+            Promise.reject({
+                message: 'this is a network error',
+                type: 'network',
+            })
+        )
+
+        // Trigger a ping (to fail and switch to disconnected)
+        await act(async () => {
+            jest.runOnlyPendingTimers()
+        })
+        expect(mockPing).toHaveBeenCalledTimes(1)
+
+        // Expect 'disconnected' status now
+        expect(result.current.isConnected).toBe(false)
+        expect(result.current.isDisconnected).toBe(true)
+
+        // Check localStorage for the dummy date
+        const localStorageDate = localStorage.getItem(lastConnectedKey)
+        expect(localStorageDate).toBe(testCurrentDate.toUTCString())
+
+        // Check hook return value
+        expect(result.current.lastConnected).toBeInstanceOf(Date)
+        expect(result.current.lastConnected).toEqual(testCurrentDate)
+    })
+
+    test("it doesn't change lastConnected if already disconnected", async () => {
+        // seed localStorage with an imaginary 'lastConnected' value from last session
+        const testPreviousDate = new Date('2023-01-01')
+        localStorage.setItem(lastConnectedKey, testPreviousDate.toUTCString())
+
+        // render hook
+        const { result } = renderHook(() => useDhis2ConnectionStatus(), {
+            wrapper: wrapper,
+        })
+
+        // On render, should retain last connected
+        expect(result.current.lastConnected).not.toBe(null)
+        expect(result.current.lastConnected).toEqual(testPreviousDate)
+        // should be the same in localStorage too
+        expect(localStorage.getItem(lastConnectedKey)).toBe(
+            testPreviousDate.toUTCString()
+        )
+
+        // Mock a network error for the next ping
+        mockPing.mockImplementationOnce(() =>
+            Promise.reject({
+                message: 'this is a network error',
+                type: 'network',
+            })
+        )
+        // Trigger a ping:
+        await act(async () => {
+            jest.runOnlyPendingTimers()
+        })
+        expect(mockPing).toHaveBeenCalledTimes(1)
+
+        // Expect the same lastConnected as before
+        expect(result.current.lastConnected).not.toBe(null)
+        expect(result.current.lastConnected).toEqual(testPreviousDate)
+        // should be the same in localStorage too
+        expect(localStorage.getItem(lastConnectedKey)).toBe(
+            testPreviousDate.toUTCString()
+        )
+    })
+
+    test('it clears lastConnected when it becomes connected again', async () => {
+        const { result } = renderHook(() => useDhis2ConnectionStatus(), {
+            wrapper: wrapper,
+        })
+
+        expect(result.current.isConnected).toBe(true)
+
+        // Mock a network error for the next ping
+        mockPing.mockImplementationOnce(() =>
+            Promise.reject({
+                message: 'this is a network error',
+                type: 'network',
+            })
+        )
+
+        // Trigger an immediate ping (to fail and switch to disconnected)
+        await act(async () => {
+            jest.runOnlyPendingTimers()
+        })
+        expect(mockPing).toHaveBeenCalledTimes(1)
+
+        // Verify hook return value
+        expect(result.current.isConnected).toBe(false)
+        expect(result.current.lastConnected).toEqual(testCurrentDate)
+
+        // Trigger a successful ping to go back online
+        await act(async () => {
+            jest.runOnlyPendingTimers()
+        })
+        expect(mockPing).toHaveBeenCalledTimes(2)
+        expect(result.current.isConnected).toBe(true)
+        expect(result.current.lastConnected).toBe(null)
+    })
 })
+
+test.todo(
+    'when loading without connection, the returned values are correct immediately'
+)
+// todo: expect(result.current.isConnected).toBe(false)
+// (this comes with the todo test below)
+// in an initial design, `isConnected` would be `true` for a moment
