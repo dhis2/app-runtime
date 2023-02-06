@@ -14,11 +14,15 @@ import { usePingQuery } from './use-ping-query'
 // Utils for saving 'last connected' datetime in local storage
 export const lastConnectedKey = 'dhis2.lastConnected'
 const updateLastConnected = () => {
-    localStorage.setItem(lastConnectedKey, new Date(Date.now()).toUTCString())
+    // use Date.now() because it's easier to mock for easier unit testing
+    const now = new Date(Date.now())
+    localStorage.setItem(lastConnectedKey, now.toUTCString())
+    return now
 }
 const getLastConnected = () => {
     const lastConnected = localStorage.getItem(lastConnectedKey)
-    return lastConnected ? new Date(lastConnected) : null
+    // If there is not an existing value, make one and return it
+    return lastConnected ? new Date(lastConnected) : updateLastConnected()
 }
 
 export interface Dhis2ConnectionStatus {
