@@ -1,6 +1,5 @@
 import { CustomDataProvider } from '@dhis2/app-service-data'
 import { renderHook, act } from '@testing-library/react-hooks'
-import PropTypes from 'prop-types'
 import React from 'react'
 import { mockOfflineInterface } from '../../utils/test-mocks'
 import {
@@ -51,22 +50,28 @@ const wrapper: React.FC = ({ children }) => (
     </CustomDataProvider>
 )
 
-beforeEach(() => {
-    // use fake timers
+const testCurrentDate = new Date('Fri, 03 Feb 2023 13:52:31 GMT')
+beforeAll(() => {
     jest.useFakeTimers()
+    jest.spyOn(Date, 'now').mockReturnValue(testCurrentDate.getTime())
+})
+beforeEach(() => {
     // standby state is initialized to window visibility, which is 'false' by
     // default in tests. mock that here:
     jest.spyOn(document, 'hasFocus').mockReturnValue(true)
 })
 afterEach(() => {
     jest.clearAllMocks()
+    // for lastConnected:
+    localStorage.clear()
 })
 afterAll(() => {
     jest.useRealTimers()
+    jest.resetAllMocks()
 })
 
-describe('basic behavior', () => {
-    test('the hook initializes to the right values', () => {
+describe('initialization to the right values based on offline interface', () => {
+    test('when latestIsConnected is true', () => {
         const { result } = renderHook(() => useDhis2ConnectionStatus(), {
             wrapper: wrapper,
         })
@@ -76,6 +81,59 @@ describe('basic behavior', () => {
         expect(result.current.lastConnected).toBe(null)
     })
 
+    test('when latestIsConnected is false', () => {
+        const customMockOfflineInterface = {
+            ...mockOfflineInterface,
+            latestIsConnected: false,
+        }
+        const customWrapper: React.FC = ({ children }) => (
+            <CustomDataProvider data={{}}>
+                <OfflineProvider offlineInterface={customMockOfflineInterface}>
+                    {children}
+                </OfflineProvider>
+            </CustomDataProvider>
+        )
+        const { result } = renderHook(() => useDhis2ConnectionStatus(), {
+            wrapper: customWrapper,
+        })
+
+        expect(result.current.isConnected).toBe(false)
+        expect(result.current.isDisconnected).toBe(true)
+        // If localStorage is clear, sets 'lastConnected' to `now` as a best
+        // effort to provide useful information.
+        // There will be more detailed testing of lastConnected below
+        expect(result.current.lastConnected).toEqual(testCurrentDate)
+    })
+
+    // This might happen in the unlikely circumstance that the provider
+    // renders before the offlineInterface has received a value for
+    // lastIsConnected. Normally, the ServerVersionProvider in the app
+    // adapter delays rendering the App Runtime provider (including the
+    // OfflineProvider) until the offline interface is ready, which should
+    // avoid this case.
+    test('when latestIsConnected is null', () => {
+        const customMockOfflineInterface = {
+            ...mockOfflineInterface,
+            latestIsConnected: null,
+        }
+        const customWrapper: React.FC = ({ children }) => (
+            <CustomDataProvider data={{}}>
+                <OfflineProvider offlineInterface={customMockOfflineInterface}>
+                    {children}
+                </OfflineProvider>
+            </CustomDataProvider>
+        )
+        const { result } = renderHook(() => useDhis2ConnectionStatus(), {
+            wrapper: customWrapper,
+        })
+
+        expect(result.current.isConnected).toBe(false)
+        expect(result.current.isDisconnected).toBe(true)
+        expect(result.current.lastConnected).toEqual(testCurrentDate)
+    })
+})
+
+describe('basic behavior', () => {
     // todo: this test might fail if the defaults are changed.
     // look to INTERVALS_TO_REACH_MAX_DELAY to make this test flexible
     test('the ping delay increases when idle until the max is reached', async () => {
@@ -543,20 +601,7 @@ describe('it pings when an offline event is detected', () => {
     })
 })
 
-describe.only('lastConnected', () => {
-    const testCurrentDate = new Date('Fri, 03 Feb 2023 13:52:31 GMT')
-    beforeAll(() => {
-        // Need to call this again to mock Date.now()
-        jest.useFakeTimers()
-        jest.spyOn(Date, 'now').mockReturnValue(testCurrentDate.getTime())
-    })
-    afterEach(() => {
-        localStorage.clear()
-    })
-    afterAll(() => {
-        jest.resetAllMocks()
-    })
-
+describe('lastConnected', () => {
     test('it sets lastConnected in localStorage when it becomes disconnected', async () => {
         const { result } = renderHook(() => useDhis2ConnectionStatus(), {
             wrapper: wrapper,
@@ -678,10 +723,3 @@ describe.only('lastConnected', () => {
         expect(result.current.lastConnected).toBe(null)
     })
 })
-
-test.todo(
-    'when loading without connection, the returned values are correct immediately'
-)
-// todo: expect(result.current.isConnected).toBe(false)
-// (this comes with the todo test below)
-// in an initial design, `isConnected` would be `true` for a moment
