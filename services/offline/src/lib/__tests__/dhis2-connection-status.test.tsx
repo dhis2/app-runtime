@@ -30,16 +30,6 @@ const SECOND_INTERVAL_MS = FIRST_INTERVAL_MS * DEFAULT_INCREMENT_FACTOR
 const THIRD_INTERVAL_MS = SECOND_INTERVAL_MS * DEFAULT_INCREMENT_FACTOR
 const FOURTH_INTERVAL_MS = THIRD_INTERVAL_MS * DEFAULT_INCREMENT_FACTOR
 
-/**
- * To do:
- * * Check out what I need for the necessary wrapper (copy and paste from recording?)
- * * Mock engine.query - mock resolution/rejection for pings
- * * Test for engine.query executions at different time intervals
- * * Make a spy/mock for offlineInterface.subcscribeTo...
- * * Catch and invoke 'onUpdate' handler as input
- * * Mock setTimeout and can check the latest 'called with' second arg
- */
-
 // Math:
 // The length of the Nth interval is:
 // initialDelay * incrementFactor ^ (N - 1)
@@ -86,6 +76,8 @@ describe('basic behavior', () => {
         expect(result.current.lastConnected).toBe(null)
     })
 
+    // todo: this test might fail if the defaults are changed.
+    // look to INTERVALS_TO_REACH_MAX_DELAY to make this test flexible
     test('the ping delay increases when idle until the max is reached', async () => {
         const setTimeoutSpy = jest.spyOn(window, 'setTimeout')
 
@@ -156,8 +148,6 @@ describe('basic behavior', () => {
             // NOTE: still not incrementing, max has been reached
             DEFAULT_MAX_DELAY_MS
         )
-
-        // todo: adapt to changing defaults using INTERVALS_TO_REACH_MAX_DELAY
     })
 })
 
