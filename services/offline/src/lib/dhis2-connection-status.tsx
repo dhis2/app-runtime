@@ -47,8 +47,10 @@ export const Dhis2ConnectionStatusProvider = ({
 }: {
     children: React.ReactNode
 }): JSX.Element => {
-    const [isConnected, setIsConnected] = useState()
     const offlineInterface = useOfflineInterface()
+    const [isConnected, setIsConnected] = useState(
+        offlineInterface.latestIsConnected
+    )
     const ping = usePingQuery()
     const smartIntervalRef = useRef(null as null | SmartInterval)
 
@@ -154,9 +156,10 @@ export const Dhis2ConnectionStatusProvider = ({
     // Memoize this value to prevent unnecessary rerenders of context provider
     const contextValue = useMemo(
         () => ({
-            // let the returned value be 'true' for the moment it's still undefined internally
-            isConnected: isConnected ?? true,
-            isDisconnected: !(isConnected ?? true),
+            // in the unlikely circumstance that offlineInterface.latestIsConnected
+            // is `null` when this initializes, default to `isConnected: false`
+            isConnected: Boolean(isConnected),
+            isDisconnected: !isConnected,
             // Only evaluate if disconnected, since local storage is synchronous and disk-based
             lastConnected: !isConnected ? getLastConnected() : null,
         }),

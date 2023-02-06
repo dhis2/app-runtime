@@ -56,6 +56,7 @@ export interface IndexedDBCachedSection {
 
 export interface OfflineInterface {
     readonly pwaEnabled: boolean
+    readonly latestIsConnected: boolean | null
     subscribeToDhis2ConnectionStatus: ({
         onUpdate,
     }: {

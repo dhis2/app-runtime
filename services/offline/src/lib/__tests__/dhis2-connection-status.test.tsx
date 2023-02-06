@@ -606,12 +606,26 @@ describe.only('lastConnected', () => {
         const testPreviousDate = new Date('2023-01-01')
         localStorage.setItem(lastConnectedKey, testPreviousDate.toUTCString())
 
+        // use a custom offlineInterface with `latestIsConnected: false`
+        // to initialize the `isConnected` state to false
+        const customMockOfflineInterface = {
+            ...mockOfflineInterface,
+            latestIsConnected: false,
+        }
+        const customWrapper: React.FC = ({ children }) => (
+            <CustomDataProvider data={{}}>
+                <OfflineProvider offlineInterface={customMockOfflineInterface}>
+                    {children}
+                </OfflineProvider>
+            </CustomDataProvider>
+        )
+
         // render hook
         const { result } = renderHook(() => useDhis2ConnectionStatus(), {
-            wrapper: wrapper,
+            wrapper: customWrapper,
         })
 
-        // On render, should retain last connected
+        // On render, the hook should retain last connected
         expect(result.current.lastConnected).not.toBe(null)
         expect(result.current.lastConnected).toEqual(testPreviousDate)
         // should be the same in localStorage too
@@ -626,7 +640,7 @@ describe.only('lastConnected', () => {
                 type: 'network',
             })
         )
-        // Trigger a ping:
+        // Trigger the failing ping:
         await act(async () => {
             jest.runOnlyPendingTimers()
         })
@@ -645,7 +659,6 @@ describe.only('lastConnected', () => {
         const { result } = renderHook(() => useDhis2ConnectionStatus(), {
             wrapper: wrapper,
         })
-
         expect(result.current.isConnected).toBe(true)
 
         // Mock a network error for the next ping
