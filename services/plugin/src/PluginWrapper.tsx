@@ -1,6 +1,7 @@
 import postRobot from 'post-robot'
 import React, { useCallback, useEffect, useState } from 'react'
 import { PluginErrorBoundary } from './PluginErrorBoundary'
+import { usePluginErrorContext } from './PluginContext'
 
 export const PluginWrapper = ({
     requiredProps,
@@ -9,6 +10,7 @@ export const PluginWrapper = ({
     requiredProps: [string]
     children: any
 }): any => {
+    const { setOnPluginError } = usePluginErrorContext()
     const [propsFromParent, setPropsFromParent] = useState<any>()
 
     const receivePropsFromParent = useCallback(
@@ -35,19 +37,27 @@ export const PluginWrapper = ({
             } else {
                 updateMissingProps(null)
             }
+
+            if (explictlyPassedProps.onError && setOnPluginError) {
+                setOnPluginError(() => (error: Error) => {
+                    explictlyPassedProps.onError(error)
+                })
+            }
         },
-        [requiredProps]
+        [requiredProps, setOnPluginError]
     )
 
     useEffect(() => {
-        // make first request for props to communicate that iframe is ready
-        postRobot
-            .send(window.top, 'getPropsFromParent')
-            .then(receivePropsFromParent)
-            .catch((err: Error) => {
-                console.error(err)
-            })
-    }, [receivePropsFromParent])
+        if (setOnPluginError) {
+            // make first request for props to communicate that iframe is ready
+            postRobot
+                .send(window.top, 'getPropsFromParent')
+                .then(receivePropsFromParent)
+                .catch((err: Error) => {
+                    console.error(err)
+                })
+        }
+    }, [receivePropsFromParent, setOnPluginError])
 
     useEffect(() => {
         // set up listener to listen for subsequent sends from parent window
@@ -62,9 +72,10 @@ export const PluginWrapper = ({
         return () => listener.cancel()
     }, [receivePropsFromParent])
 
-    return (
-        <PluginErrorBoundary onCustomError={propsFromParent?.onError || null}>
-            {children({ ...propsFromParent })}
-        </PluginErrorBoundary>
-    )
+    return children({ ...propsFromParent })
+    // return (
+    //     <PluginErrorBoundary onCustomError={propsFromParent?.onError || null}>
+    //         {children({ ...propsFromParent })}
+    //     </PluginErrorBoundary>
+    // )
 }

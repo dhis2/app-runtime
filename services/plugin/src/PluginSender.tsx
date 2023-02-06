@@ -76,11 +76,16 @@ export const PluginSender = ({
 
             // if iframe has sent initial request, send new props
             if (communicationReceived && iframeRef.current.contentWindow) {
-                postRobot.send(
-                    iframeRef.current.contentWindow,
-                    'updated',
-                    iframeProps
-                )
+                postRobot
+                    .send(
+                        iframeRef.current.contentWindow,
+                        'updated',
+                        iframeProps
+                    )
+                    .catch((err) => {
+                        // log postRobot errors, but do not bubble them up
+                        console.error(err)
+                    })
             }
         }
     }, [propsToPass, communicationReceived, updateMissingProps])
