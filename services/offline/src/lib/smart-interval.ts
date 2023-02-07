@@ -7,23 +7,7 @@ const throwErrorIfNoCallbackIsProvided = (): void => {
     throw new Error('Provide a callback')
 }
 
-// todo: remove console logs; though they are useful for testing
-
-// This is just a test of repeated intervals to see if they work in the jest
-// environment -- see the test in ./__tests__/smart-interval.test.ts
-// todo: remove after testing
-export const dumbInterval = ({ callback }: { callback: () => void }) => {
-    let currentDelay = DEFAULT_INITIAL_DELAY_MS
-    function doTheThing() {
-        console.log('doing the thing', { currentDelay })
-        setTimeout(() => {
-            currentDelay = currentDelay * DEFAULT_INCREMENT_FACTOR
-            callback()
-            doTheThing()
-        }, currentDelay)
-    }
-    doTheThing()
-}
+// todo: remove console logs after testing PR; though they are useful for testing
 
 export interface SmartInterval {
     clear: () => void
