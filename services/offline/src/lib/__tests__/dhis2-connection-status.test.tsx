@@ -28,13 +28,12 @@ const SECOND_INTERVAL_MS = FIRST_INTERVAL_MS * DEFAULT_INCREMENT_FACTOR
 const THIRD_INTERVAL_MS = SECOND_INTERVAL_MS * DEFAULT_INCREMENT_FACTOR
 const FOURTH_INTERVAL_MS = THIRD_INTERVAL_MS * DEFAULT_INCREMENT_FACTOR
 
-// Math:
-// The length of the Nth interval is:
+// Explanation: The length of the Nth interval is:
 // initialDelay * incrementFactor ^ (N - 1)
 // Using some algebra and the law of logs, the Nth interval
 // which is longer than the max delay is:
 // N >= (ln (maxDelay / initialDelay) / ln (incrementFactor)) + 1
-//  - then use Math.ceil to handle the 'greater than' effect
+// => then use Math.ceil to handle the 'greater than' effect
 const INTERVALS_TO_REACH_MAX_DELAY = Math.ceil(
     Math.log(DEFAULT_MAX_DELAY_MS / DEFAULT_INITIAL_DELAY_MS) /
         Math.log(DEFAULT_INCREMENT_FACTOR) +
@@ -133,8 +132,6 @@ describe('initialization to the right values based on offline interface', () => 
 })
 
 describe('interval behavior', () => {
-    // todo: this test might fail if the defaults are changed.
-    // look to INTERVALS_TO_REACH_MAX_DELAY to make this test flexible
     test('the ping delay increases when idle until the max is reached', async () => {
         const setTimeoutSpy = jest.spyOn(window, 'setTimeout')
 
@@ -182,27 +179,33 @@ describe('interval behavior', () => {
             FOURTH_INTERVAL_MS
         )
 
-        // 500ms before fourth interval
-        jest.advanceTimersByTime(FOURTH_INTERVAL_MS - 1000)
-        expect(mockPing).toHaveBeenCalledTimes(3)
-        // 500ms after fourth interval
-        jest.advanceTimersByTime(1000)
-        expect(mockPing).toHaveBeenCalledTimes(4)
+        // Run a number of intervals to reach the max delay -
+        // this number is calculated above to work for any default values.
+        // Since three have already elapsed, there will be some extra too
+        for (let i = 0; i < INTERVALS_TO_REACH_MAX_DELAY; i++) {
+            await act(async () => {
+                jest.runOnlyPendingTimers()
+            })
+        }
+
+        // Timeout should no longer be incrementing; max has been reached
+        expect(mockPing).toHaveBeenCalledTimes(3 + INTERVALS_TO_REACH_MAX_DELAY)
         expect(setTimeoutSpy).toHaveBeenLastCalledWith(
             expect.any(Function),
-            // NOTE: no longer incrementing, max has been reached
             DEFAULT_MAX_DELAY_MS
         )
 
-        // 500ms before fifth interval
-        jest.advanceTimersByTime(DEFAULT_MAX_DELAY_MS - 1000)
-        expect(mockPing).toHaveBeenCalledTimes(4)
-        // 500ms after fifth interval
-        jest.advanceTimersByTime(1000)
-        expect(mockPing).toHaveBeenCalledTimes(5)
+        // Run a few more intervals to make sure it stays at max
+        for (let i = 0; i < 3; i++) {
+            await act(async () => {
+                jest.runOnlyPendingTimers()
+            })
+        }
+
+        // Expect continued use of the max delay
+        expect(mockPing).toHaveBeenCalledTimes(6 + INTERVALS_TO_REACH_MAX_DELAY)
         expect(setTimeoutSpy).toHaveBeenLastCalledWith(
             expect.any(Function),
-            // NOTE: still not incrementing, max has been reached
             DEFAULT_MAX_DELAY_MS
         )
     })
