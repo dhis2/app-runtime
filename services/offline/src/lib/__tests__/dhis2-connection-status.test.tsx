@@ -12,6 +12,7 @@ import {
     DEFAULT_MAX_DELAY_MS,
     DEFAULT_INITIAL_DELAY_MS,
 } from '../smart-interval'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { usePingQuery } from '../use-ping-query'
 
 // important that this name starts with 'mock' to be hoisted correctly
