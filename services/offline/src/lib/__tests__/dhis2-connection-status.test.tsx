@@ -17,6 +17,7 @@ import { usePingQuery } from '../use-ping-query'
 
 // important that this name starts with 'mock' to be hoisted correctly
 const mockPing = jest.fn().mockImplementation(() => {
+    console.log('ping lol ------------------------------')
     return Promise.resolve()
 })
 
@@ -48,6 +49,29 @@ const wrapper: React.FC = ({ children }) => (
         </OfflineProvider>
     </CustomDataProvider>
 )
+
+/**
+ * Assert on the delay of the last time setTimeoutSpy was called with
+ * the `callbackAndRestart()` function in smartInterval.
+ *
+ * This is useful because sometimes jest (or something) uses `setTimeout`
+ * too with a `_flushCallback` function, which gets in the way of using
+ * an assertion like:
+ * `expect(setTimeoutSpy).toHaveBeenLastCalledWith(..., expectedDelay)`
+ */
+const assertLastDelay = (
+    setTimeoutSpy: jest.SpyInstance,
+    expectedDelay: number
+) => {
+    const calls = setTimeoutSpy.mock.calls
+    for (let i = calls.length - 1; i >= 0; i--) {
+        console.log({ i })
+        if (calls[i][0].name === 'callbackAndRestart') {
+            expect(calls[i][1]).toBe(expectedDelay)
+            return
+        }
+    }
+}
 
 const testCurrentDate = new Date('Fri, 03 Feb 2023 13:52:31 GMT')
 beforeAll(() => {
@@ -184,6 +208,8 @@ describe('interval behavior', () => {
         // this number is calculated above to work for any default values.
         // Since three have already elapsed, there will be some extra too
         for (let i = 0; i < INTERVALS_TO_REACH_MAX_DELAY; i++) {
+            // Wrap in act to await async side effects of interval execution
+            // and pings
             await act(async () => {
                 jest.runOnlyPendingTimers()
             })
@@ -279,7 +305,6 @@ describe('interval behavior', () => {
     })
 
     describe('the ping interval resets to initial if the detected connection status changes', () => {
-        // ! Something is up with this test
         test('this happens when the offline interface issues an update', async () => {
             const setTimeoutSpy = jest.spyOn(window, 'setTimeout')
             const { result } = renderHook(() => useDhis2ConnectionStatus(), {
@@ -293,38 +318,39 @@ describe('interval behavior', () => {
             expect(result.current.isConnected).toBe(true)
 
             // Get to third interval
-            jest.runOnlyPendingTimers()
-            jest.runOnlyPendingTimers()
-            expect(mockPing).toHaveBeenCalledTimes(2)
-            expect(setTimeoutSpy).toHaveBeenLastCalledWith(
-                expect.any(Function),
-                THIRD_INTERVAL_MS
-            )
-
-            // Trigger connection status change ('await' here fixes 'act' warnings)
+            // (Wrap in `act` to await async side effects of the executions)
             await act(async () => {
-                console.log('TRIGGERING ACT -----')
+                jest.runOnlyPendingTimers()
+                jest.runOnlyPendingTimers()
+            })
+            expect(mockPing).toHaveBeenCalledTimes(2)
+            assertLastDelay(setTimeoutSpy, THIRD_INTERVAL_MS)
+
+            // Trigger connection status change from offline interface
+            await act(async () => {
                 onUpdate({ isConnected: false })
             })
 
             // Expect "first interval delay" to be set up
-            expect(setTimeoutSpy).toHaveBeenLastCalledWith(
-                expect.any(Function),
-                FIRST_INTERVAL_MS
-            )
-            // TODO: This assertion is not working.
-            // The status switches to 'false', but then switches BACK to 'true' for
-            // an unknown reason
-            // expect(result.current.isConnected).toBe(false)
+            assertLastDelay(setTimeoutSpy, FIRST_INTERVAL_MS)
+            expect(result.current.isConnected).toBe(false)
 
-            // Advance past "first interval"
-            jest.advanceTimersByTime(FIRST_INTERVAL_MS + 50)
-            // Expect another execution
-            expect(mockPing).toHaveBeenCalledTimes(3)
-            expect(setTimeoutSpy).toHaveBeenLastCalledWith(
-                expect.any(Function),
-                SECOND_INTERVAL_MS
+            // Mock an error for the next ping to maintain `isConnected: false`
+            mockPing.mockImplementationOnce(() =>
+                Promise.reject({
+                    message: 'this is a network error',
+                    type: 'network',
+                })
             )
+            // Advance past "first interval" -- make sure incrementing resumes
+            // while still 'isConnected: false'
+            await act(async () => {
+                jest.advanceTimersByTime(FIRST_INTERVAL_MS + 50)
+            })
+
+            // Expect another execution with the incremented interval
+            expect(mockPing).toHaveBeenCalledTimes(3)
+            assertLastDelay(setTimeoutSpy, SECOND_INTERVAL_MS)
         })
 
         test('this happens if a ping detects a status change', async () => {

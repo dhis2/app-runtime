@@ -59,7 +59,7 @@ export const Dhis2ConnectionStatusProvider = ({
     const smartIntervalRef = useRef(null as null | SmartInterval)
 
     /**
-     * Update state and potentially reset ping backoff and update
+     * Update state, reset ping backoff if changed, and update
      * the lastConnected value in localStorage
      */
     const updateConnectedState = useCallback((newIsConnected) => {
@@ -108,9 +108,9 @@ export const Dhis2ConnectionStatusProvider = ({
         ({ isConnected: newIsConnected }) => {
             // todo: remove console log after testing PR
             console.log('handling update from sw')
-            updateConnectedState(newIsConnected)
             // Snooze ping timer to reduce pings since we know state from SW
             smartIntervalRef.current?.snooze()
+            updateConnectedState(newIsConnected)
         },
         [updateConnectedState]
     )
