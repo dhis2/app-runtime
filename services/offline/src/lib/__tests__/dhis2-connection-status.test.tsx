@@ -166,10 +166,7 @@ describe('interval behavior', () => {
 
         expect(result.current.isConnected).toBe(true)
         expect(mockPing).not.toHaveBeenCalled()
-        expect(setTimeoutSpy).toHaveBeenLastCalledWith(
-            expect.any(Function),
-            FIRST_INTERVAL_MS
-        )
+        assertLastDelay(setTimeoutSpy, FIRST_INTERVAL_MS)
 
         // 500ms before first interval
         jest.advanceTimersByTime(FIRST_INTERVAL_MS - 500)
@@ -177,10 +174,7 @@ describe('interval behavior', () => {
         // 500ms after first interval
         jest.advanceTimersByTime(1000)
         expect(mockPing).toHaveBeenCalledTimes(1)
-        expect(setTimeoutSpy).toHaveBeenLastCalledWith(
-            expect.any(Function),
-            SECOND_INTERVAL_MS
-        )
+        assertLastDelay(setTimeoutSpy, SECOND_INTERVAL_MS)
 
         // 500ms before second interval
         jest.advanceTimersByTime(SECOND_INTERVAL_MS - 1000)
@@ -188,10 +182,7 @@ describe('interval behavior', () => {
         // 500ms after second interval
         jest.advanceTimersByTime(1000)
         expect(mockPing).toHaveBeenCalledTimes(2)
-        expect(setTimeoutSpy).toHaveBeenLastCalledWith(
-            expect.any(Function),
-            THIRD_INTERVAL_MS
-        )
+        assertLastDelay(setTimeoutSpy, THIRD_INTERVAL_MS)
 
         // 500ms before third interval
         jest.advanceTimersByTime(THIRD_INTERVAL_MS - 1000)
@@ -199,10 +190,7 @@ describe('interval behavior', () => {
         // 500ms after third interval
         jest.advanceTimersByTime(1000)
         expect(mockPing).toHaveBeenCalledTimes(3)
-        expect(setTimeoutSpy).toHaveBeenLastCalledWith(
-            expect.any(Function),
-            FOURTH_INTERVAL_MS
-        )
+        assertLastDelay(setTimeoutSpy, FOURTH_INTERVAL_MS)
 
         // Run a number of intervals to reach the max delay -
         // this number is calculated above to work for any default values.
@@ -217,10 +205,7 @@ describe('interval behavior', () => {
 
         // Timeout should no longer be incrementing; max has been reached
         expect(mockPing).toHaveBeenCalledTimes(3 + INTERVALS_TO_REACH_MAX_DELAY)
-        expect(setTimeoutSpy).toHaveBeenLastCalledWith(
-            expect.any(Function),
-            DEFAULT_MAX_DELAY_MS
-        )
+        assertLastDelay(setTimeoutSpy, DEFAULT_MAX_DELAY_MS)
 
         // Run a few more intervals to make sure it stays at max
         for (let i = 0; i < 3; i++) {
@@ -231,10 +216,7 @@ describe('interval behavior', () => {
 
         // Expect continued use of the max delay
         expect(mockPing).toHaveBeenCalledTimes(6 + INTERVALS_TO_REACH_MAX_DELAY)
-        expect(setTimeoutSpy).toHaveBeenLastCalledWith(
-            expect.any(Function),
-            DEFAULT_MAX_DELAY_MS
-        )
+        assertLastDelay(setTimeoutSpy, DEFAULT_MAX_DELAY_MS)
     })
 
     describe('pings are delayed when offlineInterface sends status updates', () => {
@@ -272,10 +254,7 @@ describe('interval behavior', () => {
             jest.advanceTimersByTime(SECOND_INTERVAL_MS)
 
             // ...delay should now be 'THIRD_INTERVAL_MS'
-            expect(setTimeoutSpy).toHaveBeenLastCalledWith(
-                expect.any(Function),
-                THIRD_INTERVAL_MS
-            )
+            assertLastDelay(setTimeoutSpy, THIRD_INTERVAL_MS)
             expect(mockPing).toHaveBeenCalledTimes(2)
 
             // simulate updates from the SW/offline interface several times
@@ -289,10 +268,7 @@ describe('interval behavior', () => {
             expect(mockPing).toHaveBeenCalledTimes(2)
 
             // the delay should still be THIRD_INTERVAL_MS
-            expect(setTimeoutSpy).toHaveBeenLastCalledWith(
-                expect.any(Function),
-                THIRD_INTERVAL_MS
-            )
+            assertLastDelay(setTimeoutSpy, THIRD_INTERVAL_MS)
 
             // The timer works as normal for the next tick --
             // 500ms before the fourth interval:
@@ -365,10 +341,7 @@ describe('interval behavior', () => {
             jest.runOnlyPendingTimers()
             jest.runOnlyPendingTimers()
             expect(mockPing).toHaveBeenCalledTimes(2)
-            expect(setTimeoutSpy).toHaveBeenLastCalledWith(
-                expect.any(Function),
-                THIRD_INTERVAL_MS
-            )
+            assertLastDelay(setTimeoutSpy, THIRD_INTERVAL_MS)
 
             // Mock a network error
             mockPing.mockImplementationOnce(() =>
@@ -384,22 +357,7 @@ describe('interval behavior', () => {
 
             expect(result.current.isConnected).toBe(false)
             expect(mockPing).toHaveBeenCalledTimes(3)
-            // asserting on setTimeoutSpy is flaky because something else
-            // in the test suite uses it with a '_flushCallback' function
-            // expect(setTimeoutSpy).toHaveBeenLastCalledWith(
-            //     expect.any(Function),
-            //     FIRST_INTERVAL_MS
-            // )
-
-            // ...instead, advance one "first interval" to test that the delay
-            // delay reset correctly
-            jest.advanceTimersByTime(FIRST_INTERVAL_MS + 50)
-            // Expect another execution
-            expect(mockPing).toHaveBeenCalledTimes(4)
-            expect(setTimeoutSpy).toHaveBeenLastCalledWith(
-                expect.any(Function),
-                SECOND_INTERVAL_MS
-            )
+            assertLastDelay(setTimeoutSpy, FIRST_INTERVAL_MS)
         })
     })
 })
@@ -499,10 +457,7 @@ describe('it pings when an offline event is detected', () => {
             expect(mockPing).toHaveBeenCalledTimes(1)
 
             // The delay should be the initial again -- it shouldn't increment
-            expect(setTimeoutSpy).toHaveBeenLastCalledWith(
-                expect.any(Function),
-                FIRST_INTERVAL_MS
-            )
+            assertLastDelay(setTimeoutSpy, FIRST_INTERVAL_MS)
         })
 
         test('same as previous, but interval is reset if status changes', async () => {
@@ -517,10 +472,7 @@ describe('it pings when an offline event is detected', () => {
             jest.runOnlyPendingTimers()
             jest.runOnlyPendingTimers()
             expect(mockPing).toHaveBeenCalledTimes(2)
-            expect(setTimeoutSpy).toHaveBeenLastCalledWith(
-                expect.any(Function),
-                THIRD_INTERVAL_MS
-            )
+            assertLastDelay(setTimeoutSpy, THIRD_INTERVAL_MS)
 
             // Mock a network error
             mockPing.mockImplementationOnce(() =>
@@ -539,18 +491,7 @@ describe('it pings when an offline event is detected', () => {
 
             expect(result.current.isConnected).toBe(false)
             expect(mockPing).toHaveBeenCalledTimes(3)
-
-            // asserting on setTimeoutSpy is flaky here because something else
-            // in the test suite uses it with a '_flushCallback' function
-            // ...instead, advance one "first interval" to test that the
-            // delay reset correctly
-            jest.advanceTimersByTime(FIRST_INTERVAL_MS + 50)
-            // Expect another execution
-            expect(mockPing).toHaveBeenCalledTimes(4)
-            expect(setTimeoutSpy).toHaveBeenLastCalledWith(
-                expect.any(Function),
-                SECOND_INTERVAL_MS
-            )
+            assertLastDelay(setTimeoutSpy, FIRST_INTERVAL_MS)
         })
 
         test('if the app is refocused after the next "scheduled" ping, increase the interval to the next ping if the status hasn\'t changed', () => {
@@ -570,10 +511,7 @@ describe('it pings when an offline event is detected', () => {
             expect(mockPing).toHaveBeenCalledTimes(1)
 
             // The delay should increment this time, as it would from normal standby
-            expect(setTimeoutSpy).toHaveBeenLastCalledWith(
-                expect.any(Function),
-                SECOND_INTERVAL_MS
-            )
+            assertLastDelay(setTimeoutSpy, SECOND_INTERVAL_MS)
         })
 
         test('the same as previous, but the interval is reset if status has changed', async () => {
@@ -588,10 +526,7 @@ describe('it pings when an offline event is detected', () => {
             jest.runOnlyPendingTimers()
             jest.runOnlyPendingTimers()
             expect(mockPing).toHaveBeenCalledTimes(2)
-            expect(setTimeoutSpy).toHaveBeenLastCalledWith(
-                expect.any(Function),
-                THIRD_INTERVAL_MS
-            )
+            assertLastDelay(setTimeoutSpy, THIRD_INTERVAL_MS)
 
             // Blur and elapse twice the third interval --
             // it should enter full standby
@@ -614,18 +549,7 @@ describe('it pings when an offline event is detected', () => {
 
             expect(result.current.isConnected).toBe(false)
             expect(mockPing).toHaveBeenCalledTimes(3)
-
-            // asserting on setTimeoutSpy is flaky here because something else
-            // in the test suite uses it with a '_flushCallback' function
-            // ...instead, advance one "first interval" to test that the
-            // delay reset correctly
-            jest.advanceTimersByTime(FIRST_INTERVAL_MS + 50)
-            // Expect another execution
-            expect(mockPing).toHaveBeenCalledTimes(4)
-            expect(setTimeoutSpy).toHaveBeenLastCalledWith(
-                expect.any(Function),
-                SECOND_INTERVAL_MS
-            )
+            assertLastDelay(setTimeoutSpy, FIRST_INTERVAL_MS)
         })
     })
 })
