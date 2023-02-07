@@ -65,7 +65,6 @@ const assertLastDelay = (
 ) => {
     const calls = setTimeoutSpy.mock.calls
     for (let i = calls.length - 1; i >= 0; i--) {
-        console.log({ i })
         if (calls[i][0].name === 'callbackAndRestart') {
             expect(calls[i][1]).toBe(expectedDelay)
             return
