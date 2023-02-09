@@ -24,6 +24,9 @@ const getLastConnected = () => {
     // If there is not an existing value, make one and return it
     return lastConnected ? new Date(lastConnected) : updateLastConnected()
 }
+const clearLastConnected = () => {
+    localStorage.removeItem(lastConnectedKey)
+}
 
 export interface Dhis2ConnectionStatus {
     isConnected: boolean
@@ -68,14 +71,17 @@ export const Dhis2ConnectionStatusProvider = ({
         setIsConnected((prevIsConnected) => {
             // todo: remove log after testing
             console.log('updating state:', { prevIsConnected, newIsConnected })
-            // if value changed, reset ping interval to initial delay
             if (newIsConnected !== prevIsConnected) {
+                // if value changed, reset ping interval to initial delay
                 smartIntervalRef.current?.reset()
-            }
-            // if disconnected and EITHER 1. coming from connected or
-            // 2. there is no last-connect val, update the val in localStorage
-            if (!newIsConnected && (prevIsConnected || !getLastConnected())) {
-                updateLastConnected()
+
+                if (newIsConnected) {
+                    // Need to clear this here so it doesn't affect another
+                    // session that starts while offline
+                    clearLastConnected()
+                } else {
+                    updateLastConnected()
+                }
             }
             return newIsConnected
         })
