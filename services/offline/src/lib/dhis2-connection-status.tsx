@@ -1,3 +1,4 @@
+import { useConfig } from '@dhis2/app-service-config'
 import PropTypes from 'prop-types'
 import React, {
     useCallback,
@@ -12,19 +13,22 @@ import createSmartInterval, { SmartInterval } from './smart-interval'
 import { usePingQuery } from './use-ping-query'
 
 // Utils for saving 'last connected' datetime in local storage
-export const lastConnectedKey = 'dhis2.lastConnected'
-const updateLastConnected = () => {
+const lastConnectedKey = 'dhis2.lastConnected'
+type AppName = string | undefined
+export const getLastConnectedKey = (appName?: AppName) =>
+    appName ? `${lastConnectedKey}.${appName}` : lastConnectedKey
+const updateLastConnected = (appName: AppName) => {
     // use Date.now() because it's easier to mock for easier unit testing
     const now = new Date(Date.now())
-    localStorage.setItem(lastConnectedKey, now.toUTCString())
+    localStorage.setItem(getLastConnectedKey(appName), now.toUTCString())
     return now
 }
-const getLastConnected = () => {
-    const lastConnected = localStorage.getItem(lastConnectedKey)
+const getLastConnected = (appName: AppName) => {
+    const lastConnected = localStorage.getItem(getLastConnectedKey(appName))
     return lastConnected ? new Date(lastConnected) : null
 }
-const clearLastConnected = () => {
-    localStorage.removeItem(lastConnectedKey)
+const clearLastConnected = (appName: AppName) => {
+    localStorage.removeItem(getLastConnectedKey(appName))
 }
 
 export interface Dhis2ConnectionStatus {
@@ -54,6 +58,7 @@ export const Dhis2ConnectionStatusProvider = ({
     children: React.ReactNode
 }): JSX.Element => {
     const offlineInterface = useOfflineInterface()
+    const { appName } = useConfig()
     const [isConnected, setIsConnected] = useState(
         offlineInterface.latestIsConnected
     )
@@ -64,27 +69,33 @@ export const Dhis2ConnectionStatusProvider = ({
      * Update state, reset ping backoff if changed, and update
      * the lastConnected value in localStorage
      */
-    const updateConnectedState = useCallback((newIsConnected) => {
-        // use 'set' with a function as param to get latest isConnected
-        // without needing it as a dependency for useCallback
-        setIsConnected((prevIsConnected) => {
-            // todo: remove log after testing
-            console.log('updating state:', { prevIsConnected, newIsConnected })
-            if (newIsConnected !== prevIsConnected) {
-                // if value changed, reset ping interval to initial delay
-                smartIntervalRef.current?.reset()
+    const updateConnectedState = useCallback(
+        (newIsConnected) => {
+            // use 'set' with a function as param to get latest isConnected
+            // without needing it as a dependency for useCallback
+            setIsConnected((prevIsConnected) => {
+                // todo: remove log after testing
+                console.log('updating state:', {
+                    prevIsConnected,
+                    newIsConnected,
+                })
+                if (newIsConnected !== prevIsConnected) {
+                    // if value changed, reset ping interval to initial delay
+                    smartIntervalRef.current?.reset()
 
-                if (newIsConnected) {
-                    // Need to clear this here so it doesn't affect another
-                    // session that starts while offline
-                    clearLastConnected()
-                } else {
-                    updateLastConnected()
+                    if (newIsConnected) {
+                        // Need to clear this here so it doesn't affect another
+                        // session that starts while offline
+                        clearLastConnected(appName)
+                    } else {
+                        updateLastConnected(appName)
+                    }
                 }
-            }
-            return newIsConnected
-        })
-    }, [])
+                return newIsConnected
+            })
+        },
+        [appName]
+    )
 
     // Note that the SW is configured to not cache ping requests and won't
     // trigger `handleChange` below to avoid redundant signals. This also
@@ -175,9 +186,9 @@ export const Dhis2ConnectionStatusProvider = ({
                   // is synchronous and disk-based.
                   // If lastConnected is not set in localStorage though, set it.
                   // (relevant on startup)
-                  getLastConnected() || updateLastConnected(),
+                  getLastConnected(appName) || updateLastConnected(appName),
         }),
-        [isConnected]
+        [isConnected, appName]
     )
 
     return (

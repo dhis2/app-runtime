@@ -1,9 +1,10 @@
+import { ConfigProvider } from '@dhis2/app-service-config'
 import { CustomDataProvider } from '@dhis2/app-service-data'
 import { renderHook, act } from '@testing-library/react-hooks'
 import React from 'react'
 import { mockOfflineInterface } from '../../utils/test-mocks'
 import {
-    lastConnectedKey,
+    getLastConnectedKey,
     useDhis2ConnectionStatus,
 } from '../dhis2-connection-status'
 import { OfflineProvider } from '../offline-provider'
@@ -24,6 +25,12 @@ const mockPing = jest.fn().mockImplementation(() => {
 jest.mock('../use-ping-query.ts', () => ({
     usePingQuery: () => mockPing,
 }))
+
+const failedPing = () =>
+    Promise.reject({
+        message: 'this is a network error',
+        type: 'network',
+    })
 
 const FIRST_INTERVAL_MS = DEFAULT_INITIAL_DELAY_MS
 const SECOND_INTERVAL_MS = FIRST_INTERVAL_MS * DEFAULT_INCREMENT_FACTOR
@@ -562,12 +569,7 @@ describe('lastConnected status', () => {
         expect(result.current.isConnected).toBe(true)
 
         // Mock a network error for the next ping
-        mockPing.mockImplementationOnce(() =>
-            Promise.reject({
-                message: 'this is a network error',
-                type: 'network',
-            })
-        )
+        mockPing.mockImplementationOnce(failedPing)
 
         // Trigger a ping (to fail and switch to disconnected)
         await act(async () => {
@@ -580,7 +582,7 @@ describe('lastConnected status', () => {
         expect(result.current.isDisconnected).toBe(true)
 
         // Check localStorage for the dummy date
-        const localStorageDate = localStorage.getItem(lastConnectedKey)
+        const localStorageDate = localStorage.getItem(getLastConnectedKey())
         expect(localStorageDate).toBe(testCurrentDate.toUTCString())
 
         // Check hook return value
@@ -595,12 +597,7 @@ describe('lastConnected status', () => {
         expect(result.current.isConnected).toBe(true)
 
         // Mock a network error for the next ping
-        mockPing.mockImplementationOnce(() =>
-            Promise.reject({
-                message: 'this is a network error',
-                type: 'network',
-            })
-        )
+        mockPing.mockImplementationOnce(failedPing)
 
         // Trigger an immediate ping (to fail and switch to disconnected)
         await act(async () => {
@@ -628,12 +625,7 @@ describe('lastConnected status', () => {
         )
 
         // Mock a network error for the next ping to trigger 'disconnected'
-        mockPing.mockImplementationOnce(() =>
-            Promise.reject({
-                message: 'this is a network error',
-                type: 'network',
-            })
-        )
+        mockPing.mockImplementationOnce(failedPing)
         await act(async () => {
             jest.runOnlyPendingTimers()
         })
@@ -643,7 +635,7 @@ describe('lastConnected status', () => {
         unmount()
 
         // Expect value to persist in localStorage
-        const localStorageDate = localStorage.getItem(lastConnectedKey)
+        const localStorageDate = localStorage.getItem(getLastConnectedKey())
         expect(localStorageDate).toBe(testCurrentDate.toUTCString())
     })
 
@@ -656,19 +648,14 @@ describe('lastConnected status', () => {
         expect(result.current.isConnected).toBe(true)
 
         // Mock a network error for the next ping to trigger disconnected
-        mockPing.mockImplementationOnce(() =>
-            Promise.reject({
-                message: 'this is a network error',
-                type: 'network',
-            })
-        )
+        mockPing.mockImplementationOnce(failedPing)
         await act(async () => {
             jest.runOnlyPendingTimers()
         })
         expect(result.current.isConnected).toBe(false)
 
         // Check localStorage for the dummy date
-        const localStorageDate = localStorage.getItem(lastConnectedKey)
+        const localStorageDate = localStorage.getItem(getLastConnectedKey())
         expect(localStorageDate).toBe(testCurrentDate.toUTCString())
 
         // Trigger another ping to go back to connected
@@ -679,7 +666,7 @@ describe('lastConnected status', () => {
 
         // Unmount and expect localStorage to be clear for next session
         unmount()
-        expect(localStorage.getItem(lastConnectedKey)).toBe(null)
+        expect(localStorage.getItem(getLastConnectedKey())).toBe(null)
     })
 
     describe('starting while disconnected', () => {
@@ -706,7 +693,7 @@ describe('lastConnected status', () => {
             })
 
             // expect correct lastConnected time (mocked Date.now())
-            expect(localStorage.getItem(lastConnectedKey)).toBe(
+            expect(localStorage.getItem(getLastConnectedKey())).toBe(
                 testCurrentDate.toUTCString()
             )
         })
@@ -715,7 +702,7 @@ describe('lastConnected status', () => {
             // seed localStorage with an imaginary 'lastConnected' value from last session
             const testPreviousDate = new Date('2023-01-01')
             localStorage.setItem(
-                lastConnectedKey,
+                getLastConnectedKey(),
                 testPreviousDate.toUTCString()
             )
 
@@ -741,7 +728,7 @@ describe('lastConnected status', () => {
             expect(result.current.lastConnected).not.toBe(null)
             expect(result.current.lastConnected).toEqual(testPreviousDate)
             // should be the same in localStorage too
-            expect(localStorage.getItem(lastConnectedKey)).toBe(
+            expect(localStorage.getItem(getLastConnectedKey())).toBe(
                 testPreviousDate.toUTCString()
             )
         })
@@ -750,7 +737,10 @@ describe('lastConnected status', () => {
     test("it doesn't change lastConnected if already disconnected", async () => {
         // seed localStorage with an imaginary 'lastConnected' value from last session
         const testPreviousDate = new Date('2023-01-01')
-        localStorage.setItem(lastConnectedKey, testPreviousDate.toUTCString())
+        localStorage.setItem(
+            getLastConnectedKey(),
+            testPreviousDate.toUTCString()
+        )
 
         // render hook with custom wrapper
         const customMockOfflineInterface = {
@@ -772,12 +762,7 @@ describe('lastConnected status', () => {
         expect(result.current.lastConnected).toEqual(testPreviousDate)
 
         // Mock a network error for the next ping and trigger
-        mockPing.mockImplementationOnce(() =>
-            Promise.reject({
-                message: 'this is a network error',
-                type: 'network',
-            })
-        )
+        mockPing.mockImplementationOnce(failedPing)
         await act(async () => {
             jest.runOnlyPendingTimers()
         })
@@ -786,7 +771,7 @@ describe('lastConnected status', () => {
         // Expect the same lastConnected as before
         expect(result.current.lastConnected).toEqual(testPreviousDate)
         // should be the same in localStorage too
-        expect(localStorage.getItem(lastConnectedKey)).toBe(
+        expect(localStorage.getItem(getLastConnectedKey())).toBe(
             testPreviousDate.toUTCString()
         )
 
@@ -801,5 +786,63 @@ describe('lastConnected status', () => {
 
         // Expect the same lastConnected as before
         expect(result.current.lastConnected).toEqual(testPreviousDate)
+    })
+
+    test('lastConnected is saved specifically to an app if a name is provided', async () => {
+        // seed localStorage with an imaginary 'lastConnected' value from last session
+        const testAppName = 'test-app-name'
+        const lastConnectedKey = getLastConnectedKey(testAppName)
+        const testPreviousDate = new Date('2023-01-01')
+        localStorage.setItem(lastConnectedKey, testPreviousDate.toUTCString())
+
+        // render hook with custom wrapper to start disconnected with app name
+        const customMockOfflineInterface = {
+            ...mockOfflineInterface,
+            latestIsConnected: false,
+        }
+        const customWrapper: React.FC = ({ children }) => (
+            <CustomDataProvider data={{}}>
+                <ConfigProvider
+                    config={{
+                        baseUrl: '..',
+                        apiVersion: 42,
+                        appName: testAppName,
+                    }}
+                >
+                    <OfflineProvider
+                        offlineInterface={customMockOfflineInterface}
+                    >
+                        {children}
+                    </OfflineProvider>
+                </ConfigProvider>
+            </CustomDataProvider>
+        )
+        const { result } = renderHook(() => useDhis2ConnectionStatus(), {
+            wrapper: customWrapper,
+        })
+
+        // Expect previous value to be read correctly
+        expect(result.current.lastConnected).toEqual(testPreviousDate)
+
+        // Go to connected then disconnected again to generate a new date
+        await act(async () => {
+            jest.runOnlyPendingTimers()
+        })
+        expect(result.current.isConnected).toBe(true)
+        expect(result.current.lastConnected).toBe(null)
+        expect(localStorage.getItem(lastConnectedKey)).toBe(null)
+
+        mockPing.mockImplementationOnce(failedPing)
+        await act(async () => {
+            jest.runOnlyPendingTimers()
+        })
+        expect(result.current.isConnected).toBe(false)
+        // Note the new date:
+        expect(result.current.lastConnected).toEqual(testCurrentDate)
+
+        // Verify localStorage
+        expect(localStorage.getItem(lastConnectedKey)).toBe(
+            testCurrentDate.toUTCString()
+        )
     })
 })
