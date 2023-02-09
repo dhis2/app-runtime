@@ -20,12 +20,13 @@ _reason_
 
 ---
 
-### TODO
+### Checklist
 
 -   [ ] Write Documentation
+    - _If not needed, explain why, otherwise remove this bullet point_
 -   [ ] Write Tests
--   [ ] _task_
-
+    - _If not needed, explain why, otherwise remove this bullet point_
+-   [ ] Actual task completed
 ---
 
 ### Known issues
