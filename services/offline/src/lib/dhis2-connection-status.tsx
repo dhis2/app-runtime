@@ -21,8 +21,7 @@ const updateLastConnected = () => {
 }
 const getLastConnected = () => {
     const lastConnected = localStorage.getItem(lastConnectedKey)
-    // If there is not an existing value, make one and return it
-    return lastConnected ? new Date(lastConnected) : updateLastConnected()
+    return lastConnected ? new Date(lastConnected) : null
 }
 const clearLastConnected = () => {
     localStorage.removeItem(lastConnectedKey)
@@ -170,8 +169,13 @@ export const Dhis2ConnectionStatusProvider = ({
             // is `null` when this initializes, default to `isConnected: false`
             isConnected: Boolean(isConnected),
             isDisconnected: !isConnected,
-            // Only evaluate if disconnected, since local storage is synchronous and disk-based
-            lastConnected: !isConnected ? getLastConnected() : null,
+            lastConnected: isConnected
+                ? null
+                : // Only evaluate if disconnected, since local storage
+                  // is synchronous and disk-based.
+                  // If lastConnected is not set in localStorage though, set it.
+                  // (relevant on startup)
+                  getLastConnected() || updateLastConnected(),
         }),
         [isConnected]
     )
