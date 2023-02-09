@@ -8,16 +8,16 @@ const meQuery = {
     },
 }
 
+// plugin error component (e.g. for dealing with missing/inaccessible plugin)
+
 const PluginError = ({
     missingEntryPoint,
     showDownload,
     appShortName,
-    missingProps,
 }: {
     missingEntryPoint: boolean
     showDownload: boolean
     appShortName?: string
-    missingProps: string[] | null
 }) => {
     const { data }: { data?: any } = useDataQuery(meQuery) // cast to deal with types for now...
     const canAddApp =
@@ -42,15 +42,7 @@ const PluginError = ({
                         </p>
                     ) : null}
                 </>
-            ) : (
-                <>
-                    {!missingEntryPoint &&
-                        missingProps &&
-                        missingProps?.length > 0 && (
-                            <p>{`The following required props were not provided: ${missingProps.join()}`}</p>
-                        )}
-                </>
-            )}
+            ) : null}
         </>
     )
 }

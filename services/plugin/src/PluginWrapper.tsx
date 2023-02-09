@@ -1,7 +1,6 @@
 import postRobot from 'post-robot'
-import React, { useCallback, useEffect, useState } from 'react'
-import { PluginErrorBoundary } from './PluginErrorBoundary'
-import { usePluginErrorContext } from './PluginContext'
+import { useCallback, useEffect, useState } from 'react'
+import { usePluginContext } from './PluginContext'
 
 export const PluginWrapper = ({
     requiredProps,
@@ -10,41 +9,80 @@ export const PluginWrapper = ({
     requiredProps: [string]
     children: any
 }): any => {
-    const { setOnPluginError } = usePluginErrorContext()
+    const {
+        setOnPluginError,
+        setClearPluginError,
+        setParentAlertsAdd,
+        setShowAlertsInPlugin,
+    } = usePluginContext()
     const [propsFromParent, setPropsFromParent] = useState<any>()
+    const [propsThatAreMissing, setPropsThatAreMissing] = useState<
+        Array<string>
+    >([])
 
     const receivePropsFromParent = useCallback(
         (event: any): void => {
             const { data: receivedProps } = event
-            const { updateMissingProps, ...explictlyPassedProps } =
-                receivedProps
+            const {
+                setInErrorState,
+                setCommunicationReceived,
+                alertsAdd,
+                showAlertsInPlugin,
+                onError,
+                ...explicitlyPassedProps
+            } = receivedProps
 
-            setPropsFromParent(explictlyPassedProps)
+            setPropsFromParent(explicitlyPassedProps)
 
             // check for required props
             const missingProps = requiredProps?.filter(
-                (prop) => !explictlyPassedProps[prop]
+                (prop) => !explicitlyPassedProps[prop]
             )
 
-            // if there are missing props, pass those back to parent
+            // if there are missing props, set to state to throw error
             if (missingProps && missingProps.length > 0) {
-                updateMissingProps(missingProps.sort())
-                console.error(
-                    `The following required props were not provided: ${missingProps.join(
-                        ','
-                    )}`
-                )
-            } else {
-                updateMissingProps(null)
+                console.error(`These props are missing: ${missingProps.join()}`)
+                setPropsThatAreMissing(missingProps)
             }
 
-            if (explictlyPassedProps.onError && setOnPluginError) {
-                setOnPluginError(() => (error: Error) => {
-                    explictlyPassedProps.onError(error)
+            if (setOnPluginError && setInErrorState) {
+                if (onError) {
+                    setOnPluginError(() => (error: Error) => {
+                        setCommunicationReceived(false)
+                        setInErrorState(true)
+                        onError(error)
+                    })
+                } else {
+                    setOnPluginError(() => () => {
+                        setCommunicationReceived(false)
+                        setInErrorState(true)
+                    })
+                }
+            }
+
+            if (setClearPluginError && setInErrorState) {
+                setClearPluginError(() => () => {
+                    setInErrorState(false)
                 })
             }
+
+            if (setParentAlertsAdd && alertsAdd) {
+                setParentAlertsAdd(() => (alert: any, alertRef: any) => {
+                    alertsAdd(alert, alertRef)
+                })
+            }
+
+            if (showAlertsInPlugin && setShowAlertsInPlugin) {
+                setShowAlertsInPlugin(Boolean(showAlertsInPlugin))
+            }
         },
-        [requiredProps, setOnPluginError]
+        [
+            requiredProps,
+            setOnPluginError,
+            setClearPluginError,
+            setParentAlertsAdd,
+            setShowAlertsInPlugin,
+        ]
     )
 
     useEffect(() => {
@@ -72,10 +110,14 @@ export const PluginWrapper = ({
         return () => listener.cancel()
     }, [receivePropsFromParent])
 
+    // throw error if props are missing
+    useEffect(() => {
+        if (propsThatAreMissing.length > 0) {
+            throw new Error(
+                `These props are missing: ${propsThatAreMissing.join()}`
+            )
+        }
+    }, [propsThatAreMissing])
+
     return children({ ...propsFromParent })
-    // return (
-    //     <PluginErrorBoundary onCustomError={propsFromParent?.onError || null}>
-    //         {children({ ...propsFromParent })}
-    //     </PluginErrorBoundary>
-    // )
 }

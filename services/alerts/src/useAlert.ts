@@ -6,7 +6,8 @@ export const useAlert = (
     message: string | ((props: any) => string),
     options: AlertOptions | ((props: any) => AlertOptions) = {}
 ): { show: (props?: any) => void; hide: () => void } => {
-    const { add }: AlertsManager = useContext(AlertsManagerContext)
+    const { add, plugin, parentAlertsAdd, showAlertsInPlugin }: AlertsManager =
+        useContext(AlertsManagerContext)
     const alertRef = useRef(<Alert | null>null)
 
     const show = useCallback(
@@ -17,15 +18,25 @@ export const useAlert = (
             const resolvedOptions =
                 typeof options === 'function' ? options(props) : options
 
-            alertRef.current = add(
-                {
-                    message: resolvedMessage,
-                    options: resolvedOptions,
-                },
-                alertRef
-            )
+            if (plugin && parentAlertsAdd && !showAlertsInPlugin) {
+                alertRef.current = parentAlertsAdd(
+                    {
+                        message: resolvedMessage,
+                        options: resolvedOptions,
+                    },
+                    alertRef
+                )
+            } else {
+                alertRef.current = add(
+                    {
+                        message: resolvedMessage,
+                        options: resolvedOptions,
+                    },
+                    alertRef
+                )
+            }
         },
-        [add, message, options]
+        [add, parentAlertsAdd, message, options]
     )
 
     const hide = useCallback(() => {

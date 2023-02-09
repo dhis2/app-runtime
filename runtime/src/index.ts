@@ -25,8 +25,8 @@ export {
 export {
     PluginSender,
     PluginWrapper,
-    usePluginErrorContext,
-    PluginErrorProvider,
+    usePluginContext,
+    PluginProvider,
 } from '@dhis2/app-service-plugin'
 
 export { Provider } from './Provider'

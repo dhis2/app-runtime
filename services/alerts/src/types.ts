@@ -15,4 +15,7 @@ export type AlertsMap = Map<number, Alert>
 
 export type AlertsManager = {
     add: (alert: Alert, alertRef: AlertRef) => Alert
+    plugin: boolean
+    parentAlertsAdd?: any
+    showAlertsInPlugin?: boolean
 }

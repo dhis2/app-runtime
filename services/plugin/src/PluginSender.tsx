@@ -1,6 +1,7 @@
+import { AlertsManagerContext } from '@dhis2/app-service-alerts'
 import { useDataQuery } from '@dhis2/app-service-data'
 import postRobot from 'post-robot'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import PluginError from './PluginError'
 
 const appsInfoQuery = {
@@ -34,7 +35,7 @@ export const PluginSender = ({
 }): JSX.Element => {
     const iframeRef = useRef<HTMLIFrameElement>(null)
 
-    const [missingProps, setMissingProps] = useState<string[] | null>(null)
+    const { add: alertsAdd } = useContext(AlertsManagerContext)
 
     const { data } = useDataQuery(appsInfoQuery)
     const pluginEntryPoint =
@@ -47,21 +48,19 @@ export const PluginSender = ({
     const [communicationReceived, setCommunicationReceived] =
         useState<boolean>(false)
 
-    const updateMissingProps = useCallback(
-        (propsIdentified: string[] | null) => {
-            if (propsIdentified?.join() !== missingProps?.join()) {
-                setMissingProps(propsIdentified)
-            }
-        },
-        [missingProps, setMissingProps]
-    )
+    const [inErrorState, setInErrorState] = useState<boolean>(false)
 
     useEffect(() => {
         if (iframeRef?.current) {
-            const iframeProps = { ...propsToPass, updateMissingProps }
+            const iframeProps = {
+                ...propsToPass,
+                alertsAdd,
+                setInErrorState,
+                setCommunicationReceived,
+            }
 
             // if iframe has not sent initial request, set up a listener
-            if (!communicationReceived) {
+            if (!communicationReceived && !inErrorState) {
                 const listener = postRobot.on(
                     'getPropsFromParent',
                     // listen for messages coming only from the iframe rendered by this component
@@ -75,7 +74,11 @@ export const PluginSender = ({
             }
 
             // if iframe has sent initial request, send new props
-            if (communicationReceived && iframeRef.current.contentWindow) {
+            if (
+                communicationReceived &&
+                iframeRef.current.contentWindow &&
+                !inErrorState
+            ) {
                 postRobot
                     .send(
                         iframeRef.current.contentWindow,
@@ -88,7 +91,7 @@ export const PluginSender = ({
                     })
             }
         }
-    }, [propsToPass, communicationReceived, updateMissingProps])
+    }, [propsToPass, communicationReceived, inErrorState, alertsAdd])
 
     if (data && !pluginEntryPoint) {
         return (
@@ -96,34 +99,23 @@ export const PluginSender = ({
                 missingEntryPoint={true}
                 showDownload={false}
                 appShortName={pluginShortName}
-                missingProps={missingProps}
             />
         )
     }
 
-    return (
-        <>
-            {/* if props are missing, keep iframe hidden so that it can received updated props  */}
-            {missingProps && missingProps?.length > 0 && (
-                <PluginError
-                    missingEntryPoint={false}
-                    showDownload={false}
-                    appShortName={pluginShortName}
-                    missingProps={missingProps}
-                />
-            )}
-            {pluginEntryPoint ? (
-                <iframe
-                    ref={iframeRef}
-                    src={pluginSource}
-                    style={{
-                        width: '100%',
-                        height: '100%',
-                        border: 'none',
-                    }}
-                    hidden={Boolean(missingProps && missingProps?.length > 0)}
-                ></iframe>
-            ) : null}
-        </>
-    )
+    if (pluginEntryPoint) {
+        return (
+            <iframe
+                ref={iframeRef}
+                src={pluginSource}
+                style={{
+                    width: '100%',
+                    height: '100%',
+                    border: 'none',
+                }}
+            ></iframe>
+        )
+    }
+
+    return <></>
 }

@@ -1,28 +1,55 @@
-import React, { createContext, Dispatch, useContext, useState } from 'react'
+import React, { ReactElement, createContext, useContext, useState } from 'react'
 
-type PluginErrorContextType = {
+type PluginContextType = {
     onPluginError: any
     setOnPluginError: any
+    parentAlertsAdd: any
+    setParentAlertsAdd: any
+    showAlertsInPlugin: boolean
+    setShowAlertsInPlugin: any
+    clearPluginError: any
+    setClearPluginError: any
 }
 
-const PluginErrorContext = createContext<PluginErrorContextType>({
+const PluginContext = createContext<PluginContextType>({
     onPluginError: null,
     setOnPluginError: null,
+    parentAlertsAdd: null,
+    setParentAlertsAdd: null,
+    showAlertsInPlugin: false,
+    setShowAlertsInPlugin: null,
+    clearPluginError: null,
+    setClearPluginError: null,
 })
 
-const PluginErrorProvider = ({ children }: { children: React.Component }) => {
+// TO DO: implement different component if not plugin
+
+const PluginProvider = ({
+    children,
+}: {
+    children: React.ReactNode
+}): ReactElement => {
     const [onPluginError, setOnPluginError] = useState(null)
+    const [parentAlertsAdd, setParentAlertsAdd] = useState(null)
+    const [showAlertsInPlugin, setShowAlertsInPlugin] = useState(false)
+    const [clearPluginError, setClearPluginError] = useState(null)
     const providerValue = {
         onPluginError,
         setOnPluginError,
+        parentAlertsAdd,
+        setParentAlertsAdd,
+        showAlertsInPlugin,
+        setShowAlertsInPlugin,
+        clearPluginError,
+        setClearPluginError,
     }
     return (
-        <PluginErrorContext.Provider value={providerValue}>
+        <PluginContext.Provider value={providerValue}>
             {children}
-        </PluginErrorContext.Provider>
+        </PluginContext.Provider>
     )
 }
 
-const usePluginErrorContext = () => useContext(PluginErrorContext)
+const usePluginContext = () => useContext(PluginContext)
 
-export { PluginErrorContext, PluginErrorProvider, usePluginErrorContext }
+export { PluginContext, PluginProvider, usePluginContext }
