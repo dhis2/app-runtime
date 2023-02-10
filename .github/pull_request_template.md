@@ -1,4 +1,4 @@
-Implements [DHIS2-XXXX](https://dhis2.atlassian.net/browse/DHIS2-XXXX)
+Implements [LIBS-XXXX](https://dhis2.atlassian.net/browse/LIBS-XXXX)
 
 ---
 
@@ -13,25 +13,18 @@ Implements [DHIS2-XXXX](https://dhis2.atlassian.net/browse/DHIS2-XXXX)
 _text_
 
 ---
-
-### BREAKING CHANGE
-<!-- Remove if not applicable -->
-_reason_
-
----
-
 ### Checklist
 
--   [ ] Write Documentation
+-   [ ] Have written Documentation
     - _If not needed, explain why, otherwise remove this bullet point_
--   [ ] Write Tests
+-   [ ] Has tests coverage
     - _If not needed, explain why, otherwise remove this bullet point_
 -   [ ] Actual task completed
 ---
 
 ### Known issues
 <!-- Remove if not applicable -->
--   [ ] _issue_
+-    _issue_
 
 ---
 
