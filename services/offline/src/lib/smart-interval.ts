@@ -83,16 +83,6 @@ export default function createSmartInterval({
         }, state.delay)
     }
 
-    /**
-     * Starts the interval.
-     * Under the hood, has the same behavior as `snooze()`
-     */
-    function start(): void {
-        console.log('starting interval')
-
-        clearTimeoutAndStart()
-    }
-
     /** Stop the interval. Used for cleaning up */
     function clear(): void {
         clearTimeout(state.timeout)
@@ -199,7 +189,7 @@ export default function createSmartInterval({
     }
 
     // Start the timer!
-    start()
+    clearTimeoutAndStart()
 
     return {
         clear,
