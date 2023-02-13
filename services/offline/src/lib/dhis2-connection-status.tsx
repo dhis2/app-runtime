@@ -59,6 +59,12 @@ export const Dhis2ConnectionStatusProvider = ({
 }): JSX.Element => {
     const offlineInterface = useOfflineInterface()
     const { appName } = useConfig()
+    // The offline interface persists the latest update from the SW so that
+    // this hook can initialize to an accurate value. The App Adapter in the
+    // platform waits for this value to be populated before rendering the
+    // the App Runtime provider (including this), but if that is not done,
+    // `latestIsConnected` may be `null` depending on the outcome of race
+    // conditions between the SW and the React component tree.
     const [isConnected, setIsConnected] = useState(
         offlineInterface.latestIsConnected
     )
@@ -177,7 +183,8 @@ export const Dhis2ConnectionStatusProvider = ({
     const contextValue = useMemo(
         () => ({
             // in the unlikely circumstance that offlineInterface.latestIsConnected
-            // is `null` when this initializes, default to `isConnected: false`
+            // is `null` when this initializes, fail safe by defaulting to
+            // `isConnected: false`
             isConnected: Boolean(isConnected),
             isDisconnected: !isConnected,
             lastConnected: isConnected
