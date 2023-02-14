@@ -47,7 +47,7 @@ This example illustrates one of the most typical situations for using the `useSe
 ```jsx
 import React from 'react'
 import moment from 'moment'
-import { useDataQuery } from '@dhis2/app-runtime'
+import { useDataQuery, useTimeZoneConversion } from '@dhis2/app-runtime'
 
 const query = {
     me: {
@@ -55,17 +55,16 @@ const query = {
     },
 }
 
-export const LastLoginMessage = () => {
+const LastLoginMessage = () => {
     const { error, data } = useDataQuery(query)
     const { fromServerDate } = useTimeZoneConversion()
     const lastLoginClient = fromServerDate(data?.me?.userCredentials?.lastLogin)
     return (
         <div>
-            <h3>Indicators (first 10)</h3>
             {error && <span>{`ERROR: ${error.message}`}</span>}
-            {data && lastLogin && (
+            {data && lastLoginClient && (
                 <span>
-                    `You last logged in: ${moment(lastLoginClient).fromNow()}`
+                    You last logged in: {moment(lastLoginClient).fromNow()}
                 </span>
             )}
         </div>
@@ -79,17 +78,18 @@ Generally, times are represented back to the user in the client time zone. In ce
 
 ```jsx
 import React from 'react'
-import { fromClientDate } from '@dhis2/app-runtime'
+import { useTimeZoneConversion } from '@dhis2/app-runtime'
 
-export const ScheduledJob = () => {
-    const scheduledTime = new fromClientDate() // initialize a date for "now"
+const ScheduledJob = () => {
+    const { fromClientDate } = useTimeZoneConversion()
+    const scheduledTime = fromClientDate(Date.now())
     scheduledTime.setHours(scheduledTime.getHours() + 2) // advance the time to be two hours later
 
     return (
         <span>
-            `Your job is scheduled for $
-            {scheduledTime.getServerZonedISOString()} ($
-            {scheduledTime.serverTimezone})`
+            {`Your job is scheduled for: ${scheduledTime.getServerZonedISOString()} (${
+                scheduledTime.serverTimezone
+            })`}
         </span>
     )
 }
@@ -100,11 +100,13 @@ export const ScheduledJob = () => {
 As mentioned above, `fromClientDate` will return a DHIS2Date object that corresponds to the client/browser's time zone. The primary purpose of the `fromClientDate` function is to allow one to get a string representation representing the server time zone (as illustrated in the previous example). However, in certain advanced cases, you may need to initialize a date that behaves such that its wall-clock time representation is the same as the server's wall-clock time representation. An example of this may be if you have a date/time selector and all of the date/times represent server date/times. You may want to limit this date/time selector to not allow selection of future dates/times. If you are in Oslo (Norway) and it is currently 12:00 on 17 May 2023, and your server is in Abidjan (Côte d'Ivoire) where it is 10:00 17 May 2023, then you may need a date that behaves as though it were 10:00 17 May 2023 in Oslo. You can do this as follows:
 
 ```jsx
+// NOTE: This is an example cannot be copy/pasted unless you have implemented a component named MyCalendarImplementation
 import React from 'react'
-import { fromClientDate } from '@dhis2/app-runtime'
+import { useTimeZoneConversion } from '@dhis2/app-runtime'
 import MyCalendarImplementation from './MyCalendarImplementation'
 
-export const FakeTime = () => {
+const FakeTime = () => {
+    const { fromClientDate } = useTimeZoneConversion()
     const now = fromClientDate() // initialize a date for "now"
     console.log(now) // this would display something like `Wed May 17 2023 12:00:00 GMT+0200 (Central European Summer Time)`
     const nowServer = new Date(now.getServerZonedISOString())
