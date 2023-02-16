@@ -4,6 +4,8 @@
 
 This hook is used to detect whether or not the app can connect to the DHIS2 server. This can be useful, for example, to make changes in the UI to prevent the user from taking actions that would cause errors while unable to reach the server.
 
+It's designed to detect server connection because checking just the internet connection can lead to problems on DHIS2 instances that are implemented offline, where features or actions might be blocked because the device is offline, even though the app can connect to the DHIS2 server just fine. In these cases, what matters is whether or not the app can connect to the DHIS2 server.
+
 ```ts
 import { useDhis2ConnectionStatus } from '@dhis2/app-runtime'
 
