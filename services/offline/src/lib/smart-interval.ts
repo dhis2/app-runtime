@@ -1,3 +1,5 @@
+import { devDebugLog } from './dev-debug-log'
+
 // Exported for tests
 // todo: adjust defaults (e.g. 30 sec/5 min/1.5x)
 export const DEFAULT_INITIAL_DELAY_MS = 2000 // 2 sec
@@ -6,8 +8,6 @@ export const DEFAULT_INCREMENT_FACTOR = 2
 const throwErrorIfNoCallbackIsProvided = (): void => {
     throw new Error('Provide a callback')
 }
-
-// todo: remove console logs after testing PR; though they are useful for testing
 
 export interface SmartInterval {
     clear: () => void
@@ -39,7 +39,10 @@ export default function createSmartInterval({
     /** Increment delay by the increment factor, up to a max value */
     function incrementDelay() {
         const newDelay = Math.min(state.delay * delayIncrementFactor, maxDelay)
-        console.log('incrementing delay', { prev: state.delay, new: newDelay })
+        devDebugLog('[SI] incrementing delay', {
+            prev: state.delay,
+            new: newDelay,
+        })
         state.delay = newDelay
     }
 
@@ -51,7 +54,9 @@ export default function createSmartInterval({
     }
 
     function clearTimeoutAndStart(): void {
-        console.log('clearing and starting timeout', { delay: state.delay })
+        devDebugLog('[SI] clearing and starting timeout', {
+            delay: state.delay,
+        })
 
         // Prevent parallel timeouts from occuring
         // (weird note: `if (this.timeout) { clearTimeout(this.timeout) }`
@@ -62,7 +67,7 @@ export default function createSmartInterval({
         // https://developer.mozilla.org/en-US/docs/Web/API/setInterval#ensure_that_execution_duration_is_shorter_than_interval_frequency
         state.timeout = setTimeout(function callbackAndRestart() {
             if (state.paused) {
-                console.log('entering regular standby')
+                devDebugLog('[SI] entering regular standby')
 
                 // If paused, prepare a 'standby callback' to be invoked when
                 // `resume()` is called (see its definition below).
@@ -109,7 +114,7 @@ export default function createSmartInterval({
                 // The timed out function set in `clearTimeoutAndStart` may
                 // overwrite this callback if the timer elapses, so that the
                 // timeout delay gets incremented appropriately.
-                console.log('entering standby without timer increment')
+                devDebugLog('[SI] entering standby without timer increment')
 
                 state.standbyCallback = () => {
                     // Invoke callback and start timer without incrementing
@@ -138,7 +143,7 @@ export default function createSmartInterval({
      * This decreases execution activity while 'paused'
      */
     function pause(): void {
-        console.log('pausing')
+        devDebugLog('[SI] pausing')
 
         state.paused = true
     }
@@ -150,7 +155,7 @@ export default function createSmartInterval({
      * which should start the interval timer again
      */
     function resume(): void {
-        console.log('resuming', { standbyCb: state.standbyCallback })
+        devDebugLog('[SI] resuming', { standbyCb: state.standbyCallback })
 
         // Clear paused state
         state.paused = false
@@ -173,7 +178,7 @@ export default function createSmartInterval({
      * traffic, for example
      */
     function snooze(): void {
-        console.log('snoozing timeout')
+        devDebugLog('[SI] snoozing timeout')
 
         clearTimeoutAndStart()
     }
@@ -182,7 +187,7 @@ export default function createSmartInterval({
      * Cancels the current timeout and starts a new one with the initial delay
      */
     function reset(): void {
-        console.log('resetting interval from beginning')
+        devDebugLog('[SI] resetting interval from beginning')
 
         state.delay = initialDelay
         clearTimeoutAndStart()

@@ -17,10 +17,7 @@ import {
 import { usePingQuery } from '../use-ping-query'
 
 // important that this name starts with 'mock' to be hoisted correctly
-const mockPing = jest.fn().mockImplementation(() => {
-    console.log('ping lol ------------------------------')
-    return Promise.resolve()
-})
+const mockPing = jest.fn().mockImplementation(() => Promise.resolve())
 
 jest.mock('../use-ping-query.ts', () => ({
     usePingQuery: () => mockPing,

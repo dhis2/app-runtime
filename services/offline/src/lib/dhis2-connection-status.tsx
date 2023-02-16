@@ -8,6 +8,7 @@ import React, {
     useEffect,
     useContext,
 } from 'react'
+import { devDebugLog } from './dev-debug-log'
 import { useOfflineInterface } from './offline-interface'
 import createSmartInterval, { SmartInterval } from './smart-interval'
 import { usePingQuery } from './use-ping-query'
@@ -80,11 +81,11 @@ export const Dhis2ConnectionStatusProvider = ({
             // use 'set' with a function as param to get latest isConnected
             // without needing it as a dependency for useCallback
             setIsConnected((prevIsConnected) => {
-                // todo: remove log after testing
-                console.log('updating state:', {
+                devDebugLog('[D2CS] updating state:', {
                     prevIsConnected,
                     newIsConnected,
                 })
+
                 if (newIsConnected !== prevIsConnected) {
                     // if value changed, reset ping interval to initial delay
                     smartIntervalRef.current?.reset()
@@ -128,8 +129,8 @@ export const Dhis2ConnectionStatusProvider = ({
     /** Called when SW reports updates from incidental network traffic */
     const onUpdate = useCallback(
         ({ isConnected: newIsConnected }) => {
-            // todo: remove console log after testing PR
-            console.log('handling update from sw')
+            devDebugLog('[D2CS] handling update from sw')
+
             // Snooze ping timer to reduce pings since we know state from SW
             smartIntervalRef.current?.snooze()
             updateConnectedState(newIsConnected)
