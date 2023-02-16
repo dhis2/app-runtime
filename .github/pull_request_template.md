@@ -3,7 +3,9 @@ Implements [LIBS-XXXX](https://dhis2.atlassian.net/browse/LIBS-XXXX)
 ---
 
 ### Key features
+
 <!-- Remove if not applicable -->
+
 1. _feature_
 
 ---
@@ -13,21 +15,26 @@ Implements [LIBS-XXXX](https://dhis2.atlassian.net/browse/LIBS-XXXX)
 _text_
 
 ---
+
 ### Checklist
 
 -   [ ] Have written Documentation
-    - _If not needed, explain why, otherwise remove this bullet point_
+    -   _If not needed, explain why, otherwise remove this bullet point_
 -   [ ] Has tests coverage
-    - _If not needed, explain why, otherwise remove this bullet point_
--   [ ] Actual task completed
+    -   _If not needed, explain why, otherwise remove this bullet point_
+
 ---
 
 ### Known issues
+
 <!-- Remove if not applicable -->
--    _issue_
+
+-   _issue_
 
 ---
 
 ### Screenshots
+
 <!-- Remove if not applicable -->
+
 _supporting text_
