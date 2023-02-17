@@ -1,4 +1,9 @@
 const shouldLog = localStorage.getItem('dhis2.debugConnectionStatus')
+if (shouldLog) {
+    console.log(
+        'Logging for dhis2ConnectionStatus is enabled. Remove the `dhis2.debugConnectionStatus` item in localStorage to disable logging.'
+    )
+}
 
 /**
  * This can be used to log info if the `dhis2.debugConnectionStatus` value
@@ -9,7 +14,7 @@ const shouldLog = localStorage.getItem('dhis2.debugConnectionStatus')
  * logs, but the logs are quite chatty and should be omitted normally.
  */
 export function devDebugLog(...args: any[]) {
-    if (shouldLog && process.env.NODE_ENV === 'development') {
+    if (shouldLog) {
         console.log(...args)
     }
 }
