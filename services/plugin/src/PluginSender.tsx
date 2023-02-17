@@ -97,7 +97,6 @@ export const PluginSender = ({
         return (
             <PluginError
                 missingEntryPoint={true}
-                showDownload={false}
                 appShortName={pluginShortName}
             />
         )

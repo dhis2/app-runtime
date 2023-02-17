@@ -36,7 +36,7 @@ export const useAlert = (
                 )
             }
         },
-        [add, parentAlertsAdd, message, options]
+        [add, parentAlertsAdd, message, options, plugin, showAlertsInPlugin]
     )
 
     const hide = useCallback(() => {

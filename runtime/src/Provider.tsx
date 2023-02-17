@@ -3,21 +3,25 @@ import { ConfigProvider } from '@dhis2/app-service-config'
 import { Config } from '@dhis2/app-service-config/build/types/types'
 import { DataProvider } from '@dhis2/app-service-data'
 import { OfflineProvider } from '@dhis2/app-service-offline'
-import { PluginProvider, usePluginContext } from '@dhis2/app-service-plugin'
 import React from 'react'
 
-// passed this way to avoid setting plugin service as peer dependency in alerts
-const DemoPass = ({
-    plugin,
-    offlineInterface,
-    children,
-}: {
-    plugin: boolean
-    offlineInterface?: any
+type ProviderInput = {
+    config: Config
     children: React.ReactNode
-}) => {
-    const { parentAlertsAdd, showAlertsInPlugin } = usePluginContext()
-    return (
+    offlineInterface?: any // temporary until offline service has types
+    plugin: boolean
+    parentAlertsAdd: any
+    showAlertsInPlugin: boolean
+}
+export const Provider = ({
+    config,
+    children,
+    offlineInterface,
+    plugin,
+    parentAlertsAdd,
+    showAlertsInPlugin,
+}: ProviderInput) => (
+    <ConfigProvider config={config}>
         <AlertsProvider
             plugin={plugin}
             parentAlertsAdd={parentAlertsAdd}
@@ -29,27 +33,6 @@ const DemoPass = ({
                 </OfflineProvider>
             </DataProvider>
         </AlertsProvider>
-    )
-}
-
-type ProviderInput = {
-    config: Config
-    children: React.ReactNode
-    offlineInterface?: any // temporary until offline service has types
-    plugin: boolean
-}
-export const Provider = ({
-    config,
-    children,
-    offlineInterface,
-    plugin,
-}: ProviderInput) => (
-    <ConfigProvider config={config}>
-        <PluginProvider>
-            <DemoPass offlineInterface={offlineInterface} plugin={plugin}>
-                {children}
-            </DemoPass>
-        </PluginProvider>
     </ConfigProvider>
 )
 
