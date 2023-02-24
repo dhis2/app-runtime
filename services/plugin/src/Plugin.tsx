@@ -24,7 +24,7 @@ const getPluginEntryPoint = ({
     )?.pluginLaunchUrl
 }
 
-export const PluginSender = ({
+export const Plugin = ({
     pluginSource,
     pluginShortName,
     ...propsToPass

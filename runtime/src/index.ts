@@ -22,6 +22,6 @@ export {
     clearSensitiveCaches,
 } from '@dhis2/app-service-offline'
 
-export { PluginSender } from '@dhis2/app-service-plugin'
+export { Plugin } from '@dhis2/app-service-plugin'
 
 export { Provider } from './Provider'

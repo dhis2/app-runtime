@@ -1,1 +1,1 @@
-export { PluginSender } from './PluginSender'
+export { Plugin } from './Plugin'
