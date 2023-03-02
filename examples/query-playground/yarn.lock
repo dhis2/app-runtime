@@ -1800,26 +1800,26 @@
     "@dhis2/app-service-offline" "3.7.0"
 
 "@dhis2/app-runtime@^2.2.2", "@dhis2/app-runtime@file:../../runtime":
-  version "3.6.1"
+  version "3.9.0"
   dependencies:
-    "@dhis2/app-service-alerts" "3.6.1"
-    "@dhis2/app-service-config" "3.6.1"
-    "@dhis2/app-service-data" "3.6.1"
-    "@dhis2/app-service-offline" "3.6.1"
+    "@dhis2/app-service-alerts" "3.9.0"
+    "@dhis2/app-service-config" "3.9.0"
+    "@dhis2/app-service-data" "3.9.0"
+    "@dhis2/app-service-offline" "3.9.0"
 
-"@dhis2/app-service-alerts@3.6.1", "@dhis2/app-service-alerts@3.7.0", "@dhis2/app-service-alerts@file:../../services/alerts":
-  version "3.6.1"
+"@dhis2/app-service-alerts@3.7.0", "@dhis2/app-service-alerts@3.9.0", "@dhis2/app-service-alerts@file:../../services/alerts":
+  version "3.9.0"
 
-"@dhis2/app-service-config@3.6.1", "@dhis2/app-service-config@3.7.0", "@dhis2/app-service-config@file:../../services/config":
-  version "3.6.1"
+"@dhis2/app-service-config@3.7.0", "@dhis2/app-service-config@3.9.0", "@dhis2/app-service-config@file:../../services/config":
+  version "3.9.0"
 
-"@dhis2/app-service-data@3.6.1", "@dhis2/app-service-data@3.7.0", "@dhis2/app-service-data@file:../../services/data":
-  version "3.6.1"
+"@dhis2/app-service-data@3.7.0", "@dhis2/app-service-data@3.9.0", "@dhis2/app-service-data@file:../../services/data":
+  version "3.9.0"
   dependencies:
     react-query "^3.13.11"
 
-"@dhis2/app-service-offline@3.6.1", "@dhis2/app-service-offline@3.7.0", "@dhis2/app-service-offline@file:../../services/offline":
-  version "3.6.1"
+"@dhis2/app-service-offline@3.7.0", "@dhis2/app-service-offline@3.9.0", "@dhis2/app-service-offline@file:../../services/offline":
+  version "3.9.0"
   dependencies:
     lodash "^4.17.21"
 
@@ -4788,9 +4788,9 @@ decamelize@^1.2.0:
   integrity sha1-9lNNFRSCabIDUue+4m9QH5oZEpA=
 
 decode-uri-component@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
-  integrity sha1-6zkTMzRYd1y4TNGh+uBiEGu4dUU=
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.2.tgz#e69dbe25d37941171dd540e024c444cd5188e1e9"
+  integrity sha512-FqUYQ+8o158GyGTrMFJms9qh3CqTKvAqgqsTnkLI8sKu0028orqBhxNMFkFen0zGyg6epACD32pjVk58ngIErQ==
 
 decompress-response@^3.3.0:
   version "3.3.0"
