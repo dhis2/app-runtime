@@ -2,23 +2,23 @@ import { ConfigProvider } from '@dhis2/app-service-config'
 import { renderHook, act } from '@testing-library/react-hooks'
 import React from 'react'
 import { mockOfflineInterface } from '../../utils/test-mocks'
+import { OfflineProvider } from '../offline-provider'
 import {
     getLastConnectedKey,
     useDhis2ConnectionStatus,
-} from '../dhis2-connection-status'
-import { OfflineProvider } from '../offline-provider'
+} from './dhis2-connection-status'
 import {
     DEFAULT_INCREMENT_FACTOR,
     DEFAULT_MAX_DELAY_MS,
     DEFAULT_INITIAL_DELAY_MS,
-} from '../smart-interval'
+} from './smart-interval'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { usePingQuery } from '../use-ping-query'
+import { usePingQuery } from './use-ping-query'
 
 // important that this name starts with 'mock' to be hoisted correctly
 const mockPing = jest.fn().mockImplementation(() => Promise.resolve())
 
-jest.mock('../use-ping-query.ts', () => ({
+jest.mock('./use-ping-query.ts', () => ({
     usePingQuery: () => mockPing,
 }))
 

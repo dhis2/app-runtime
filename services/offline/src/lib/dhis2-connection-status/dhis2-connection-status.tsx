@@ -8,8 +8,8 @@ import React, {
     useEffect,
     useContext,
 } from 'react'
+import { useOfflineInterface } from '../offline-interface'
 import { devDebugLog } from './dev-debug-log'
-import { useOfflineInterface } from './offline-interface'
 import createSmartInterval, { SmartInterval } from './smart-interval'
 import { usePingQuery } from './use-ping-query'
 
