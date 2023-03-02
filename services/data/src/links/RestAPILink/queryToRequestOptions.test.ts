@@ -6,9 +6,7 @@ describe('queryToRequestOptions', () => {
         expect(options).toMatchInlineSnapshot(`
             Object {
               "body": undefined,
-              "headers": Object {
-                "Accept": "application/json",
-              },
+              "headers": undefined,
               "method": "GET",
               "signal": undefined,
             }
@@ -24,7 +22,6 @@ describe('queryToRequestOptions', () => {
             Object {
               "body": "{\\"answer\\":42,\\"foo\\":\\"bar\\"}",
               "headers": Object {
-                "Accept": "application/json",
                 "Content-Type": "application/json",
               },
               "method": "POST",
@@ -42,7 +39,6 @@ describe('queryToRequestOptions', () => {
             Object {
               "body": "{\\"answer\\":42,\\"foo\\":\\"bar\\"}",
               "headers": Object {
-                "Accept": "application/json",
                 "Content-Type": "application/json",
               },
               "method": "PATCH",
@@ -60,7 +56,6 @@ describe('queryToRequestOptions', () => {
             Object {
               "body": "{\\"answer\\":42,\\"foo\\":\\"bar\\"}",
               "headers": Object {
-                "Accept": "application/json",
                 "Content-Type": "application/json-patch+json",
               },
               "method": "PATCH",
@@ -78,7 +73,6 @@ describe('queryToRequestOptions', () => {
             Object {
               "body": "{\\"answer\\":42,\\"foo\\":\\"bar\\"}",
               "headers": Object {
-                "Accept": "application/json",
                 "Content-Type": "application/json",
               },
               "method": "PUT",
@@ -92,9 +86,7 @@ describe('queryToRequestOptions', () => {
         expect(options).toMatchInlineSnapshot(`
             Object {
               "body": undefined,
-              "headers": Object {
-                "Accept": "application/json",
-              },
+              "headers": undefined,
               "method": "DELETE",
               "signal": undefined,
             }

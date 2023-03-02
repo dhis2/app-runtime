@@ -61,6 +61,7 @@ export function fetchData(
         credentials: 'include',
         headers: {
             'X-Requested-With': 'XMLHttpRequest',
+            Accept: 'application/json',
             ...options.headers,
         },
     })
