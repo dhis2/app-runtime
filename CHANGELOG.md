@@ -1,3 +1,10 @@
+# [3.9.0](https://github.com/dhis2/app-runtime/compare/v3.8.0...v3.9.0) (2023-03-02)
+
+
+### Features
+
+* dhis2 connection status [LIBS-315] ([#1203](https://github.com/dhis2/app-runtime/issues/1203)) ([6a4156e](https://github.com/dhis2/app-runtime/commit/6a4156e26b14c0f838bc02d69d0879826f342277))
+
 # [3.8.0](https://github.com/dhis2/app-runtime/compare/v3.7.0...v3.8.0) (2023-01-19)
 
 
