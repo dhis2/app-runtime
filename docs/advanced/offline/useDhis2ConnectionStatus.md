@@ -42,3 +42,7 @@ During periods when there’s no network traffic from the app, “pings” will 
 -   While the connection status is stable, the intervals between pings will increase exponentially up to a long interval.
 -   Any new network traffic from the app will postpone future pings.
 -   If the app is not focused, no pings will be sent.
+
+### Supported versions
+
+The pings are only sent for server versions that support them, meaning patch versions 2.40.0, 2.39.2, 2.38.3, and 2.37.10. and after. For unsupported versions, the hook will still use the incidental network traffic to determind a connections status value.

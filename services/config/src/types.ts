@@ -1,4 +1,4 @@
-type Version = {
+export type Version = {
     full: string
     major: number
     minor: number

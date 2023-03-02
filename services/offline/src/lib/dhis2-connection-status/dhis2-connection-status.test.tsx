@@ -46,9 +46,18 @@ const INTERVALS_TO_REACH_MAX_DELAY = Math.ceil(
 )
 
 const wrapper: React.FC = ({ children }) => (
-    <OfflineProvider offlineInterface={mockOfflineInterface}>
-        {children}
-    </OfflineProvider>
+    <ConfigProvider
+        config={{
+            baseUrl: '..',
+            apiVersion: 42,
+            // ensure this is a server version where pings are enabled
+            serverVersion: { major: 2, minor: 40, patch: 0, full: 'n/a' },
+        }}
+    >
+        <OfflineProvider offlineInterface={mockOfflineInterface}>
+            {children}
+        </OfflineProvider>
+    </ConfigProvider>
 )
 
 /**
@@ -730,9 +739,22 @@ describe('lastConnected status', () => {
             latestIsConnected: false,
         }
         const customWrapper: React.FC = ({ children }) => (
-            <OfflineProvider offlineInterface={customMockOfflineInterface}>
-                {children}
-            </OfflineProvider>
+            <ConfigProvider
+                config={{
+                    baseUrl: '..',
+                    apiVersion: 42,
+                    serverVersion: {
+                        major: 2,
+                        minor: 40,
+                        patch: 0,
+                        full: 'n/a',
+                    },
+                }}
+            >
+                <OfflineProvider offlineInterface={customMockOfflineInterface}>
+                    {children}
+                </OfflineProvider>
+            </ConfigProvider>
         )
         const { result } = renderHook(() => useDhis2ConnectionStatus(), {
             wrapper: customWrapper,
@@ -786,6 +808,12 @@ describe('lastConnected status', () => {
                     baseUrl: '..',
                     apiVersion: 42,
                     appName: testAppName,
+                    serverVersion: {
+                        major: 2,
+                        minor: 40,
+                        patch: 0,
+                        full: 'n/a',
+                    },
                 }}
             >
                 <OfflineProvider offlineInterface={customMockOfflineInterface}>
@@ -820,5 +848,59 @@ describe('lastConnected status', () => {
         expect(localStorage.getItem(lastConnectedKey)).toBe(
             testCurrentDate.toUTCString()
         )
+    })
+})
+
+describe("when the /api/ping endpoint isn't supported", () => {
+    const customWrapper: React.FC = ({ children }) => (
+        <ConfigProvider
+            config={{
+                baseUrl: '..',
+                apiVersion: 42,
+                // an unsupported version:
+                serverVersion: { major: 2, minor: 39, patch: 0, full: 'n/a' },
+            }}
+        >
+            <OfflineProvider offlineInterface={mockOfflineInterface}>
+                {children}
+            </OfflineProvider>
+        </ConfigProvider>
+    )
+
+    test("pings aren't sent", async () => {
+        const setTimeoutSpy = jest.spyOn(window, 'setTimeout')
+        renderHook(() => useDhis2ConnectionStatus(), {
+            wrapper: customWrapper,
+        })
+
+        await act(async () => {
+            jest.runAllTimers()
+        })
+
+        expect(mockPing).not.toHaveBeenCalled()
+        expect(setTimeoutSpy).not.toHaveBeenCalled()
+    })
+
+    test('service worker updates still work', async () => {
+        const { result } = renderHook(() => useDhis2ConnectionStatus(), {
+            wrapper: wrapper,
+        })
+        // get onUpdate function passed to mockOfflineInterface
+        const { onUpdate } =
+            mockOfflineInterface.subscribeToDhis2ConnectionStatus.mock
+                .calls[0][0]
+
+        expect(result.current.isConnected).toBe(true)
+
+        // Trigger connection status change from offline interface
+        await act(async () => {
+            onUpdate({ isConnected: false })
+        })
+        expect(result.current.isConnected).toBe(false)
+
+        await act(async () => {
+            onUpdate({ isConnected: true })
+        })
+        expect(result.current.isConnected).toBe(true)
     })
 })

@@ -1,5 +1,4 @@
 import { renderHook, act } from '@testing-library/react-hooks'
-import PropTypes from 'prop-types'
 import React, { FC } from 'react'
 import {
     errorRecordingMock,

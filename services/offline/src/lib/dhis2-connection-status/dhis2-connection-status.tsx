@@ -10,6 +10,7 @@ import React, {
 } from 'react'
 import { useOfflineInterface } from '../offline-interface'
 import { devDebugLog } from './dev-debug-log'
+import { isPingAvailable } from './is-ping-available'
 import createSmartInterval, { SmartInterval } from './smart-interval'
 import { usePingQuery } from './use-ping-query'
 
@@ -59,7 +60,7 @@ export const Dhis2ConnectionStatusProvider = ({
     children: React.ReactNode
 }): JSX.Element => {
     const offlineInterface = useOfflineInterface()
-    const { appName } = useConfig()
+    const { appName, serverVersion } = useConfig()
     // The offline interface persists the latest update from the SW so that
     // this hook can initialize to an accurate value. The App Adapter in the
     // platform waits for this value to be populated before rendering the
@@ -134,6 +135,12 @@ export const Dhis2ConnectionStatusProvider = ({
     )
 
     useEffect(() => {
+        // If the /api/ping endpoint is not available on this instance, skip
+        // pinging with the smart interval. Just use the service worker
+        if (!serverVersion || !isPingAvailable(serverVersion)) {
+            return
+        }
+
         // Only create the smart interval once
         const smartInterval = createSmartInterval({
             // don't ping if window isn't focused or visible
@@ -164,7 +171,7 @@ export const Dhis2ConnectionStatusProvider = ({
             // clean up smart interval
             smartInterval.clear()
         }
-    }, [pingAndHandleStatus])
+    }, [pingAndHandleStatus, serverVersion])
 
     useEffect(() => {
         const unsubscribe = offlineInterface.subscribeToDhis2ConnectionStatus({
