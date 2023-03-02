@@ -9,6 +9,7 @@
     -   [useDataEngine](hooks/useDataEngine)
     -   [useAlert](hooks/useAlert)
     -   [useAlerts](hooks/useAlerts)
+    -   [useTimeZoneConversion](hooks/useTimeZoneConversion)
 -   [**Components**](components/)
     -   [DataQuery](components/DataQuery)
     -   [DataMutation](components/DataMutation)
