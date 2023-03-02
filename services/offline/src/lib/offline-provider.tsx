@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { OfflineInterface } from '../types'
 import { CacheableSectionProvider } from './cacheable-section-state'
+import { Dhis2ConnectionStatusProvider } from './dhis2-connection-status'
 import { OfflineInterfaceProvider } from './offline-interface'
 import { OnlineStatusMessageProvider } from './online-status-message'
 
@@ -23,11 +24,13 @@ export function OfflineProvider({
 
     return (
         <OfflineInterfaceProvider offlineInterface={offlineInterface}>
-            <CacheableSectionProvider>
-                <OnlineStatusMessageProvider>
-                    {children}
-                </OnlineStatusMessageProvider>
-            </CacheableSectionProvider>
+            <Dhis2ConnectionStatusProvider>
+                <CacheableSectionProvider>
+                    <OnlineStatusMessageProvider>
+                        {children}
+                    </OnlineStatusMessageProvider>
+                </CacheableSectionProvider>
+            </Dhis2ConnectionStatusProvider>
         </OfflineInterfaceProvider>
     )
 }

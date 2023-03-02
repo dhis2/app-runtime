@@ -2,7 +2,7 @@ function hasObjectPrototype(o: any): boolean {
     return Object.prototype.toString.call(o) === '[object Object]'
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types, @typescript-eslint/explicit-module-boundary-types
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function isPlainObject(o: any): o is Object {
     if (!hasObjectPrototype(o)) {
         return false
@@ -33,7 +33,6 @@ export function isPlainObject(o: any): o is Object {
  * Hashes the value into a stable hash.
  */
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function stableVariablesHash(value: any): string {
     let hash
 
