@@ -1,5 +1,4 @@
 import { AlertsProvider } from '@dhis2/app-service-alerts'
-import { CustomDataProvider } from '@dhis2/app-service-data'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
 import {
@@ -71,15 +70,10 @@ const TestSingleSection = (props?: any) => {
     // Props are spread so they can be overwritten
     return (
         <AlertsProvider>
-            <CustomDataProvider data={{}}>
-                <OfflineProvider
-                    offlineInterface={mockOfflineInterface}
-                    {...props}
-                >
-                    <TestControls id={'1'} {...props} />
-                    <TestSection id={'1'} {...props} />
-                </OfflineProvider>
-            </CustomDataProvider>
+            <OfflineProvider offlineInterface={mockOfflineInterface} {...props}>
+                <TestControls id={'1'} {...props} />
+                <TestSection id={'1'} {...props} />
+            </OfflineProvider>
         </AlertsProvider>
     )
 }
@@ -238,14 +232,12 @@ describe('Coordination between useCacheableSection and CacheableSection', () => 
 const TwoTestSections = (props?: any) => (
     // Props are spread so they can be overwritten (but only on one section)
     <AlertsProvider>
-        <CustomDataProvider data={{}}>
-            <OfflineProvider offlineInterface={mockOfflineInterface} {...props}>
-                <TestControls id={'1'} {...props} />
-                <TestSection id={'1'} {...props} />
-                <TestControls id={'2'} />
-                <TestSection id={'2'} />
-            </OfflineProvider>
-        </CustomDataProvider>
+        <OfflineProvider offlineInterface={mockOfflineInterface} {...props}>
+            <TestControls id={'1'} {...props} />
+            <TestSection id={'1'} {...props} />
+            <TestControls id={'2'} />
+            <TestSection id={'2'} />
+        </OfflineProvider>
     </AlertsProvider>
 )
 
@@ -296,16 +288,14 @@ describe('useCacheableSection can be used inside a child of CacheableSection', (
         // Props are spread so they can be overwritten
         return (
             <AlertsProvider>
-                <CustomDataProvider data={{}}>
-                    <OfflineProvider
-                        offlineInterface={mockOfflineInterface}
-                        {...props}
-                    >
-                        <TestSection id={'1'} {...props}>
-                            <TestControls id={'1'} {...props} />
-                        </TestSection>
-                    </OfflineProvider>
-                </CustomDataProvider>
+                <OfflineProvider
+                    offlineInterface={mockOfflineInterface}
+                    {...props}
+                >
+                    <TestSection id={'1'} {...props}>
+                        <TestControls id={'1'} {...props} />
+                    </TestSection>
+                </OfflineProvider>
             </AlertsProvider>
         )
     }

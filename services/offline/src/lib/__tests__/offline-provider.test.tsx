@@ -1,4 +1,3 @@
-import { CustomDataProvider } from '@dhis2/app-service-data'
 import { render, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 import { mockOfflineInterface } from '../../utils/test-mocks'
@@ -28,11 +27,9 @@ afterEach(() => {
 describe('Testing offline provider', () => {
     it('Should render without failing', () => {
         render(
-            <CustomDataProvider data={{}}>
-                <OfflineProvider offlineInterface={mockOfflineInterface}>
-                    <div data-testid="test-div" />
-                </OfflineProvider>
-            </CustomDataProvider>
+            <OfflineProvider offlineInterface={mockOfflineInterface}>
+                <div data-testid="test-div" />
+            </OfflineProvider>
         )
 
         expect(screen.getByTestId('test-div')).toBeInTheDocument()
@@ -57,11 +54,9 @@ describe('Testing offline provider', () => {
         }
 
         render(
-            <CustomDataProvider data={{}}>
-                <OfflineProvider offlineInterface={testOfflineInterface}>
-                    <CachedSections />
-                </OfflineProvider>
-            </CustomDataProvider>
+            <OfflineProvider offlineInterface={testOfflineInterface}>
+                <CachedSections />
+            </OfflineProvider>
         )
 
         const { getByTestId } = screen
@@ -88,11 +83,9 @@ describe('Testing offline provider', () => {
         }
 
         render(
-            <CustomDataProvider data={{}}>
-                <OfflineProvider offlineInterface={mockOfflineInterface}>
-                    <TestConsumer />
-                </OfflineProvider>
-            </CustomDataProvider>
+            <OfflineProvider offlineInterface={mockOfflineInterface}>
+                <TestConsumer />
+            </OfflineProvider>
         )
 
         expect(screen.getByTestId('test-div')).toBeInTheDocument()
@@ -100,11 +93,9 @@ describe('Testing offline provider', () => {
 
     it('Should render without failing when no offlineInterface is provided', () => {
         render(
-            <CustomDataProvider data={{}}>
-                <OfflineProvider>
-                    <div data-testid="test-div" />
-                </OfflineProvider>
-            </CustomDataProvider>
+            <OfflineProvider>
+                <div data-testid="test-div" />
+            </OfflineProvider>
         )
         expect(screen.getByTestId('test-div')).toBeInTheDocument()
     })
@@ -115,11 +106,9 @@ describe('Testing offline provider', () => {
             pwaEnabled: false,
         }
         render(
-            <CustomDataProvider data={{}}>
-                <OfflineProvider offlineInterface={testOfflineInterface}>
-                    <div data-testid="test-div" />
-                </OfflineProvider>
-            </CustomDataProvider>
+            <OfflineProvider offlineInterface={testOfflineInterface}>
+                <div data-testid="test-div" />
+            </OfflineProvider>
         )
 
         expect(screen.getByTestId('test-div')).toBeInTheDocument()

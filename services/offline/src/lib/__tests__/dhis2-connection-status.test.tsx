@@ -1,5 +1,4 @@
 import { ConfigProvider } from '@dhis2/app-service-config'
-import { CustomDataProvider } from '@dhis2/app-service-data'
 import { renderHook, act } from '@testing-library/react-hooks'
 import React from 'react'
 import { mockOfflineInterface } from '../../utils/test-mocks'
@@ -47,11 +46,9 @@ const INTERVALS_TO_REACH_MAX_DELAY = Math.ceil(
 )
 
 const wrapper: React.FC = ({ children }) => (
-    <CustomDataProvider data={{}}>
-        <OfflineProvider offlineInterface={mockOfflineInterface}>
-            {children}
-        </OfflineProvider>
-    </CustomDataProvider>
+    <OfflineProvider offlineInterface={mockOfflineInterface}>
+        {children}
+    </OfflineProvider>
 )
 
 /**
@@ -113,11 +110,9 @@ describe('initialization to the right values based on offline interface', () => 
             latestIsConnected: false,
         }
         const customWrapper: React.FC = ({ children }) => (
-            <CustomDataProvider data={{}}>
-                <OfflineProvider offlineInterface={customMockOfflineInterface}>
-                    {children}
-                </OfflineProvider>
-            </CustomDataProvider>
+            <OfflineProvider offlineInterface={customMockOfflineInterface}>
+                {children}
+            </OfflineProvider>
         )
         const { result } = renderHook(() => useDhis2ConnectionStatus(), {
             wrapper: customWrapper,
@@ -143,11 +138,9 @@ describe('initialization to the right values based on offline interface', () => 
             latestIsConnected: null,
         }
         const customWrapper: React.FC = ({ children }) => (
-            <CustomDataProvider data={{}}>
-                <OfflineProvider offlineInterface={customMockOfflineInterface}>
-                    {children}
-                </OfflineProvider>
-            </CustomDataProvider>
+            <OfflineProvider offlineInterface={customMockOfflineInterface}>
+                {children}
+            </OfflineProvider>
         )
         const { result } = renderHook(() => useDhis2ConnectionStatus(), {
             wrapper: customWrapper,
@@ -675,13 +668,9 @@ describe('lastConnected status', () => {
                 latestIsConnected: false,
             }
             const customWrapper: React.FC = ({ children }) => (
-                <CustomDataProvider data={{}}>
-                    <OfflineProvider
-                        offlineInterface={customMockOfflineInterface}
-                    >
-                        {children}
-                    </OfflineProvider>
-                </CustomDataProvider>
+                <OfflineProvider offlineInterface={customMockOfflineInterface}>
+                    {children}
+                </OfflineProvider>
             )
 
             // render hook with custom wrapper
@@ -709,13 +698,9 @@ describe('lastConnected status', () => {
                 latestIsConnected: false,
             }
             const customWrapper: React.FC = ({ children }) => (
-                <CustomDataProvider data={{}}>
-                    <OfflineProvider
-                        offlineInterface={customMockOfflineInterface}
-                    >
-                        {children}
-                    </OfflineProvider>
-                </CustomDataProvider>
+                <OfflineProvider offlineInterface={customMockOfflineInterface}>
+                    {children}
+                </OfflineProvider>
             )
             const { result } = renderHook(() => useDhis2ConnectionStatus(), {
                 wrapper: customWrapper,
@@ -745,11 +730,9 @@ describe('lastConnected status', () => {
             latestIsConnected: false,
         }
         const customWrapper: React.FC = ({ children }) => (
-            <CustomDataProvider data={{}}>
-                <OfflineProvider offlineInterface={customMockOfflineInterface}>
-                    {children}
-                </OfflineProvider>
-            </CustomDataProvider>
+            <OfflineProvider offlineInterface={customMockOfflineInterface}>
+                {children}
+            </OfflineProvider>
         )
         const { result } = renderHook(() => useDhis2ConnectionStatus(), {
             wrapper: customWrapper,
@@ -798,21 +781,17 @@ describe('lastConnected status', () => {
             latestIsConnected: false,
         }
         const customWrapper: React.FC = ({ children }) => (
-            <CustomDataProvider data={{}}>
-                <ConfigProvider
-                    config={{
-                        baseUrl: '..',
-                        apiVersion: 42,
-                        appName: testAppName,
-                    }}
-                >
-                    <OfflineProvider
-                        offlineInterface={customMockOfflineInterface}
-                    >
-                        {children}
-                    </OfflineProvider>
-                </ConfigProvider>
-            </CustomDataProvider>
+            <ConfigProvider
+                config={{
+                    baseUrl: '..',
+                    apiVersion: 42,
+                    appName: testAppName,
+                }}
+            >
+                <OfflineProvider offlineInterface={customMockOfflineInterface}>
+                    {children}
+                </OfflineProvider>
+            </ConfigProvider>
         )
         const { result } = renderHook(() => useDhis2ConnectionStatus(), {
             wrapper: customWrapper,
