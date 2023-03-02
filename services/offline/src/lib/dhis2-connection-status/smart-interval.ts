@@ -1,10 +1,9 @@
 import { devDebugLog } from './dev-debug-log'
 
 // Exported for tests
-// todo: adjust defaults (e.g. 30 sec/5 min/1.5x)
-export const DEFAULT_INITIAL_DELAY_MS = 2000 // 2 sec
-export const DEFAULT_MAX_DELAY_MS = 1000 * 30 // 30 sec
-export const DEFAULT_INCREMENT_FACTOR = 2
+export const DEFAULT_INITIAL_DELAY_MS = 1000 * 30 // 30 sec
+export const DEFAULT_MAX_DELAY_MS = 1000 * 60 * 5 // 5 min
+export const DEFAULT_INCREMENT_FACTOR = 1.5
 const throwErrorIfNoCallbackIsProvided = (): void => {
     throw new Error('Provide a callback')
 }
