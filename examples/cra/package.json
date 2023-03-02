@@ -7,7 +7,7 @@
         "@dhis2/app-service-config": "file:../../services/config",
         "@dhis2/app-service-data": "file:../../services/data",
         "prop-types": "^15.7.2",
-        "react": "~16.8.6",
+        "react": "~16.14.0",
         "react-dom": "~16.8.6",
         "react-scripts": "^3.3.0"
     },
