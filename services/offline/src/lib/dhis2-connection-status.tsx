@@ -116,13 +116,8 @@ export const Dhis2ConnectionStatusProvider = ({
                 updateConnectedState(true)
             })
             .catch((err) => {
-                // Can get here if unauthorized, network error, etc.
                 console.error('Ping failed:', err.message)
-
-                // Only network errors should change status
-                if (err.type === 'network') {
-                    updateConnectedState(false)
-                }
+                updateConnectedState(false)
             })
     }, [ping, updateConnectedState])
 
