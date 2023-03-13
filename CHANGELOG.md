@@ -1,3 +1,21 @@
+# [3.10.0-alpha.1](https://github.com/dhis2/app-runtime/compare/v3.9.0...v3.10.0-alpha.1) (2023-03-13)
+
+
+### Bug Fixes
+
+* add documentation, clean up ([c537590](https://github.com/dhis2/app-runtime/commit/c537590176b2e6aebf278653a87705b3417bcc38))
+* clean up, add useless test ([b14952b](https://github.com/dhis2/app-runtime/commit/b14952b137971f625283c8de60afac061176b80e))
+* custom error handling ([c72fc6e](https://github.com/dhis2/app-runtime/commit/c72fc6eac576ce043ab706e13030497a0dab3d3a))
+* dependency resolution ([2480c1c](https://github.com/dhis2/app-runtime/commit/2480c1c6b82daaeee0ab82ef45962fbcabd0e778))
+
+
+### Features
+
+* ideas for plugin wrappers [LIBS-397] ([be38607](https://github.com/dhis2/app-runtime/commit/be38607698b12309af5b79259afbbf037e7027bc))
+* implement plugin wrappers (alpha) ([#1332](https://github.com/dhis2/app-runtime/issues/1332)) ([56a9a3f](https://github.com/dhis2/app-runtime/commit/56a9a3fb734e07c6c2d8140c6413222b42be82a1))
+* plugin wrappers, errors + alerts ([bda6a43](https://github.com/dhis2/app-runtime/commit/bda6a4352fe0ad8a076f55040e3fe702f9d0c4eb))
+* update plugin wrappers ([30c963c](https://github.com/dhis2/app-runtime/commit/30c963c112b2865ae824c7e3ce06279ed374983c))
+
 # [3.9.0](https://github.com/dhis2/app-runtime/compare/v3.8.0...v3.9.0) (2023-03-02)
 
 
