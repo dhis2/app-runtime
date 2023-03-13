@@ -9,6 +9,9 @@ const placeholder = () => {
 
 const defaultAlertsManager: AlertsManager = {
     add: placeholder,
+    plugin: false,
+    parentAlertsAdd: null,
+    showAlertsInPlugin: false,
 }
 
 export const AlertsManagerContext =
