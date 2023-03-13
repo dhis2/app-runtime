@@ -129,6 +129,19 @@ describe('query validation', () => {
             `)
         })
 
+        it('should fail if query is json-patch mutation with non-array data prop', () => {
+            const errors = getResourceQueryErrors('json-patch', {
+                resource: 'metadata',
+                data: {},
+            })
+            expect(errors).toHaveLength(1)
+            expect(errors).toMatchInlineSnapshot(`
+                Array [
+                  "Mutation type 'json-patch' requires property 'data' to be of type Array",
+                ]
+            `)
+        })
+
         it('should fail if unrecognized keys are passed to query', () => {
             const errors = getResourceQueryErrors('update', {
                 resource: 'indicators',

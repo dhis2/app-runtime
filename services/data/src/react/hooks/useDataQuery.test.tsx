@@ -1,22 +1,7 @@
 import { renderHook, act } from '@testing-library/react-hooks'
-import React from 'react'
-import { setLogger } from 'react-query'
+import * as React from 'react'
 import { CustomDataProvider } from '../components/CustomDataProvider'
 import { useDataQuery } from './useDataQuery'
-
-beforeAll(() => {
-    // Prevent the react-query logger from logging to the console
-    setLogger({
-        log: jest.fn(),
-        warn: jest.fn(),
-        error: jest.fn(),
-    })
-})
-
-afterAll(() => {
-    // Restore the original react-query logger
-    setLogger(console)
-})
 
 describe('useDataQuery', () => {
     describe('parameters: onComplete', () => {
@@ -113,7 +98,7 @@ describe('useDataQuery', () => {
             }
 
             const { result, waitForNextUpdate, rerender } = renderHook(
-                props => useDataQuery(props.query, props.options),
+                (props) => useDataQuery(props.query, props.options),
                 {
                     wrapper,
                     initialProps,
@@ -181,59 +166,6 @@ describe('useDataQuery', () => {
     })
 
     describe('internal: caching', () => {
-        it('Should return stale data initially on refetch', async () => {
-            const answers = [42, 43]
-            const mockSpy = jest.fn(() => Promise.resolve(answers.shift()))
-            const data = {
-                answer: mockSpy,
-            }
-            const query = { x: { resource: 'answer' } }
-            const wrapper = ({ children }) => (
-                <CustomDataProvider data={data}>{children}</CustomDataProvider>
-            )
-
-            const { result, waitForNextUpdate } = renderHook(
-                () => useDataQuery(query),
-                {
-                    wrapper,
-                }
-            )
-
-            expect(mockSpy).toHaveBeenCalledTimes(1)
-            expect(result.current).toMatchObject({
-                loading: true,
-                called: true,
-            })
-
-            await waitForNextUpdate()
-
-            expect(result.current).toMatchObject({
-                loading: false,
-                called: true,
-                data: { x: 42 },
-            })
-
-            act(() => {
-                result.current.refetch()
-            })
-
-            expect(mockSpy).toHaveBeenCalledTimes(2)
-            expect(result.current).toMatchObject({
-                loading: false,
-                called: true,
-                data: { x: 42 },
-            })
-
-            await waitForNextUpdate()
-
-            expect(mockSpy).toHaveBeenCalledTimes(2)
-            expect(result.current).toMatchObject({
-                loading: false,
-                called: true,
-                data: { x: 43 },
-            })
-        })
-
         it('Should return data from the cache if it is not stale', async () => {
             // Keep cached data forever, see: https://react-query.tanstack.com/reference/useQuery
             const queryClientOptions = {
@@ -494,6 +426,245 @@ describe('useDataQuery', () => {
     })
 
     describe('return values: refetch', () => {
+        it('Should be stable if the query variables change', async () => {
+            let count = 0
+            const spy = jest.fn(() => {
+                count++
+                return count
+            })
+            const data = {
+                answer: spy,
+            }
+            const query = {
+                x: { resource: 'answer' },
+            }
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
+
+            const { result, waitFor } = renderHook(
+                () => useDataQuery(query, { lazy: true }),
+                {
+                    wrapper,
+                }
+            )
+
+            expect(spy).not.toHaveBeenCalled()
+
+            const initialRefetch = result.current.refetch
+            act(() => {
+                initialRefetch()
+            })
+
+            await waitFor(() => {
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    called: true,
+                    data: { x: 1 },
+                })
+            })
+
+            expect(spy).toHaveBeenCalledTimes(1)
+
+            act(() => {
+                initialRefetch()
+            })
+
+            await waitFor(() => {
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    called: true,
+                    data: { x: 2 },
+                })
+            })
+
+            expect(spy).toHaveBeenCalledTimes(2)
+            expect(initialRefetch).toBe(result.current.refetch)
+        })
+
+        it('Should only trigger a single request when refetch is called on a lazy query with new variables', async () => {
+            const spy = jest.fn((type, query) => {
+                if (query.id === '1') {
+                    return 42
+                }
+
+                return 0
+            })
+            const data = {
+                answer: spy,
+            }
+            const query = {
+                x: { resource: 'answer', id: ({ id }) => id },
+            }
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
+
+            const { result, waitFor } = renderHook(
+                () => useDataQuery(query, { lazy: true }),
+                {
+                    wrapper,
+                }
+            )
+
+            expect(spy).not.toHaveBeenCalled()
+
+            act(() => {
+                result.current.refetch({ id: '1' })
+            })
+
+            await waitFor(() => {
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    called: true,
+                    data: { x: 42 },
+                })
+            })
+
+            expect(spy).toHaveBeenCalledTimes(1)
+        })
+
+        it('Should only trigger a single request when refetch is called on a lazy query with identical variables', async () => {
+            const spy = jest.fn((type, query) => {
+                if (query.id === '1') {
+                    return 42
+                }
+
+                return 0
+            })
+            const data = {
+                answer: spy,
+            }
+            const query = {
+                x: { resource: 'answer', id: ({ id }) => id },
+            }
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
+
+            const { result, waitFor } = renderHook(
+                () =>
+                    useDataQuery(query, { lazy: true, variables: { id: '1' } }),
+                {
+                    wrapper,
+                }
+            )
+
+            expect(spy).not.toHaveBeenCalled()
+
+            act(() => {
+                result.current.refetch({ id: '1' })
+            })
+
+            await waitFor(() => {
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    called: true,
+                    data: { x: 42 },
+                })
+            })
+
+            expect(spy).toHaveBeenCalledTimes(1)
+        })
+
+        it('Should have a stable identity if the variables have not changed', async () => {
+            const data = {
+                answer: () => 42,
+            }
+            const query = { x: { resource: 'answer' } }
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
+
+            const { result, waitForNextUpdate, rerender } = renderHook(
+                () => useDataQuery(query),
+                {
+                    wrapper,
+                }
+            )
+
+            const firstRefetch = result.current.refetch
+
+            await waitForNextUpdate()
+
+            act(() => {
+                result.current.refetch()
+
+                /**
+                 * FIXME: https://github.com/tannerlinsley/react-query/issues/2481
+                 * This forced rerender is not necessary in the app, just when testing.
+                 * It is unclear why.
+                 */
+                rerender()
+            })
+
+            await waitForNextUpdate()
+
+            expect(result.current.refetch).toBe(firstRefetch)
+        })
+
+        it('Should return stale data and set loading to true on refetch', async () => {
+            const answers = [42, 43]
+            const mockSpy = jest.fn(() => Promise.resolve(answers.shift()))
+            const data = {
+                answer: mockSpy,
+            }
+            const query = { x: { resource: 'answer' } }
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
+
+            const { result, waitForNextUpdate, rerender } = renderHook(
+                () => useDataQuery(query),
+                {
+                    wrapper,
+                }
+            )
+
+            expect(mockSpy).toHaveBeenCalledTimes(1)
+            expect(result.current).toMatchObject({
+                loading: true,
+                called: true,
+            })
+
+            await waitForNextUpdate()
+
+            expect(result.current).toMatchObject({
+                loading: false,
+                called: true,
+                data: { x: 42 },
+            })
+
+            act(() => {
+                result.current.refetch()
+
+                /**
+                 * FIXME: https://github.com/tannerlinsley/react-query/issues/2481
+                 * This forced rerender is not necessary in the app, just when testing.
+                 * It is unclear why.
+                 */
+                rerender()
+            })
+
+            expect(mockSpy).toHaveBeenCalledTimes(2)
+            expect(result.current).toMatchObject({
+                loading: false,
+                fetching: true,
+                called: true,
+                data: { x: 42 },
+            })
+
+            await waitForNextUpdate()
+
+            expect(mockSpy).toHaveBeenCalledTimes(2)
+            expect(result.current).toMatchObject({
+                loading: false,
+                fetching: false,
+                called: true,
+                data: { x: 43 },
+            })
+        })
+
         it('Should not fetch until refetch has been called if lazy', async () => {
             const query = { x: { resource: 'answer' } }
             const mockSpy = jest.fn(() => Promise.resolve(42))
@@ -593,6 +764,48 @@ describe('useDataQuery', () => {
             })
         })
 
+        it('Should refetch when refetch is called with variables that resolve to the same query key', async () => {
+            const variables = { one: 1, two: 2, three: 3 }
+            const query = {
+                x: {
+                    resource: 'answer',
+                    params: ({ one, two, three }) => ({ one, two, three }),
+                },
+            }
+            const spy = jest.fn(() => 42)
+            const data = { answer: spy }
+            const wrapper = ({ children }) => (
+                <CustomDataProvider data={data}>{children}</CustomDataProvider>
+            )
+
+            const { result, waitForNextUpdate } = renderHook(
+                () => useDataQuery(query, { variables }),
+                { wrapper }
+            )
+
+            await waitForNextUpdate()
+
+            expect(spy).toHaveBeenCalledTimes(1)
+            expect(result.current).toMatchObject({
+                loading: false,
+                called: true,
+                data: { x: 42 },
+            })
+
+            act(() => {
+                result.current.refetch(variables)
+            })
+
+            await waitForNextUpdate()
+
+            expect(spy).toHaveBeenCalledTimes(2)
+            expect(result.current).toMatchObject({
+                loading: false,
+                called: true,
+                data: { x: 42 },
+            })
+        })
+
         it('Should return a promise that resolves with the data on success when refetching and lazy', async () => {
             const query = { x: { resource: 'answer' } }
             const data = { answer: 42 }
@@ -607,7 +820,7 @@ describe('useDataQuery', () => {
 
             let ourPromise
             act(() => {
-                // This refetch will trigger our own refetch logic
+                // This refetch will trigger our own refetch logic as the query is lazy
                 ourPromise = result.current.refetch()
             })
 
@@ -635,7 +848,7 @@ describe('useDataQuery', () => {
 
             let reactQueryPromise
             act(() => {
-                // This refetch will trigger react query's refetch logic
+                // This refetch will trigger react query's refetch logic as the query is not lazy
                 reactQueryPromise = result.current.refetch()
             })
 
@@ -668,7 +881,7 @@ describe('useDataQuery', () => {
 
             let ourPromise
             act(() => {
-                // This refetch will trigger our own refetch logic
+                // This refetch will trigger our own refetch logic as the query is lazy
                 ourPromise = result.current.refetch()
             })
 
@@ -699,7 +912,7 @@ describe('useDataQuery', () => {
 
             let reactQueryPromise
             act(() => {
-                // This refetch will trigger react query's refetch logic
+                // This refetch will trigger react query's refetch logic as the query is not lazy
                 reactQueryPromise = result.current.refetch()
             })
 
@@ -739,7 +952,7 @@ describe('useDataQuery', () => {
             }
 
             const { result, waitForNextUpdate } = renderHook(
-                props => useDataQuery(props.query, props.options),
+                (props) => useDataQuery(props.query, props.options),
                 {
                     wrapper,
                     initialProps,

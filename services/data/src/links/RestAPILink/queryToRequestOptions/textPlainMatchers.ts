@@ -15,7 +15,7 @@ import { ResolvedResourceQuery, FetchType } from '../../../engine'
 export const isReplyToMessageConversation = (
     type: FetchType,
     { resource }: ResolvedResourceQuery
-) => {
+): boolean => {
     const pattern = /^messageConversations\/[a-zA-Z0-9]{11}$/
     return type === 'create' && pattern.test(resource)
 }
@@ -24,26 +24,36 @@ export const isReplyToMessageConversation = (
 export const isCreateFeedbackMessage = (
     type: FetchType,
     { resource }: ResolvedResourceQuery
-) => type === 'create' && resource === 'messageConversations/feedback'
+): boolean => type === 'create' && resource === 'messageConversations/feedback'
 
-// POST or PUT to `interpretations/${objectType}/${id}` (add or update an interpretation)
-export const isCreateOrUpdateInterpretation = (
+// POST `interpretations/${objectType}/${id}` (add an interpretation to a visualization)
+export const isCreateInterpretation = (
+    type: FetchType,
+    { resource }: ResolvedResourceQuery
+): boolean => {
+    const pattern =
+        /^interpretations\/(?:reportTable|chart|visualization|map|eventVisualization|eventReport|eventChart|dataSetReport)\/[a-zA-Z0-9]{11}$/
+    return type === 'create' && pattern.test(resource)
+}
+
+// PUT to `interpretations/${id}` (update an interpretation)
+export const isUpdateInterpretation = (
     type: FetchType,
     { resource, id }: ResolvedResourceQuery
-) => {
-    if (type !== 'create' && type !== 'replace') {
+): boolean => {
+    if (type !== 'replace') {
         return false
     }
 
     let resourcePattern
-    if (type === 'replace' && id) {
-        resourcePattern = /^interpretations\/(?:reportTable|chart|visualization|map|eventReport|eventChart|dataSetReport)$/
+    if (id) {
+        resourcePattern = /^interpretations$/
         const idPattern = /^[a-zA-Z0-9]{11}$/
 
         return resourcePattern.test(resource) && idPattern.test(id)
     }
 
-    resourcePattern = /^interpretations\/(?:reportTable|chart|visualization|map|eventReport|eventChart|dataSetReport)\/[a-zA-Z0-9]{11}$/
+    resourcePattern = /^interpretations\/[a-zA-Z0-9]{11}$/
 
     return resourcePattern.test(resource)
 }
@@ -52,7 +62,7 @@ export const isCreateOrUpdateInterpretation = (
 export const isCommentOnInterpretation = (
     type: FetchType,
     { resource }: ResolvedResourceQuery
-) => {
+): boolean => {
     const pattern = /^interpretations\/[a-zA-Z0-9]{11}\/comments$/
     return type === 'create' && pattern.test(resource)
 }
@@ -62,7 +72,7 @@ export const isCommentOnInterpretation = (
 export const isInterpretationCommentUpdate = (
     type: FetchType,
     { resource, id }: ResolvedResourceQuery
-) => {
+): boolean => {
     if (type !== 'replace') {
         return false
     }
@@ -78,7 +88,8 @@ export const isInterpretationCommentUpdate = (
         )
     }
 
-    const pattern = /^interpretations\/[a-zA-Z0-9]{11}\/comments\/[a-zA-Z0-9]{11}$/
+    const pattern =
+        /^interpretations\/[a-zA-Z0-9]{11}\/comments\/[a-zA-Z0-9]{11}$/
     return pattern.test(resource)
 }
 
@@ -87,7 +98,7 @@ export const isInterpretationCommentUpdate = (
 export const isAddOrUpdateSystemOrUserSetting = (
     type: FetchType,
     { resource }: ResolvedResourceQuery
-) => {
+): boolean => {
     // At least 4 chars because the all start with 'key' (i.e. keyStyle)
     const pattern = /^(?:systemSettings|userSettings)\/[a-zA-Z]{4,}$/
     return type === 'create' && pattern.test(resource)
@@ -98,7 +109,7 @@ export const isAddOrUpdateSystemOrUserSetting = (
 export const addOrUpdateConfigurationProperty = (
     type: FetchType,
     { resource }: ResolvedResourceQuery
-) => {
+): boolean => {
     // NOTE: The corsWhitelist property does expect "application/json"
     const pattern = /^(configuration)\/([a-zA-Z]{1,50})$/
     const match = resource.match(pattern)
@@ -109,4 +120,11 @@ export const addOrUpdateConfigurationProperty = (
 export const isMetadataPackageInstallation = (
     type: FetchType,
     { resource }: ResolvedResourceQuery
-) => type === 'create' && resource === 'synchronization/metadataPull'
+): boolean => type === 'create' && resource === 'synchronization/metadataPull'
+
+// POST to 'indicaators/expression/description' (validate an expression)
+export const isExpressionDescriptionValidation = (
+    type: FetchType,
+    { resource }: ResolvedResourceQuery
+): boolean =>
+    type === 'create' && resource === 'indicators/expression/description'

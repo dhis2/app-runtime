@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unused-prop-types */
+
 import { useConfig } from '@dhis2/app-service-config'
 import React from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
@@ -41,7 +43,7 @@ export const DataProvider = (props: ProviderInput): JSX.Element => {
     const context = { engine }
 
     return (
-        <QueryClientProvider client={queryClient} contextSharing>
+        <QueryClientProvider client={queryClient}>
             <DataContext.Provider value={context}>
                 {props.children}
             </DataContext.Provider>

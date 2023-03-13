@@ -1,47 +1,24 @@
 import { render, waitFor } from '@testing-library/react'
-import React, { ReactNode } from 'react'
-import { setLogger } from 'react-query'
+import * as React from 'react'
 import { CustomDataProvider, DataQuery } from '../react'
-import { QueryRenderInput } from '../types'
 
-beforeAll(() => {
-    // Prevent the react-query logger from logging to the console
-    setLogger({
-        log: jest.fn(),
-        warn: jest.fn(),
-        error: jest.fn(),
-    })
-})
-
-afterAll(() => {
-    // Restore the original react-query logger
-    setLogger(console)
-})
-
-describe('Testing custom data provider and useQuery hook', () => {
-    it('Should render without failing', async () => {
+describe('<DataQuery />', () => {
+    it('should render without failing', async () => {
         const data = {
             answer: 42,
         }
         const wrapper = ({ children }) => (
             <CustomDataProvider data={data}>{children}</CustomDataProvider>
         )
-        const renderFunction = jest.fn(
-            ({ loading, error, data }: QueryRenderInput) => {
-                if (loading) return 'loading'
-                if (error) return <div>error: {error.message}</div>
-                return <div>data: {data && data.answer}</div>
-            }
-        )
+        const renderFunction = jest.fn(() => null)
 
-        const { getByText } = render(
+        render(
             <DataQuery query={{ answer: { resource: 'answer' } }}>
                 {renderFunction}
             </DataQuery>,
             { wrapper }
         )
 
-        expect(getByText(/loading/i)).not.toBeUndefined()
         expect(renderFunction).toHaveBeenCalledTimes(1)
         expect(renderFunction).toHaveBeenLastCalledWith(
             expect.objectContaining({
@@ -51,21 +28,18 @@ describe('Testing custom data provider and useQuery hook', () => {
         )
 
         await waitFor(() => {
-            getByText(/data: /i)
+            expect(renderFunction).toHaveBeenCalledTimes(2)
+            expect(renderFunction).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    called: true,
+                    loading: false,
+                    data,
+                })
+            )
         })
-
-        expect(getByText(/data: /i)).toHaveTextContent(`data: ${data.answer}`)
-        expect(renderFunction).toHaveBeenCalledTimes(2)
-        expect(renderFunction).toHaveBeenLastCalledWith(
-            expect.objectContaining({
-                called: true,
-                loading: false,
-                data,
-            })
-        )
     })
 
-    it('Should render an error', async () => {
+    it('should render an error', async () => {
         const expectedError = new Error('Something went wrong')
         const data = {
             test: () => {
@@ -75,22 +49,15 @@ describe('Testing custom data provider and useQuery hook', () => {
         const wrapper = ({ children }) => (
             <CustomDataProvider data={data}>{children}</CustomDataProvider>
         )
-        const renderFunction = jest.fn(
-            ({ loading, error, data }: QueryRenderInput) => {
-                if (loading) return 'loading'
-                if (error) return <div>error: {error.message}</div>
-                return <div>data: {data && data.test}</div>
-            }
-        )
+        const renderFunction = jest.fn(() => null)
 
-        const { getByText } = render(
+        render(
             <DataQuery query={{ test: { resource: 'test' } }}>
                 {renderFunction}
             </DataQuery>,
             { wrapper }
         )
 
-        expect(getByText(/loading/i)).not.toBeUndefined()
         expect(renderFunction).toHaveBeenCalledTimes(1)
         expect(renderFunction).toHaveBeenLastCalledWith(
             expect.objectContaining({
@@ -100,19 +67,14 @@ describe('Testing custom data provider and useQuery hook', () => {
         )
 
         await waitFor(() => {
-            getByText(/error: /i)
+            expect(renderFunction).toHaveBeenCalledTimes(2)
+            expect(renderFunction).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    called: true,
+                    loading: false,
+                    error: expectedError,
+                })
+            )
         })
-
-        expect(renderFunction).toHaveBeenCalledTimes(2)
-        expect(getByText(/error: /i)).toHaveTextContent(
-            `error: ${expectedError.message}`
-        )
-        expect(renderFunction).toHaveBeenLastCalledWith(
-            expect.objectContaining({
-                called: true,
-                loading: false,
-                error: expectedError,
-            })
-        )
     })
 })

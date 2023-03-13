@@ -22,7 +22,7 @@ const defaultMutation = {
     },
 }
 
-const getDefaultQueryByType = type =>
+const getDefaultQueryByType = (type) =>
     JSON.stringify(type === 'query' ? defaultQuery : defaultMutation, null, 4)
 
 export const QueryEditor = ({
@@ -51,7 +51,7 @@ export const QueryEditor = ({
         execute({ query: parsed, type }).then(setResult)
     }
 
-    const onKeyPress = event => {
+    const onKeyPress = (event) => {
         if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
             onExecute()
             event.stopPropagation()

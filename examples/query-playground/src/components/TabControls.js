@@ -38,12 +38,12 @@ const TabControl = ({
         onEditDoneClick()
     }
 
-    const onEditIconClick = event => {
+    const onEditIconClick = (event) => {
         event.stopPropagation()
         onEditClick()
     }
 
-    const onRemoveIconClick = event => {
+    const onRemoveIconClick = (event) => {
         event.stopPropagation()
         onRemoveTab()
     }
@@ -72,7 +72,7 @@ const TabControl = ({
                 )}
 
                 {edit && (
-                    <div onClick={e => e.stopPropagation()}>
+                    <div onClick={(e) => e.stopPropagation()}>
                         <Modal>
                             <form onSubmit={save}>
                                 <ModalTitle>Edit tab name</ModalTitle>

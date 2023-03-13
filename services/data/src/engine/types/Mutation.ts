@@ -1,7 +1,12 @@
 import { FetchError } from './FetchError'
 import { ResourceQuery, QueryVariables } from './Query'
 
-export type MutationType = 'create' | 'update' | 'replace' | 'delete'
+export type MutationType =
+    | 'create'
+    | 'update'
+    | 'json-patch'
+    | 'replace'
+    | 'delete'
 export interface MutationData {
     [key: string]: any
 }
@@ -13,7 +18,7 @@ export interface CreateMutation extends BaseMutation {
     data: MutationData
 }
 export interface UpdateMutation extends BaseMutation {
-    type: 'update' | 'replace'
+    type: 'update' | 'replace' | 'json-patch'
     id: string
     partial?: boolean
     data: MutationData

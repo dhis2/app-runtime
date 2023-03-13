@@ -2,7 +2,14 @@ import { InvalidQueryError } from '../types/InvalidQueryError'
 import { ResolvedResourceQuery } from '../types/Query'
 
 const validQueryKeys = ['resource', 'id', 'params', 'data']
-const validTypes = ['read', 'create', 'update', 'replace', 'delete']
+const validTypes = [
+    'read',
+    'create',
+    'update',
+    'replace',
+    'delete',
+    'json-patch',
+]
 
 export const getResourceQueryErrors = (
     type: string,
@@ -35,10 +42,15 @@ export const getResourceQueryErrors = (
     if (type === 'delete' && query.data) {
         errors.push("Mutation type 'delete' does not support property 'data'")
     }
+    if (type === 'json-patch' && !Array.isArray(query.data)) {
+        errors.push(
+            "Mutation type 'json-patch' requires property 'data' to be of type Array"
+        )
+    }
     const invalidKeys = Object.keys(query).filter(
-        k => !validQueryKeys.includes(k)
+        (k) => !validQueryKeys.includes(k)
     )
-    invalidKeys.forEach(k => {
+    invalidKeys.forEach((k) => {
         errors.push(`Property ${k} is not supported`)
     })
 
@@ -58,7 +70,7 @@ export const validateResourceQueries = (
         (errors: string[], query, i) =>
             errors.concat(
                 getResourceQueryErrors('read', query).map(
-                    e => `[${names[i]}] ${e}`
+                    (e) => `[${names[i]}] ${e}`
                 )
             ),
         []
