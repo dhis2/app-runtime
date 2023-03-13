@@ -9,12 +9,13 @@ export {
     useDataEngine,
 } from '@dhis2/app-service-data'
 
-export { useConfig } from '@dhis2/app-service-config'
+export { useConfig, useTimeZoneConversion } from '@dhis2/app-service-config'
 
 export { useAlerts, useAlert } from '@dhis2/app-service-alerts'
 
 export {
     useOnlineStatus,
+    useDhis2ConnectionStatus,
     useOnlineStatusMessage,
     useCacheableSection,
     CacheableSection,

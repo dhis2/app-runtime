@@ -1,3 +1,17 @@
+# [3.9.0](https://github.com/dhis2/app-runtime/compare/v3.8.0...v3.9.0) (2023-03-02)
+
+
+### Features
+
+* dhis2 connection status [LIBS-315] ([#1203](https://github.com/dhis2/app-runtime/issues/1203)) ([6a4156e](https://github.com/dhis2/app-runtime/commit/6a4156e26b14c0f838bc02d69d0879826f342277))
+
+# [3.8.0](https://github.com/dhis2/app-runtime/compare/v3.7.0...v3.8.0) (2023-01-19)
+
+
+### Features
+
+* add hook to adjust for server time [LIBS-396] ([#1308](https://github.com/dhis2/app-runtime/issues/1308)) ([d511303](https://github.com/dhis2/app-runtime/commit/d51130336ce8ada00ef5e79884263c678e252302))
+
 # [3.7.0](https://github.com/dhis2/app-runtime/compare/v3.6.2...v3.7.0) (2022-11-17)
 
 

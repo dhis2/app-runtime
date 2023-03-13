@@ -78,6 +78,11 @@ const skipApiVersion = (resource: string, config: Config): boolean => {
         }
     }
 
+    // The `/api/ping` endpoint is unversioned
+    if (resource === 'ping') {
+        return true
+    }
+
     return false
 }
 
