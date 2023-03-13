@@ -21,13 +21,15 @@
     "files": [
         "build/**"
     ],
+    "dependencies": {
+        "post-robot": "^10.0.46"
+    },
     "peerDependencies": {
         "prop-types": "^15.7.2",
         "react": "^16.8.6",
         "react-dom": "^16.8.6",
         "@dhis2/app-service-alerts": "3.7.0",
-        "@dhis2/app-service-data": "3.7.0",
-        "post-robot": "^10.0.46"
+        "@dhis2/app-service-data": "3.7.0"
     },
     "devDependencies": {
         "@types/post-robot": "^10.0.3"
