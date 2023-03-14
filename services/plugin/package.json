@@ -13,7 +13,7 @@
         "url": "https://github.com/dhis2/app-runtime.git",
         "directory": "services/plugin"
     },
-    "author": "Austin McGee <austin@dhis2.org>",
+    "author": "Thomas Zemp <tom@dhis2.org>",
     "license": "BSD-3-Clause",
     "publishConfig": {
         "access": "public"

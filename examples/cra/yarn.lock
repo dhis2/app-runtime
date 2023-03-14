@@ -1054,31 +1054,32 @@
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
 "@dhis2/app-runtime@file:../../runtime":
-  version "3.9.0"
+  version "3.10.0-alpha.1"
   dependencies:
-    "@dhis2/app-service-alerts" "3.9.0"
-    "@dhis2/app-service-config" "3.9.0"
-    "@dhis2/app-service-data" "3.9.0"
-    "@dhis2/app-service-offline" "3.9.0"
+    "@dhis2/app-service-alerts" "3.10.0-alpha.1"
+    "@dhis2/app-service-config" "3.10.0-alpha.1"
+    "@dhis2/app-service-data" "3.10.0-alpha.1"
+    "@dhis2/app-service-offline" "3.10.0-alpha.1"
+    "@dhis2/app-service-plugin" "3.10.0-alpha.1"
 
-"@dhis2/app-service-alerts@3.9.0", "@dhis2/app-service-alerts@file:../../services/alerts":
-  version "3.9.0"
+"@dhis2/app-service-alerts@3.10.0-alpha.1", "@dhis2/app-service-alerts@file:../../services/alerts":
+  version "3.10.0-alpha.1"
 
-"@dhis2/app-service-config@3.9.0", "@dhis2/app-service-config@file:../../services/config":
-  version "3.9.0"
+"@dhis2/app-service-config@3.10.0-alpha.1", "@dhis2/app-service-config@file:../../services/config":
+  version "3.10.0-alpha.1"
 
-"@dhis2/app-service-data@3.9.0", "@dhis2/app-service-data@file:../../services/data":
-  version "3.9.0"
+"@dhis2/app-service-data@3.10.0-alpha.1", "@dhis2/app-service-data@file:../../services/data":
+  version "3.10.0-alpha.1"
   dependencies:
     react-query "^3.13.11"
 
-"@dhis2/app-service-offline@3.9.0", "@dhis2/app-service-offline@file:../../services/offline":
-  version "3.9.0"
+"@dhis2/app-service-offline@3.10.0-alpha.1", "@dhis2/app-service-offline@file:../../services/offline":
+  version "3.10.0-alpha.1"
   dependencies:
     lodash "^4.17.21"
 
-"@dhis2/app-service-plugin@file:../../services/plugin":
-  version "3.7.0"
+"@dhis2/app-service-plugin@3.10.0-alpha.1", "@dhis2/app-service-plugin@file:../../services/plugin":
+  version "3.10.0-alpha.1"
   dependencies:
     post-robot "^10.0.46"
 
