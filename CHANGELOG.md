@@ -1,3 +1,10 @@
+# [3.10.0-alpha.2](https://github.com/dhis2/app-runtime/compare/v3.10.0-alpha.1...v3.10.0-alpha.2) (2023-03-15)
+
+
+### Bug Fixes
+
+* add in plugin service in runtime package ([#1343](https://github.com/dhis2/app-runtime/issues/1343)) ([ed06a9f](https://github.com/dhis2/app-runtime/commit/ed06a9f4af7d3db40600ffd7e1b03cd095db36fc))
+
 # [3.10.0-alpha.1](https://github.com/dhis2/app-runtime/compare/v3.9.0...v3.10.0-alpha.1) (2023-03-13)
 
 
