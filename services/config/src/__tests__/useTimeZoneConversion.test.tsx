@@ -125,6 +125,31 @@ describe('useTimeZoneConversion', () => {
         expect(serverDate.getClientZonedISOString()).toBe(expectedDateString)
     })
 
+    it('returns fromServerDate that assumes no time zone difference if client and server time zones are the same', () => {
+        const systemInfo = {
+            ...defaultSystemInfo,
+            serverTimeZoneId: 'Africa/Kampala',
+        }
+        jest.spyOn(Intl, 'DateTimeFormat').mockReturnValue({
+            resolvedOptions: () => {
+                return {
+                    timeZone: 'Africa/Kampala',
+                }
+            },
+        } as Intl.DateTimeFormat)
+        const config = { ...defaultConfig, systemInfo }
+        const wrapper = ({ children }: { children?: ReactNode }) => (
+            <ConfigProvider config={config}>{children}</ConfigProvider>
+        )
+        const { result } = renderHook(() => useTimeZoneConversion(), {
+            wrapper,
+        })
+
+        const serverDate = result.current.fromServerDate('2010-01-01')
+        const expectedDateString = '2010-01-01T00:00:00.000'
+        expect(serverDate.getClientZonedISOString()).toBe(expectedDateString)
+    })
+
     it('returns fromServerDate with server date that matches passed time regardless of timezone', () => {
         const systemInfo = {
             ...defaultSystemInfo,
