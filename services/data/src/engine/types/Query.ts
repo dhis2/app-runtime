@@ -18,8 +18,18 @@ export interface ResolvedResourceQuery extends ResourceQuery {
     params?: QueryParameters
 }
 
-export type Query = Record<string, ResourceQuery>
+export type Query<TQueryResult extends QueryResult = QueryResult> = Record<
+    keyof TQueryResult,
+    ResourceQuery
+>
 export type QueryResult = JsonMap
+
+export type QueryResultData<
+    TQuery extends Query<TQueryResultData>,
+    TQueryResultData extends QueryResult = QueryResult
+> = {
+    [K in keyof TQuery]: TQueryResultData
+}
 
 export interface QueryOptions {
     variables?: QueryVariables
