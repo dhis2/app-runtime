@@ -4,7 +4,7 @@ import type {
     Query,
     QueryOptions,
     QueryVariables,
-    QueryResultData
+    QueryResultData,
 } from '../../engine'
 import type { FetchError } from '../../engine/types/FetchError'
 import type { DataQueryResult, QueryRefetchFunction } from '../../types'

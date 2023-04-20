@@ -24,9 +24,7 @@ export type Query<TQueryResult extends QueryResult = QueryResult> = Record<
 >
 export type QueryResult = JsonMap
 
-export type QueryResultData<
-    TQuery extends Query
-> = {
+export type QueryResultData<TQuery extends Query> = {
     [K in keyof TQuery]: QueryResult
 }
 
