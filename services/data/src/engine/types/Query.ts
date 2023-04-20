@@ -25,10 +25,9 @@ export type Query<TQueryResult extends QueryResult = QueryResult> = Record<
 export type QueryResult = JsonMap
 
 export type QueryResultData<
-    TQuery extends Query<TQueryResultData>,
-    TQueryResultData extends QueryResult = QueryResult
+    TQuery extends Query
 > = {
-    [K in keyof TQuery]: TQueryResultData
+    [K in keyof TQuery]: QueryResult
 }
 
 export interface QueryOptions {
