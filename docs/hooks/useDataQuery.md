@@ -74,6 +74,7 @@ export const IndicatorList = () => {
 ```
 
 ### Typescript
+
 ```tsx
 import React from 'react'
 import { useDataQuery } from '@dhis2/app-runtime'
@@ -86,21 +87,20 @@ const query = {
             fields: 'id,displayName',
         },
         pageSize: 10,
-    }
+    },
 }
 
 type DataElementsResult = {
     dataElements: {
         pager: {
-            page: number,
-            total: number,
-            pageSize: number,
-            pageCount: number,
+            page: number
+            total: number
+            pageSize: number
+            pageCount: number
             nextPage: string
-
         }
         dataElements: {
-            id: string,
+            id: string
             displayName: string
         }[]
     }
@@ -161,7 +161,7 @@ export const IndicatorList = () => {
         <div>
             <h3>Indicators (paginated)</h3>
             {loading && <CircularLoader />}
-            {error && <span>{`ERROR: ${error.message}`}</span>}
+            {error && <spSan>{`ERROR: ${error.message}`}</span>}
             {data && (
                 <pre>
                     {data.indicators.indicators
