@@ -45,4 +45,4 @@ During periods when there’s no network traffic from the app, “pings” will 
 
 ### Supported versions
 
-The pings are only sent for server versions that support them, meaning patch versions 2.40.0, 2.39.2, 2.38.4, and 2.37.10. and after. For unsupported versions, the hook will still use the incidental network traffic to determind a connections status value.
+The pings are only sent for server versions that support them, meaning patch versions 2.40.0, 2.39.2, 2.38.4, and 2.37.10 and after. For unsupported versions, the hook will still use the incidental network traffic to determine a connection status value.
