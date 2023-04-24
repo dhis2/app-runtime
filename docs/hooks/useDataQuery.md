@@ -73,6 +73,57 @@ export const IndicatorList = () => {
 }
 ```
 
+### Typescript
+```tsx
+import React from 'react'
+import { useDataQuery } from '@dhis2/app-runtime'
+import { CircularLoader } from '@dhis2/ui'
+
+const query = {
+    dataElements: {
+        resource: 'dataElements',
+        params: {
+            fields: 'id,displayName',
+        },
+        pageSize: 10,
+    }
+}
+
+type DataElementsResult = {
+    dataElements: {
+        pager: {
+            page: number,
+            total: number,
+            pageSize: number,
+            pageCount: number,
+            nextPage: string
+
+        }
+        dataElements: {
+            id: string,
+            displayName: string
+        }[]
+    }
+}
+export const DataElementList = () => {
+    const { loading, error, data } = useDataQuery<DataElementsResult>(query)
+    return (
+        <div>
+            <h3>Data elements (first 10)</h3>
+            {loading && <CircularLoader />}
+            {error && <span>{`ERROR: ${error.message}`}</span>}
+            {data && (
+                <pre>
+                    {data.dataElements.dataElements
+                        .map((de) => de.displayName)
+                        .join('\n')}
+                </pre>
+            )}
+        </div>
+    )
+}
+```
+
 ### Dynamic Query
 
 This example is similar to the previous one but builds on top of it by showing how to fetch new pages of data using dynamic variables. A similar approach can be used implement dynamic filtering, ordering, etc.
