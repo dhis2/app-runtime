@@ -4,7 +4,7 @@ import { isPingAvailable } from './is-ping-available'
 const fixedVersions: Version[] = [
     { full: 'unimportant', major: 2, minor: 40, patch: 0 },
     { full: 'unimportant', major: 2, minor: 39, patch: 2 },
-    { full: 'unimportant', major: 2, minor: 38, patch: 3 },
+    { full: 'unimportant', major: 2, minor: 38, patch: 4 },
     { full: 'unimportant', major: 2, minor: 37, patch: 10 },
     { full: 'unimportant', major: 2, minor: 40, tag: 'SNAPSHOT' },
     { full: 'unimportant', major: 2, minor: 3291, patch: 0 },

@@ -22,7 +22,7 @@ export function isPingAvailable(serverVersion: Version) {
         case 39:
             return patch === undefined || patch >= 2
         case 38:
-            return patch === undefined || patch >= 3
+            return patch === undefined || patch >= 4
         case 37:
             return patch === undefined || patch >= 10
         default:
