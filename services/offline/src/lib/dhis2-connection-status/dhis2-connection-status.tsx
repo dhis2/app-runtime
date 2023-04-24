@@ -174,8 +174,9 @@ export const Dhis2ConnectionStatusProvider = ({
             window.removeEventListener('offline', handleOffline)
             window.removeEventListener('online', handleOnline)
 
-            // clean up smart interval
+            // clean up smart interval and throttled function
             smartInterval.clear()
+            handleOnline.cancel()
         }
     }, [pingAndHandleStatus, serverVersion])
 
