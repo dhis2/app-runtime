@@ -161,7 +161,7 @@ export const IndicatorList = () => {
         <div>
             <h3>Indicators (paginated)</h3>
             {loading && <CircularLoader />}
-            {error && <spSan>{`ERROR: ${error.message}`}</span>}
+            {error && <span>{`ERROR: ${error.message}`}</span>}
             {data && (
                 <pre>
                     {data.indicators.indicators
