@@ -35,7 +35,7 @@ type QueryState = {
 
 export const useDataQuery = <
     TQueryResultData extends QueryResultData<TQuery>,
-    TQuery extends Query<TQueryResultData> = Query<TQueryResultData>
+    TQuery extends Query = Query
 >(
     query: TQuery,
     {
@@ -45,7 +45,7 @@ export const useDataQuery = <
         lazy: initialLazy = false,
     }: QueryOptions = {}
 ): DataQueryResult<TQueryResultData> => {
-    const [staticQuery] = useStaticInput<Query>(query, {
+    const [staticQuery] = useStaticInput<TQuery>(query, {
         warn: true,
         name: 'query',
     })
