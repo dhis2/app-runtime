@@ -118,7 +118,7 @@ describe('DataEngine', () => {
                 answer: 42,
             },
         })
-    )
+    })
 
     it('Should call onComplete callback only once for multiple-query method', async () => {
         type Result = {
