@@ -1,4 +1,4 @@
-type Version = {
+export type Version = {
     full: string
     major: number
     minor: number
@@ -6,9 +6,12 @@ type Version = {
     tag?: string
 }
 
+export type DateInput = string | Date | number | null
+
 interface SystemInfo {
     version: string
     contextPath: string
+    serverTimeZoneId: string
 }
 
 export interface Config {

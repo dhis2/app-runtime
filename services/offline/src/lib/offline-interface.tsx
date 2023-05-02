@@ -5,6 +5,8 @@ import { OfflineInterface } from '../types'
 // This is to prevent 'offlineInterface could be null' type-checking errors
 const noopOfflineInterface: OfflineInterface = {
     pwaEnabled: false,
+    latestIsConnected: false,
+    subscribeToDhis2ConnectionStatus: () => () => undefined,
     startRecording: async () => undefined,
     getCachedSections: async () => [],
     removeSection: async () => false,

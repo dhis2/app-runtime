@@ -2,11 +2,11 @@ import debounce from 'lodash/debounce'
 import { useState, useEffect, useCallback, useMemo } from 'react'
 
 type milliseconds = number
-interface OnlineStatusOptions {
+interface NetworkStatusOptions {
     debounceDelay?: milliseconds
 }
 
-interface OnlineStatus {
+export interface NetworkStatus {
     online: boolean
     offline: boolean
     lastOnline: Date | null
@@ -31,9 +31,9 @@ const lastOnlineKey = 'dhis2.lastOnline'
  * @param {Number} [options.debounceDelay] - Timeout delay to debounce updates, in ms
  * @returns {Object} `{ online: boolean, offline: boolean, lastOnline: Date | null }`
  */
-export function useOnlineStatus(
-    options: OnlineStatusOptions = {}
-): OnlineStatus {
+export function useNetworkStatus(
+    options: NetworkStatusOptions = {}
+): NetworkStatus {
     // initialize state to `navigator.onLine` value
     const [online, setOnline] = useState(navigator.onLine)
 

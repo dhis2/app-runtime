@@ -1,3 +1,33 @@
+## [3.9.2](https://github.com/dhis2/app-runtime/compare/v3.9.1...v3.9.2) (2023-05-02)
+
+
+### Bug Fixes
+
+* [DHIS2] Type generic T = QueryResult to useDataQuery ([#1297](https://github.com/dhis2/app-runtime/issues/1297)) ([7c5c083](https://github.com/dhis2/app-runtime/commit/7c5c08308b919f70acac5cba6c2b851e4a6e50fa))
+
+## [3.9.1](https://github.com/dhis2/app-runtime/compare/v3.9.0...v3.9.1) (2023-04-11)
+
+
+### Bug Fixes
+
+* account for daylight savings time [LIBS-490] ([06eaa5d](https://github.com/dhis2/app-runtime/commit/06eaa5d5a0d3d4f69f701a3031610310d2d37ccf))
+* account for daylight savings time [LIBS-490] [#1345](https://github.com/dhis2/app-runtime/issues/1345) ([fb00533](https://github.com/dhis2/app-runtime/commit/fb00533008e828f7c9fa17f959dcc375fca8b6bd))
+* add test for when time zones are the same [LIBS-490] ([7911f8b](https://github.com/dhis2/app-runtime/commit/7911f8b992aabc34a1451144660a34b6b5035286))
+
+# [3.9.0](https://github.com/dhis2/app-runtime/compare/v3.8.0...v3.9.0) (2023-03-02)
+
+
+### Features
+
+* dhis2 connection status [LIBS-315] ([#1203](https://github.com/dhis2/app-runtime/issues/1203)) ([6a4156e](https://github.com/dhis2/app-runtime/commit/6a4156e26b14c0f838bc02d69d0879826f342277))
+
+# [3.8.0](https://github.com/dhis2/app-runtime/compare/v3.7.0...v3.8.0) (2023-01-19)
+
+
+### Features
+
+* add hook to adjust for server time [LIBS-396] ([#1308](https://github.com/dhis2/app-runtime/issues/1308)) ([d511303](https://github.com/dhis2/app-runtime/commit/d51130336ce8ada00ef5e79884263c678e252302))
+
 # [3.7.0](https://github.com/dhis2/app-runtime/compare/v3.6.2...v3.7.0) (2022-11-17)
 
 

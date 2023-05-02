@@ -36,7 +36,12 @@ export const failedMessageRecordingMock = jest
 
 export const mockOfflineInterface = {
     pwaEnabled: true,
+    latestIsConnected: true,
     startRecording: successfulRecordingMock,
     getCachedSections: jest.fn().mockResolvedValue([]),
     removeSection: jest.fn().mockResolvedValue(true),
+    // returns an unsubscribe function
+    subscribeToDhis2ConnectionStatus: jest
+        .fn()
+        .mockReturnValue(() => undefined),
 }
