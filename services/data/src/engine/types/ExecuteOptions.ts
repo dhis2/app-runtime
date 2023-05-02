@@ -8,7 +8,9 @@ export type FetchType =
     | 'json-patch'
     | 'replace'
     | 'delete'
-export interface QueryExecuteOptions<TQueryResultData extends QueryResultData = QueryResult>{
+export interface QueryExecuteOptions<
+    TQueryResultData extends QueryResultData = QueryResult
+> {
     variables?: QueryVariables
     signal?: AbortSignal
     onComplete?: (data: TQueryResultData) => void

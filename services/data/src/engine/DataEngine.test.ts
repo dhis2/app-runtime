@@ -16,9 +16,9 @@ const mockMutation: Mutation = {
 }
 
 type ResultData = {
-    type: string,
-    resource: string,
-    answer: number,
+    type: string
+    resource: string
+    answer: number
 }
 
 const mockLink: DataEngineLink = {
@@ -89,9 +89,9 @@ describe('DataEngine', () => {
         const engine = new DataEngine(mockLink)
 
         type Result = {
-            test: ResultData,
-            test2: ResultData,
-            test3: ResultData,
+            test: ResultData
+            test2: ResultData
+            test3: ResultData
         }
         const q = {
             test: { resource: 'test' },
@@ -99,7 +99,7 @@ describe('DataEngine', () => {
             test3: { resource: 'test3' },
         }
         const result = await engine.query<Result>(q)
-  
+
         expect(mockLink.executeResourceQuery).toHaveBeenCalledTimes(3)
         expect(result).toMatchObject({
             test: {
@@ -122,12 +122,12 @@ describe('DataEngine', () => {
 
     it('Should call onComplete callback only once for multiple-query method', async () => {
         type Result = {
-            test: ResultData,
-            test2: ResultData,
-            test3: ResultData,
+            test: ResultData
+            test2: ResultData
+            test3: ResultData
         }
         const options = {
-            onComplete: (data: Result) => console.log(data),
+            onComplete: jest.fn(),
         }
         const engine = new DataEngine(mockLink)
         await engine.query<Result>(
@@ -138,7 +138,7 @@ describe('DataEngine', () => {
             },
             options
         )
-   
+
         expect(mockLink.executeResourceQuery).toHaveBeenCalledTimes(3)
         expect(options.onComplete).toHaveBeenCalledTimes(1)
     })
