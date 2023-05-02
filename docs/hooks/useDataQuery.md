@@ -77,7 +77,7 @@ export const IndicatorList = () => {
 
 ```tsx
 import React from 'react'
-import { useDataQuery } from '@dhis2/app-runtime'
+import { useDataQuery, PaginatedQueryResult } from '@dhis2/app-runtime'
 import { CircularLoader } from '@dhis2/ui'
 
 const query = {
@@ -90,21 +90,15 @@ const query = {
     },
 }
 
-type DataElementsResult = {
+type DataElementsResult = PaginatedQueryResult<{
     dataElements: {
-        pager: {
-            page: number
-            total: number
-            pageSize: number
-            pageCount: number
-            nextPage: string
-        }
         dataElements: {
             id: string
             displayName: string
         }[]
     }
-}
+}>
+
 export const DataElementList = () => {
     const { loading, error, data } = useDataQuery<DataElementsResult>(query)
     return (
