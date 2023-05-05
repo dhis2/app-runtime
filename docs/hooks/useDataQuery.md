@@ -184,89 +184,93 @@ export const IndicatorList = () => {
 
 ```tsx
 import React from 'react'
-import { useDataQuery, PaginatedQueryResult, Pager, PaginatedData } from '@dhis2/app-runtime'
+import {
+    useDataQuery,
+    PaginatedQueryResult,
+    Pager,
+    PaginatedData,
+} from '@dhis2/app-runtime'
 import { CircularLoader } from '@dhis2/ui'
-
 
 const query = {
     dataElements: {
-        resource: "dataElements",
+        resource: 'dataElements',
         params: ({ dataElementsPage }: { dataElementsPage?: number }) => ({
-            fields: "id,displayName",
+            fields: 'id,displayName',
             pageSize: 10,
             page: dataElementsPage,
         }),
     },
     dataSets: {
-        resource: "dataSets",
+        resource: 'dataSets',
         params: {
-            fields: "id,displayName",
+            fields: 'id,displayName',
             paging: false,
         },
     },
     indicators: {
-        resource: "indicators",
+        resource: 'indicators',
         params: ({ indicatorsPage }: { indicatorsPage?: number }) => ({
-            fields: "id,displayName",
+            fields: 'id,displayName',
             pageSize: 10,
             page: indicatorsPage,
         }),
     },
-} as const;
+} as const
 
 type QueryResult = {
     dataElements: PaginatedData<{
         //can wrap your data-type in utility type PaginatedData
         dataElements: {
-            id: string;
-            displayName: string;
-        }[];
-    }>;
+            id: string
+            displayName: string
+        }[]
+    }>
     dataSets: {
         // no pagination
         dataSets: {
-            id: string;
-            displayName: string;
-        }[];
-    };
+            id: string
+            displayName: string
+        }[]
+    }
     indicators: {
-        pager: Pager; // or you can specifiy the pager manually
+        pager: Pager // or you can specifiy the pager manually
         indicators: {
-            id: string;
-            displayName: string;
-        }[];
-    };
-};
+            id: string
+            displayName: string
+        }[]
+    }
+}
 export const Component = () => {
-    const { error, data, refetch } = useDataQuery<QueryResult>(query);
+    const { error, data, refetch } = useDataQuery<QueryResult>(query)
 
-    // keep previous data, so list does not disappear when refetching/fetching new page 
+    // keep previous data, so list does not disappear when refetching/fetching new page
     const prevData = React.useRef(data)
     const stableData = data || prevData.current
     React.useEffect(() => {
-        if(data) {
+        if (data) {
             prevData.current = data
         }
     }, [data])
 
-
     if (error) {
-        return <span>{`ERROR: ${error.message}`}</span>;
+        return <span>{`ERROR: ${error.message}`}</span>
     }
-    if(!stableData) { // initial fetch
+    if (!stableData) {
+        // initial fetch
         return <CircularLoader />
     }
 
-    const indicators = stableData?.indicators.indicators;
-    const indicatorsPager = stableData?.indicators.pager;
-    const dataElements = stableData?.dataElements.dataElements;
-    const dataElementPager = stableData?.dataElements.pager;
-    const dataSets = stableData?.dataSets.dataSets;
-    
+    const indicators = stableData?.indicators.indicators
+    const indicatorsPager = stableData?.indicators.pager
+    const dataElements = stableData?.dataElements.dataElements
+    const dataElementPager = stableData?.dataElements.pager
+    const dataSets = stableData?.dataSets.dataSets
+
     return (
         <div>
             <h3>Data elements (first 10)</h3>
-            <pre>{dataElements?.map((de) => de.displayName).join("\n")}</pre>
+            <pre>{dataElements?.map((de) => de.displayName).join('\n')}</pre>
 
             {dataElements && dataElementPager && (
                 <Pagination
@@ -282,10 +286,10 @@ export const Component = () => {
             )}
 
             <h3>Data Sets</h3>
-            <pre>{dataSets?.map((de) => de.displayName).join("\n")}</pre>
+            <pre>{dataSets?.map((de) => de.displayName).join('\n')}</pre>
 
             <h3>Indicators Sets</h3>
-            <pre>{indicators?.map((de) => de.displayName).join("\n")}</pre>
+            <pre>{indicators?.map((de) => de.displayName).join('\n')}</pre>
             {indicators && indicatorsPager && (
                 <Pagination
                     page={indicatorsPager.page}
@@ -299,6 +303,6 @@ export const Component = () => {
                 />
             )}
         </div>
-    );
-};
+    )
+}
 ```
