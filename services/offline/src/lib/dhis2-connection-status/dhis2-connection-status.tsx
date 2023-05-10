@@ -174,6 +174,16 @@ export const Dhis2ConnectionStatusProvider = ({
     }, [pingAndHandleStatus, serverVersion])
 
     useEffect(() => {
+        if (!offlineInterface.subscribeToDhis2ConnectionStatus) {
+            // Missing this functionality from the offline interface --
+            // use a ping on startup to get the status
+            smartIntervalRef.current?.invokeCallbackImmediately()
+            console.warn(
+                'Please upgrade to @dhis2/cli-app-scripts@>10.3.8 for full connection status features'
+            )
+            return
+        }
+
         const unsubscribe = offlineInterface.subscribeToDhis2ConnectionStatus({
             onUpdate,
         })
@@ -186,9 +196,9 @@ export const Dhis2ConnectionStatusProvider = ({
     const contextValue = useMemo(
         () => ({
             // in the unlikely circumstance that offlineInterface.latestIsConnected
-            // is `null` when this initializes, fail safe by defaulting to
-            // `isConnected: false`
-            isConnected: Boolean(isConnected),
+            // is `null` or `undefined` when this initializes, fail safe by defaulting to
+            // `isConnected: true`. A ping or SW update should update the status shortly.
+            isConnected: isConnected ?? true,
             isDisconnected: !isConnected,
             lastConnected: isConnected
                 ? null
