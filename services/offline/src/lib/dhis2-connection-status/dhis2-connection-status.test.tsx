@@ -155,9 +155,9 @@ describe('initialization to the right values based on offline interface', () => 
             wrapper: customWrapper,
         })
 
-        expect(result.current.isConnected).toBe(false)
-        expect(result.current.isDisconnected).toBe(true)
-        expect(result.current.lastConnected).toEqual(testCurrentDate)
+        expect(result.current.isConnected).toBe(true)
+        expect(result.current.isDisconnected).toBe(false)
+        expect(result.current.lastConnected).toBe(null)
     })
 })
 

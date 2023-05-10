@@ -193,23 +193,23 @@ export const Dhis2ConnectionStatusProvider = ({
     }, [offlineInterface, onUpdate])
 
     // Memoize this value to prevent unnecessary rerenders of context provider
-    const contextValue = useMemo(
-        () => ({
-            // in the unlikely circumstance that offlineInterface.latestIsConnected
-            // is `null` or `undefined` when this initializes, fail safe by defaulting to
-            // `isConnected: true`. A ping or SW update should update the status shortly.
-            isConnected: isConnected ?? true,
-            isDisconnected: !isConnected,
-            lastConnected: isConnected
+    const contextValue = useMemo(() => {
+        // in the unlikely circumstance that offlineInterface.latestIsConnected
+        // is `null` or `undefined` when this initializes, fail safe by defaulting to
+        // `isConnected: true`. A ping or SW update should update the status shortly.
+        const validatedIsConnected = isConnected ?? true
+        return {
+            isConnected: validatedIsConnected,
+            isDisconnected: !validatedIsConnected,
+            lastConnected: validatedIsConnected
                 ? null
                 : // Only evaluate if disconnected, since local storage
                   // is synchronous and disk-based.
                   // If lastConnected is not set in localStorage though, set it.
                   // (relevant on startup)
                   getLastConnected(appName) || updateLastConnected(appName),
-        }),
-        [isConnected, appName]
-    )
+        }
+    }, [isConnected, appName])
 
     return (
         <Dhis2ConnectionStatusContext.Provider value={contextValue}>
