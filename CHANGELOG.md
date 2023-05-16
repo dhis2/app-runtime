@@ -1,3 +1,10 @@
+## [3.9.3](https://github.com/dhis2/app-runtime/compare/v3.9.2...v3.9.3) (2023-05-16)
+
+
+### Bug Fixes
+
+* **connection-status:** responsiveness to online events [LIBS-497] ([#1348](https://github.com/dhis2/app-runtime/issues/1348)) ([91a3d4d](https://github.com/dhis2/app-runtime/commit/91a3d4d820e6a87b819334bd72709c1de1a777f5))
+
 ## [3.9.2](https://github.com/dhis2/app-runtime/compare/v3.9.1...v3.9.2) (2023-05-02)
 
 
