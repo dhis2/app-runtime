@@ -54,6 +54,8 @@ export interface QueryRenderInput<TQueryResult = QueryResult>
     refetch: QueryRefetchFunction
 }
 
+export type DataQueryResult<TQueryResult> = QueryRenderInput<TQueryResult>
+
 export interface MutationState {
     engine: DataEngine
     called: boolean

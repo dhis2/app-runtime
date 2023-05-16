@@ -1,5 +1,4 @@
 import { FetchError } from './FetchError'
-import { JsonMap } from './JsonValue'
 import { PossiblyDynamic } from './PossiblyDynamic'
 import { QueryParameters } from './QueryParameters'
 
@@ -19,7 +18,11 @@ export interface ResolvedResourceQuery extends ResourceQuery {
 }
 
 export type Query = Record<string, ResourceQuery>
-export type QueryResult = JsonMap
+export type QueryResult = any
+
+export type QueryResultData<TQuery extends Query = Query> = {
+    [K in keyof TQuery]: QueryResult
+}
 
 export interface QueryOptions {
     variables?: QueryVariables

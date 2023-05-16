@@ -6,12 +6,12 @@ import {
 } from './helpers/validate'
 import { DataEngineLink } from './types/DataEngineLink'
 import { QueryExecuteOptions } from './types/ExecuteOptions'
-import { JsonMap, JsonValue } from './types/JsonValue'
+import { JsonValue } from './types/JsonValue'
 import { Mutation } from './types/Mutation'
-import { Query } from './types/Query'
+import { Query, QueryResultData } from './types/Query'
 
 const reduceResponses = (responses: JsonValue[], names: string[]) =>
-    responses.reduce<JsonMap>((out, response, idx) => {
+    responses.reduce<any>((out, response, idx) => {
         out[names[idx]] = response
         return out
     }, {})
@@ -22,15 +22,18 @@ export class DataEngine {
         this.link = link
     }
 
-    public query(
-        query: Query,
+    public query<
+        TQueryResultData extends QueryResultData<TQuery>,
+        TQuery extends Query = Query
+    >(
+        query: TQuery,
         {
             variables = {},
             signal,
             onComplete,
             onError,
-        }: QueryExecuteOptions = {}
-    ): Promise<JsonMap> {
+        }: QueryExecuteOptions<TQueryResultData> = {}
+    ): Promise<TQueryResultData> {
         const names = Object.keys(query)
         const queries = names
             .map((name) => query[name])
@@ -46,7 +49,7 @@ export class DataEngine {
             })
         )
             .then((results) => {
-                const data = reduceResponses(results, names)
+                const data: TQueryResultData = reduceResponses(results, names)
                 onComplete && onComplete(data)
                 return data
             })

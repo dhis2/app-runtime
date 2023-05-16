@@ -15,6 +15,12 @@ const mockMutation: Mutation = {
     data: {},
 }
 
+type ResultData = {
+    type: string
+    resource: string
+    answer: number
+}
+
 const mockLink: DataEngineLink = {
     executeResourceQuery: jest.fn(
         async (type: FetchType, query: ResolvedResourceQuery) => {
@@ -81,11 +87,19 @@ describe('DataEngine', () => {
 
     it('Should call multilple queries in parallel', async () => {
         const engine = new DataEngine(mockLink)
-        const result = await engine.query({
+
+        type Result = {
+            test: ResultData
+            test2: ResultData
+            test3: ResultData
+        }
+        const q = {
             test: { resource: 'test' },
             test2: { resource: 'test2' },
             test3: { resource: 'test3' },
-        })
+        }
+        const result = await engine.query<Result>(q)
+
         expect(mockLink.executeResourceQuery).toHaveBeenCalledTimes(3)
         expect(result).toMatchObject({
             test: {
@@ -107,11 +121,16 @@ describe('DataEngine', () => {
     })
 
     it('Should call onComplete callback only once for multiple-query method', async () => {
+        type Result = {
+            test: ResultData
+            test2: ResultData
+            test3: ResultData
+        }
         const options = {
             onComplete: jest.fn(),
         }
         const engine = new DataEngine(mockLink)
-        await engine.query(
+        await engine.query<Result>(
             {
                 test: { resource: 'test' },
                 test2: { resource: 'test2' },
@@ -119,6 +138,7 @@ describe('DataEngine', () => {
             },
             options
         )
+
         expect(mockLink.executeResourceQuery).toHaveBeenCalledTimes(3)
         expect(options.onComplete).toHaveBeenCalledTimes(1)
     })
