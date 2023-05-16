@@ -1,3 +1,10 @@
+## [3.9.2](https://github.com/dhis2/app-runtime/compare/v3.9.1...v3.9.2) (2023-05-02)
+
+
+### Bug Fixes
+
+* [DHIS2] Type generic T = QueryResult to useDataQuery ([#1297](https://github.com/dhis2/app-runtime/issues/1297)) ([7c5c083](https://github.com/dhis2/app-runtime/commit/7c5c08308b919f70acac5cba6c2b851e4a6e50fa))
+
 ## [3.9.1](https://github.com/dhis2/app-runtime/compare/v3.9.0...v3.9.1) (2023-04-11)
 
 

@@ -1,6 +1,11 @@
 import { useState, useRef, useCallback, useDebugValue } from 'react'
 import { useQuery, setLogger } from 'react-query'
-import type { Query, QueryOptions, QueryVariables } from '../../engine'
+import type {
+    Query,
+    QueryOptions,
+    QueryResult,
+    QueryVariables,
+} from '../../engine'
 import type { FetchError } from '../../engine/types/FetchError'
 import type { QueryRenderInput, QueryRefetchFunction } from '../../types'
 import { mergeAndCompareVariables } from './mergeAndCompareVariables'
@@ -28,7 +33,7 @@ type QueryState = {
     refetchCallback?: (data: any) => void
 }
 
-export const useDataQuery = (
+export const useDataQuery = <TQueryResult = QueryResult>(
     query: Query,
     {
         onComplete: userOnSuccess,
@@ -36,7 +41,7 @@ export const useDataQuery = (
         variables: initialVariables = {},
         lazy: initialLazy = false,
     }: QueryOptions = {}
-): QueryRenderInput => {
+): QueryRenderInput<TQueryResult> => {
     const [staticQuery] = useStaticInput<Query>(query, {
         warn: true,
         name: 'query',
