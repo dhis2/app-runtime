@@ -559,6 +559,33 @@ describe('it pings when an offline event is detected', () => {
     })
 })
 
+describe('it pings when an online event is detected', () => {
+    test('if the app is focused, it pings immediately', () => {
+        renderHook(() => useDhis2ConnectionStatus(), { wrapper })
+
+        window.dispatchEvent(new Event('offline'))
+        expect(mockPing).toHaveBeenCalledTimes(1)
+
+        window.dispatchEvent(new Event('online'))
+        expect(mockPing).toHaveBeenCalledTimes(2)
+    })
+
+    test('pings are throttled', () => {
+        renderHook(() => useDhis2ConnectionStatus(), { wrapper })
+
+        window.dispatchEvent(new Event('offline'))
+        window.dispatchEvent(new Event('online'))
+        window.dispatchEvent(new Event('offline'))
+        expect(mockPing).toHaveBeenCalledTimes(3)
+
+        window.dispatchEvent(new Event('online'))
+        // Another ping should NOT be sent immediately after this latest
+        // online event
+        expect(mockPing).toHaveBeenCalledTimes(3)
+        // (Not testing throttle time here because further pings may interfere)
+    })
+})
+
 describe('lastConnected status', () => {
     test('it sets lastConnected in localStorage when it becomes disconnected', async () => {
         const { result } = renderHook(() => useDhis2ConnectionStatus(), {
