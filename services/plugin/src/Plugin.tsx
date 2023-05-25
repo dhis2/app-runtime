@@ -37,12 +37,12 @@ export const Plugin = ({
 
     // we do not know what is being sent in passed props, so for stable reference, memoize using JSON representation
     const propsToPassNonMemoizedJSON = JSON.stringify(propsToPassNonMemoized)
-    const propsToPass = useMemo(
+    const propsToPass: any = useMemo(
         () => ({ ...propsToPassNonMemoized }),
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [propsToPassNonMemoizedJSON]
     )
-    const { height } = propsToPass
+    const { height, width } = propsToPass
 
     const { add: alertsAdd } = useContext(AlertsManagerContext)
 
@@ -59,12 +59,16 @@ export const Plugin = ({
 
     const [inErrorState, setInErrorState] = useState<boolean>(false)
     const [pluginHeight, setPluginHeight] = useState<number>(150)
+    const [pluginWidth, setPluginWidth] = useState<number>(500)
 
     useEffect(() => {
         if (height) {
             setPluginHeight(height)
         }
-    }, [height])
+        if (width) {
+            setPluginWidth(width)
+        }
+    }, [height, width])
 
     useEffect(() => {
         if (iframeRef?.current) {
@@ -72,6 +76,7 @@ export const Plugin = ({
                 ...propsToPass,
                 alertsAdd,
                 setPluginHeight,
+                setPluginWidth,
                 setInErrorState,
                 setCommunicationReceived,
             }
@@ -121,7 +126,12 @@ export const Plugin = ({
 
     if (pluginEntryPoint) {
         return (
-            <div style={{ height: `${pluginHeight}px` }}>
+            <div
+                style={{
+                    height: `${pluginHeight}px`,
+                    width: `${pluginWidth}px`,
+                }}
+            >
                 <iframe
                     ref={iframeRef}
                     src={pluginSource}
@@ -129,6 +139,7 @@ export const Plugin = ({
                         width: '100%',
                         height: '100%',
                         border: 'none',
+                        overflowX: 'hidden',
                     }}
                 ></iframe>
             </div>
