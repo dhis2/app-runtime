@@ -112,6 +112,8 @@ export const Plugin = ({
                     height: '100%',
                     border: 'none',
                 }}
+                allow="clipboard-write"
+                name={pluginShortName ?? 'some-plugin-name'}
             ></iframe>
         )
     }
