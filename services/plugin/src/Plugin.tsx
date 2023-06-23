@@ -54,7 +54,7 @@ export const Plugin = ({
 
     useEffect(() => {
         setCommunicationReceived(false)
-    }, [pluginSource])
+    }, [pluginEntryPoint])
 
     useEffect(() => {
         // if communicationReceived switches from false to true, the props have been sent
