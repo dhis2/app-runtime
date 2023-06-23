@@ -53,9 +53,9 @@ export const Plugin = ({
     const [inErrorState, setInErrorState] = useState<boolean>(false)
 
     // since we do not know what props are passed, the dependency array has to be keys of whatever is standard prop
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     const memoizedPropsToPass = useMemo(
         () => propsToPass,
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [...Object.keys(propsToPass)]
     )
 
