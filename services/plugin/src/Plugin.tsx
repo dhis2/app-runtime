@@ -1,7 +1,7 @@
 import { AlertsManagerContext } from '@dhis2/app-service-alerts'
 import { useDataQuery } from '@dhis2/app-service-data'
 import postRobot from 'post-robot'
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import PluginError from './PluginError'
 
 const appsInfoQuery = {
@@ -52,6 +52,13 @@ export const Plugin = ({
 
     const [inErrorState, setInErrorState] = useState<boolean>(false)
 
+    // since we do not know what props are passed, the dependency array has to be keys of whatever is standard prop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const memoizedPropsToPass = useMemo(
+        () => propsToPass,
+        [...Object.keys(propsToPass)]
+    )
+
     useEffect(() => {
         setCommunicationReceived(false)
     }, [pluginEntryPoint])
@@ -66,7 +73,7 @@ export const Plugin = ({
 
         if (iframeRef?.current) {
             const iframeProps = {
-                ...propsToPass,
+                ...memoizedPropsToPass,
                 alertsAdd,
                 setInErrorState,
                 setCommunicationReceived,
@@ -106,7 +113,7 @@ export const Plugin = ({
         }
         // prevCommunicationReceived update should not retrigger this hook
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [propsToPass, communicationReceived, inErrorState, alertsAdd])
+    }, [memoizedPropsToPass, communicationReceived, inErrorState, alertsAdd])
 
     if (data && !pluginEntryPoint) {
         return (
