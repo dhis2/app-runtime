@@ -26,7 +26,8 @@
         "@dhis2/app-service-config": "3.9.4",
         "@dhis2/app-service-data": "3.9.4",
         "@dhis2/app-service-alerts": "3.9.4",
-        "@dhis2/app-service-offline": "3.9.4"
+        "@dhis2/app-service-offline": "3.9.4",
+        "@dhis2/app-service-login-settings": "3.9.4"
     },
     "peerDependencies": {
         "prop-types": "^15.7.2",

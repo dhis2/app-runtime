@@ -23,4 +23,6 @@ export {
     clearSensitiveCaches,
 } from '@dhis2/app-service-offline'
 
+export { useLoginSettings } from '@dhis2/app-service-login-settings'
+
 export { Provider } from './Provider'
