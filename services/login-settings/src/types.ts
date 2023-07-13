@@ -20,7 +20,6 @@ export interface LoginSettings {
     systemUiLocale?: string
     uiLocale?: string
     localesUI?: Locale[]
-    dir?: string
     htmlTemplate?: string
     refreshOnTranslation?: ({ locale }: { locale: string }) => void
     error?: Error | null

@@ -17,7 +17,6 @@ export const LoginSettingsContext = React.createContext<LoginSettings>({
     systemUiLocale: '',
     uiLocale: '',
     localesUI: [],
-    dir: '',
     htmlTemplate: '',
     refreshOnTranslation: ({ locale }) => {
         throw new Error('This function is not implemented')
