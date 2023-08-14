@@ -55,6 +55,30 @@ const getLocale = (
     return 'en'
 }
 
+const getDefaultSettings = (): LoginSettings => ({
+    applicationDescription:
+        'This is the long application subtitle where there is a lot of information included in the subtitle so it must handle this much information',
+    applicationFooter: 'Application left side footer text',
+    applicationNotification:
+        'this is placeholder for the application notification.',
+    allowAccountRecovery: true,
+    applicationTitle: 'Example application title that could be very long',
+    countryFlag: 'http://localhost:8080/dhis-web-commons/flags/norway.png',
+    useCountryFlag: true,
+    loginPageLogo: 'http://localhost:8080/api/staticContent/logo_front',
+    useLoginPageLogo: true,
+    emailConfigured: true,
+    selfRegistrationEnabled: true,
+    selfRegistrationNoRecaptcha: false,
+    systemUiLocale: 'en',
+    uiLocale: 'en',
+    localesUI: defaultLocales,
+    htmlTemplate: 'standard',
+    refreshOnTranslation: ({ locale }) => {
+        throw new Error('This function is not implemented')
+    },
+})
+
 export const LoginSettingsProvider = ({
     children,
 }: {
@@ -84,6 +108,7 @@ export const LoginSettingsProvider = ({
         typeof data?.loginSettings === 'object' ? data.loginSettings : {}
 
     const providerValue = {
+        ...getDefaultSettings(),
         ...fetchedLoginSettings,
         uiLocale: getLocale(
             selectedLocale,
