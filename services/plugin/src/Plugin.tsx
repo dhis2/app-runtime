@@ -27,7 +27,7 @@ const getPluginEntryPoint = ({
 export const Plugin = ({
     pluginSource,
     pluginShortName,
-    ...propsToPassNonMemoized
+    ...propsToPass
 }: {
     pluginSource?: string
     pluginShortName?: string
@@ -35,14 +35,14 @@ export const Plugin = ({
 }): JSX.Element => {
     const iframeRef = useRef<HTMLIFrameElement>(null)
 
-    // we do not know what is being sent in passed props, so for stable reference, memoize using JSON representation
-    const propsToPassNonMemoizedJSON = JSON.stringify(propsToPassNonMemoized)
-    const propsToPass: any = useMemo(
-        () => ({ ...propsToPassNonMemoized }),
+    // since we do not know what props are passed, the dependency array has to be keys of whatever is standard prop
+    const memoizedPropsToPass: any = useMemo(
+        () => propsToPass,
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [propsToPassNonMemoizedJSON]
+        [...Object.keys(propsToPass)]
     )
-    const { height, width } = propsToPass
+
+    const { height, width } = memoizedPropsToPass
 
     const { add: alertsAdd } = useContext(AlertsManagerContext)
 
@@ -71,13 +71,6 @@ export const Plugin = ({
             setPluginWidth(width)
         }
     }, [height, width])
-
-    // since we do not know what props are passed, the dependency array has to be keys of whatever is standard prop
-    const memoizedPropsToPass = useMemo(
-        () => propsToPass,
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [...Object.keys(propsToPass)]
-    )
 
     useEffect(() => {
         setCommunicationReceived(false)
@@ -161,7 +154,6 @@ export const Plugin = ({
                         width: '100%',
                         height: '100%',
                         border: 'none',
-                        overflowX: 'hidden',
                     }}
                 ></iframe>
             </div>
