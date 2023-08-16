@@ -1800,26 +1800,26 @@
     "@dhis2/app-service-offline" "3.7.0"
 
 "@dhis2/app-runtime@^2.2.2", "@dhis2/app-runtime@file:../../runtime":
-  version "3.6.1"
+  version "3.9.0"
   dependencies:
-    "@dhis2/app-service-alerts" "3.6.1"
-    "@dhis2/app-service-config" "3.6.1"
-    "@dhis2/app-service-data" "3.6.1"
-    "@dhis2/app-service-offline" "3.6.1"
+    "@dhis2/app-service-alerts" "3.9.0"
+    "@dhis2/app-service-config" "3.9.0"
+    "@dhis2/app-service-data" "3.9.0"
+    "@dhis2/app-service-offline" "3.9.0"
 
-"@dhis2/app-service-alerts@3.6.1", "@dhis2/app-service-alerts@3.7.0", "@dhis2/app-service-alerts@file:../../services/alerts":
-  version "3.6.1"
+"@dhis2/app-service-alerts@3.7.0", "@dhis2/app-service-alerts@3.9.0", "@dhis2/app-service-alerts@file:../../services/alerts":
+  version "3.9.0"
 
-"@dhis2/app-service-config@3.6.1", "@dhis2/app-service-config@3.7.0", "@dhis2/app-service-config@file:../../services/config":
-  version "3.6.1"
+"@dhis2/app-service-config@3.7.0", "@dhis2/app-service-config@3.9.0", "@dhis2/app-service-config@file:../../services/config":
+  version "3.9.0"
 
-"@dhis2/app-service-data@3.6.1", "@dhis2/app-service-data@3.7.0", "@dhis2/app-service-data@file:../../services/data":
-  version "3.6.1"
+"@dhis2/app-service-data@3.7.0", "@dhis2/app-service-data@3.9.0", "@dhis2/app-service-data@file:../../services/data":
+  version "3.9.0"
   dependencies:
     react-query "^3.13.11"
 
-"@dhis2/app-service-offline@3.6.1", "@dhis2/app-service-offline@3.7.0", "@dhis2/app-service-offline@file:../../services/offline":
-  version "3.6.1"
+"@dhis2/app-service-offline@3.7.0", "@dhis2/app-service-offline@3.9.0", "@dhis2/app-service-offline@file:../../services/offline":
+  version "3.9.0"
   dependencies:
     lodash "^4.17.21"
 
@@ -2815,9 +2815,9 @@ ajv-keywords@^3.1.0, ajv-keywords@^3.4.1:
   integrity sha512-RO1ibKvd27e6FEShVFfPALuHI3WjSVNeK5FIsmme/LYRNxjKuNj+Dt7bucLa6NdSv3JcVTyMlm9kGR84z1XpaQ==
 
 ajv@^6.1.0, ajv@^6.10.0, ajv@^6.10.2, ajv@^6.12.0, ajv@^6.5.5:
-  version "6.12.0"
-  resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.12.0.tgz#06d60b96d87b8454a5adaba86e7854da629db4b7"
-  integrity sha512-D6gFiFA0RRLyUbvijN74DWAjXSFxWKaWP7mldxkVhyhAV3+SWA9HEJPHQ2c9soIeTFJqcSdFDGFgdqs1iUU2Hw==
+  version "6.12.6"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.12.6.tgz#baf5a62e802b07d977034586f8c3baf5adf26df4"
+  integrity sha512-j3fVLgvTo527anyYyJOGTYJbG+vnnQYvE0m5mmkc1TK+nxAppkCLMIL0aZ4dblVCNoGShhm+kzE4ZUykBoMg4g==
   dependencies:
     fast-deep-equal "^3.1.1"
     fast-json-stable-stringify "^2.0.0"
