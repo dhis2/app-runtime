@@ -1,4 +1,5 @@
 import { useConfig } from '@dhis2/app-service-config'
+import { throttle } from 'lodash'
 import PropTypes from 'prop-types'
 import React, {
     useCallback,
@@ -152,24 +153,30 @@ export const Dhis2ConnectionStatusProvider = ({
 
         const handleBlur = () => smartInterval.pause()
         const handleFocus = () => smartInterval.resume()
-        // On offline event, ping immediately to test server connection.
-        // Only do this when going offline -- it's theoretically no-cost
-        // for both online and offline servers. Pinging when going online
-        // can be costly for clients connecting over the internet to online
-        // servers.
+        // Pinging when going offline should be low/no-cost in both online and
+        // local servers
         const handleOffline = () => smartInterval.invokeCallbackImmediately()
+        // Pinging when going online has a cost but improves responsiveness of
+        // the connection status -- only do it once every 15 seconds at most
+        const handleOnline = throttle(
+            () => smartInterval.invokeCallbackImmediately(),
+            15000
+        )
 
         window.addEventListener('blur', handleBlur)
         window.addEventListener('focus', handleFocus)
         window.addEventListener('offline', handleOffline)
+        window.addEventListener('online', handleOnline)
 
         return () => {
             window.removeEventListener('blur', handleBlur)
             window.removeEventListener('focus', handleFocus)
             window.removeEventListener('offline', handleOffline)
+            window.removeEventListener('online', handleOnline)
 
-            // clean up smart interval
+            // clean up smart interval and throttled function
             smartInterval.clear()
+            handleOnline.cancel()
         }
     }, [pingAndHandleStatus, serverVersion])
 
