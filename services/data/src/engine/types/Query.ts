@@ -21,9 +21,9 @@ export interface ResolvedResourceQuery extends ResourceQuery {
 export type Query = Record<string, ResourceQuery>
 export type QueryResult = JsonMap
 
-export interface QueryOptions {
+export interface QueryOptions<TQueryResult = QueryResult> {
     variables?: QueryVariables
-    onComplete?: (data: QueryResult) => void
+    onComplete?: (data: TQueryResult) => void
     onError?: (error: FetchError) => void
     lazy?: boolean
 }

@@ -40,15 +40,16 @@ export interface ExecuteHookResult<ReturnType> {
     data?: ReturnType
 }
 
-export interface QueryState {
+export interface QueryState<TQueryResult> {
     called: boolean
     loading: boolean
     fetching: boolean
     error?: FetchError
-    data?: QueryResult
+    data?: TQueryResult
 }
 
-export interface QueryRenderInput extends QueryState {
+export interface QueryRenderInput<TQueryResult = QueryResult>
+    extends QueryState<TQueryResult> {
     engine: DataEngine
     refetch: QueryRefetchFunction
 }

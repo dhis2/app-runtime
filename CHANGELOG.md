@@ -1,27 +1,32 @@
-# [3.10.0-alpha.2](https://github.com/dhis2/app-runtime/compare/v3.10.0-alpha.1...v3.10.0-alpha.2) (2023-03-15)
+## [3.9.4](https://github.com/dhis2/app-runtime/compare/v3.9.3...v3.9.4) (2023-06-19)
 
 
 ### Bug Fixes
 
-* add in plugin service in runtime package ([#1343](https://github.com/dhis2/app-runtime/issues/1343)) ([ed06a9f](https://github.com/dhis2/app-runtime/commit/ed06a9f4af7d3db40600ffd7e1b03cd095db36fc))
+* **types:** add generic result type to oncomplete param ([#1350](https://github.com/dhis2/app-runtime/issues/1350)) ([a069603](https://github.com/dhis2/app-runtime/commit/a069603b4f3b2c9caa2158d7b4087e432cf90668))
 
-# [3.10.0-alpha.1](https://github.com/dhis2/app-runtime/compare/v3.9.0...v3.10.0-alpha.1) (2023-03-13)
+## [3.9.3](https://github.com/dhis2/app-runtime/compare/v3.9.2...v3.9.3) (2023-05-16)
 
 
 ### Bug Fixes
 
-* add documentation, clean up ([c537590](https://github.com/dhis2/app-runtime/commit/c537590176b2e6aebf278653a87705b3417bcc38))
-* clean up, add useless test ([b14952b](https://github.com/dhis2/app-runtime/commit/b14952b137971f625283c8de60afac061176b80e))
-* custom error handling ([c72fc6e](https://github.com/dhis2/app-runtime/commit/c72fc6eac576ce043ab706e13030497a0dab3d3a))
-* dependency resolution ([2480c1c](https://github.com/dhis2/app-runtime/commit/2480c1c6b82daaeee0ab82ef45962fbcabd0e778))
+* **connection-status:** responsiveness to online events [LIBS-497] ([#1348](https://github.com/dhis2/app-runtime/issues/1348)) ([91a3d4d](https://github.com/dhis2/app-runtime/commit/91a3d4d820e6a87b819334bd72709c1de1a777f5))
+
+## [3.9.2](https://github.com/dhis2/app-runtime/compare/v3.9.1...v3.9.2) (2023-05-02)
 
 
-### Features
+### Bug Fixes
 
-* ideas for plugin wrappers [LIBS-397] ([be38607](https://github.com/dhis2/app-runtime/commit/be38607698b12309af5b79259afbbf037e7027bc))
-* implement plugin wrappers (alpha) ([#1332](https://github.com/dhis2/app-runtime/issues/1332)) ([56a9a3f](https://github.com/dhis2/app-runtime/commit/56a9a3fb734e07c6c2d8140c6413222b42be82a1))
-* plugin wrappers, errors + alerts ([bda6a43](https://github.com/dhis2/app-runtime/commit/bda6a4352fe0ad8a076f55040e3fe702f9d0c4eb))
-* update plugin wrappers ([30c963c](https://github.com/dhis2/app-runtime/commit/30c963c112b2865ae824c7e3ce06279ed374983c))
+* [DHIS2] Type generic T = QueryResult to useDataQuery ([#1297](https://github.com/dhis2/app-runtime/issues/1297)) ([7c5c083](https://github.com/dhis2/app-runtime/commit/7c5c08308b919f70acac5cba6c2b851e4a6e50fa))
+
+## [3.9.1](https://github.com/dhis2/app-runtime/compare/v3.9.0...v3.9.1) (2023-04-11)
+
+
+### Bug Fixes
+
+* account for daylight savings time [LIBS-490] ([06eaa5d](https://github.com/dhis2/app-runtime/commit/06eaa5d5a0d3d4f69f701a3031610310d2d37ccf))
+* account for daylight savings time [LIBS-490] [#1345](https://github.com/dhis2/app-runtime/issues/1345) ([fb00533](https://github.com/dhis2/app-runtime/commit/fb00533008e828f7c9fa17f959dcc375fca8b6bd))
+* add test for when time zones are the same [LIBS-490] ([7911f8b](https://github.com/dhis2/app-runtime/commit/7911f8b992aabc34a1451144660a34b6b5035286))
 
 # [3.9.0](https://github.com/dhis2/app-runtime/compare/v3.8.0...v3.9.0) (2023-03-02)
 
