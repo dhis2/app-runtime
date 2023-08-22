@@ -1,3 +1,15 @@
+# [3.10.0-alpha.3](https://github.com/dhis2/app-runtime/compare/v3.10.0-alpha.2...v3.10.0-alpha.3) (2023-08-22)
+
+
+### Bug Fixes
+
+* **connection-status:** responsiveness to online events [LIBS-497] ([#1348](https://github.com/dhis2/app-runtime/issues/1348)) ([91a3d4d](https://github.com/dhis2/app-runtime/commit/91a3d4d820e6a87b819334bd72709c1de1a777f5))
+* **types:** add generic result type to oncomplete param ([#1350](https://github.com/dhis2/app-runtime/issues/1350)) ([a069603](https://github.com/dhis2/app-runtime/commit/a069603b4f3b2c9caa2158d7b4087e432cf90668))
+* [DHIS2] Type generic T = QueryResult to useDataQuery ([#1297](https://github.com/dhis2/app-runtime/issues/1297)) ([7c5c083](https://github.com/dhis2/app-runtime/commit/7c5c08308b919f70acac5cba6c2b851e4a6e50fa))
+* account for daylight savings time [LIBS-490] ([06eaa5d](https://github.com/dhis2/app-runtime/commit/06eaa5d5a0d3d4f69f701a3031610310d2d37ccf))
+* account for daylight savings time [LIBS-490] [#1345](https://github.com/dhis2/app-runtime/issues/1345) ([fb00533](https://github.com/dhis2/app-runtime/commit/fb00533008e828f7c9fa17f959dcc375fca8b6bd))
+* add test for when time zones are the same [LIBS-490] ([7911f8b](https://github.com/dhis2/app-runtime/commit/7911f8b992aabc34a1451144660a34b6b5035286))
+
 ## [3.9.4](https://github.com/dhis2/app-runtime/compare/v3.9.3...v3.9.4) (2023-06-19)
 
 
