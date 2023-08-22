@@ -47,6 +47,23 @@ describe('queryToRequestOptions', () => {
         `)
     })
 
+    it('should return a valid Fetch option object for json-patch request', () => {
+        const options = queryToRequestOptions('json-patch', {
+            resource: 'test',
+            data: { answer: 42, foo: 'bar' },
+        })
+        expect(options).toMatchInlineSnapshot(`
+            Object {
+              "body": "{\\"answer\\":42,\\"foo\\":\\"bar\\"}",
+              "headers": Object {
+                "Content-Type": "application/json-patch+json",
+              },
+              "method": "PATCH",
+              "signal": undefined,
+            }
+        `)
+    })
+
     it('should return a valid Fetch option object for replace request', () => {
         const options = queryToRequestOptions('replace', {
             resource: 'test',

@@ -34,11 +34,11 @@ const validateDeclarativeFields = (
     } else {
         let fields: Array<string> | undefined = undefined
         if (typeof query.params.fields === 'string') {
-            fields = query.params.fields.split(',').map(field => field.trim())
+            fields = query.params.fields.split(',').map((field) => field.trim())
         } else if (Array.isArray(query.params.fields)) {
-            fields = query.params.fields.map(field => String(field).trim())
+            fields = query.params.fields.map((field) => String(field).trim())
         }
-        if (fields?.find(field => field.match(/(^\*$|^:.+)/))) {
+        if (fields?.find((field) => field.match(/(^\*$|^:.+)/))) {
             warn(
                 'Data queries should not use wildcard or dynamic field groups',
                 query.params.fields,

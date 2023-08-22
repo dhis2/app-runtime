@@ -23,11 +23,11 @@ const spliceTabs = (tabs, index, updatedTab) => {
     return [...before, ...updated, ...after]
 }
 
-const newTab = id => {
+const newTab = (id) => {
     return { ...tabTemplate, id, name: `Query ${id}` }
 }
 
-const initTabState = storageNameSpace => {
+const initTabState = (storageNameSpace) => {
     if (localStorage.getItem(storageNameSpace)) {
         const { version, ...storedState } = JSON.parse(
             localStorage.getItem(storageNameSpace)
@@ -42,9 +42,9 @@ const initTabState = storageNameSpace => {
         tabs: [newTab(1)],
     }
 }
-const nextAvailableId = tabs => {
+const nextAvailableId = (tabs) => {
     let candidate = 0
-    while (tabs.some(tab => tab.id === candidate)) {
+    while (tabs.some((tab) => tab.id === candidate)) {
         ++candidate
     }
     return candidate
@@ -98,13 +98,13 @@ const reducer = (state, action) => {
     }
 }
 
-const prepareForStorage = state => ({
+const prepareForStorage = (state) => ({
     version: VERSION,
     ...state,
-    tabs: state.tabs.map(tab => ({ ...tab, result: '' })),
+    tabs: state.tabs.map((tab) => ({ ...tab, result: '' })),
 })
 
-const useTabState = storageNameSpace => {
+const useTabState = (storageNameSpace) => {
     const [state, dispatch] = useReducer(
         reducer,
         storageNameSpace,
@@ -124,7 +124,7 @@ const useTabState = storageNameSpace => {
         })
     }
 
-    const removeTab = index => {
+    const removeTab = (index) => {
         dispatch({
             type: 'remove',
             payload: {
@@ -143,7 +143,7 @@ const useTabState = storageNameSpace => {
         })
     }
 
-    const setActiveTab = index => {
+    const setActiveTab = (index) => {
         dispatch({
             type: 'setActive',
             payload: {
@@ -166,14 +166,13 @@ const useTabState = storageNameSpace => {
 export const useTabs = () => {
     const { baseUrl } = useConfig()
     const storageNameSpace = `playground-${baseUrl}`
-    const [state, { addTab, removeTab, editTab, setActiveTab }] = useTabState(
-        storageNameSpace
-    )
+    const [state, { addTab, removeTab, editTab, setActiveTab }] =
+        useTabState(storageNameSpace)
 
-    const setName = name => editTab(state.activeTab, { name })
-    const setQuery = query => editTab(state.activeTab, { query })
-    const setResult = result => editTab(state.activeTab, { result })
-    const setType = type => editTab(state.activeTab, { type })
+    const setName = (name) => editTab(state.activeTab, { name })
+    const setQuery = (query) => editTab(state.activeTab, { query })
+    const setResult = (result) => editTab(state.activeTab, { result })
+    const setType = (type) => editTab(state.activeTab, { type })
 
     return {
         activeTab: state.activeTab,

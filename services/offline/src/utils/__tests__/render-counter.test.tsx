@@ -6,7 +6,7 @@ const renderCounts = {}
 
 export const Rerenderer = (): JSX.Element => {
     const [, setState] = React.useState(true)
-    const toggleState = () => setState(prevState => !prevState)
+    const toggleState = () => setState((prevState) => !prevState)
 
     return (
         <>

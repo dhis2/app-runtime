@@ -1,3 +1,5 @@
+import { ReactNode } from 'react'
+
 // Cacheable Section types
 
 export type RecordingState = 'default' | 'pending' | 'error' | 'recording'
@@ -35,10 +37,6 @@ export interface GlobalStateStore {
 
 // Offline Interface types
 
-interface PromptUpdate {
-    (params: { message: string; action: string; onConfirm: () => void }): void
-}
-
 interface StartRecording {
     (params: {
         sectionId: string
@@ -58,8 +56,20 @@ export interface IndexedDBCachedSection {
 
 export interface OfflineInterface {
     readonly pwaEnabled: boolean
-    init: (params: { promptUpdate: PromptUpdate }) => () => void
+    readonly latestIsConnected: boolean | null
+    subscribeToDhis2ConnectionStatus: ({
+        onUpdate,
+    }: {
+        onUpdate: ({ isConnected }: { isConnected: boolean }) => void
+    }) => () => void
     startRecording: StartRecording
     getCachedSections: () => Promise<IndexedDBCachedSection[]>
     removeSection: (id: string) => Promise<boolean>
+}
+
+// Online status types
+
+export type OnlineStatusMessageContextAPI = {
+    onlineStatusMessage?: ReactNode
+    setOnlineStatusMessage: (additionalInfo: ReactNode) => void
 }

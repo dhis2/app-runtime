@@ -1,7 +1,5 @@
-/* eslint-disable react/display-name, react/prop-types */
-
 import { renderHook, act } from '@testing-library/react-hooks'
-import React from 'react'
+import React, { FC } from 'react'
 import {
     errorRecordingMock,
     failedMessageRecordingMock,
@@ -14,7 +12,8 @@ import { OfflineProvider } from '../offline-provider'
 const originalError = console.error
 beforeEach(() => {
     jest.spyOn(console, 'error').mockImplementation((...args) => {
-        const pattern = /Warning: An update to .* inside a test was not wrapped in act/
+        const pattern =
+            /Warning: An update to .* inside a test was not wrapped in act/
         if (typeof args[0] === 'string' && pattern.test(args[0])) {
             return
         }
@@ -29,20 +28,20 @@ afterEach(() => {
 })
 
 it('renders in the default state initially', () => {
-    const { result } = renderHook(() => useCacheableSection('one'), {
-        wrapper: ({ children }) => (
-            <OfflineProvider offlineInterface={mockOfflineInterface}>
-                {children}
-            </OfflineProvider>
-        ),
-    })
+    const wrapper: FC = ({ children }) => (
+        <OfflineProvider offlineInterface={mockOfflineInterface}>
+            {children}
+        </OfflineProvider>
+    )
+
+    const { result } = renderHook(() => useCacheableSection('one'), { wrapper })
 
     expect(result.current.recordingState).toBe('default')
     expect(result.current.isCached).toBe(false)
     expect(result.current.lastUpdated).toBeUndefined()
 })
 
-it('handles a successful recording', async done => {
+it('handles a successful recording', async (done) => {
     const [sectionId, timeoutDelay] = ['one', 1234]
     const testOfflineInterface = {
         ...mockOfflineInterface,
@@ -53,15 +52,14 @@ it('handles a successful recording', async done => {
                 { sectionId: sectionId, lastUpdated: new Date() },
             ]),
     }
+    const wrapper: FC = ({ children }) => (
+        <OfflineProvider offlineInterface={testOfflineInterface}>
+            {children}
+        </OfflineProvider>
+    )
     const { result, waitFor } = renderHook(
         () => useCacheableSection(sectionId),
-        {
-            wrapper: ({ children }) => (
-                <OfflineProvider offlineInterface={testOfflineInterface}>
-                    {children}
-                </OfflineProvider>
-            ),
-        }
+        { wrapper }
     )
 
     const assertRecordingStarted = () => {
@@ -103,10 +101,11 @@ it('handles a successful recording', async done => {
     expect.assertions(11)
 })
 
-it('handles a recording that encounters an error', async done => {
+it('handles a recording that encounters an error', async (done) => {
     // Suppress the expected error from console (in addition to 'act' warning)
     jest.spyOn(console, 'error').mockImplementation((...args) => {
-        const actPattern = /Warning: An update to .* inside a test was not wrapped in act/
+        const actPattern =
+            /Warning: An update to .* inside a test was not wrapped in act/
         const errPattern = /Error during recording/
         const matchesPattern =
             actPattern.test(args[0]) || errPattern.test(args[0])
@@ -119,13 +118,12 @@ it('handles a recording that encounters an error', async done => {
         ...mockOfflineInterface,
         startRecording: errorRecordingMock,
     }
-    const { result } = renderHook(() => useCacheableSection('one'), {
-        wrapper: ({ children }) => (
-            <OfflineProvider offlineInterface={testOfflineInterface}>
-                {children}
-            </OfflineProvider>
-        ),
-    })
+    const wrapper: FC = ({ children }) => (
+        <OfflineProvider offlineInterface={testOfflineInterface}>
+            {children}
+        </OfflineProvider>
+    )
+    const { result } = renderHook(() => useCacheableSection('one'), { wrapper })
 
     const assertRecordingStarted = () => {
         expect(result.current.recordingState).toBe('recording')
@@ -164,13 +162,12 @@ it('handles an error starting the recording', async () => {
         ...mockOfflineInterface,
         startRecording: failedMessageRecordingMock,
     }
-    const { result } = renderHook(() => useCacheableSection('err'), {
-        wrapper: ({ children }) => (
-            <OfflineProvider offlineInterface={testOfflineInterface}>
-                {children}
-            </OfflineProvider>
-        ),
-    })
+    const wrapper: FC = ({ children }) => (
+        <OfflineProvider offlineInterface={testOfflineInterface}>
+            {children}
+        </OfflineProvider>
+    )
+    const { result } = renderHook(() => useCacheableSection('err'), { wrapper })
 
     await expect(result.current.startRecording()).rejects.toThrow(
         'Failed message' // from failedMessageRecordingMock
@@ -188,15 +185,14 @@ it('handles remove and updates sections', async () => {
             ])
             .mockResolvedValueOnce([]),
     }
+    const wrapper: FC = ({ children }) => (
+        <OfflineProvider offlineInterface={testOfflineInterface}>
+            {children}
+        </OfflineProvider>
+    )
     const { result, waitFor } = renderHook(
         () => useCacheableSection(sectionId),
-        {
-            wrapper: ({ children }) => (
-                <OfflineProvider offlineInterface={testOfflineInterface}>
-                    {children}
-                </OfflineProvider>
-            ),
-        }
+        { wrapper }
     )
 
     // Wait for state to sync with indexedDB
@@ -224,16 +220,14 @@ it('handles a change in ID', async () => {
                 { sectionId: 'id-one', lastUpdated: new Date() },
             ]),
     }
+    const wrapper: FC = ({ children }) => (
+        <OfflineProvider offlineInterface={testOfflineInterface}>
+            {children}
+        </OfflineProvider>
+    )
     const { result, waitFor, rerender } = renderHook(
-        (...args) => useCacheableSection(...args),
-        {
-            wrapper: ({ children }) => (
-                <OfflineProvider offlineInterface={testOfflineInterface}>
-                    {children}
-                </OfflineProvider>
-            ),
-            initialProps: 'id-one',
-        }
+        (id: any) => useCacheableSection(id),
+        { wrapper, initialProps: 'id-one' }
     )
 
     // Wait for state to sync with indexedDB

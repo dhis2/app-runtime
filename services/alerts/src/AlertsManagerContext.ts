@@ -1,12 +1,15 @@
 import React from 'react'
-import { AlertsManager } from './types'
+import type { AlertsManager } from './types'
 
-const noop = () => {
-    /* Do nothing */
+const placeholder = () => {
+    throw new Error(
+        'This function is a placeholder used when creating the AlertsManagerContext, it should be overridden'
+    )
 }
 
-const defaultAlertsManager: AlertsManager = { remove: noop, add: noop }
+const defaultAlertsManager: AlertsManager = {
+    add: placeholder,
+}
 
-export const AlertsManagerContext = React.createContext<AlertsManager>(
-    defaultAlertsManager
-)
+export const AlertsManagerContext =
+    React.createContext<AlertsManager>(defaultAlertsManager)

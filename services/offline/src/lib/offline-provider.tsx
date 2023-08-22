@@ -2,7 +2,9 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { OfflineInterface } from '../types'
 import { CacheableSectionProvider } from './cacheable-section-state'
+import { Dhis2ConnectionStatusProvider } from './dhis2-connection-status'
 import { OfflineInterfaceProvider } from './offline-interface'
+import { OnlineStatusMessageProvider } from './online-status-message'
 
 interface OfflineProviderInput {
     offlineInterface?: OfflineInterface
@@ -16,22 +18,19 @@ export function OfflineProvider({
 }: OfflineProviderInput): JSX.Element {
     // If an offline interface is not provided, or if one is provided and PWA
     // is not enabled, skip adding context providers
-    if (!offlineInterface) {
-        return <>{children}</>
-    }
-
-    // If PWA is not enabled, just init interface to make sure new SW gets
-    // activated with code that unregisters SW. Not technically necessary if a
-    // killswitch SW takes over, but the killswitch may not always be in use.
-    // Then, skip adding any context
-    if (!offlineInterface.pwaEnabled) {
-        offlineInterface.init({ promptUpdate: ({ onConfirm }) => onConfirm() })
+    if (!offlineInterface || !offlineInterface.pwaEnabled) {
         return <>{children}</>
     }
 
     return (
         <OfflineInterfaceProvider offlineInterface={offlineInterface}>
-            <CacheableSectionProvider>{children}</CacheableSectionProvider>
+            <Dhis2ConnectionStatusProvider>
+                <CacheableSectionProvider>
+                    <OnlineStatusMessageProvider>
+                        {children}
+                    </OnlineStatusMessageProvider>
+                </CacheableSectionProvider>
+            </Dhis2ConnectionStatusProvider>
         </OfflineInterfaceProvider>
     )
 }
@@ -39,7 +38,6 @@ export function OfflineProvider({
 OfflineProvider.propTypes = {
     children: PropTypes.node,
     offlineInterface: PropTypes.shape({
-        init: PropTypes.func,
         pwaEnabled: PropTypes.bool,
     }),
 }

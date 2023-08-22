@@ -6,7 +6,7 @@ import 'brace/theme/monokai'
 import 'brace/theme/github'
 import './Editor.css'
 
-export const Editor = props => (
+export const Editor = (props) => (
     <AceEditor
         fontSize={14}
         mode="json"

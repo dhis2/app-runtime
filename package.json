@@ -1,5 +1,5 @@
 {
-    "version": "3.0.0-beta.2",
+    "version": "3.9.4",
     "description": "A singular runtime dependency for applications on the DHIS2 platform",
     "repository": "https://github.com/dhis2/app-runtime.git",
     "author": "Austin McGee <austin@dhis2.org>",
@@ -10,8 +10,8 @@
         "services/*"
     ],
     "devDependencies": {
-        "@dhis2/cli-app-scripts": "^6.2.0",
-        "@dhis2/cli-style": "^7.2.2",
+        "@dhis2/cli-app-scripts": "^10.2.0",
+        "@dhis2/cli-style": "^10.4.3",
         "@dhis2/cli-utils-docsite": "^2.0.3",
         "@testing-library/jest-dom": "^5.14.1",
         "@testing-library/react": "^12.0.0",
@@ -22,12 +22,13 @@
         "@types/react": "^16.9.18",
         "@types/react-dom": "^16.9.5",
         "@types/testing-library__dom": "^7.5.0",
-        "@typescript-eslint/eslint-plugin": "^4.7.0",
-        "@typescript-eslint/parser": "^4.7.0",
+        "@typescript-eslint/eslint-plugin": "^5.47.0",
+        "@typescript-eslint/parser": "^5.47.0",
         "concurrently": "^5.0.2",
         "eslint-config-prettier": "^6.15.0",
         "eslint-plugin-react-hooks": "^4.2.0",
-        "jest": "^24.9.0",
+        "fake-indexeddb": "^3.1.3",
+        "idb": "^6.1.3",
         "loop": "^3.3.4",
         "prop-types": "^15.7.2",
         "react": "^16.12.0",
@@ -46,11 +47,11 @@
         "test:services": "loop \"yarn test\" --cwd ./services --exit-on-error",
         "test:runtime": "cd runtime && yarn test",
         "test": "yarn test:services && yarn test:runtime",
-        "format": "d2-style js apply --all --no-stage && d2-style text apply --all --no-stage",
+        "format": "d2-style apply js --all --no-stage && d2-style apply text --all --no-stage",
         "start": "yarn build && cd examples/query-playground && yarn start",
         "docs:build": "d2-utils-docsite build ./docs -o ./dist && yarn build:playground",
         "docs:serve": "d2-utils-docsite serve ./docs -o ./dist",
-        "lint": "d2-style js check && d2-style text check"
+        "lint": "d2-style check js && d2-style check text"
     },
     "d2": {
         "docsite": {

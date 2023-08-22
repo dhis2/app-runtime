@@ -1,12 +1,14 @@
 import {
     isReplyToMessageConversation,
     isCreateFeedbackMessage,
-    isCreateOrUpdateInterpretation,
+    isCreateInterpretation,
+    isUpdateInterpretation,
     isCommentOnInterpretation,
     isInterpretationCommentUpdate,
     isAddOrUpdateSystemOrUserSetting,
     addOrUpdateConfigurationProperty,
     isMetadataPackageInstallation,
+    isExpressionDescriptionValidation,
 } from './textPlainMatchers'
 
 describe('isReplyToMessageConversation', () => {
@@ -15,14 +17,14 @@ describe('isReplyToMessageConversation', () => {
             isReplyToMessageConversation('create', {
                 resource: 'messageConversations/oXD88WWSQpR',
             })
-        ).toEqual(true)
+        ).toBe(true)
     })
     it('retuns false for a POST to a different resource', () => {
         expect(
             isReplyToMessageConversation('create', {
                 resource: 'test/oXD88WWSQpR',
             })
-        ).toEqual(false)
+        ).toBe(false)
     })
 })
 
@@ -32,53 +34,92 @@ describe('isCreateFeedbackMessage', () => {
             isCreateFeedbackMessage('create', {
                 resource: 'messageConversations/feedback',
             })
-        ).toEqual(true)
+        ).toBe(true)
     })
     it('retuns false for a POST to a different resource', () => {
         expect(
             isCreateFeedbackMessage('create', {
                 resource: 'messageConversations/somethingelse',
             })
-        ).toEqual(false)
+        ).toBe(false)
     })
 })
 
-describe('isCreateOrUpdateInterpretation', () => {
+describe('isCreateInterpretation', () => {
     it('returns true for a POST to "interpretations/chart/${id}"', () => {
         expect(
-            isCreateOrUpdateInterpretation('create', {
+            isCreateInterpretation('create', {
                 resource: 'interpretations/chart/oXD88WWSQpR',
             })
-        ).toEqual(true)
+        ).toBe(true)
     })
-    it('returns true for a PUT to "interpretations/chart/${id}"', () => {
+    it('returns false for a PUT to "interpretations/chart/${id}"', () => {
         expect(
-            isCreateOrUpdateInterpretation('replace', {
+            isCreateInterpretation('replace', {
                 resource: 'interpretations/chart/oXD88WWSQpR',
             })
-        ).toEqual(true)
-    })
-    it('returns true for PUT with populated query.id', () => {
-        expect(
-            isCreateOrUpdateInterpretation('replace', {
-                resource: 'interpretations/chart',
-                id: 'oXD88WWSQpR',
-            })
-        ).toEqual(true)
+        ).toBe(false)
     })
     it('retuns false for PATCH requests with a valid query', () => {
         expect(
-            isCreateOrUpdateInterpretation('update', {
+            isCreateInterpretation('update', {
                 resource: 'interpretations/chart/oXD88WWSQpR',
             })
-        ).toEqual(false)
+        ).toBe(false)
     })
     it('returns false for a request to a different resource', () => {
         expect(
-            isCreateOrUpdateInterpretation('create', {
+            isCreateInterpretation('create', {
                 resource: 'interpretations/dummy/oXD88WWSQpR',
             })
-        ).toEqual(false)
+        ).toBe(false)
+    })
+})
+
+describe('isUpdateInterpretation', () => {
+    it('returns true for a PUT to "interpretations/${id}"', () => {
+        expect(
+            isUpdateInterpretation('replace', {
+                resource: 'interpretations/oXD88WWSQpR',
+            })
+        ).toBe(true)
+    })
+    it('returns true for PUT with populated query.id', () => {
+        expect(
+            isUpdateInterpretation('replace', {
+                resource: 'interpretations',
+                id: 'oXD88WWSQpR',
+            })
+        ).toBe(true)
+    })
+    it('returns false for a POST to "interpretations/${id}"', () => {
+        expect(
+            isUpdateInterpretation('create', {
+                resource: 'interpretations/oXD88WWSQpR',
+            })
+        ).toBe(false)
+    })
+    it('returns false for a PATCH to "interpretations/${id}"', () => {
+        expect(
+            isUpdateInterpretation('update', {
+                resource: 'interpretations/oXD88WWSQpR',
+            })
+        ).toBe(false)
+    })
+    it('returns false for PATCH with populated query.id', () => {
+        expect(
+            isUpdateInterpretation('update', {
+                resource: 'interpretations',
+                id: 'oXD88WWSQpR',
+            })
+        ).toBe(false)
+    })
+    it('returns false for a request to a different resource', () => {
+        expect(
+            isUpdateInterpretation('create', {
+                resource: 'interpretations/dummy/oXD88WWSQpR',
+            })
+        ).toBe(false)
     })
 })
 
@@ -88,14 +129,14 @@ describe('isCommentOnInterpretation', () => {
             isCommentOnInterpretation('create', {
                 resource: 'interpretations/oXD88WWSQpR/comments',
             })
-        ).toEqual(true)
+        ).toBe(true)
     })
     it('retuns false for a POST to a different resource', () => {
         expect(
             isCommentOnInterpretation('create', {
                 resource: 'test/oXD88WWSQpR/comments',
             })
-        ).toEqual(false)
+        ).toBe(false)
     })
 })
 
@@ -105,7 +146,7 @@ describe('isInterpretationCommentUpdate', () => {
             isInterpretationCommentUpdate('replace', {
                 resource: 'interpretations/oXD88WWSQpR/comments/oXD88WWSQpR',
             })
-        ).toEqual(true)
+        ).toBe(true)
     })
     it('returns true for PUT with populated query.id', () => {
         expect(
@@ -113,27 +154,27 @@ describe('isInterpretationCommentUpdate', () => {
                 resource: 'interpretations',
                 id: 'oXD88WWSQpR/comments/oXD88WWSQpR',
             })
-        ).toEqual(true)
+        ).toBe(true)
         expect(
             isInterpretationCommentUpdate('replace', {
                 resource: 'interpretations/oXD88WWSQpR/comments',
                 id: 'oXD88WWSQpR',
             })
-        ).toEqual(true)
+        ).toBe(true)
     })
     it('retuns false for PATCH requests with a valid query', () => {
         expect(
             isInterpretationCommentUpdate('update', {
                 resource: 'interpretations/oXD88WWSQpR/comments/oXD88WWSQpR',
             })
-        ).toEqual(false)
+        ).toBe(false)
     })
     it('returns false for a request to a different resource', () => {
         expect(
             isInterpretationCommentUpdate('create', {
                 resource: 'interpretations/oXD88WWSQpR/dummy/oXD88WWSQpR',
             })
-        ).toEqual(false)
+        ).toBe(false)
     })
 })
 
@@ -143,21 +184,21 @@ describe('isAddOrUpdateSystemOrUserSetting', () => {
             isAddOrUpdateSystemOrUserSetting('create', {
                 resource: 'systemSettings/keyWhatever',
             })
-        ).toEqual(true)
+        ).toBe(true)
     })
     it('retuns true for POST to `userSettings/${settingKey}`', () => {
         expect(
             isAddOrUpdateSystemOrUserSetting('create', {
                 resource: 'userSettings/keyWhatever',
             })
-        ).toEqual(true)
+        ).toBe(true)
     })
     it('retuns false for a POST to a different resource', () => {
         expect(
             isAddOrUpdateSystemOrUserSetting('create', {
                 resource: 'test/keyWhatever',
             })
-        ).toEqual(false)
+        ).toBe(false)
     })
 })
 
@@ -167,21 +208,21 @@ describe('addOrUpdateConfigurationProperty', () => {
             addOrUpdateConfigurationProperty('create', {
                 resource: 'configuration/whatever',
             })
-        ).toEqual(true)
+        ).toBe(true)
     })
     it('retuns false for POST to `configuration/corsWhitelist`, which needs "application/json"', () => {
         expect(
             addOrUpdateConfigurationProperty('create', {
                 resource: 'configuration/corsWhitelist',
             })
-        ).toEqual(false)
+        ).toBe(false)
     })
     it('retuns false for a POST to a different resource', () => {
         expect(
             addOrUpdateConfigurationProperty('create', {
                 resource: 'test/whatever',
             })
-        ).toEqual(false)
+        ).toBe(false)
     })
 })
 
@@ -191,13 +232,30 @@ describe('isMetadataPackageInstallation', () => {
             isMetadataPackageInstallation('create', {
                 resource: 'synchronization/metadataPull',
             })
-        ).toEqual(true)
+        ).toBe(true)
     })
     it('retuns false for a POST to a different resource', () => {
         expect(
             isMetadataPackageInstallation('create', {
                 resource: 'synchronization/somethingelse',
             })
-        ).toEqual(false)
+        ).toBe(false)
+    })
+})
+
+describe('isExpressionDescriptionValidation', () => {
+    it('returns true for a POST to "indicators/expression/description"', () => {
+        expect(
+            isExpressionDescriptionValidation('create', {
+                resource: 'indicators/expression/description',
+            })
+        ).toBe(true)
+    })
+    it('retuns false for a POST to a different resource', () => {
+        expect(
+            isMetadataPackageInstallation('create', {
+                resource: 'indicators/expression/somethingelse',
+            })
+        ).toBe(false)
     })
 })

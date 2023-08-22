@@ -9,6 +9,7 @@
     -   [useDataEngine](hooks/useDataEngine)
     -   [useAlert](hooks/useAlert)
     -   [useAlerts](hooks/useAlerts)
+    -   [useTimeZoneConversion](hooks/useTimeZoneConversion)
 -   [**Components**](components/)
     -   [DataQuery](components/DataQuery)
     -   [DataMutation](components/DataMutation)
@@ -22,7 +23,10 @@
 
 -   **Advanced**
 
-    -   [Offline tools](advanced/offline)
+    -   [Offline tools](advanced/offline/)
+        -   [Cacheable Sections](advanced/offline/CacheableSections.md)
+        -   [useDhis2ConnectionStatus](advanced/offline/useDhis2ConnectionStatus.md)
+        -   [useOnlineStatus](advanced/offline/useOnlineStatus.md)
     -   [Services](advanced/services)
     -   [Data Engine](advanced/DataEngine)
         -   [Links](advanced/DataEngineLinks)

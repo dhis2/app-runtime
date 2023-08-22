@@ -65,7 +65,7 @@ export function fetchData(
             ...options.headers,
         },
     })
-        .catch(err => {
+        .catch((err) => {
             throw new FetchError({
                 type: 'network',
                 message: 'An unknown network error occurred',
@@ -73,7 +73,7 @@ export function fetchData(
             })
         })
         .then(parseStatus)
-        .then(async response => {
+        .then(async (response) => {
             const contentType = parseContentType(
                 response.headers.get('Content-Type')
             )

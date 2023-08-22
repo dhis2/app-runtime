@@ -1,7 +1,7 @@
 import { useDataEngine } from '@dhis2/app-runtime'
 import { useState } from 'react'
 
-const stringify = obj => JSON.stringify(obj, undefined, 2)
+const stringify = (obj) => JSON.stringify(obj, undefined, 2)
 
 export const useExecuteQuery = () => {
     const engine = useDataEngine()

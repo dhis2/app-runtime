@@ -1790,35 +1790,36 @@
     moment "^2.24.0"
 
 "@dhis2/app-runtime@*":
-  version "2.8.0"
-  resolved "https://registry.yarnpkg.com/@dhis2/app-runtime/-/app-runtime-2.8.0.tgz#83ca6e96c299686ee72eea3e1825e04aa53cd5d2"
-  integrity sha512-Ru6x9L61fD7ITzVaxFqx88kV5/ypB9xSr8nHgRj4EE/kHl/aVejXuwnSS2OIWh80J3mtD1dpNRN/GJ8o0x0HYg==
+  version "3.7.0"
+  resolved "https://registry.yarnpkg.com/@dhis2/app-runtime/-/app-runtime-3.7.0.tgz#be738255ae95aaf597f9f59d1a56566b1a035dae"
+  integrity sha512-lKHgjaVVnCC5xxThckTVS0EH5mQlrSOdM8bC/7BSz5r9ztgLXJGUgxbnOvVbh95S/zFS9eyDvIls1HGum/MHTQ==
   dependencies:
-    "@dhis2/app-service-alerts" "2.8.0"
-    "@dhis2/app-service-config" "2.8.0"
-    "@dhis2/app-service-data" "2.8.0"
+    "@dhis2/app-service-alerts" "3.7.0"
+    "@dhis2/app-service-config" "3.7.0"
+    "@dhis2/app-service-data" "3.7.0"
+    "@dhis2/app-service-offline" "3.7.0"
 
 "@dhis2/app-runtime@^2.2.2", "@dhis2/app-runtime@file:../../runtime":
-  version "3.0.0-beta.2"
+  version "3.6.1"
   dependencies:
-    "@dhis2/app-service-alerts" "3.0.0-beta.2"
-    "@dhis2/app-service-config" "3.0.0-beta.2"
-    "@dhis2/app-service-data" "3.0.0-beta.2"
-    "@dhis2/app-service-offline" "3.0.0-beta.2"
+    "@dhis2/app-service-alerts" "3.6.1"
+    "@dhis2/app-service-config" "3.6.1"
+    "@dhis2/app-service-data" "3.6.1"
+    "@dhis2/app-service-offline" "3.6.1"
 
-"@dhis2/app-service-alerts@2.8.0", "@dhis2/app-service-alerts@3.0.0-beta.2", "@dhis2/app-service-alerts@file:../../services/alerts":
-  version "3.0.0-beta.2"
+"@dhis2/app-service-alerts@3.6.1", "@dhis2/app-service-alerts@3.7.0", "@dhis2/app-service-alerts@file:../../services/alerts":
+  version "3.6.1"
 
-"@dhis2/app-service-config@2.8.0", "@dhis2/app-service-config@3.0.0-beta.2", "@dhis2/app-service-config@file:../../services/config":
-  version "3.0.0-beta.2"
+"@dhis2/app-service-config@3.6.1", "@dhis2/app-service-config@3.7.0", "@dhis2/app-service-config@file:../../services/config":
+  version "3.6.1"
 
-"@dhis2/app-service-data@2.8.0", "@dhis2/app-service-data@3.0.0-beta.2", "@dhis2/app-service-data@file:../../services/data":
-  version "3.0.0-beta.2"
+"@dhis2/app-service-data@3.6.1", "@dhis2/app-service-data@3.7.0", "@dhis2/app-service-data@file:../../services/data":
+  version "3.6.1"
   dependencies:
     react-query "^3.13.11"
 
-"@dhis2/app-service-offline@3.0.0-beta.2", "@dhis2/app-service-offline@file:../../services/offline":
-  version "3.0.0-beta.2"
+"@dhis2/app-service-offline@3.6.1", "@dhis2/app-service-offline@3.7.0", "@dhis2/app-service-offline@file:../../services/offline":
+  version "3.6.1"
   dependencies:
     lodash "^4.17.21"
 

@@ -1,18 +1,21 @@
 import { ResolvedResourceQuery, FetchType } from '../../../engine'
 import * as multipartFormDataMatchers from './multipartFormDataMatchers'
 import * as textPlainMatchers from './textPlainMatchers'
+import * as xWwwFormUrlencodedMatchers from './xWwwFormUrlencodedMatchers'
 
 type RequestContentType =
     | 'application/json'
+    | 'application/json-patch+json'
     | 'text/plain'
     | 'multipart/form-data'
+    | 'application/x-www-form-urlencoded'
     | null
 
 const resourceExpectsTextPlain = (
     type: FetchType,
     query: ResolvedResourceQuery
 ) =>
-    Object.values(textPlainMatchers).some(textPlainMatcher =>
+    Object.values(textPlainMatchers).some((textPlainMatcher) =>
         textPlainMatcher(type, query)
     )
 
@@ -20,32 +23,46 @@ const resourceExpectsMultipartFormData = (
     type: FetchType,
     query: ResolvedResourceQuery
 ) =>
-    Object.values(multipartFormDataMatchers).some(multipartFormDataMatcher =>
+    Object.values(multipartFormDataMatchers).some((multipartFormDataMatcher) =>
         multipartFormDataMatcher(type, query)
     )
 
-export const FORM_DATA_ERROR_MSG =
-    'Could not convert data to FormData: object does not have own enumerable string-keyed properties'
+const resourceExpectsXWwwFormUrlencoded = (
+    type: FetchType,
+    query: ResolvedResourceQuery
+) =>
+    Object.values(xWwwFormUrlencodedMatchers).some(
+        (xWwwFormUrlencodedMatcher) => xWwwFormUrlencodedMatcher(type, query)
+    )
 
-const convertToFormData = (data: Record<string, any>): FormData => {
+const convertData = (
+    data: Record<string, any>,
+    initialValue: FormData | URLSearchParams
+): FormData | URLSearchParams => {
     const dataEntries = Object.entries(data)
 
     if (dataEntries.length === 0) {
-        throw new Error(FORM_DATA_ERROR_MSG)
+        throw new Error(
+            `Could not convert data to ${initialValue.constructor.name}: object does not have own enumerable string-keyed properties`
+        )
     }
 
-    return dataEntries.reduce((formData, [key, value]) => {
-        formData.append(key, value)
-        return formData
-    }, new FormData())
+    return dataEntries.reduce((convertedData, [key, value]) => {
+        convertedData.append(key, value)
+        return convertedData
+    }, initialValue)
 }
 
 export const requestContentType = (
     type: FetchType,
     query: ResolvedResourceQuery
-) => {
+): null | RequestContentType => {
     if (!query.data) {
         return null
+    }
+
+    if (type === 'json-patch') {
+        return 'application/json-patch+json'
     }
 
     if (resourceExpectsTextPlain(type, query)) {
@@ -56,12 +73,16 @@ export const requestContentType = (
         return 'multipart/form-data'
     }
 
+    if (resourceExpectsXWwwFormUrlencoded(type, query)) {
+        return 'application/x-www-form-urlencoded'
+    }
+
     return 'application/json'
 }
 
 export const requestHeadersForContentType = (
     contentType: RequestContentType
-) => {
+): undefined | Record<'Content-Type', string> => {
     /*
      * Explicitely setting Content-Type to 'multipart/form-data' produces
      * a "multipart boundary not found" error. By not setting a Content-Type
@@ -79,17 +100,24 @@ export const requestHeadersForContentType = (
 export const requestBodyForContentType = (
     contentType: RequestContentType,
     { data }: ResolvedResourceQuery
-) => {
+): undefined | string | FormData | URLSearchParams => {
     if (typeof data === 'undefined') {
         return undefined
     }
 
-    if (contentType === 'application/json') {
+    if (
+        contentType === 'application/json' ||
+        contentType === 'application/json-patch+json'
+    ) {
         return JSON.stringify(data)
     }
 
     if (contentType === 'multipart/form-data') {
-        return convertToFormData(data)
+        return convertData(data, new FormData())
+    }
+
+    if (contentType === 'application/x-www-form-urlencoded') {
+        return convertData(data, new URLSearchParams())
     }
 
     // 'text/plain'

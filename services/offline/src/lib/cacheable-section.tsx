@@ -41,17 +41,10 @@ interface CacheableSectionControls {
  */
 export function useCacheableSection(id: string): CacheableSectionControls {
     const offlineInterface = useOfflineInterface()
-    const {
-        isCached,
-        lastUpdated,
-        remove,
-        syncCachedSections,
-    } = useCachedSection(id)
-    const {
-        recordingState,
-        setRecordingState,
-        removeRecordingState,
-    } = useRecordingState(id)
+    const { isCached, lastUpdated, remove, syncCachedSections } =
+        useCachedSection(id)
+    const { recordingState, setRecordingState, removeRecordingState } =
+        useRecordingState(id)
 
     useEffect(() => {
         // On mount, add recording state for this ID to context if needed
@@ -91,7 +84,7 @@ export function useCacheableSection(id: string): CacheableSectionControls {
                     onRecordingCompleted()
                     onCompleted && onCompleted()
                 },
-                onError: error => {
+                onError: (error) => {
                     onRecordingError(error)
                     onError && onError(error)
                 },
