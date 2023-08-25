@@ -50,33 +50,56 @@ class DHIS2Date extends Date {
     }
 }
 
-const useServerTimeOffset = (serverTimezone: string): number => {
+const calculateOffset = (inputDate: any, serverTimezone: string) => {
+    // we need to assume that the inputDate is in the client time zone due to limitations of javascript logic
+    // note that this assumption is will be imperfect around daylight savings time changes
+    const thenClientTime = new Date(inputDate)
+    thenClientTime.setMilliseconds(0)
+
+    // 'sv' is used for localeString because it is the closest to ISO format
+    // in principle, any locale should be parsable back to a date, but we encountered an error
+    // when using en-US in certain environments, which we could not replicate when using 'sv'
+    // Converting to localeString and then back to date is unfortunately the only current way
+    // to construct a date that accounts for timezone.
+    const serverLocaleString = thenClientTime.toLocaleString('sv', {
+        timeZone: serverTimezone,
+    })
+
+    const thenServerTimeZone = new Date(serverLocaleString)
+
+    return thenClientTime.getTime() - thenServerTimeZone.getTime()
+}
+
+/**
+ * Determines if the server/client time zone offset can and should be calculated
+ * @param {string} serverTimezone string representation of server time zone (Area/Location)
+ * * @param {string} clientTimezone string representation of client time zone (Area/Location)
+ * @return {boolean} shouldCalculateOffset
+ */
+
+const useShouldCalculateOffset = (
+    serverTimezone: string,
+    clientTimezone: string
+): boolean => {
     return useMemo(() => {
+        // if client and server time zones are the same, offset is 0 and does not need to be subsequently calculated
+        if (serverTimezone === clientTimezone) {
+            return false
+        }
+        // attempt to calculate current time zone offset, if calcublable: return true; if not calculable, alert and return false
         try {
             const nowClientTime = new Date()
-            nowClientTime.setMilliseconds(0)
-
-            // 'sv' is used for localeString because it is the closest to ISO format
-            // in principle, any locale should be parsable back to a date, but we encountered an error
-            // when using en-US in certain environments, which we could not replicate when using 'sv'
-            // Converting to localeString and then back to date is unfortunately the only current way
-            // to construct a date that accounts for timezone.
-            const serverLocaleString = nowClientTime.toLocaleString('sv', {
-                timeZone: serverTimezone,
-            })
-            const nowServerTimeZone = new Date(serverLocaleString)
-            nowServerTimeZone.setMilliseconds(0)
-
-            return nowClientTime.getTime() - nowServerTimeZone.getTime()
+            calculateOffset(nowClientTime, serverTimezone)
+            return true
         } catch (err) {
             console.error(
                 'Server time offset could not be determined; assuming no client/server difference',
                 err
             )
             // if date is not constructable with timezone, assume 0 difference between client/server
-            return 0
+            return false
         }
-    }, [serverTimezone])
+    }, [serverTimezone, clientTimezone])
 }
 
 export const useTimeZoneConversion = (): {
@@ -84,6 +107,7 @@ export const useTimeZoneConversion = (): {
     fromClientDate: (date?: DateInput) => DHIS2Date
 } => {
     const { systemInfo } = useConfig()
+
     let serverTimezone: string
     const clientTimezone: string =
         Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -98,35 +122,45 @@ export const useTimeZoneConversion = (): {
         )
     }
 
-    const serverOffset = useServerTimeOffset(serverTimezone)
+    const shouldCalculateOffset = useShouldCalculateOffset(
+        serverTimezone,
+        clientTimezone
+    )
 
     const fromServerDate = useCallback(
         (date) => {
-            const serverDate = new Date(date)
+            const jsServerDate = date ? new Date(date) : new Date(Date.now())
+            const offset = shouldCalculateOffset
+                ? calculateOffset(jsServerDate, serverTimezone)
+                : 0
             const clientDate = new DHIS2Date({
-                date: serverDate.getTime() + serverOffset,
-                serverOffset,
+                date: jsServerDate.getTime() + offset,
+                serverOffset: offset,
                 serverTimezone,
                 clientTimezone,
             })
 
             return clientDate
         },
-        [serverOffset, serverTimezone, clientTimezone]
+        [shouldCalculateOffset, serverTimezone, clientTimezone]
     )
 
     const fromClientDate = useCallback(
         (date) => {
+            const jsClientDate = date ? new Date(date) : new Date(Date.now())
+            const offset = shouldCalculateOffset
+                ? calculateOffset(jsClientDate, serverTimezone)
+                : 0
             const clientDate = new DHIS2Date({
                 date,
-                serverOffset,
+                serverOffset: offset,
                 serverTimezone,
                 clientTimezone,
             })
 
             return clientDate
         },
-        [serverOffset, serverTimezone, clientTimezone]
+        [shouldCalculateOffset, serverTimezone, clientTimezone]
     )
 
     return useMemo(

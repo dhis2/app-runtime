@@ -45,6 +45,24 @@ describe('useTimeZoneConversion', () => {
         // expect(serverDate.getClientZonedISOString()).toBe(expectedDateString)
     })
 
+    it('returns fromServerDate that corrects for server time zone (adjusting for summer time)', () => {
+        const systemInfo = {
+            ...defaultSystemInfo,
+            serverTimeZoneId: 'Europe/Oslo',
+        }
+        const config = { ...defaultConfig, systemInfo }
+        const wrapper = ({ children }: { children?: ReactNode }) => (
+            <ConfigProvider config={config}>{children}</ConfigProvider>
+        )
+        const { result } = renderHook(() => useTimeZoneConversion(), {
+            wrapper,
+        })
+
+        const serverDate = result.current.fromServerDate('2010-07-01')
+        const expectedDateString = '2010-06-30T22:00:00.000'
+        expect(serverDate.getClientZonedISOString()).toBe(expectedDateString)
+    })
+
     // fromServerDate accepts number, valid date string, or date object
     it('returns fromServerDate which accepts number, valid date string, or date object', () => {
         const config = { ...defaultConfig, systemInfo: defaultSystemInfo }
@@ -94,6 +112,31 @@ describe('useTimeZoneConversion', () => {
             ...defaultSystemInfo,
             serverTimeZoneId: 'Asia/Oslo',
         }
+        const config = { ...defaultConfig, systemInfo }
+        const wrapper = ({ children }: { children?: ReactNode }) => (
+            <ConfigProvider config={config}>{children}</ConfigProvider>
+        )
+        const { result } = renderHook(() => useTimeZoneConversion(), {
+            wrapper,
+        })
+
+        const serverDate = result.current.fromServerDate('2010-01-01')
+        const expectedDateString = '2010-01-01T00:00:00.000'
+        expect(serverDate.getClientZonedISOString()).toBe(expectedDateString)
+    })
+
+    it('returns fromServerDate that assumes no time zone difference if client and server time zones are the same', () => {
+        const systemInfo = {
+            ...defaultSystemInfo,
+            serverTimeZoneId: 'Africa/Kampala',
+        }
+        jest.spyOn(Intl, 'DateTimeFormat').mockReturnValue({
+            resolvedOptions: () => {
+                return {
+                    timeZone: 'Africa/Kampala',
+                }
+            },
+        } as Intl.DateTimeFormat)
         const config = { ...defaultConfig, systemInfo }
         const wrapper = ({ children }: { children?: ReactNode }) => (
             <ConfigProvider config={config}>{children}</ConfigProvider>
