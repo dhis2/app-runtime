@@ -42,7 +42,7 @@ describe('useTimeZoneConversion', () => {
 
         const serverDate = result.current.fromServerDate('2010-01-01')
         const expectedDateString = '2009-12-31T23:00:00.000'
-        // expect(serverDate.getClientZonedISOString()).toBe(expectedDateString)
+        expect(serverDate.getClientZonedISOString()).toBe(expectedDateString)
     })
 
     it('returns fromServerDate that corrects for server time zone (adjusting for summer time)', () => {
