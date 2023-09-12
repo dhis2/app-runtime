@@ -56,7 +56,11 @@ export const Plugin = ({
     const memoizedPropsToPass = useMemo(
         () => propsToPass,
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [...Object.keys(propsToPass)]
+        [
+            ...Object.keys(propsToPass)
+                .sort()
+                .map((k) => propsToPass[k]),
+        ]
     )
 
     useEffect(() => {
