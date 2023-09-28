@@ -1,3 +1,13 @@
+# [3.10.0-alpha.5](https://github.com/dhis2/app-runtime/compare/v3.10.0-alpha.4...v3.10.0-alpha.5) (2023-09-28)
+
+
+### Bug Fixes
+
+* merge issues ([496472a](https://github.com/dhis2/app-runtime/commit/496472a458f745d01890dec505d6ddb9259378d1))
+* reset communication on either pluginSource or pluginShortName change ([3fdae5b](https://github.com/dhis2/app-runtime/commit/3fdae5becf3af038fef8ca5f0be7ecec44680600))
+* trigger props resend when iframe src changes [LIBS-488] ([f4a6680](https://github.com/dhis2/app-runtime/commit/f4a668004fe2f97d77e3c74a6047246cf358ade4))
+* trigger props resend when iframe src changes [LIBS-488] [#1344](https://github.com/dhis2/app-runtime/issues/1344) ([cea7600](https://github.com/dhis2/app-runtime/commit/cea760040d919508b1e13158dbf47ca9ed3686f6))
+
 # [3.10.0-alpha.2](https://github.com/dhis2/app-runtime/compare/v3.10.0-alpha.1...v3.10.0-alpha.2) (2023-03-15)
 
 ### Bug Fixes
