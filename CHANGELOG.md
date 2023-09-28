@@ -4,7 +4,20 @@
 
 * add in plugin service in runtime package ([#1343](https://github.com/dhis2/app-runtime/issues/1343)) ([ed06a9f](https://github.com/dhis2/app-runtime/commit/ed06a9f4af7d3db40600ffd7e1b03cd095db36fc))
 
-# [3.10.0-alpha.1](https://github.com/dhis2/app-runtime/compare/v3.9.0...v3.10.0-alpha.1) (2023-03-13)
+# [3.10.0-alpha.4](https://github.com/dhis2/app-runtime/compare/v3.10.0-alpha.3...v3.10.0-alpha.4) (2023-09-28)
+
+
+### Bug Fixes
+
+* add width to plugin documentation [LIBS-487] ([b2c6273](https://github.com/dhis2/app-runtime/commit/b2c62732bf37e6d52b30f155b68c8b126068e8e5))
+* clean up ([e53ecbd](https://github.com/dhis2/app-runtime/commit/e53ecbd0632e35681e135de9072169e6bfefe13c))
+* temporarily disable failing test ([6664199](https://github.com/dhis2/app-runtime/commit/666419955d0f1f70c7b101a49d7440dcd33857a0))
+* working autorsize width ([2991045](https://github.com/dhis2/app-runtime/commit/29910456aca9739848cac403c48a2ac4e64be1e3))
+
+
+### Features
+
+* add autoresizing for height ([dbb6e26](https://github.com/dhis2/app-runtime/commit/dbb6e265e0b3b01dfe975538703fcdde7c5f2b53))
 
 # [3.10.0-alpha.3](https://github.com/dhis2/app-runtime/compare/v3.10.0-alpha.2...v3.10.0-alpha.3) (2023-08-22)
 
