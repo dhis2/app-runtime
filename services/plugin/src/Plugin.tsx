@@ -55,12 +55,13 @@ export const Plugin = ({
     // since we do not know what props are passed, the dependency array has to be keys of whatever is standard prop
     const memoizedPropsToPass = useMemo(
         () => propsToPass,
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        /* eslint-disable react-hooks/exhaustive-deps */
         [
             ...Object.keys(propsToPass)
                 .sort()
-                .map((k) => propsToPass[k]),
+                .map((k) => (propsToPass as any)[k]),
         ]
+        /* eslint-enable react-hooks/exhaustive-deps */
     )
 
     useEffect(() => {
