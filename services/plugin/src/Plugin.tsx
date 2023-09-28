@@ -1,7 +1,7 @@
 import { AlertsManagerContext } from '@dhis2/app-service-alerts'
 import { useDataQuery } from '@dhis2/app-service-data'
 import postRobot from 'post-robot'
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import PluginError from './PluginError'
 
 const appsInfoQuery = {
@@ -27,13 +27,22 @@ const getPluginEntryPoint = ({
 export const Plugin = ({
     pluginSource,
     pluginShortName,
-    ...propsToPass
+    ...propsToPassNonMemoized
 }: {
     pluginSource?: string
     pluginShortName?: string
     propsToPass: any
 }): JSX.Element => {
     const iframeRef = useRef<HTMLIFrameElement>(null)
+
+    // we do not know what is being sent in passed props, so for stable reference, memoize using JSON representation
+    const propsToPassNonMemoizedJSON = JSON.stringify(propsToPassNonMemoized)
+    const propsToPass: any = useMemo(
+        () => ({ ...propsToPassNonMemoized }),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [propsToPassNonMemoizedJSON]
+    )
+    const { height, width } = propsToPass
 
     const { add: alertsAdd } = useContext(AlertsManagerContext)
 
@@ -49,12 +58,25 @@ export const Plugin = ({
         useState<boolean>(false)
 
     const [inErrorState, setInErrorState] = useState<boolean>(false)
+    const [pluginHeight, setPluginHeight] = useState<number>(150)
+    const [pluginWidth, setPluginWidth] = useState<number>(500)
+
+    useEffect(() => {
+        if (height) {
+            setPluginHeight(height)
+        }
+        if (width) {
+            setPluginWidth(width)
+        }
+    }, [height, width])
 
     useEffect(() => {
         if (iframeRef?.current) {
             const iframeProps = {
                 ...propsToPass,
                 alertsAdd,
+                setPluginHeight,
+                setPluginWidth,
                 setInErrorState,
                 setCommunicationReceived,
             }
@@ -104,15 +126,22 @@ export const Plugin = ({
 
     if (pluginEntryPoint) {
         return (
-            <iframe
-                ref={iframeRef}
-                src={pluginSource}
+            <div
                 style={{
-                    width: '100%',
-                    height: '100%',
-                    border: 'none',
+                    height: `${pluginHeight}px`,
+                    width: `${pluginWidth}px`,
                 }}
-            ></iframe>
+            >
+                <iframe
+                    ref={iframeRef}
+                    src={pluginSource}
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                        border: 'none',
+                    }}
+                ></iframe>
+            </div>
         )
     }
 
