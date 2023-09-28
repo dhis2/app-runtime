@@ -56,6 +56,8 @@ export const Plugin = ({
 
     const [communicationReceived, setCommunicationReceived] =
         useState<boolean>(false)
+    const [prevCommunicationReceived, setPrevCommunicationReceived] =
+        useState<boolean>(false)
 
     const [inErrorState, setInErrorState] = useState<boolean>(false)
     const [pluginHeight, setPluginHeight] = useState<number>(150)
@@ -71,6 +73,17 @@ export const Plugin = ({
     }, [height, width])
 
     useEffect(() => {
+        setCommunicationReceived(false)
+    }, [pluginEntryPoint])
+
+    useEffect(() => {
+        // if communicationReceived switches from false to true, the props have been sent
+        const prevCommunication = prevCommunicationReceived
+        setPrevCommunicationReceived(communicationReceived)
+        if (prevCommunication === false && communicationReceived === true) {
+            return
+        }
+
         if (iframeRef?.current) {
             const iframeProps = {
                 ...propsToPass,
@@ -113,6 +126,8 @@ export const Plugin = ({
                     })
             }
         }
+        // prevCommunicationReceived update should not retrigger this hook
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [propsToPass, communicationReceived, inErrorState, alertsAdd])
 
     if (data && !pluginEntryPoint) {
