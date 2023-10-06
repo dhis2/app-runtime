@@ -1,6 +1,6 @@
 # Data Queries
 
-The Query type is used to define declarative data requests. It is required input for the [useDataQuery](hooks/useDataQuery.md) hook and [DataQuery](components/DataQuery.md) component.
+The Query type is used to define declarative data requests. It is required input for the [useDataQuery](../hooks/useDataQuery.md) hook and [DataQuery](../components/DataQuery.md) component.
 
 ## Query
 

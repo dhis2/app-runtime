@@ -2,9 +2,9 @@
 
 ## Input Props
 
-|    Name    |            Type             | Description                   |
-| :--------: | :-------------------------: | ----------------------------- |
-| **config** | [_Config_](types/Config.md) | The application configuration |
+|    Name    |             Type              | Description                   |
+| :--------: | :---------------------------: | ----------------------------- |
+| **config** | [_Config_](./types/Config.md) | The application configuration |
 
 ## Example
 
