@@ -1,3 +1,11 @@
+# [3.10.0-alpha.6](https://github.com/dhis2/app-runtime/compare/v3.10.0-alpha.5...v3.10.0-alpha.6) (2023-10-09)
+
+
+### Bug Fixes
+
+* add back plugin service dependency [LIBS-583] ([ca10691](https://github.com/dhis2/app-runtime/commit/ca10691ba01be083379db54ea2ec29f1666955a8))
+* add back plugin service dependency [LIBS-583] ([6d43ae3](https://github.com/dhis2/app-runtime/commit/6d43ae3688814ec3ae1f969123d63bd8e80146ce))
+
 # [3.10.0-alpha.5](https://github.com/dhis2/app-runtime/compare/v3.10.0-alpha.4...v3.10.0-alpha.5) (2023-09-28)
 
 
