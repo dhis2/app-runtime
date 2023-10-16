@@ -21,7 +21,7 @@ A query REPL platform application is also available at `./examples/query-playgro
 
 Running `yarn build` at root will automatically update the example app's copy, and running `yarn start` will build the runtime and then start the example.
 
-A [`DHIS2 App Platform`](https://platform.dhis2.nu) example is available at [./examples/query-playground](./examples/query-playground). This is a full, deployable DHIS2 application and a live standalone version is available at [runtime.dhis2.nu/playground](https://runtime.dhis2.nu/playground)
+A [`DHIS2 App Platform`](https://platform.dhis2.nu) example is available at [./examples/query-playground](./examples/query-playground). This is a full, deployable DHIS2 application and a live standalone version is available at [every play instance](https://play.dhis2.org), such as the `dev` instance [play.dhis2.org/dev](https://play.dhis2.org/dev/api/apps/query-playground/index.html).
 
 ## Release
 
