@@ -153,7 +153,7 @@ describe('networkFetch', () => {
         it('Should correctly parse a successful VND.GEOJSON response', () => {
             ;(global as any).fetch = mockFetch
             expect(fetchData('vnd.geo+json', {})).resolves.toMatchObject({
-                foo: 'geobar',
+                foo: 'bar',
             })
         })
 
