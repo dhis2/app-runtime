@@ -1,6 +1,6 @@
 import { FetchError, FetchErrorDetails, JsonValue } from '../../engine'
 
-const validJsonJsonContentTypes: string[] = [
+const validJsonContentTypes: string[] = [
     'application/json',
     'application/geo+json',
     'application/vnd.geo+json',
@@ -84,7 +84,7 @@ export function fetchData(
                 response.headers.get('Content-Type')
             )
 
-            if (validJsonJsonContentTypes.includes(contentType)) {
+            if (validJsonContentTypes.includes(contentType)) {
                 return await response.json() // Will throw if invalid JSON!
             }
 
