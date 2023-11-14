@@ -1,6 +1,6 @@
 # useConfig Hook
 
-Access the application configuration passed to the top-level [Provider](provider.md)
+Access the application configuration passed to the top-level [Provider](../provider.md)
 
 ## Basic Usage:
 
@@ -17,7 +17,7 @@ _None_
 
 ## Output
 
-This hook returns an object of type [Config](types/Config.md).
+This hook returns an object of type [Config](../types/Config.md).
 
 ## Example
 
