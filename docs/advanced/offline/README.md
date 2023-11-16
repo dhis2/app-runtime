@@ -1,6 +1,8 @@
 # Offline tools
 
-!> **WARNING** These features are considered **experimental** and are **subject to breaking changes outside of the normal release cycle.**
+:::warning Experimental
+These features are considered **experimental** and are **subject to breaking changes outside of the normal release cycle.**
+:::
 
 The app platform provides some support for PWA features, including a `manifest.json` file for installability and service worker which can provide offline caching. In addition to those features, the app runtime provides support for ["cacheable sections"](./CacheableSections.md), which are sections of an app that can be individually cached on-demand. The [`useCacheableSection` hook](./CacheableSections.md#usecacheablesection-api) and the [`CacheableSection` component](./CacheableSections.md#cacheablesection-api) provide the controls for the section and the wrapper for the section, respectively. The [`useCachedSections` hook](./CacheableSections.md#usecachedsections-api) returns a list of sections that are stored in the cache and a function that can delete them.
 
