@@ -1,6 +1,8 @@
 # Services
 
-!> **NOTE**<br/>Services are purely a concept **internal** to `@dhis2/app-runtime` - you don't need to care about them to use it.
+:::caution Note
+Services are purely a concept **internal** to `@dhis2/app-runtime` - you don't need to care about them to use it.
+:::
 
 Internally, `@dhis2/app-runtime` is composed of several functionally-isolated **services**. Each of these services is a private (unpublished) npm package which is bundled into the final `@dhis2/app-runtime` library at build-time. Each services exposes a relevant Context provider as well as various Hook and Component interfaces which are re-exported by the `@dhis2/app-runtime` public package. There are currently only 2 services, but more will be added soon.
 
