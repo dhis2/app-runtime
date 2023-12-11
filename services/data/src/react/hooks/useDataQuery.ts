@@ -40,7 +40,7 @@ export const useDataQuery = <TQueryResult = QueryResult>(
         onError: userOnError,
         variables: initialVariables = {},
         lazy: initialLazy = false,
-    }: QueryOptions = {}
+    }: QueryOptions<TQueryResult> = {}
 ): QueryRenderInput<TQueryResult> => {
     const [staticQuery] = useStaticInput<Query>(query, {
         warn: true,

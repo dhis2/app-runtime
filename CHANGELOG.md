@@ -1,3 +1,10 @@
+## [3.9.4](https://github.com/dhis2/app-runtime/compare/v3.9.3...v3.9.4) (2023-06-19)
+
+
+### Bug Fixes
+
+* **types:** add generic result type to oncomplete param ([#1350](https://github.com/dhis2/app-runtime/issues/1350)) ([a069603](https://github.com/dhis2/app-runtime/commit/a069603b4f3b2c9caa2158d7b4087e432cf90668))
+
 ## [3.9.3](https://github.com/dhis2/app-runtime/compare/v3.9.2...v3.9.3) (2023-05-16)
 
 
