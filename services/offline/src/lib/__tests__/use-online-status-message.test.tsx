@@ -16,7 +16,7 @@ describe('useOnlineStatusMessage', () => {
             wrapper,
         })
 
-        expect(result.current.onlineStatusMessage).toBeUndefined()
+        expect(result.current.onlineStatusMessage).toBeNull()
 
         act(() => {
             result.current.setOnlineStatusMessage('8 offline events')
