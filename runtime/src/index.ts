@@ -17,6 +17,8 @@ export {
     useOnlineStatus,
     useDhis2ConnectionStatus,
     useOnlineStatusMessage,
+    useSetOnlineStatusMessage,
+    useOnlineStatusMessageValue,
     useCacheableSection,
     CacheableSection,
     useCachedSections,
