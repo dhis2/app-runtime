@@ -1,3 +1,10 @@
+## [3.10.1](https://github.com/dhis2/app-runtime/compare/v3.10.0...v3.10.1) (2023-12-14)
+
+
+### Bug Fixes
+
+* handle low cli-app-scripts version [LIBS-501] ([#1349](https://github.com/dhis2/app-runtime/issues/1349)) ([d15bce1](https://github.com/dhis2/app-runtime/commit/d15bce1869dc9fde2bdc7728f90e65d29332c861))
+
 # [3.10.0](https://github.com/dhis2/app-runtime/compare/v3.9.4...v3.10.0) (2023-12-12)
 
 
