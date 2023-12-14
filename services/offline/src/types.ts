@@ -1,5 +1,3 @@
-import { ReactNode } from 'react'
-
 // Cacheable Section types
 
 export type RecordingState = 'default' | 'pending' | 'error' | 'recording'
@@ -65,11 +63,4 @@ export interface OfflineInterface {
     startRecording: StartRecording
     getCachedSections: () => Promise<IndexedDBCachedSection[]>
     removeSection: (id: string) => Promise<boolean>
-}
-
-// Online status types
-
-export type OnlineStatusMessageContextAPI = {
-    onlineStatusMessage?: ReactNode
-    setOnlineStatusMessage: (additionalInfo: ReactNode) => void
 }

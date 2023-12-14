@@ -1,3 +1,10 @@
+# [3.10.0](https://github.com/dhis2/app-runtime/compare/v3.9.4...v3.10.0) (2023-12-12)
+
+
+### Features
+
+* add value-independent hook for setting online status message [LIBS-369] ([#1363](https://github.com/dhis2/app-runtime/issues/1363)) ([a2831e6](https://github.com/dhis2/app-runtime/commit/a2831e6eefef94dd2c81721d40a98ca89c53fee6))
+
 ## [3.9.4](https://github.com/dhis2/app-runtime/compare/v3.9.3...v3.9.4) (2023-06-19)
 
 
