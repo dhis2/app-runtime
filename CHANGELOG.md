@@ -1,3 +1,16 @@
+# [3.10.0-alpha.8](https://github.com/dhis2/app-runtime/compare/v3.10.0-alpha.7...v3.10.0-alpha.8) (2023-12-20)
+
+
+### Bug Fixes
+
+* plugin experimental docs ([be215b2](https://github.com/dhis2/app-runtime/commit/be215b2c292e451662b72043f20921d42bf36d33))
+
+
+### Features
+
+* experimental plugin release ([f5cca86](https://github.com/dhis2/app-runtime/commit/f5cca86924afa995d916aab2a1b58348b6dcaee7))
+* plugin experimental export ([25f02a6](https://github.com/dhis2/app-runtime/commit/25f02a6c97733b79ff1aed5e8c4c1726c16144fe))
+
 # [3.10.0-alpha.7](https://github.com/dhis2/app-runtime/compare/v3.10.0-alpha.6...v3.10.0-alpha.7) (2023-12-20)
 
 
