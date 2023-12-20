@@ -1,6 +1,6 @@
 {
     "name": "@dhis2/app-service-config",
-    "version": "3.10.0-alpha.3",
+    "version": "3.10.0-alpha.6",
     "main": "./build/cjs/index.js",
     "module": "./build/es/index.js",
     "types": "build/types/index.d.ts",

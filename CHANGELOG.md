@@ -1,10 +1,41 @@
+# [3.10.0-alpha.6](https://github.com/dhis2/app-runtime/compare/v3.10.0-alpha.5...v3.10.0-alpha.6) (2023-10-09)
+
+
+### Bug Fixes
+
+* add back plugin service dependency [LIBS-583] ([ca10691](https://github.com/dhis2/app-runtime/commit/ca10691ba01be083379db54ea2ec29f1666955a8))
+* add back plugin service dependency [LIBS-583] ([6d43ae3](https://github.com/dhis2/app-runtime/commit/6d43ae3688814ec3ae1f969123d63bd8e80146ce))
+
+# [3.10.0-alpha.5](https://github.com/dhis2/app-runtime/compare/v3.10.0-alpha.4...v3.10.0-alpha.5) (2023-09-28)
+
+
+### Bug Fixes
+
+* merge issues ([496472a](https://github.com/dhis2/app-runtime/commit/496472a458f745d01890dec505d6ddb9259378d1))
+* reset communication on either pluginSource or pluginShortName change ([3fdae5b](https://github.com/dhis2/app-runtime/commit/3fdae5becf3af038fef8ca5f0be7ecec44680600))
+* trigger props resend when iframe src changes [LIBS-488] ([f4a6680](https://github.com/dhis2/app-runtime/commit/f4a668004fe2f97d77e3c74a6047246cf358ade4))
+* trigger props resend when iframe src changes [LIBS-488] [#1344](https://github.com/dhis2/app-runtime/issues/1344) ([cea7600](https://github.com/dhis2/app-runtime/commit/cea760040d919508b1e13158dbf47ca9ed3686f6))
+
 # [3.10.0-alpha.2](https://github.com/dhis2/app-runtime/compare/v3.10.0-alpha.1...v3.10.0-alpha.2) (2023-03-15)
 
 ### Bug Fixes
 
 * add in plugin service in runtime package ([#1343](https://github.com/dhis2/app-runtime/issues/1343)) ([ed06a9f](https://github.com/dhis2/app-runtime/commit/ed06a9f4af7d3db40600ffd7e1b03cd095db36fc))
 
-# [3.10.0-alpha.1](https://github.com/dhis2/app-runtime/compare/v3.9.0...v3.10.0-alpha.1) (2023-03-13)
+# [3.10.0-alpha.4](https://github.com/dhis2/app-runtime/compare/v3.10.0-alpha.3...v3.10.0-alpha.4) (2023-09-28)
+
+
+### Bug Fixes
+
+* add width to plugin documentation [LIBS-487] ([b2c6273](https://github.com/dhis2/app-runtime/commit/b2c62732bf37e6d52b30f155b68c8b126068e8e5))
+* clean up ([e53ecbd](https://github.com/dhis2/app-runtime/commit/e53ecbd0632e35681e135de9072169e6bfefe13c))
+* temporarily disable failing test ([6664199](https://github.com/dhis2/app-runtime/commit/666419955d0f1f70c7b101a49d7440dcd33857a0))
+* working autorsize width ([2991045](https://github.com/dhis2/app-runtime/commit/29910456aca9739848cac403c48a2ac4e64be1e3))
+
+
+### Features
+
+* add autoresizing for height ([dbb6e26](https://github.com/dhis2/app-runtime/commit/dbb6e265e0b3b01dfe975538703fcdde7c5f2b53))
 
 # [3.10.0-alpha.3](https://github.com/dhis2/app-runtime/compare/v3.10.0-alpha.2...v3.10.0-alpha.3) (2023-08-22)
 
