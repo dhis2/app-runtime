@@ -6,8 +6,14 @@
     "module": "./build/es/index.js",
     "types": "./build/types/index.d.ts",
     "exports": {
-        "import": "./build/es/index.js",
-        "require": "./build/cjs/index.js"
+        ".": {
+            "import": "./build/es/index.js",
+            "require": "./build/cjs/index.js"
+        },
+        "./experimental": {
+            "import": "./build/es/experimental.js",
+            "require": "./build/cjs/experimental.js"
+        }
     },
     "repository": {
         "type": "git",
