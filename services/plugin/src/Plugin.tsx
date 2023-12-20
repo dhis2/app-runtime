@@ -72,6 +72,18 @@ export const Plugin = ({
         }
     }, [height, width])
 
+    // since we do not know what props are passed, the dependency array has to be keys of whatever is standard prop
+    const memoizedPropsToPass = useMemo(
+        () => propsToPass,
+        /* eslint-disable react-hooks/exhaustive-deps */
+        [
+            ...Object.keys(propsToPass)
+                .sort()
+                .map((k) => (propsToPass as any)[k]),
+        ]
+        /* eslint-enable react-hooks/exhaustive-deps */
+    )
+
     useEffect(() => {
         setCommunicationReceived(false)
     }, [pluginEntryPoint])
@@ -86,7 +98,7 @@ export const Plugin = ({
 
         if (iframeRef?.current) {
             const iframeProps = {
-                ...propsToPass,
+                ...memoizedPropsToPass,
                 alertsAdd,
                 setPluginHeight,
                 setPluginWidth,
@@ -128,7 +140,7 @@ export const Plugin = ({
         }
         // prevCommunicationReceived update should not retrigger this hook
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [propsToPass, communicationReceived, inErrorState, alertsAdd])
+    }, [memoizedPropsToPass, communicationReceived, inErrorState, alertsAdd])
 
     if (data && !pluginEntryPoint) {
         return (
