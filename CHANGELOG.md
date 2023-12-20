@@ -1,3 +1,14 @@
+# [3.10.0-alpha.7](https://github.com/dhis2/app-runtime/compare/v3.10.0-alpha.6...v3.10.0-alpha.7) (2023-12-20)
+
+
+### Bug Fixes
+
+* check memomized props for postMessage communication [LIBS-514] ([b1a3a0a](https://github.com/dhis2/app-runtime/commit/b1a3a0a4aeadc234aa181a9af2f176d0ca8d505c))
+* dependency array ([03ce64f](https://github.com/dhis2/app-runtime/commit/03ce64fb65af73190ec920d8d720250ec2ba3715))
+* move eslint disable line ([48912d7](https://github.com/dhis2/app-runtime/commit/48912d76630d5490b983e5e730a7d82d06762148))
+* prevent sending updated props to plugin when props do not change [LIBS-514] ([86c6f75](https://github.com/dhis2/app-runtime/commit/86c6f75cf2e14a0d8f6f4b86f2d6de7403de62c6))
+* type error ([9c17206](https://github.com/dhis2/app-runtime/commit/9c17206a6942776f4c90c662153677ae9c00c350))
+
 # [3.10.0-alpha.6](https://github.com/dhis2/app-runtime/compare/v3.10.0-alpha.5...v3.10.0-alpha.6) (2023-10-09)
 
 

@@ -1,7 +1,7 @@
 {
     "name": "@dhis2/app-runtime",
     "description": "A singular runtime dependency for applications on the DHIS2 platform",
-    "version": "3.10.0-alpha.6",
+    "version": "3.10.0-alpha.7",
     "main": "./build/cjs/index.js",
     "module": "./build/es/index.js",
     "types": "./build/types/index.d.ts",
@@ -23,11 +23,11 @@
         "build/**"
     ],
     "dependencies": {
-        "@dhis2/app-service-config": "3.10.0-alpha.6",
-        "@dhis2/app-service-data": "3.10.0-alpha.6",
-        "@dhis2/app-service-alerts": "3.10.0-alpha.6",
-        "@dhis2/app-service-offline": "3.10.0-alpha.6",
-        "@dhis2/app-service-plugin": "3.10.0-alpha.6"
+        "@dhis2/app-service-config": "3.10.0-alpha.7",
+        "@dhis2/app-service-data": "3.10.0-alpha.7",
+        "@dhis2/app-service-alerts": "3.10.0-alpha.7",
+        "@dhis2/app-service-offline": "3.10.0-alpha.7",
+        "@dhis2/app-service-plugin": "3.10.0-alpha.7"
     },
     "peerDependencies": {
         "prop-types": "^15.7.2",
