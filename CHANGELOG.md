@@ -1,3 +1,42 @@
+# [3.11.0-alpha.1](https://github.com/dhis2/app-runtime/compare/v3.10.1...v3.11.0-alpha.1) (2023-12-21)
+
+
+### Bug Fixes
+
+* add back plugin service dependency [LIBS-583] ([ca10691](https://github.com/dhis2/app-runtime/commit/ca10691ba01be083379db54ea2ec29f1666955a8))
+* add back plugin service dependency [LIBS-583] ([6d43ae3](https://github.com/dhis2/app-runtime/commit/6d43ae3688814ec3ae1f969123d63bd8e80146ce))
+* add documentation, clean up ([c537590](https://github.com/dhis2/app-runtime/commit/c537590176b2e6aebf278653a87705b3417bcc38))
+* add in plugin service in runtime package ([#1343](https://github.com/dhis2/app-runtime/issues/1343)) ([ed06a9f](https://github.com/dhis2/app-runtime/commit/ed06a9f4af7d3db40600ffd7e1b03cd095db36fc))
+* add width to plugin documentation [LIBS-487] ([b2c6273](https://github.com/dhis2/app-runtime/commit/b2c62732bf37e6d52b30f155b68c8b126068e8e5))
+* check memomized props for postMessage communication [LIBS-514] ([b1a3a0a](https://github.com/dhis2/app-runtime/commit/b1a3a0a4aeadc234aa181a9af2f176d0ca8d505c))
+* clean up ([e53ecbd](https://github.com/dhis2/app-runtime/commit/e53ecbd0632e35681e135de9072169e6bfefe13c))
+* clean up, add useless test ([b14952b](https://github.com/dhis2/app-runtime/commit/b14952b137971f625283c8de60afac061176b80e))
+* custom error handling ([c72fc6e](https://github.com/dhis2/app-runtime/commit/c72fc6eac576ce043ab706e13030497a0dab3d3a))
+* dependency array ([03ce64f](https://github.com/dhis2/app-runtime/commit/03ce64fb65af73190ec920d8d720250ec2ba3715))
+* dependency resolution ([2480c1c](https://github.com/dhis2/app-runtime/commit/2480c1c6b82daaeee0ab82ef45962fbcabd0e778))
+* merge issues ([496472a](https://github.com/dhis2/app-runtime/commit/496472a458f745d01890dec505d6ddb9259378d1))
+* move eslint disable line ([48912d7](https://github.com/dhis2/app-runtime/commit/48912d76630d5490b983e5e730a7d82d06762148))
+* plugin experimental docs ([be215b2](https://github.com/dhis2/app-runtime/commit/be215b2c292e451662b72043f20921d42bf36d33))
+* prevent sending updated props to plugin when props do not change [LIBS-514] ([86c6f75](https://github.com/dhis2/app-runtime/commit/86c6f75cf2e14a0d8f6f4b86f2d6de7403de62c6))
+* reset communication on either pluginSource or pluginShortName change ([3fdae5b](https://github.com/dhis2/app-runtime/commit/3fdae5becf3af038fef8ca5f0be7ecec44680600))
+* temporarily disable failing test ([6664199](https://github.com/dhis2/app-runtime/commit/666419955d0f1f70c7b101a49d7440dcd33857a0))
+* trigger props resend when iframe src changes [LIBS-488] ([f4a6680](https://github.com/dhis2/app-runtime/commit/f4a668004fe2f97d77e3c74a6047246cf358ade4))
+* trigger props resend when iframe src changes [LIBS-488] [#1344](https://github.com/dhis2/app-runtime/issues/1344) ([cea7600](https://github.com/dhis2/app-runtime/commit/cea760040d919508b1e13158dbf47ca9ed3686f6))
+* type error ([9c17206](https://github.com/dhis2/app-runtime/commit/9c17206a6942776f4c90c662153677ae9c00c350))
+* update alpha branch [skip release] ([ccb793c](https://github.com/dhis2/app-runtime/commit/ccb793c1e125484f39415cbedf1789a5de193e3d))
+* working autorsize width ([2991045](https://github.com/dhis2/app-runtime/commit/29910456aca9739848cac403c48a2ac4e64be1e3))
+
+
+### Features
+
+* add autoresizing for height ([dbb6e26](https://github.com/dhis2/app-runtime/commit/dbb6e265e0b3b01dfe975538703fcdde7c5f2b53))
+* experimental plugin release ([f5cca86](https://github.com/dhis2/app-runtime/commit/f5cca86924afa995d916aab2a1b58348b6dcaee7))
+* ideas for plugin wrappers [LIBS-397] ([be38607](https://github.com/dhis2/app-runtime/commit/be38607698b12309af5b79259afbbf037e7027bc))
+* implement plugin wrappers (alpha) ([#1332](https://github.com/dhis2/app-runtime/issues/1332)) ([56a9a3f](https://github.com/dhis2/app-runtime/commit/56a9a3fb734e07c6c2d8140c6413222b42be82a1))
+* plugin experimental export ([25f02a6](https://github.com/dhis2/app-runtime/commit/25f02a6c97733b79ff1aed5e8c4c1726c16144fe))
+* plugin wrappers, errors + alerts ([bda6a43](https://github.com/dhis2/app-runtime/commit/bda6a4352fe0ad8a076f55040e3fe702f9d0c4eb))
+* update plugin wrappers ([30c963c](https://github.com/dhis2/app-runtime/commit/30c963c112b2865ae824c7e3ce06279ed374983c))
+
 # [3.10.0-alpha.8](https://github.com/dhis2/app-runtime/compare/v3.10.0-alpha.7...v3.10.0-alpha.8) (2023-12-20)
 
 
