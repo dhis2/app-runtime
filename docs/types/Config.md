@@ -1,8 +1,8 @@
 # Config Type
 
 The Application Config type is a required input to the top-level
-[Provider](provider), and can be accessed from within an application
-with the [useConfig](hooks/useConfig) hook.
+[Provider](../provider.md), and can be accessed from within an application
+with the [useConfig](../hooks/useConfig.md) hook.
 
 |    Property    |   Type   | Description                                                                                                     |
 | :------------: | :------: | --------------------------------------------------------------------------------------------------------------- |
