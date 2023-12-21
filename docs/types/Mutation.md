@@ -1,6 +1,6 @@
 # Mutation
 
-The Mutation type is used to define declarative data mutations. It is required input for the [useDataMutation](hooks/useDataMutation.md) hook, [DataMutation](components/DataMutation.md) component, and [DataEngine.mutate](advanced/DataEngine) method.
+The Mutation type is used to define declarative data mutations. It is required input for the [useDataMutation](../hooks/useDataMutation.md) hook, [DataMutation](../components/DataMutation.md) component, and [DataEngine.mutate](../advanced/DataEngine.md) method.
 
 A mutation defines a destructive operation performed on a collection or instance of a particular resource.
 

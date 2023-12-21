@@ -181,6 +181,16 @@ export const Dhis2ConnectionStatusProvider = ({
     }, [pingAndHandleStatus, serverVersion])
 
     useEffect(() => {
+        if (!offlineInterface.subscribeToDhis2ConnectionStatus) {
+            // Missing this functionality from the offline interface --
+            // use a ping on startup to get the status
+            smartIntervalRef.current?.invokeCallbackImmediately()
+            console.warn(
+                'Please upgrade to @dhis2/cli-app-scripts@>10.3.8 for full connection status features'
+            )
+            return
+        }
+
         const unsubscribe = offlineInterface.subscribeToDhis2ConnectionStatus({
             onUpdate,
         })
@@ -190,23 +200,23 @@ export const Dhis2ConnectionStatusProvider = ({
     }, [offlineInterface, onUpdate])
 
     // Memoize this value to prevent unnecessary rerenders of context provider
-    const contextValue = useMemo(
-        () => ({
-            // in the unlikely circumstance that offlineInterface.latestIsConnected
-            // is `null` when this initializes, fail safe by defaulting to
-            // `isConnected: false`
-            isConnected: Boolean(isConnected),
-            isDisconnected: !isConnected,
-            lastConnected: isConnected
+    const contextValue = useMemo(() => {
+        // in the unlikely circumstance that offlineInterface.latestIsConnected
+        // is `null` or `undefined` when this initializes, fail safe by defaulting to
+        // `isConnected: true`. A ping or SW update should update the status shortly.
+        const validatedIsConnected = isConnected ?? true
+        return {
+            isConnected: validatedIsConnected,
+            isDisconnected: !validatedIsConnected,
+            lastConnected: validatedIsConnected
                 ? null
                 : // Only evaluate if disconnected, since local storage
                   // is synchronous and disk-based.
                   // If lastConnected is not set in localStorage though, set it.
                   // (relevant on startup)
                   getLastConnected(appName) || updateLastConnected(appName),
-        }),
-        [isConnected, appName]
-    )
+        }
+    }, [isConnected, appName])
 
     return (
         <Dhis2ConnectionStatusContext.Provider value={contextValue}>

@@ -19,6 +19,7 @@ jobs:
 
     lint-commits:
         runs-on: ubuntu-latest
+        if: ${{ !contains(github.event.pull_request.title, '[skip release]') }}
         steps:
             - uses: actions/checkout@v2
               with:
