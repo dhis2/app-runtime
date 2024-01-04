@@ -9,14 +9,24 @@ type ProviderInput = {
     config: Config
     children: React.ReactNode
     offlineInterface?: any // temporary until offline service has types
+    plugin: boolean
+    parentAlertsAdd: any
+    showAlertsInPlugin: boolean
 }
 export const Provider = ({
     config,
     children,
     offlineInterface,
+    plugin,
+    parentAlertsAdd,
+    showAlertsInPlugin,
 }: ProviderInput) => (
     <ConfigProvider config={config}>
-        <AlertsProvider>
+        <AlertsProvider
+            plugin={plugin}
+            parentAlertsAdd={parentAlertsAdd}
+            showAlertsInPlugin={showAlertsInPlugin}
+        >
             <DataProvider>
                 <OfflineProvider offlineInterface={offlineInterface}>
                     {children}

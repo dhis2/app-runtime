@@ -1,16 +1,116 @@
-## [3.10.1](https://github.com/dhis2/app-runtime/compare/v3.10.0...v3.10.1) (2023-12-14)
+# [3.11.0-alpha.1](https://github.com/dhis2/app-runtime/compare/v3.10.1...v3.11.0-alpha.1) (2023-12-21)
 
 
 ### Bug Fixes
 
-* handle low cli-app-scripts version [LIBS-501] ([#1349](https://github.com/dhis2/app-runtime/issues/1349)) ([d15bce1](https://github.com/dhis2/app-runtime/commit/d15bce1869dc9fde2bdc7728f90e65d29332c861))
-
-# [3.10.0](https://github.com/dhis2/app-runtime/compare/v3.9.4...v3.10.0) (2023-12-12)
+* add back plugin service dependency [LIBS-583] ([ca10691](https://github.com/dhis2/app-runtime/commit/ca10691ba01be083379db54ea2ec29f1666955a8))
+* add back plugin service dependency [LIBS-583] ([6d43ae3](https://github.com/dhis2/app-runtime/commit/6d43ae3688814ec3ae1f969123d63bd8e80146ce))
+* add documentation, clean up ([c537590](https://github.com/dhis2/app-runtime/commit/c537590176b2e6aebf278653a87705b3417bcc38))
+* add in plugin service in runtime package ([#1343](https://github.com/dhis2/app-runtime/issues/1343)) ([ed06a9f](https://github.com/dhis2/app-runtime/commit/ed06a9f4af7d3db40600ffd7e1b03cd095db36fc))
+* add width to plugin documentation [LIBS-487] ([b2c6273](https://github.com/dhis2/app-runtime/commit/b2c62732bf37e6d52b30f155b68c8b126068e8e5))
+* check memomized props for postMessage communication [LIBS-514] ([b1a3a0a](https://github.com/dhis2/app-runtime/commit/b1a3a0a4aeadc234aa181a9af2f176d0ca8d505c))
+* clean up ([e53ecbd](https://github.com/dhis2/app-runtime/commit/e53ecbd0632e35681e135de9072169e6bfefe13c))
+* clean up, add useless test ([b14952b](https://github.com/dhis2/app-runtime/commit/b14952b137971f625283c8de60afac061176b80e))
+* custom error handling ([c72fc6e](https://github.com/dhis2/app-runtime/commit/c72fc6eac576ce043ab706e13030497a0dab3d3a))
+* dependency array ([03ce64f](https://github.com/dhis2/app-runtime/commit/03ce64fb65af73190ec920d8d720250ec2ba3715))
+* dependency resolution ([2480c1c](https://github.com/dhis2/app-runtime/commit/2480c1c6b82daaeee0ab82ef45962fbcabd0e778))
+* merge issues ([496472a](https://github.com/dhis2/app-runtime/commit/496472a458f745d01890dec505d6ddb9259378d1))
+* move eslint disable line ([48912d7](https://github.com/dhis2/app-runtime/commit/48912d76630d5490b983e5e730a7d82d06762148))
+* plugin experimental docs ([be215b2](https://github.com/dhis2/app-runtime/commit/be215b2c292e451662b72043f20921d42bf36d33))
+* prevent sending updated props to plugin when props do not change [LIBS-514] ([86c6f75](https://github.com/dhis2/app-runtime/commit/86c6f75cf2e14a0d8f6f4b86f2d6de7403de62c6))
+* reset communication on either pluginSource or pluginShortName change ([3fdae5b](https://github.com/dhis2/app-runtime/commit/3fdae5becf3af038fef8ca5f0be7ecec44680600))
+* temporarily disable failing test ([6664199](https://github.com/dhis2/app-runtime/commit/666419955d0f1f70c7b101a49d7440dcd33857a0))
+* trigger props resend when iframe src changes [LIBS-488] ([f4a6680](https://github.com/dhis2/app-runtime/commit/f4a668004fe2f97d77e3c74a6047246cf358ade4))
+* trigger props resend when iframe src changes [LIBS-488] [#1344](https://github.com/dhis2/app-runtime/issues/1344) ([cea7600](https://github.com/dhis2/app-runtime/commit/cea760040d919508b1e13158dbf47ca9ed3686f6))
+* type error ([9c17206](https://github.com/dhis2/app-runtime/commit/9c17206a6942776f4c90c662153677ae9c00c350))
+* update alpha branch [skip release] ([ccb793c](https://github.com/dhis2/app-runtime/commit/ccb793c1e125484f39415cbedf1789a5de193e3d))
+* working autorsize width ([2991045](https://github.com/dhis2/app-runtime/commit/29910456aca9739848cac403c48a2ac4e64be1e3))
 
 
 ### Features
 
-* add value-independent hook for setting online status message [LIBS-369] ([#1363](https://github.com/dhis2/app-runtime/issues/1363)) ([a2831e6](https://github.com/dhis2/app-runtime/commit/a2831e6eefef94dd2c81721d40a98ca89c53fee6))
+* add autoresizing for height ([dbb6e26](https://github.com/dhis2/app-runtime/commit/dbb6e265e0b3b01dfe975538703fcdde7c5f2b53))
+* experimental plugin release ([f5cca86](https://github.com/dhis2/app-runtime/commit/f5cca86924afa995d916aab2a1b58348b6dcaee7))
+* ideas for plugin wrappers [LIBS-397] ([be38607](https://github.com/dhis2/app-runtime/commit/be38607698b12309af5b79259afbbf037e7027bc))
+* implement plugin wrappers (alpha) ([#1332](https://github.com/dhis2/app-runtime/issues/1332)) ([56a9a3f](https://github.com/dhis2/app-runtime/commit/56a9a3fb734e07c6c2d8140c6413222b42be82a1))
+* plugin experimental export ([25f02a6](https://github.com/dhis2/app-runtime/commit/25f02a6c97733b79ff1aed5e8c4c1726c16144fe))
+* plugin wrappers, errors + alerts ([bda6a43](https://github.com/dhis2/app-runtime/commit/bda6a4352fe0ad8a076f55040e3fe702f9d0c4eb))
+* update plugin wrappers ([30c963c](https://github.com/dhis2/app-runtime/commit/30c963c112b2865ae824c7e3ce06279ed374983c))
+
+# [3.10.0-alpha.8](https://github.com/dhis2/app-runtime/compare/v3.10.0-alpha.7...v3.10.0-alpha.8) (2023-12-20)
+
+
+### Bug Fixes
+
+* plugin experimental docs ([be215b2](https://github.com/dhis2/app-runtime/commit/be215b2c292e451662b72043f20921d42bf36d33))
+
+
+### Features
+
+* experimental plugin release ([f5cca86](https://github.com/dhis2/app-runtime/commit/f5cca86924afa995d916aab2a1b58348b6dcaee7))
+* plugin experimental export ([25f02a6](https://github.com/dhis2/app-runtime/commit/25f02a6c97733b79ff1aed5e8c4c1726c16144fe))
+
+# [3.10.0-alpha.7](https://github.com/dhis2/app-runtime/compare/v3.10.0-alpha.6...v3.10.0-alpha.7) (2023-12-20)
+
+
+### Bug Fixes
+
+* check memomized props for postMessage communication [LIBS-514] ([b1a3a0a](https://github.com/dhis2/app-runtime/commit/b1a3a0a4aeadc234aa181a9af2f176d0ca8d505c))
+* dependency array ([03ce64f](https://github.com/dhis2/app-runtime/commit/03ce64fb65af73190ec920d8d720250ec2ba3715))
+* move eslint disable line ([48912d7](https://github.com/dhis2/app-runtime/commit/48912d76630d5490b983e5e730a7d82d06762148))
+* prevent sending updated props to plugin when props do not change [LIBS-514] ([86c6f75](https://github.com/dhis2/app-runtime/commit/86c6f75cf2e14a0d8f6f4b86f2d6de7403de62c6))
+* type error ([9c17206](https://github.com/dhis2/app-runtime/commit/9c17206a6942776f4c90c662153677ae9c00c350))
+
+# [3.10.0-alpha.6](https://github.com/dhis2/app-runtime/compare/v3.10.0-alpha.5...v3.10.0-alpha.6) (2023-10-09)
+
+
+### Bug Fixes
+
+* add back plugin service dependency [LIBS-583] ([ca10691](https://github.com/dhis2/app-runtime/commit/ca10691ba01be083379db54ea2ec29f1666955a8))
+* add back plugin service dependency [LIBS-583] ([6d43ae3](https://github.com/dhis2/app-runtime/commit/6d43ae3688814ec3ae1f969123d63bd8e80146ce))
+
+# [3.10.0-alpha.5](https://github.com/dhis2/app-runtime/compare/v3.10.0-alpha.4...v3.10.0-alpha.5) (2023-09-28)
+
+
+### Bug Fixes
+
+* merge issues ([496472a](https://github.com/dhis2/app-runtime/commit/496472a458f745d01890dec505d6ddb9259378d1))
+* reset communication on either pluginSource or pluginShortName change ([3fdae5b](https://github.com/dhis2/app-runtime/commit/3fdae5becf3af038fef8ca5f0be7ecec44680600))
+* trigger props resend when iframe src changes [LIBS-488] ([f4a6680](https://github.com/dhis2/app-runtime/commit/f4a668004fe2f97d77e3c74a6047246cf358ade4))
+* trigger props resend when iframe src changes [LIBS-488] [#1344](https://github.com/dhis2/app-runtime/issues/1344) ([cea7600](https://github.com/dhis2/app-runtime/commit/cea760040d919508b1e13158dbf47ca9ed3686f6))
+
+# [3.10.0-alpha.2](https://github.com/dhis2/app-runtime/compare/v3.10.0-alpha.1...v3.10.0-alpha.2) (2023-03-15)
+
+### Bug Fixes
+
+* add in plugin service in runtime package ([#1343](https://github.com/dhis2/app-runtime/issues/1343)) ([ed06a9f](https://github.com/dhis2/app-runtime/commit/ed06a9f4af7d3db40600ffd7e1b03cd095db36fc))
+
+# [3.10.0-alpha.4](https://github.com/dhis2/app-runtime/compare/v3.10.0-alpha.3...v3.10.0-alpha.4) (2023-09-28)
+
+
+### Bug Fixes
+
+* add width to plugin documentation [LIBS-487] ([b2c6273](https://github.com/dhis2/app-runtime/commit/b2c62732bf37e6d52b30f155b68c8b126068e8e5))
+* clean up ([e53ecbd](https://github.com/dhis2/app-runtime/commit/e53ecbd0632e35681e135de9072169e6bfefe13c))
+* temporarily disable failing test ([6664199](https://github.com/dhis2/app-runtime/commit/666419955d0f1f70c7b101a49d7440dcd33857a0))
+* working autorsize width ([2991045](https://github.com/dhis2/app-runtime/commit/29910456aca9739848cac403c48a2ac4e64be1e3))
+
+
+### Features
+
+* add autoresizing for height ([dbb6e26](https://github.com/dhis2/app-runtime/commit/dbb6e265e0b3b01dfe975538703fcdde7c5f2b53))
+
+# [3.10.0-alpha.3](https://github.com/dhis2/app-runtime/compare/v3.10.0-alpha.2...v3.10.0-alpha.3) (2023-08-22)
+
+
+### Bug Fixes
+
+* **connection-status:** responsiveness to online events [LIBS-497] ([#1348](https://github.com/dhis2/app-runtime/issues/1348)) ([91a3d4d](https://github.com/dhis2/app-runtime/commit/91a3d4d820e6a87b819334bd72709c1de1a777f5))
+* **types:** add generic result type to oncomplete param ([#1350](https://github.com/dhis2/app-runtime/issues/1350)) ([a069603](https://github.com/dhis2/app-runtime/commit/a069603b4f3b2c9caa2158d7b4087e432cf90668))
+* [DHIS2] Type generic T = QueryResult to useDataQuery ([#1297](https://github.com/dhis2/app-runtime/issues/1297)) ([7c5c083](https://github.com/dhis2/app-runtime/commit/7c5c08308b919f70acac5cba6c2b851e4a6e50fa))
+* account for daylight savings time [LIBS-490] ([06eaa5d](https://github.com/dhis2/app-runtime/commit/06eaa5d5a0d3d4f69f701a3031610310d2d37ccf))
+* account for daylight savings time [LIBS-490] [#1345](https://github.com/dhis2/app-runtime/issues/1345) ([fb00533](https://github.com/dhis2/app-runtime/commit/fb00533008e828f7c9fa17f959dcc375fca8b6bd))
+* add test for when time zones are the same [LIBS-490] ([7911f8b](https://github.com/dhis2/app-runtime/commit/7911f8b992aabc34a1451144660a34b6b5035286))
 
 ## [3.9.4](https://github.com/dhis2/app-runtime/compare/v3.9.3...v3.9.4) (2023-06-19)
 
@@ -24,6 +124,18 @@
 
 ### Bug Fixes
 
+* add documentation, clean up ([c537590](https://github.com/dhis2/app-runtime/commit/c537590176b2e6aebf278653a87705b3417bcc38))
+* clean up, add useless test ([b14952b](https://github.com/dhis2/app-runtime/commit/b14952b137971f625283c8de60afac061176b80e))
+* custom error handling ([c72fc6e](https://github.com/dhis2/app-runtime/commit/c72fc6eac576ce043ab706e13030497a0dab3d3a))
+* dependency resolution ([2480c1c](https://github.com/dhis2/app-runtime/commit/2480c1c6b82daaeee0ab82ef45962fbcabd0e778))
+
+
+### Features
+
+* ideas for plugin wrappers [LIBS-397] ([be38607](https://github.com/dhis2/app-runtime/commit/be38607698b12309af5b79259afbbf037e7027bc))
+* implement plugin wrappers (alpha) ([#1332](https://github.com/dhis2/app-runtime/issues/1332)) ([56a9a3f](https://github.com/dhis2/app-runtime/commit/56a9a3fb734e07c6c2d8140c6413222b42be82a1))
+* plugin wrappers, errors + alerts ([bda6a43](https://github.com/dhis2/app-runtime/commit/bda6a4352fe0ad8a076f55040e3fe702f9d0c4eb))
+* update plugin wrappers ([30c963c](https://github.com/dhis2/app-runtime/commit/30c963c112b2865ae824c7e3ce06279ed374983c))
 * **connection-status:** responsiveness to online events [LIBS-497] ([#1348](https://github.com/dhis2/app-runtime/issues/1348)) ([91a3d4d](https://github.com/dhis2/app-runtime/commit/91a3d4d820e6a87b819334bd72709c1de1a777f5))
 
 ## [3.9.2](https://github.com/dhis2/app-runtime/compare/v3.9.1...v3.9.2) (2023-05-02)

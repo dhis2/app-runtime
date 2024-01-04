@@ -4,7 +4,8 @@ const toVisibleAlertsArray = (alertsMap: AlertsMap) =>
     Array.from(alertsMap.values())
 
 export const makeAlertsManager = (
-    setAlerts: React.Dispatch<React.SetStateAction<Alert[]>>
+    setAlerts: React.Dispatch<React.SetStateAction<Alert[]>>,
+    plugin: boolean
 ): AlertsManager => {
     const alertsMap: AlertsMap = new Map()
     let id = 0
@@ -29,5 +30,6 @@ export const makeAlertsManager = (
 
     return {
         add,
+        plugin,
     }
 }
