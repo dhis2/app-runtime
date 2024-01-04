@@ -1,3 +1,15 @@
+## [3.10.2](https://github.com/dhis2/app-runtime/compare/v3.10.1...v3.10.2) (2024-01-04)
+
+
+### Bug Fixes
+
+* force npm release ([dfefaed](https://github.com/dhis2/app-runtime/commit/dfefaed0441e418405e9b59c2a021e5d7835a426))
+
+
+### Features
+
+* release experimental plugin wrappers [LIBS-397] [skip release] ([#1366](https://github.com/dhis2/app-runtime/issues/1366)) ([7895bb9](https://github.com/dhis2/app-runtime/commit/7895bb9b7ffea3673c755b489011f4baf4216483))
+
 # [3.11.0-alpha.1](https://github.com/dhis2/app-runtime/compare/v3.10.1...v3.11.0-alpha.1) (2023-12-21)
 
 
