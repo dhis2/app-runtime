@@ -29,7 +29,7 @@ const MyApp = () => (
 
 ## Basic Usage (Using properties from the parent app)
 
-You must build your plugin with the app-platform. If you have done this, your entry component will be passed the props from the parent app. From the example above, the properties `numberToPass` and `callbackToPass` will be available in the build plugin (when it is rendered with a <Plugin> component).
+You must build your plugin with the app-platform. If you have done this, your entry component will be passed the props from the parent app. From the example above, the properties `numberToPass` and `callbackToPass` will be available in the build plugin (when it is rendered with a `<Plugin>` component).
 
 ```jsx
 // your plugin entry point (the plugin itself)
@@ -60,8 +60,8 @@ const MyPlugin = (propsFromParent) => {
 
 ## Plugin Props (custom props)
 
-You can specify pass any other props on the <Plugin> component and these will be passed down to the plugin (provided it was built with app-platform). When props are updated, they will be passed back down to the plugin. This mimics the behaviour of a normal React component, and hence you should provide stable references as needed to prevent rerendering.
+You can specify pass any other props on the `<Plugin>` component and these will be passed down to the plugin (provided it was built with app-platform). When props are updated, they will be passed back down to the plugin. This mimics the behaviour of a normal React component, and hence you should provide stable references as needed to prevent rerendering.
 
 ## Extended example
 
-See these links for an extended example of how <Plugin> component can be used within an [app](https://github.com/tomzemp/workingplugin/blob/plugin-wrapper-in-platform/src/App.js) and consumed within the [plugin](https://github.com/tomzemp/workingplugin/blob/plugin-wrapper-in-platform/src/Plugin.js).
+See these links for an extended example of how `<Plugin>` component can be used within an [app](https://github.com/tomzemp/workingplugin/blob/plugin-wrapper-in-platform/src/App.js) and consumed within the [plugin](https://github.com/tomzemp/workingplugin/blob/plugin-wrapper-in-platform/src/Plugin.js).
