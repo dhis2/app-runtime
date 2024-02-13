@@ -60,8 +60,8 @@ export const Plugin = ({
         useState<boolean>(false)
 
     const [inErrorState, setInErrorState] = useState<boolean>(false)
-    const [pluginHeight, setPluginHeight] = useState<number>(150)
-    const [pluginWidth, setPluginWidth] = useState<number>(500)
+    const [pluginHeight, setPluginHeight] = useState<string>('150px')
+    const [pluginWidth, setPluginWidth] = useState<string>('500px')
 
     useEffect(() => {
         if (height) {
@@ -155,8 +155,8 @@ export const Plugin = ({
         return (
             <div
                 style={{
-                    height: `${pluginHeight}px`,
-                    width: `${pluginWidth}px`,
+                    height: `${pluginHeight}`,
+                    width: `${pluginWidth}`,
                 }}
             >
                 <iframe
