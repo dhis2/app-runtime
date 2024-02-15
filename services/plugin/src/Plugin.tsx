@@ -69,8 +69,8 @@ export const Plugin = ({
         useState<boolean>(false)
 
     const [inErrorState, setInErrorState] = useState<boolean>(false)
-    const [pluginHeight, setPluginHeight] = useState<string>('150px')
-    const [pluginWidth, setPluginWidth] = useState<string>('500px')
+    const [pluginHeight, setPluginHeight] = useState<string | number>('150px')
+    const [pluginWidth, setPluginWidth] = useState<string | number>('500px')
 
     useEffect(() => {
         if (height) {
