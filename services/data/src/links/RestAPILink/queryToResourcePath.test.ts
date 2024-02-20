@@ -1,4 +1,4 @@
-import { Config } from '@dhis2/app-service-config'
+import { Config, ConfigWithSkipApiVersion } from '@dhis2/app-service-config'
 import { ResolvedResourceQuery } from '../../engine'
 import { RestAPILink } from '../RestAPILink'
 import { queryToResourcePath } from './queryToResourcePath'
@@ -201,5 +201,18 @@ describe('queryToResourcePath', () => {
         expect(queryToResourcePath(createLink(v38config), query, 'read')).toBe(
             `${link.versionedApiPath}/tracker`
         )
+    })
+
+    it('should return a unversioned endpoint if config.skipApiVersion is true', () => {
+        const query: ResolvedResourceQuery = {
+            resource: 'loginConfig',
+        }
+        const skipApiVersionConfig: ConfigWithSkipApiVersion = {
+            ...defaultConfig,
+            skipApiVersion: true,
+        }
+        expect(
+            queryToResourcePath(createLink(skipApiVersionConfig), query, 'read')
+        ).toBe(`${link.unversionedApiPath}/loginConfig`)
     })
 })
