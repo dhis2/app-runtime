@@ -1,3 +1,10 @@
+## [3.10.3](https://github.com/dhis2/app-runtime/compare/v3.10.2...v3.10.3) (2024-03-20)
+
+
+### Bug Fixes
+
+* plugin documentation typo ([#1376](https://github.com/dhis2/app-runtime/issues/1376)) ([e51dfb9](https://github.com/dhis2/app-runtime/commit/e51dfb9aa856f6f4c9cfd843d773f6c4a79a52e3))
+
 ## [3.10.2](https://github.com/dhis2/app-runtime/compare/v3.10.1...v3.10.2) (2024-01-04)
 
 

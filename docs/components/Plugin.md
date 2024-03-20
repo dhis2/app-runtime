@@ -16,7 +16,7 @@ import { Plugin } from '@dhis2/app-runtime/experimental'
 // within the app
 const MyApp = () => (
     <Plugin
-        pluginShortName={mutation}
+        pluginShortName={'myPluginShortName'}
         onError={(err) => {
             console.error(err)
         }}
