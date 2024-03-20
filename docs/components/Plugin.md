@@ -1,6 +1,8 @@
 # Plugin Component
 
-_NOTE:_ This component is experimental and is available for import from `@dhis2/app-runtime/experimental`. The api for this component is not guaranteed to be stable.
+:::info Experimental
+This component is experimental and is available for import from `@dhis2/app-runtime/experimental`. The api for this component is not guaranteed to be stable.
+:::
 
 A wrapper that creates an iframe for a specified plugin and establishes a two-way communication channel with said plugin, allowing you to pass props (including callbacks between an app and a plugin). Note that the plugin must be built using the app-platform with entryPoints.plugin specified in the d2.config.js file.
 
