@@ -1,6 +1,6 @@
 # Plugin Component
 
-:::info Experminental
+:::info Experimental
 This component is experimental and is available for import from `@dhis2/app-runtime/experimental`. The api for this component is not guaranteed to be stable.
 :::
 
