@@ -22,3 +22,7 @@ export interface Config {
     serverVersion?: Version
     systemInfo?: SystemInfo
 }
+
+export interface ConfigWithSkipApiVersion extends Config {
+    skipApiVersion?: boolean
+}

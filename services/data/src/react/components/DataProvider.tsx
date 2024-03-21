@@ -10,6 +10,7 @@ import { DataContext } from '../context/DataContext'
 export interface ProviderInput {
     baseUrl?: string
     apiVersion?: number
+    skipApiVersion?: boolean
     children: React.ReactNode
 }
 

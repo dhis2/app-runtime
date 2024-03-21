@@ -1,4 +1,4 @@
-import type { Config } from '@dhis2/app-service-config'
+import type { ConfigWithSkipApiVersion } from '@dhis2/app-service-config'
 import {
     ResolvedResourceQuery,
     QueryParameters,
@@ -71,7 +71,14 @@ const makeActionPath = (resource: string) =>
         `${resource.substr(actionPrefix.length)}.action`
     )
 
-const skipApiVersion = (resource: string, config: Config): boolean => {
+const skipApiVersion = (
+    resource: string,
+    config: ConfigWithSkipApiVersion
+): boolean => {
+    if (config?.skipApiVersion) {
+        return true
+    }
+
     if (resource === 'tracker' || resource.startsWith('tracker/')) {
         if (!config.serverVersion?.minor || config.serverVersion?.minor < 38) {
             return true

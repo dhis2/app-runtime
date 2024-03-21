@@ -12,6 +12,7 @@ type ProviderInput = {
     plugin: boolean
     parentAlertsAdd: any
     showAlertsInPlugin: boolean
+    skipApiVersion: boolean
 }
 export const Provider = ({
     config,
@@ -20,6 +21,7 @@ export const Provider = ({
     plugin,
     parentAlertsAdd,
     showAlertsInPlugin,
+    skipApiVersion,
 }: ProviderInput) => (
     <ConfigProvider config={config}>
         <AlertsProvider
@@ -27,7 +29,7 @@ export const Provider = ({
             parentAlertsAdd={parentAlertsAdd}
             showAlertsInPlugin={showAlertsInPlugin}
         >
-            <DataProvider>
+            <DataProvider skipApiVersion={skipApiVersion}>
                 <OfflineProvider offlineInterface={offlineInterface}>
                     {children}
                 </OfflineProvider>
