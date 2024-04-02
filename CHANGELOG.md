@@ -1,3 +1,10 @@
+## [3.10.4-alpha.1](https://github.com/dhis2/app-runtime/compare/v3.10.3...v3.10.4-alpha.1) (2024-04-02)
+
+
+### Bug Fixes
+
+* **deps:** remove cli-app-scripts peer dep ([7764439](https://github.com/dhis2/app-runtime/commit/776443957cf7bce70d644459b946dc9382dd9103))
+
 ## [3.10.3](https://github.com/dhis2/app-runtime/compare/v3.10.2...v3.10.3) (2024-03-20)
 
 
