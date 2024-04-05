@@ -23,9 +23,15 @@
     ],
     "peerDependencies": {
         "@dhis2/app-service-config": "3.10.4-alpha.1",
+        "@dhis2/cli-app-scripts": "^11.1.1-alpha.1",
         "prop-types": "^15.7.2",
         "react": "^16.8",
         "react-dom": "^16.8"
+    },
+    "peerDependenciesMeta": {
+        "@dhis2/cli-app-scripts": {
+            "optional": true
+        }
     },
     "scripts": {
         "build:types": "tsc --emitDeclarationOnly --outDir ./build/types",
