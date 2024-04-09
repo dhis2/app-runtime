@@ -1,16 +1,9 @@
-# [3.11.0-alpha.1](https://github.com/dhis2/app-runtime/compare/v3.10.4-alpha.1...v3.11.0-alpha.1) (2024-11-21)
-
-
-### Features
-
-* upgrade app-runtime React version to v18 ([#1387](https://github.com/dhis2/app-runtime/issues/1387)) ([0e4a3d5](https://github.com/dhis2/app-runtime/commit/0e4a3d5c0e9cf8884c1a46f32fa0876234b6d765))
-
-## [3.10.4-alpha.1](https://github.com/dhis2/app-runtime/compare/v3.10.3...v3.10.4-alpha.1) (2024-04-02)
+## [3.10.4](https://github.com/dhis2/app-runtime/compare/v3.10.3...v3.10.4) (2024-04-09)
 
 
 ### Bug Fixes
 
-* **deps:** remove cli-app-scripts peer dep ([7764439](https://github.com/dhis2/app-runtime/commit/776443957cf7bce70d644459b946dc9382dd9103))
+* **deps:** remove cli-app-scripts peer dep [LIBS-587] ([#1379](https://github.com/dhis2/app-runtime/issues/1379)) ([3598375](https://github.com/dhis2/app-runtime/commit/3598375a826304b61b9b2cbd279043531628dc70))
 
 ## [3.10.3](https://github.com/dhis2/app-runtime/compare/v3.10.2...v3.10.3) (2024-03-20)
 
