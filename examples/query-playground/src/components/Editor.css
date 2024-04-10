@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
 .ace_content * {
-  font-family: "Courier New", Courier, monospace !important;
+    font-family: 'Courier New', Courier, 'Roboto Mono', monospace !important;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variant: normal;
 }
