@@ -1,0 +1,9 @@
+.editor {
+    height: 100%;
+    font-size: 14px;
+}
+
+/* Need this selector to override the blanket rule `* { font-family: Roboto; }` */
+.editor * {
+    font-family: inherit;
+}

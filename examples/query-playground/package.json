@@ -14,8 +14,12 @@
         "@dhis2/cli-app-scripts": "^11.1.1"
     },
     "dependencies": {
+        "@codemirror/lang-json": "^6.0.1",
         "@dhis2/app-runtime": "*",
         "@dhis2/ui": "^9.4.4",
+        "@uiw/codemirror-theme-github": "^4.21.25",
+        "@uiw/codemirror-theme-monokai": "^4.21.25",
+        "@uiw/react-codemirror": "^4.21.25",
         "brace": "^0.11.1",
         "classnames": "^2.2.6",
         "prop-types": "^15.7.2",
