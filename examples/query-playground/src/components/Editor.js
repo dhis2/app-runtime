@@ -11,6 +11,7 @@ export const Editor = ({ theme, ...editorProps }) => (
         className={styles.editor}
         extensions={[json()]}
         theme={theme === 'light' ? githubLight : monokai}
+        basicSetup={{ tabSize: 4 }}
         width="100%"
         height="100%"
         {...editorProps}

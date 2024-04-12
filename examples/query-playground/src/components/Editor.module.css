@@ -1,6 +1,6 @@
 .editor {
     height: 100%;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 /* Need this selector to override the blanket rule `* { font-family: Roboto; }` */
