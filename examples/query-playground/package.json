@@ -11,12 +11,12 @@
         "test": "d2-app-scripts test"
     },
     "devDependencies": {
-        "@dhis2/cli-app-scripts": "^11.1.1"
+        "@dhis2/cli-app-scripts": "^9.0.1"
     },
     "dependencies": {
         "@codemirror/lang-json": "^6.0.1",
         "@dhis2/app-runtime": "*",
-        "@dhis2/ui": "^9.4.4",
+        "@dhis2/ui": "^8.16.0",
         "@uiw/codemirror-theme-github": "^4.21.25",
         "@uiw/codemirror-theme-monokai": "^4.21.25",
         "@uiw/react-codemirror": "^4.21.25",
