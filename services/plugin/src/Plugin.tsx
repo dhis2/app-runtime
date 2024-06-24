@@ -153,22 +153,15 @@ export const Plugin = ({
 
     if (pluginEntryPoint) {
         return (
-            <div
+            <iframe
+                ref={iframeRef}
+                src={pluginSource}
                 style={{
-                    height: `${pluginHeight}px`,
                     width: `${pluginWidth}px`,
+                    height: `${pluginHeight}px`,
+                    border: 'none',
                 }}
-            >
-                <iframe
-                    ref={iframeRef}
-                    src={pluginSource}
-                    style={{
-                        width: '100%',
-                        height: '100%',
-                        border: 'none',
-                    }}
-                ></iframe>
-            </div>
+            ></iframe>
         )
     }
 
