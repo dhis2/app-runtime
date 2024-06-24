@@ -1,3 +1,10 @@
+## [3.10.5](https://github.com/dhis2/app-runtime/compare/v3.10.4...v3.10.5) (2024-06-24)
+
+
+### Bug Fixes
+
+* update plugin sizing definition ([#1383](https://github.com/dhis2/app-runtime/issues/1383)) ([266dc49](https://github.com/dhis2/app-runtime/commit/266dc49423516189cf4dee706cc78e720af744e2))
+
 ## [3.10.4](https://github.com/dhis2/app-runtime/compare/v3.10.3...v3.10.4) (2024-04-09)
 
 
