@@ -1,6 +1,12 @@
 import isEqual from 'lodash/isEqual'
 import PropTypes from 'prop-types'
-import React, { useEffect, useCallback, useContext, useState } from 'react'
+import React, {
+    useEffect,
+    useCallback,
+    useContext,
+    useState,
+    useMemo,
+} from 'react'
 import {
     GlobalStateStore,
     GlobalStateStoreMutateMethod,
@@ -79,9 +85,14 @@ export const useGlobalState = (
         // Make sure to update state when selector changes
         callback(store.getState())
         return () => store.unsubscribe(callback)
+        // todo: refactor to use setSelectedState(selectedState => ...) to avoid
+        // requiring selectedState as a dependency
     }, [store, selector]) /* eslint-disable-line react-hooks/exhaustive-deps */
 
-    return [selectedState, store.mutate]
+    return useMemo(
+        () => [selectedState, store.mutate],
+        [selectedState, store.mutate]
+    )
 }
 
 export function useGlobalStateMutation<Type>(

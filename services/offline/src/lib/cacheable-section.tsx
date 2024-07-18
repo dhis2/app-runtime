@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import { RecordingState } from '../types'
 import { useRecordingState, useCachedSection } from './cacheable-section-state'
 import { useOfflineInterface } from './offline-interface'
@@ -61,60 +61,77 @@ export function useCacheableSection(id: string): CacheableSectionControls {
                 removeRecordingState()
             }
         }
+        // todo: avoid dependency on recordingState
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-    function startRecording({
-        recordingTimeoutDelay = 1000,
-        onStarted,
-        onCompleted,
-        onError,
-    }: CacheableSectionStartRecordingOptions = {}) {
-        // This promise resolving means that the message to the service worker
-        // to start recording was successful. Waiting for resolution prevents
-        // unnecessarily rerendering the whole component in case of an error
-        return offlineInterface
-            .startRecording({
-                sectionId: id,
-                recordingTimeoutDelay,
-                onStarted: () => {
-                    onRecordingStarted()
-                    onStarted && onStarted()
-                },
-                onCompleted: () => {
-                    onRecordingCompleted()
-                    onCompleted && onCompleted()
-                },
-                onError: (error) => {
-                    onRecordingError(error)
-                    onError && onError(error)
-                },
-            })
-            .then(() => setRecordingState(recordingStates.pending))
-    }
-
-    function onRecordingStarted() {
+    const onRecordingStarted = useCallback(() => {
         setRecordingState(recordingStates.recording)
-    }
+    }, [setRecordingState])
 
-    function onRecordingCompleted() {
+    const onRecordingCompleted = useCallback(() => {
         setRecordingState(recordingStates.default)
         syncCachedSections()
-    }
+    }, [setRecordingState, syncCachedSections])
 
-    function onRecordingError(error: Error) {
-        console.error('Error during recording:', error)
-        setRecordingState(recordingStates.error)
-    }
+    const onRecordingError = useCallback(
+        (error: Error) => {
+            console.error('Error during recording:', error)
+            setRecordingState(recordingStates.error)
+        },
+        [setRecordingState]
+    )
+
+    const startRecording = useCallback(
+        ({
+            recordingTimeoutDelay = 1000,
+            onStarted,
+            onCompleted,
+            onError,
+        }: CacheableSectionStartRecordingOptions = {}) => {
+            // This promise resolving means that the message to the service worker
+            // to start recording was successful. Waiting for resolution prevents
+            // unnecessarily rerendering the whole component in case of an error
+            return offlineInterface
+                .startRecording({
+                    sectionId: id,
+                    recordingTimeoutDelay,
+                    onStarted: () => {
+                        onRecordingStarted()
+                        onStarted && onStarted()
+                    },
+                    onCompleted: () => {
+                        onRecordingCompleted()
+                        onCompleted && onCompleted()
+                    },
+                    onError: (error) => {
+                        onRecordingError(error)
+                        onError && onError(error)
+                    },
+                })
+                .then(() => setRecordingState(recordingStates.pending))
+        },
+        [
+            id,
+            offlineInterface,
+            onRecordingCompleted,
+            onRecordingError,
+            onRecordingStarted,
+            setRecordingState,
+        ]
+    )
 
     // isCached, lastUpdated, remove: _could_ be accessed by useCachedSection,
     // but provided through this hook for convenience
-    return {
-        recordingState,
-        startRecording,
-        lastUpdated,
-        isCached,
-        remove,
-    }
+    return useMemo(
+        () => ({
+            recordingState,
+            startRecording,
+            lastUpdated,
+            isCached,
+            remove,
+        }),
+        [recordingState, startRecording, lastUpdated, isCached, remove]
+    )
 }
 
 interface CacheableSectionProps {
