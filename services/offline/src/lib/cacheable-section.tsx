@@ -61,7 +61,6 @@ export function useCacheableSection(id: string): CacheableSectionControls {
                 removeRecordingState()
             }
         }
-        // todo: avoid dependency on recordingState
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     const onRecordingStarted = useCallback(() => {

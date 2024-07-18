@@ -72,22 +72,24 @@ export const useGlobalState = (
         // NEW: deep equality check before updating
         const callback = (state: any) => {
             const newSelectedState = selector(state)
-            // Second condition handles case where a selected object gets
-            // deleted, but state does not update
-            if (
-                !isEqual(selectedState, newSelectedState) ||
-                selectedState === undefined
-            ) {
-                setSelectedState(newSelectedState)
-            }
+            // Use this form to avoid having `selectedState` as a dep in here
+            setSelectedState((currentSelectedState: any) => {
+                // Second condition handles case where a selected object gets
+                // deleted, but state does not update
+                if (
+                    !isEqual(currentSelectedState, newSelectedState) ||
+                    currentSelectedState === undefined
+                ) {
+                    return newSelectedState
+                }
+                return currentSelectedState
+            })
         }
         store.subscribe(callback)
         // Make sure to update state when selector changes
         callback(store.getState())
         return () => store.unsubscribe(callback)
-        // todo: refactor to use setSelectedState(selectedState => ...) to avoid
-        // requiring selectedState as a dependency
-    }, [store, selector]) /* eslint-disable-line react-hooks/exhaustive-deps */
+    }, [store, selector])
 
     return useMemo(
         () => [selectedState, store.mutate],
