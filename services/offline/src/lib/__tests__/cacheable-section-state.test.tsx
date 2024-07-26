@@ -10,7 +10,7 @@ const wrapper: FC = ({ children }) => (
     </OfflineProvider>
 )
 
-test('useRecordingState has basically stable references', () => {
+test('useRecordingState has stable references', () => {
     const { result, rerender } = renderHook(() => useRecordingState('one'), {
         wrapper,
     })
@@ -26,7 +26,7 @@ test('useRecordingState has basically stable references', () => {
     expect(result.current.removeRecordingState).toBe(origRemoveRecordingState)
 })
 
-test('useCachedSection has basically stable references', () => {
+test('useCachedSection has stable references', () => {
     const { result, rerender } = renderHook(() => useCachedSection('one'), {
         wrapper,
     })
