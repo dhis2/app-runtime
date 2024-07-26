@@ -161,6 +161,7 @@ export const Plugin = ({
                     height: `${pluginHeight}px`,
                     border: 'none',
                 }}
+                allow="clipboard-write"
             ></iframe>
         )
     }
