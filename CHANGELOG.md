@@ -1,3 +1,10 @@
+## [3.10.6](https://github.com/dhis2/app-runtime/compare/v3.10.5...v3.10.6) (2024-07-26)
+
+
+### Bug Fixes
+
+* **cacheable-section:** stable references to avoid loops [LIBS-642] ([#1385](https://github.com/dhis2/app-runtime/issues/1385)) ([e3a5fbf](https://github.com/dhis2/app-runtime/commit/e3a5fbfd3e290cc68493a97adbbd27b9f3dca082))
+
 ## [3.10.5](https://github.com/dhis2/app-runtime/compare/v3.10.4...v3.10.5) (2024-06-24)
 
 
