@@ -41,6 +41,31 @@ it.skip('renders in the default state initially', () => {
     expect(result.current.lastUpdated).toBeUndefined()
 })
 
+it('has stable references', () => {
+    const wrapper: FC = ({ children }) => (
+        <OfflineProvider offlineInterface={mockOfflineInterface}>
+            {children}
+        </OfflineProvider>
+    )
+    const { result, rerender } = renderHook(() => useCacheableSection('one'), {
+        wrapper,
+    })
+
+    const origRecordingState = result.current.recordingState
+    const origStartRecording = result.current.startRecording
+    const origLastUpdated = result.current.lastUpdated
+    const origIsCached = result.current.isCached
+    const origRemove = result.current.remove
+
+    rerender()
+
+    expect(result.current.recordingState).toBe(origRecordingState)
+    expect(result.current.startRecording).toBe(origStartRecording)
+    expect(result.current.lastUpdated).toBe(origLastUpdated)
+    expect(result.current.isCached).toBe(origIsCached)
+    expect(result.current.remove).toBe(origRemove)
+})
+
 it.skip('handles a successful recording', async (done) => {
     const [sectionId, timeoutDelay] = ['one', 1234]
     const testOfflineInterface = {
