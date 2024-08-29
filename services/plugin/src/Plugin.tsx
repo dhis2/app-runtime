@@ -27,6 +27,8 @@ const getPluginEntryPoint = ({
 export const Plugin = ({
     pluginSource,
     pluginShortName,
+    height,
+    width,
     ...propsToPassNonMemoized
 }: {
     pluginSource?: string
@@ -42,7 +44,7 @@ export const Plugin = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [propsToPassNonMemoizedJSON]
     )
-    const { height, width } = propsToPass
+    const { hasFixedDimensions } = propsToPass
 
     const { add: alertsAdd } = useContext(AlertsManagerContext)
 
@@ -60,8 +62,8 @@ export const Plugin = ({
         useState<boolean>(false)
 
     const [inErrorState, setInErrorState] = useState<boolean>(false)
-    const [pluginHeight, setPluginHeight] = useState<number>(150)
-    const [pluginWidth, setPluginWidth] = useState<number>(500)
+    const [pluginHeight, setPluginHeight] = useState<number>(height || 150)
+    const [pluginWidth, setPluginWidth] = useState<number>(width || 500)
 
     useEffect(() => {
         if (height) {
@@ -100,8 +102,8 @@ export const Plugin = ({
             const iframeProps = {
                 ...memoizedPropsToPass,
                 alertsAdd,
-                setPluginHeight,
-                setPluginWidth,
+                setPluginHeight: hasFixedDimensions ? null : setPluginHeight,
+                setPluginWidth: hasFixedDimensions ? null : setPluginWidth,
                 setInErrorState,
                 setCommunicationReceived,
             }
