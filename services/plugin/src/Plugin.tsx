@@ -24,20 +24,27 @@ const getPluginEntryPoint = ({
     )?.pluginLaunchUrl
 }
 
+const getIframeDimension = (dimension: string): string => {
+    if (!isNaN(Number(dimension))) {
+        return `${Number(dimension)}px`
+    }
+    return dimension
+}
+
 export const Plugin = ({
     pluginSource,
     pluginShortName,
+    height,
+    width,
     ...propsToPassNonMemoized
 }: {
     pluginSource?: string
     pluginShortName?: string
+    height?: string
+    width?: string
     propsToPass: any
-    height?: number
-    width?: number
 }): JSX.Element => {
     const iframeRef = useRef<HTMLIFrameElement>(null)
-
-    const { height, width } = propsToPassNonMemoized
 
     const { add: alertsAdd } = useContext(AlertsManagerContext)
 
@@ -66,7 +73,6 @@ export const Plugin = ({
         [
             ...Object.keys(propsToPassNonMemoized)
                 .sort()
-                .filter((k) => !['height', 'width'].includes(k))
                 .map((k) => (propsToPassNonMemoized as any)[k]),
         ]
         /* eslint-enable react-hooks/exhaustive-deps */
@@ -145,8 +151,14 @@ export const Plugin = ({
                 ref={iframeRef}
                 src={pluginSource}
                 style={{
-                    width: `${width ?? resizedWidth}px`,
-                    height: `${height ?? resizedHeight}px`,
+                    width: `${
+                        width ? getIframeDimension(width) : resizedWidth + 'px'
+                    }`,
+                    height: `${
+                        height
+                            ? getIframeDimension(height)
+                            : resizedHeight + 'px'
+                    }`,
                     border: 'none',
                 }}
             ></iframe>
