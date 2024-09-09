@@ -24,13 +24,6 @@ const getPluginEntryPoint = ({
     )?.pluginLaunchUrl
 }
 
-const getIframeDimension = (dimension: string): string => {
-    if (!isNaN(Number(dimension))) {
-        return `${Number(dimension)}px`
-    }
-    return dimension
-}
-
 export const Plugin = ({
     pluginSource,
     pluginShortName,
@@ -150,15 +143,9 @@ export const Plugin = ({
             <iframe
                 ref={iframeRef}
                 src={pluginSource}
+                width={width ?? resizedWidth + 'px'}
+                height={height ?? resizedHeight + 'px'}
                 style={{
-                    width: `${
-                        width ? getIframeDimension(width) : resizedWidth + 'px'
-                    }`,
-                    height: `${
-                        height
-                            ? getIframeDimension(height)
-                            : resizedHeight + 'px'
-                    }`,
                     border: 'none',
                 }}
             ></iframe>
