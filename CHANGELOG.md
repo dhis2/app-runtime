@@ -1,3 +1,10 @@
+# [3.11.0](https://github.com/dhis2/app-runtime/compare/v3.10.6...v3.11.0) (2024-09-10)
+
+
+### Features
+
+* fixed dimensions efficiency ([#1386](https://github.com/dhis2/app-runtime/issues/1386)) ([2b07a14](https://github.com/dhis2/app-runtime/commit/2b07a14ea7e781c1948cfa651a4ad5759a811c79))
+
 ## [3.10.6](https://github.com/dhis2/app-runtime/compare/v3.10.5...v3.10.6) (2024-07-26)
 
 
