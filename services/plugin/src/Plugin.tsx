@@ -33,8 +33,8 @@ export const Plugin = ({
 }: {
     pluginSource?: string
     pluginShortName?: string
-    height?: string
-    width?: string
+    height?: string | number
+    width?: string | number
     propsToPass: any
 }): JSX.Element => {
     const iframeRef = useRef<HTMLIFrameElement>(null)
