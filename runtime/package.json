@@ -37,8 +37,8 @@
     },
     "peerDependencies": {
         "prop-types": "^15.7.2",
-        "react": "^16.8.6",
-        "react-dom": "^16.8.6"
+        "react": "^16.8.6 || ^18",
+        "react-dom": "^16.8.6 || ^18"
     },
     "scripts": {
         "build:types": "tsc --emitDeclarationOnly --outDir ./build/types",
