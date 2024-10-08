@@ -27,7 +27,7 @@ export const useAlert = (
                     },
                     alertRef
                     // Conditional chaining gives backwards compatibility
-                    // with cli-app-scripts < 11.7.2
+                    // with cli-app-scripts < 12
                 )?.then((newAlert: Alert) => {
                     alertRef.current = newAlert
                 })
