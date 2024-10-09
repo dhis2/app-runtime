@@ -1,3 +1,10 @@
+## [3.11.1](https://github.com/dhis2/app-runtime/compare/v3.11.0...v3.11.1) (2024-10-09)
+
+
+### Bug Fixes
+
+* handle alert returned async by parentAlertsAdd [LIBS-695] ([#1388](https://github.com/dhis2/app-runtime/issues/1388)) ([9c989b2](https://github.com/dhis2/app-runtime/commit/9c989b2f9c408b7d5988dd0ec8756e86ddf2632f))
+
 # [3.11.0](https://github.com/dhis2/app-runtime/compare/v3.10.6...v3.11.0) (2024-09-10)
 
 
