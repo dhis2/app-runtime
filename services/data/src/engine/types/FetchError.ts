@@ -1,10 +1,10 @@
 export type FetchErrorTypeName = 'network' | 'unknown' | 'access' | 'aborted'
 export type FetchErrorDetails = {
-    errorCode?: number
     httpStatus?: string
     httpStatusCode?: number
-    message?: string
     status?: string
+    message?: string
+    errorCode?: string
     [x: string]: any
 }
 
