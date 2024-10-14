@@ -1,3 +1,10 @@
+## [3.11.2](https://github.com/dhis2/app-runtime/compare/v3.11.1...v3.11.2) (2024-10-14)
+
+
+### Bug Fixes
+
+* expand FetchErrorDetails type ([#1389](https://github.com/dhis2/app-runtime/issues/1389)) ([ff0ad60](https://github.com/dhis2/app-runtime/commit/ff0ad6077aecdb7627ec985a61c159159be6b8ea))
+
 ## [3.11.1](https://github.com/dhis2/app-runtime/compare/v3.11.0...v3.11.1) (2024-10-09)
 
 
