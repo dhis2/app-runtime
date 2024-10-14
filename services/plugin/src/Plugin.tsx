@@ -148,6 +148,7 @@ export const Plugin = ({
                 style={{
                     border: 'none',
                 }}
+                allow="clipboard-write"
             ></iframe>
         )
     }
