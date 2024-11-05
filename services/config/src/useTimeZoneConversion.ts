@@ -128,7 +128,7 @@ export const useTimeZoneConversion = (): {
     )
 
     const fromServerDate = useCallback(
-        (date) => {
+        (date: DateInput) => {
             const jsServerDate = date ? new Date(date) : new Date(Date.now())
             const offset = shouldCalculateOffset
                 ? calculateOffset(jsServerDate, serverTimezone)
@@ -146,7 +146,7 @@ export const useTimeZoneConversion = (): {
     )
 
     const fromClientDate = useCallback(
-        (date) => {
+        (date: DateInput) => {
             const jsClientDate = date ? new Date(date) : new Date(Date.now())
             const offset = shouldCalculateOffset
                 ? calculateOffset(jsClientDate, serverTimezone)

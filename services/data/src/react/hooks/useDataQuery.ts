@@ -1,10 +1,11 @@
 import { useState, useRef, useCallback, useDebugValue } from 'react'
 import { useQuery, setLogger } from 'react-query'
-import type {
-    Query,
-    QueryOptions,
-    QueryResult,
-    QueryVariables,
+import {
+    JsonMap,
+    type Query,
+    type QueryOptions,
+    type QueryResult,
+    type QueryVariables,
 } from '../../engine'
 import type { FetchError } from '../../engine/types/FetchError'
 import type { QueryRenderInput, QueryRefetchFunction } from '../../types'
@@ -146,7 +147,7 @@ export const useDataQuery = <TQueryResult = QueryResult>(
             queryState.current.enabled = true
 
             // This promise does not currently reject on errors
-            const refetchPromise = new Promise((resolve) => {
+            const refetchPromise = new Promise<TQueryResult>((resolve) => {
                 queryState.current.refetchCallback = (data) => {
                     resolve(data)
                 }

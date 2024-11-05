@@ -11,7 +11,7 @@ export const useAlert = (
     const alertRef = useRef(<Alert | null>null)
 
     const show = useCallback(
-        (props?) => {
+        (props?: any) => {
             const resolvedMessage = String(
                 typeof message === 'function' ? message(props) : message
             )

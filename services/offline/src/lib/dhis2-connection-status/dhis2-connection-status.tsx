@@ -79,7 +79,7 @@ export const Dhis2ConnectionStatusProvider = ({
      * the lastConnected value in localStorage
      */
     const updateConnectedState = useCallback(
-        (newIsConnected) => {
+        (newIsConnected: boolean | null) => {
             // use 'set' with a function as param to get latest isConnected
             // without needing it as a dependency for useCallback
             setIsConnected((prevIsConnected) => {
@@ -125,7 +125,7 @@ export const Dhis2ConnectionStatusProvider = ({
 
     /** Called when SW reports updates from incidental network traffic */
     const onUpdate = useCallback(
-        ({ isConnected: newIsConnected }) => {
+        ({ isConnected: newIsConnected }: { isConnected: any }) => {
             devDebugLog('[D2CS] handling update from sw')
 
             // Snooze ping timer to reduce pings since we know state from SW
