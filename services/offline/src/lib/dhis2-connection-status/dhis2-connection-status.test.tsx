@@ -1,5 +1,5 @@
 import { ConfigProvider } from '@dhis2/app-service-config'
-import { renderHook, act } from '@testing-library/react-hooks'
+import { renderHook, act } from '@testing-library/react'
 import React from 'react'
 import { mockOfflineInterface } from '../../utils/test-mocks'
 import { OfflineProvider } from '../offline-provider'

@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/named
 import { PropTypes } from '@dhis2/prop-types'
 import React from 'react'
 import { QueryEditor } from './QueryEditor'

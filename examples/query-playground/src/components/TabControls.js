@@ -1,4 +1,5 @@
 import i18n from '@dhis2/d2-i18n'
+// eslint-disable-next-line import/named
 import { PropTypes } from '@dhis2/prop-types'
 import {
     Button,
