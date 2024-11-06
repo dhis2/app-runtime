@@ -1,6 +1,6 @@
 {
     "name": "@dhis2/app-service-data",
-    "version": "3.10.2",
+    "version": "3.11.2",
     "main": "./build/cjs/index.js",
     "module": "./build/es/index.js",
     "types": "build/types/index.d.ts",
@@ -21,18 +21,6 @@
     "files": [
         "build/**"
     ],
-    "peerDependencies": {
-        "@dhis2/app-service-config": "3.10.2",
-        "@dhis2/cli-app-scripts": "^7.1.1",
-        "prop-types": "^15.7.2",
-        "react": "^16.8",
-        "react-dom": "^16.8"
-    },
-    "peerDependenciesMeta": {
-        "@dhis2/cli-app-scripts": {
-            "optional": true
-        }
-    },
     "scripts": {
         "build:types": "tsc --emitDeclarationOnly --outDir ./build/types",
         "build:package": "d2-app-scripts build",
@@ -45,5 +33,11 @@
     },
     "dependencies": {
         "react-query": "^3.13.11"
+    },
+    "peerDependencies": {
+        "@dhis2/app-service-config": "3.11.2",
+        "prop-types": "^15.7.2",
+        "react": "^16.8",
+        "react-dom": "^16.8"
     }
 }

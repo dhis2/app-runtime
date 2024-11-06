@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { useEffect, useCallback, useMemo } from 'react'
 import {
     GlobalStateStore,
     IndexedDBCachedSection,
@@ -76,7 +76,7 @@ export function CacheableSectionProvider({
     const store = useConst(createCacheableSectionStore)
 
     // On load, get sections and add to store
-    React.useEffect(() => {
+    useEffect(() => {
         if (offlineInterface) {
             offlineInterface.getCachedSections().then((sections) => {
                 store.mutate((state) => ({
@@ -107,20 +107,43 @@ interface RecordingStateControls {
  * @returns {Object} { recordingState: String, setRecordingState: Function, removeRecordingState: Function}
  */
 export function useRecordingState(id: string): RecordingStateControls {
-    const [recordingState] = useGlobalState(
-        (state) => state.recordingStates[id]
+    const recordingStateSelector = useCallback(
+        (state) => state.recordingStates[id],
+        [id]
     )
-    const setRecordingState = useGlobalStateMutation((newState) => (state) => ({
-        ...state,
-        recordingStates: { ...state.recordingStates, [id]: newState },
-    }))
-    const removeRecordingState = useGlobalStateMutation(() => (state) => {
-        const recordingStates = { ...state.recordingStates }
-        delete recordingStates[id]
-        return { ...state, recordingStates }
-    })
+    const [recordingState] = useGlobalState(recordingStateSelector)
 
-    return { recordingState, setRecordingState, removeRecordingState }
+    const setRecordingStateMutationCreator = useCallback(
+        (newState) => (state: any) => ({
+            ...state,
+            recordingStates: { ...state.recordingStates, [id]: newState },
+        }),
+        [id]
+    )
+    const setRecordingState = useGlobalStateMutation(
+        setRecordingStateMutationCreator
+    )
+
+    const removeRecordingStateMutationCreator = useCallback(
+        () => (state: any) => {
+            const recordingStates = { ...state.recordingStates }
+            delete recordingStates[id]
+            return { ...state, recordingStates }
+        },
+        [id]
+    )
+    const removeRecordingState = useGlobalStateMutation(
+        removeRecordingStateMutationCreator
+    )
+
+    return useMemo(
+        () => ({
+            recordingState,
+            setRecordingState,
+            removeRecordingState,
+        }),
+        [recordingState, setRecordingState, removeRecordingState]
+    )
 }
 
 /**
@@ -131,17 +154,22 @@ export function useRecordingState(id: string): RecordingStateControls {
  */
 function useSyncCachedSections() {
     const offlineInterface = useOfflineInterface()
-    const setCachedSections = useGlobalStateMutation(
-        (cachedSections) => (state) => ({
+
+    const setCachedSectionsMutationCreator = useCallback(
+        (cachedSections) => (state: any) => ({
             ...state,
             cachedSections,
-        })
+        }),
+        []
+    )
+    const setCachedSections = useGlobalStateMutation(
+        setCachedSectionsMutationCreator
     )
 
-    return async function syncCachedSections() {
+    return useCallback(async () => {
         const sections = await offlineInterface.getCachedSections()
         setCachedSections(getSectionsById(sections))
-    }
+    }, [offlineInterface, setCachedSections])
 }
 
 interface CachedSectionsControls {
@@ -167,19 +195,25 @@ export function useCachedSections(): CachedSectionsControls {
      * Returns a promise that resolves to `true` if a section is found and
      * deleted, or `false` if asection with the specified ID does not exist.
      */
-    async function removeById(id: string) {
-        const success = await offlineInterface.removeSection(id)
-        if (success) {
-            await syncCachedSections()
-        }
-        return success
-    }
+    const removeById = useCallback(
+        async (id: string) => {
+            const success = await offlineInterface.removeSection(id)
+            if (success) {
+                await syncCachedSections()
+            }
+            return success
+        },
+        [offlineInterface, syncCachedSections]
+    )
 
-    return {
-        cachedSections,
-        removeById,
-        syncCachedSections,
-    }
+    return useMemo(
+        () => ({
+            cachedSections,
+            removeById,
+            syncCachedSections,
+        }),
+        [cachedSections, removeById, syncCachedSections]
+    )
 }
 
 interface CachedSectionControls {
@@ -210,18 +244,21 @@ export function useCachedSection(id: string): CachedSectionControls {
      * Returns `true` if a section is found and deleted, or `false` if a
      * section with the specified ID does not exist.
      */
-    async function remove() {
+    const remove = useCallback(async () => {
         const success = await offlineInterface.removeSection(id)
         if (success) {
             await syncCachedSections()
         }
         return success
-    }
+    }, [offlineInterface, id, syncCachedSections])
 
-    return {
-        lastUpdated,
-        isCached: !!lastUpdated,
-        remove,
-        syncCachedSections,
-    }
+    return useMemo(
+        () => ({
+            lastUpdated,
+            isCached: !!lastUpdated,
+            remove,
+            syncCachedSections,
+        }),
+        [lastUpdated, remove, syncCachedSections]
+    )
 }

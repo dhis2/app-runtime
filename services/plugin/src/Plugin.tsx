@@ -36,23 +36,18 @@ export const Plugin = ({
     pluginSource,
     pluginShortName,
     onLoad,
+    height,
+    width,
     ...propsToPassNonMemoized
 }: {
     pluginSource?: string
     pluginShortName?: string
     onLoad?: ReactEventHandler<HTMLIFrameElement>
+    height?: string | number
+    width?: string | number
     propsToPass: any
 }): JSX.Element => {
     const iframeRef = useRef<HTMLIFrameElement>(null)
-
-    // we do not know what is being sent in passed props, so for stable reference, memoize using JSON representation
-    const propsToPassNonMemoizedJSON = JSON.stringify(propsToPassNonMemoized)
-    const propsToPass: any = useMemo(
-        () => ({ ...propsToPassNonMemoized }),
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [propsToPassNonMemoizedJSON]
-    )
-    const { height, width } = propsToPass
 
     const { add: alertsAdd } = useContext(AlertsManagerContext)
 
@@ -65,26 +60,18 @@ export const Plugin = ({
         })
 
     const [inErrorState, setInErrorState] = useState<boolean>(false)
-    const [pluginHeight, setPluginHeight] = useState<string | number>('150px')
-    const [pluginWidth, setPluginWidth] = useState<string | number>('500px')
-
-    useEffect(() => {
-        if (height) {
-            setPluginHeight(height)
-        }
-        if (width) {
-            setPluginWidth(width)
-        }
-    }, [height, width])
+    const [resizedHeight, setPluginHeight] = useState<number>(150)
+    const [resizedWidth, setPluginWidth] = useState<number>(500)
 
     // since we do not know what props are passed, the dependency array has to be keys of whatever is standard prop
+    // we exclude height/width from memoization to avoid updates for these properties
     const memoizedPropsToPass = useMemo(
-        () => propsToPass,
+        () => propsToPassNonMemoized,
         /* eslint-disable react-hooks/exhaustive-deps */
         [
-            ...Object.keys(propsToPass)
+            ...Object.keys(propsToPassNonMemoized)
                 .sort()
-                .map((k) => (propsToPass as any)[k]),
+                .map((k) => (propsToPassNonMemoized as any)[k]),
         ]
         /* eslint-enable react-hooks/exhaustive-deps */
     )
@@ -100,8 +87,8 @@ export const Plugin = ({
         const iframeProps = {
             ...memoizedPropsToPass,
             alertsAdd,
-            setPluginHeight,
-            setPluginWidth,
+            setPluginHeight: !height ? setPluginHeight : null,
+            setPluginWidth: !width ? setPluginWidth : null,
             setInErrorState,
             // todo: what does this do? resets state from error component
             // seems to work without...
@@ -178,23 +165,14 @@ export const Plugin = ({
 
     if (pluginEntryPoint) {
         return (
-            <div
-                style={{
-                    height: `${pluginHeight}`,
-                    width: `${pluginWidth}`,
-                }}
-            >
-                <iframe
-                    ref={iframeRef}
-                    src={pluginSource}
-                    style={{
-                        width: '100%',
-                        height: '100%',
-                        border: 'none',
-                    }}
-                    onLoad={handleLoad}
-                ></iframe>
-            </div>
+            <iframe
+                ref={iframeRef}
+                src={pluginSource}
+                width={width ?? resizedWidth + 'px'}
+                height={height ?? resizedHeight + 'px'}
+                style={{ border: 'none' }}
+                onLoad={handleLoad}
+            ></iframe>
         )
     }
 

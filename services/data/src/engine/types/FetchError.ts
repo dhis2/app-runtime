@@ -1,5 +1,12 @@
 export type FetchErrorTypeName = 'network' | 'unknown' | 'access' | 'aborted'
-export type FetchErrorDetails = { message?: string }
+export type FetchErrorDetails = {
+    httpStatus?: string
+    httpStatusCode?: number
+    status?: string
+    message?: string
+    errorCode?: string
+    [x: string]: any
+}
 
 export interface FetchErrorPayload {
     type: FetchErrorTypeName
