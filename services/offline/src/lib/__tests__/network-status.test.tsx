@@ -466,7 +466,7 @@ describe('it updates the lastOnline value in local storage', () => {
         act(() => {
             events.offline(new Event('offline'))
         })
-        await waitFor(() => {})
+        await waitFor(() => undefined)
 
         const firstDate = new Date(
             localStorage.getItem(lastOnlineKey) as string
