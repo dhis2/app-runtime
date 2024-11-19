@@ -258,4 +258,18 @@ describe('isExpressionDescriptionValidation', () => {
             })
         ).toBe(false)
     })
+    it('returns true for a POST to "programIndicators/expression/description"', () => {
+        expect(
+            isExpressionDescriptionValidation('create', {
+                resource: 'programIndicators/expression/description',
+            })
+        ).toBe(true)
+    })
+    it('retuns false for a POST to a different resource', () => {
+        expect(
+            isMetadataPackageInstallation('create', {
+                resource: 'programIndicators/expression/somethingelse',
+            })
+        ).toBe(false)
+    })
 })
