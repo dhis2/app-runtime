@@ -19,13 +19,18 @@ export const useAlert = (
                 typeof options === 'function' ? options(props) : options
 
             if (plugin && parentAlertsAdd && !showAlertsInPlugin) {
-                alertRef.current = parentAlertsAdd(
+                // Functions passed through post-robot are asynchronous
+                parentAlertsAdd(
                     {
                         message: resolvedMessage,
                         options: resolvedOptions,
                     },
                     alertRef
-                )
+                    // Conditional chaining gives backwards compatibility
+                    // with cli-app-scripts < 12
+                )?.then((newAlert: Alert) => {
+                    alertRef.current = newAlert
+                })
             } else {
                 alertRef.current = add(
                     {

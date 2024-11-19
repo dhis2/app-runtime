@@ -1,3 +1,24 @@
+## [3.11.2](https://github.com/dhis2/app-runtime/compare/v3.11.1...v3.11.2) (2024-10-14)
+
+
+### Bug Fixes
+
+* expand FetchErrorDetails type ([#1389](https://github.com/dhis2/app-runtime/issues/1389)) ([ff0ad60](https://github.com/dhis2/app-runtime/commit/ff0ad6077aecdb7627ec985a61c159159be6b8ea))
+
+## [3.11.1](https://github.com/dhis2/app-runtime/compare/v3.11.0...v3.11.1) (2024-10-09)
+
+
+### Bug Fixes
+
+* handle alert returned async by parentAlertsAdd [LIBS-695] ([#1388](https://github.com/dhis2/app-runtime/issues/1388)) ([9c989b2](https://github.com/dhis2/app-runtime/commit/9c989b2f9c408b7d5988dd0ec8756e86ddf2632f))
+
+# [3.11.0](https://github.com/dhis2/app-runtime/compare/v3.10.6...v3.11.0) (2024-09-10)
+
+
+### Features
+
+* fixed dimensions efficiency ([#1386](https://github.com/dhis2/app-runtime/issues/1386)) ([2b07a14](https://github.com/dhis2/app-runtime/commit/2b07a14ea7e781c1948cfa651a4ad5759a811c79))
+
 ## [3.10.6](https://github.com/dhis2/app-runtime/compare/v3.10.5...v3.10.6) (2024-07-26)
 
 
