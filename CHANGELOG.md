@@ -1,3 +1,10 @@
+## [3.11.3](https://github.com/dhis2/app-runtime/compare/v3.11.2...v3.11.3) (2024-11-19)
+
+
+### Bug Fixes
+
+* add endpoint to text plain matchers ([#1390](https://github.com/dhis2/app-runtime/issues/1390)) ([bc25458](https://github.com/dhis2/app-runtime/commit/bc254581f65ec22104144f596032f40d670a73ce))
+
 ## [3.11.2](https://github.com/dhis2/app-runtime/compare/v3.11.1...v3.11.2) (2024-10-14)
 
 
