@@ -1,11 +1,10 @@
 import { useState, useRef, useCallback, useDebugValue } from 'react'
 import { useQuery, setLogger } from 'react-query'
-import {
-    JsonMap,
-    type Query,
-    type QueryOptions,
-    type QueryResult,
-    type QueryVariables,
+import type {
+    Query,
+    QueryOptions,
+    QueryResult,
+    QueryVariables,
 } from '../../engine'
 import type { FetchError } from '../../engine/types/FetchError'
 import type { QueryRenderInput, QueryRefetchFunction } from '../../types'
