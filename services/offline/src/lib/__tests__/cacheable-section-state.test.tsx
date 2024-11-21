@@ -1,10 +1,10 @@
-import { renderHook } from '@testing-library/react-hooks'
-import React, { FC } from 'react'
+import { renderHook } from '@testing-library/react'
+import React, { FC, PropsWithChildren } from 'react'
 import { mockOfflineInterface } from '../../utils/test-mocks'
 import { useCachedSection, useRecordingState } from '../cacheable-section-state'
 import { OfflineProvider } from '../offline-provider'
 
-const wrapper: FC = ({ children }) => (
+const wrapper: FC<PropsWithChildren> = ({ children }) => (
     <OfflineProvider offlineInterface={mockOfflineInterface}>
         {children}
     </OfflineProvider>
