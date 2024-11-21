@@ -1,5 +1,5 @@
 import { renderHook, act, waitFor } from '@testing-library/react'
-import React, { FC } from 'react'
+import React, { FC, PropsWithChildren } from 'react'
 import {
     errorRecordingMock,
     failedMessageRecordingMock,
@@ -28,7 +28,7 @@ afterEach(() => {
 })
 
 it.skip('renders in the default state initially', () => {
-    const wrapper: FC = ({ children }) => (
+    const wrapper: FC<PropsWithChildren> = ({ children }) => (
         <OfflineProvider offlineInterface={mockOfflineInterface}>
             {children}
         </OfflineProvider>
@@ -77,7 +77,7 @@ it.skip('handles a successful recording', async (done) => {
                 { sectionId: sectionId, lastUpdated: new Date() },
             ]),
     }
-    const wrapper: FC = ({ children }) => (
+    const wrapper: FC<PropsWithChildren> = ({ children }) => (
         <OfflineProvider offlineInterface={testOfflineInterface}>
             {children}
         </OfflineProvider>
@@ -94,7 +94,7 @@ it.skip('handles a successful recording', async (done) => {
 
         // Test that 'isCached' gets updated
         expect(testOfflineInterface.getCachedSections).toBeCalledTimes(2)
-        await waitFor(() => expect(result.current.isCached).toBeTrue())
+        await waitFor(() => expect(result.current.isCached).toBe(true))
         expect(result.current.isCached).toBe(true)
         expect(result.current.lastUpdated).toBeInstanceOf(Date)
 
@@ -142,7 +142,7 @@ it.skip('handles a recording that encounters an error', async (done) => {
         ...mockOfflineInterface,
         startRecording: errorRecordingMock,
     }
-    const wrapper: FC = ({ children }) => (
+    const wrapper: FC<PropsWithChildren> = ({ children }) => (
         <OfflineProvider offlineInterface={testOfflineInterface}>
             {children}
         </OfflineProvider>
@@ -186,7 +186,7 @@ it.skip('handles an error starting the recording', async () => {
         ...mockOfflineInterface,
         startRecording: failedMessageRecordingMock,
     }
-    const wrapper: FC = ({ children }) => (
+    const wrapper: FC<PropsWithChildren> = ({ children }) => (
         <OfflineProvider offlineInterface={testOfflineInterface}>
             {children}
         </OfflineProvider>
@@ -209,7 +209,7 @@ it.skip('handles remove and updates sections', async () => {
             ])
             .mockResolvedValueOnce([]),
     }
-    const wrapper: FC = ({ children }) => (
+    const wrapper: FC<PropsWithChildren> = ({ children }) => (
         <OfflineProvider offlineInterface={testOfflineInterface}>
             {children}
         </OfflineProvider>
@@ -219,7 +219,7 @@ it.skip('handles remove and updates sections', async () => {
     })
 
     // Wait for state to sync with indexedDB
-    await waitFor(() => expect(result.current.isCached).toBeTrue())
+    await waitFor(() => expect(result.current.isCached).toBe(true))
 
     let success
     await act(async () => {
@@ -229,7 +229,7 @@ it.skip('handles remove and updates sections', async () => {
     expect(success).toBe(true)
     // Test that 'isCached' gets updated
     expect(testOfflineInterface.getCachedSections).toBeCalledTimes(2)
-    await waitFor(() => expect(result.current.isCached).toBeFalse())
+    await waitFor(() => expect(result.current.isCached).toBe(false))
     expect(result.current.isCached).toBe(false)
     expect(result.current.lastUpdated).toBeUndefined()
 })
@@ -243,7 +243,7 @@ it.skip('handles a change in ID', async () => {
                 { sectionId: 'id-one', lastUpdated: new Date() },
             ]),
     }
-    const wrapper: FC = ({ children }) => (
+    const wrapper: FC<PropsWithChildren> = ({ children }) => (
         <OfflineProvider offlineInterface={testOfflineInterface}>
             {children}
         </OfflineProvider>
@@ -254,13 +254,13 @@ it.skip('handles a change in ID', async () => {
     )
 
     // Wait for state to sync with indexedDB
-    await waitFor(() => expect(result.current.isCached).toBeTrue())
+    await waitFor(() => expect(result.current.isCached).toBe(true))
 
     rerender('id-two')
 
     // Test that 'isCached' gets updated
     // expect(testOfflineInterface.getCachedSections).toBeCalledTimes(2)
-    await waitFor(() => expect(result.current.isCached).toBeFalse())
+    await waitFor(() => expect(result.current.isCached).toBe(false))
     expect(result.current.isCached).toBe(false)
     expect(result.current.lastUpdated).toBeUndefined()
 })
