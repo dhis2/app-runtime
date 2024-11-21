@@ -1,3 +1,10 @@
+# [3.11.0-alpha.1](https://github.com/dhis2/app-runtime/compare/v3.10.4-alpha.1...v3.11.0-alpha.1) (2024-11-21)
+
+
+### Features
+
+* upgrade app-runtime React version to v18 ([#1387](https://github.com/dhis2/app-runtime/issues/1387)) ([0e4a3d5](https://github.com/dhis2/app-runtime/commit/0e4a3d5c0e9cf8884c1a46f32fa0876234b6d765))
+
 ## [3.10.4-alpha.1](https://github.com/dhis2/app-runtime/compare/v3.10.3...v3.10.4-alpha.1) (2024-04-02)
 
 
