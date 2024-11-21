@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react-hooks'
+import { renderHook, waitFor, act } from '@testing-library/react'
 import * as React from 'react'
 import { CustomDataProvider } from '../components/CustomDataProvider'
 import { useDataQuery } from './useDataQuery'
@@ -14,7 +14,7 @@ describe('useDataQuery', () => {
             const onComplete = jest.fn()
             const onError = jest.fn()
 
-            const { result, waitForNextUpdate } = renderHook(
+            const { result } = renderHook(
                 () => useDataQuery(query, { lazy: false, onComplete, onError }),
                 { wrapper }
             )
@@ -24,12 +24,12 @@ describe('useDataQuery', () => {
                 called: true,
             })
 
-            await waitForNextUpdate()
-
-            expect(onComplete).toHaveBeenCalledWith({ x: 42 })
-            expect(onError).not.toHaveBeenCalled()
-            expect(result.current).toMatchObject({
-                data: { x: 42 },
+            await waitFor(() => {
+                expect(onComplete).toHaveBeenCalledWith({ x: 42 })
+                expect(onError).not.toHaveBeenCalled()
+                expect(result.current).toMatchObject({
+                    data: { x: 42 },
+                })
             })
         })
     })
@@ -49,7 +49,7 @@ describe('useDataQuery', () => {
             const onComplete = jest.fn()
             const onError = jest.fn()
 
-            const { result, waitForNextUpdate } = renderHook(
+            const { result } = renderHook(
                 () => useDataQuery(query, { onError, onComplete }),
                 { wrapper }
             )
@@ -59,12 +59,12 @@ describe('useDataQuery', () => {
                 called: true,
             })
 
-            await waitForNextUpdate()
-
-            expect(onError).toHaveBeenCalledWith(expectedError)
-            expect(onComplete).not.toHaveBeenCalled()
-            expect(result.current).toMatchObject({
-                error: expectedError,
+            await waitFor(() => {
+                expect(onError).toHaveBeenCalledWith(expectedError)
+                expect(onComplete).not.toHaveBeenCalled()
+                expect(result.current).toMatchObject({
+                    error: expectedError,
+                })
             })
         })
     })
@@ -97,7 +97,7 @@ describe('useDataQuery', () => {
                 options: { variables: { id: one } },
             }
 
-            const { result, waitForNextUpdate, rerender } = renderHook(
+            const { result, rerender } = renderHook(
                 (props) => useDataQuery(props.query, props.options),
                 {
                     wrapper,
@@ -111,10 +111,10 @@ describe('useDataQuery', () => {
                 called: true,
             })
 
-            await waitForNextUpdate()
-
-            expect(result.current).toMatchObject({
-                data: { x: resultOne },
+            await waitFor(() => {
+                expect(result.current).toMatchObject({
+                    data: { x: resultOne },
+                })
             })
 
             act(() => {
@@ -144,23 +144,22 @@ describe('useDataQuery', () => {
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
-            const { result, waitForNextUpdate } = renderHook(
-                () => useDataQuery(query),
-                { wrapper }
-            )
+            const { result } = renderHook(() => useDataQuery(query), {
+                wrapper,
+            })
 
             expect(result.current).toMatchObject({
                 loading: true,
                 called: true,
             })
 
-            await waitForNextUpdate()
-
-            expect(mockSpy).toHaveBeenCalledTimes(1)
-            expect(result.current).toMatchObject({
-                loading: false,
-                called: true,
-                data: { x: 42 },
+            await waitFor(() => {
+                expect(mockSpy).toHaveBeenCalledTimes(1)
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    called: true,
+                    data: { x: 42 },
+                })
             })
         })
     })
@@ -192,12 +191,9 @@ describe('useDataQuery', () => {
                 </CustomDataProvider>
             )
 
-            const { result, waitForNextUpdate } = renderHook(
-                () => useDataQuery(query),
-                {
-                    wrapper,
-                }
-            )
+            const { result } = renderHook(() => useDataQuery(query), {
+                wrapper,
+            })
 
             expect(mockSpy).toHaveBeenCalledTimes(1)
             expect(result.current).toMatchObject({
@@ -205,13 +201,13 @@ describe('useDataQuery', () => {
                 called: true,
             })
 
-            await waitForNextUpdate()
-
-            // Now the cache will contain a value for 'answer' without variables
-            expect(result.current).toMatchObject({
-                loading: false,
-                called: true,
-                data: { x: 42 },
+            await waitFor(() => {
+                // Now the cache will contain a value for 'answer' without variables
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    called: true,
+                    data: { x: 42 },
+                })
             })
 
             act(() => {
@@ -224,12 +220,12 @@ describe('useDataQuery', () => {
                 loading: true,
             })
 
-            await waitForNextUpdate()
-
-            // Now the cache will contain a value for 'answer' with and without variables
-            expect(result.current).toMatchObject({
-                loading: false,
-                data: { x: 43 },
+            await waitFor(() => {
+                // Now the cache will contain a value for 'answer' with and without variables
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    data: { x: 43 },
+                })
             })
 
             act(() => {
@@ -260,7 +256,7 @@ describe('useDataQuery', () => {
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
-            const { result, waitForNextUpdate } = renderHook(
+            const { result } = renderHook(
                 () => {
                     const one = useDataQuery(query)
                     const two = useDataQuery(query)
@@ -280,15 +276,15 @@ describe('useDataQuery', () => {
             expect(mockSpy).toHaveBeenCalledTimes(1)
             expect(result.current).toMatchObject([loading, loading, loading])
 
-            await waitForNextUpdate()
-
-            const done = {
-                loading: false,
-                called: true,
-                data: { x: 42 },
-            }
-            expect(mockSpy).toHaveBeenCalledTimes(1)
-            expect(result.current).toMatchObject([done, done, done])
+            await waitFor(() => {
+                const done = {
+                    loading: false,
+                    called: true,
+                    data: { x: 42 },
+                }
+                expect(mockSpy).toHaveBeenCalledTimes(1)
+                expect(result.current).toMatchObject([done, done, done])
+            })
         })
     })
 
@@ -300,24 +296,21 @@ describe('useDataQuery', () => {
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
-            const { result, waitForNextUpdate } = renderHook(
-                () => useDataQuery(query),
-                {
-                    wrapper,
-                }
-            )
+            const { result } = renderHook(() => useDataQuery(query), {
+                wrapper,
+            })
 
             expect(result.current).toMatchObject({
                 loading: true,
                 called: true,
             })
 
-            await waitForNextUpdate()
-
-            expect(result.current).toMatchObject({
-                loading: false,
-                called: true,
-                data: { x: 42 },
+            await waitFor(() => {
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    called: true,
+                    data: { x: 42 },
+                })
             })
         })
 
@@ -331,24 +324,21 @@ describe('useDataQuery', () => {
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
-            const { result, waitForNextUpdate } = renderHook(
-                () => useDataQuery(query),
-                {
-                    wrapper,
-                }
-            )
+            const { result } = renderHook(() => useDataQuery(query), {
+                wrapper,
+            })
 
             expect(result.current).toMatchObject({
                 loading: true,
                 called: true,
             })
 
-            await waitForNextUpdate()
-
-            expect(result.current).toMatchObject({
-                loading: false,
-                called: true,
-                data: { x: 42, y: 24 },
+            await waitFor(() => {
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    called: true,
+                    data: { x: 42, y: 24 },
+                })
             })
         })
     })
@@ -366,24 +356,21 @@ describe('useDataQuery', () => {
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
-            const { result, waitForNextUpdate } = renderHook(
-                () => useDataQuery(query),
-                {
-                    wrapper,
-                }
-            )
+            const { result } = renderHook(() => useDataQuery(query), {
+                wrapper,
+            })
 
             expect(result.current).toMatchObject({
                 loading: true,
                 called: true,
             })
 
-            await waitForNextUpdate()
-
-            expect(result.current).toMatchObject({
-                loading: false,
-                called: true,
-                error: expectedError,
+            await waitFor(() => {
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    called: true,
+                    error: expectedError,
+                })
             })
         })
 
@@ -403,24 +390,21 @@ describe('useDataQuery', () => {
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
-            const { result, waitForNextUpdate } = renderHook(
-                () => useDataQuery(query),
-                {
-                    wrapper,
-                }
-            )
+            const { result } = renderHook(() => useDataQuery(query), {
+                wrapper,
+            })
 
             expect(result.current).toMatchObject({
                 loading: true,
                 called: true,
             })
 
-            await waitForNextUpdate()
-
-            expect(result.current).toMatchObject({
-                loading: false,
-                called: true,
-                error: expectedError,
+            await waitFor(() => {
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    called: true,
+                    error: expectedError,
+                })
             })
         })
     })
@@ -442,7 +426,7 @@ describe('useDataQuery', () => {
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () => useDataQuery(query, { lazy: true }),
                 {
                     wrapper,
@@ -500,7 +484,7 @@ describe('useDataQuery', () => {
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () => useDataQuery(query, { lazy: true }),
                 {
                     wrapper,
@@ -542,7 +526,7 @@ describe('useDataQuery', () => {
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
-            const { result, waitFor } = renderHook(
+            const { result } = renderHook(
                 () =>
                     useDataQuery(query, { lazy: true, variables: { id: '1' } }),
                 {
@@ -576,16 +560,13 @@ describe('useDataQuery', () => {
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
-            const { result, waitForNextUpdate, rerender } = renderHook(
-                () => useDataQuery(query),
-                {
-                    wrapper,
-                }
-            )
+            const { result, rerender } = renderHook(() => useDataQuery(query), {
+                wrapper,
+            })
 
             const firstRefetch = result.current.refetch
 
-            await waitForNextUpdate()
+            // await waitFor(() => {})
 
             act(() => {
                 result.current.refetch()
@@ -598,9 +579,9 @@ describe('useDataQuery', () => {
                 rerender()
             })
 
-            await waitForNextUpdate()
-
-            expect(result.current.refetch).toBe(firstRefetch)
+            await waitFor(() => {
+                expect(result.current.refetch).toBe(firstRefetch)
+            })
         })
 
         it('Should return stale data and set loading to true on refetch', async () => {
@@ -614,12 +595,9 @@ describe('useDataQuery', () => {
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
-            const { result, waitForNextUpdate, rerender } = renderHook(
-                () => useDataQuery(query),
-                {
-                    wrapper,
-                }
-            )
+            const { result, rerender } = renderHook(() => useDataQuery(query), {
+                wrapper,
+            })
 
             expect(mockSpy).toHaveBeenCalledTimes(1)
             expect(result.current).toMatchObject({
@@ -627,12 +605,12 @@ describe('useDataQuery', () => {
                 called: true,
             })
 
-            await waitForNextUpdate()
-
-            expect(result.current).toMatchObject({
-                loading: false,
-                called: true,
-                data: { x: 42 },
+            await waitFor(() => {
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    called: true,
+                    data: { x: 42 },
+                })
             })
 
             act(() => {
@@ -654,14 +632,14 @@ describe('useDataQuery', () => {
                 data: { x: 42 },
             })
 
-            await waitForNextUpdate()
-
-            expect(mockSpy).toHaveBeenCalledTimes(2)
-            expect(result.current).toMatchObject({
-                loading: false,
-                fetching: false,
-                called: true,
-                data: { x: 43 },
+            await waitFor(() => {
+                expect(mockSpy).toHaveBeenCalledTimes(2)
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    fetching: false,
+                    called: true,
+                    data: { x: 43 },
+                })
             })
         })
 
@@ -673,7 +651,7 @@ describe('useDataQuery', () => {
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
-            const { result, waitForNextUpdate } = renderHook(
+            const { result } = renderHook(
                 () => useDataQuery(query, { lazy: true }),
                 { wrapper }
             )
@@ -694,12 +672,12 @@ describe('useDataQuery', () => {
                 called: true,
             })
 
-            await waitForNextUpdate()
-
-            expect(result.current).toMatchObject({
-                loading: false,
-                called: true,
-                data: { x: 42 },
+            await waitFor(() => {
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    called: true,
+                    data: { x: 42 },
+                })
             })
         })
 
@@ -712,7 +690,7 @@ describe('useDataQuery', () => {
             const onComplete = jest.fn()
             const onError = jest.fn()
 
-            const { result, waitForNextUpdate } = renderHook(
+            const { result } = renderHook(
                 () => useDataQuery(query, { lazy: true, onComplete, onError }),
                 { wrapper }
             )
@@ -721,15 +699,15 @@ describe('useDataQuery', () => {
                 result.current.refetch()
             })
 
-            await waitForNextUpdate()
-
-            expect(result.current).toMatchObject({
-                loading: false,
-                called: true,
-                data: { x: 42 },
+            await waitFor(() => {
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    called: true,
+                    data: { x: 42 },
+                })
+                expect(onComplete).toHaveBeenCalledWith({ x: 42 })
+                expect(onError).not.toHaveBeenCalled()
             })
-            expect(onComplete).toHaveBeenCalledWith({ x: 42 })
-            expect(onError).not.toHaveBeenCalled()
         })
 
         it('Should call onError after a failed refetch', async () => {
@@ -746,7 +724,7 @@ describe('useDataQuery', () => {
             const onComplete = jest.fn()
             const onError = jest.fn()
 
-            const { result, waitForNextUpdate } = renderHook(
+            const { result } = renderHook(
                 () => useDataQuery(query, { lazy: true, onComplete, onError }),
                 { wrapper }
             )
@@ -755,12 +733,12 @@ describe('useDataQuery', () => {
                 result.current.refetch()
             })
 
-            await waitForNextUpdate()
-
-            expect(onError).toHaveBeenCalledWith(expectedError)
-            expect(onComplete).not.toHaveBeenCalled()
-            expect(result.current).toMatchObject({
-                error: expectedError,
+            await waitFor(() => {
+                expect(onError).toHaveBeenCalledWith(expectedError)
+                expect(onComplete).not.toHaveBeenCalled()
+                expect(result.current).toMatchObject({
+                    error: expectedError,
+                })
             })
         })
 
@@ -778,31 +756,31 @@ describe('useDataQuery', () => {
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
-            const { result, waitForNextUpdate } = renderHook(
+            const { result } = renderHook(
                 () => useDataQuery(query, { variables }),
                 { wrapper }
             )
 
-            await waitForNextUpdate()
-
-            expect(spy).toHaveBeenCalledTimes(1)
-            expect(result.current).toMatchObject({
-                loading: false,
-                called: true,
-                data: { x: 42 },
+            await waitFor(() => {
+                expect(spy).toHaveBeenCalledTimes(1)
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    called: true,
+                    data: { x: 42 },
+                })
             })
 
             act(() => {
                 result.current.refetch(variables)
             })
 
-            await waitForNextUpdate()
-
-            expect(spy).toHaveBeenCalledTimes(2)
-            expect(result.current).toMatchObject({
-                loading: false,
-                called: true,
-                data: { x: 42 },
+            await waitFor(() => {
+                expect(spy).toHaveBeenCalledTimes(2)
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    called: true,
+                    data: { x: 42 },
+                })
             })
         })
 
@@ -813,7 +791,7 @@ describe('useDataQuery', () => {
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
-            const { result, waitForNextUpdate } = renderHook(
+            const { result } = renderHook(
                 () => useDataQuery(query, { lazy: true }),
                 { wrapper }
             )
@@ -824,13 +802,13 @@ describe('useDataQuery', () => {
                 ourPromise = result.current.refetch()
             })
 
-            await waitForNextUpdate()
-
-            expect(ourPromise).resolves.toEqual({ x: 42 })
-            expect(result.current).toMatchObject({
-                loading: false,
-                called: true,
-                data: { x: 42 },
+            await waitFor(() => {
+                expect(ourPromise).resolves.toEqual({ x: 42 })
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    called: true,
+                    data: { x: 42 },
+                })
             })
         })
 
@@ -841,7 +819,7 @@ describe('useDataQuery', () => {
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
-            const { result, waitForNextUpdate } = renderHook(
+            const { result } = renderHook(
                 () => useDataQuery(query, { lazy: false }),
                 { wrapper }
             )
@@ -852,13 +830,13 @@ describe('useDataQuery', () => {
                 reactQueryPromise = result.current.refetch()
             })
 
-            await waitForNextUpdate()
-
-            expect(reactQueryPromise).resolves.toEqual({ x: 42 })
-            expect(result.current).toMatchObject({
-                loading: false,
-                called: true,
-                data: { x: 42 },
+            await waitFor(() => {
+                expect(reactQueryPromise).resolves.toEqual({ x: 42 })
+                expect(result.current).toMatchObject({
+                    loading: false,
+                    called: true,
+                    data: { x: 42 },
+                })
             })
         })
 
@@ -874,7 +852,7 @@ describe('useDataQuery', () => {
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
-            const { result, waitForNextUpdate } = renderHook(
+            const { result } = renderHook(
                 () => useDataQuery(query, { lazy: true }),
                 { wrapper }
             )
@@ -885,11 +863,11 @@ describe('useDataQuery', () => {
                 ourPromise = result.current.refetch()
             })
 
-            await waitForNextUpdate()
-
-            expect(ourPromise).resolves.toBeUndefined()
-            expect(result.current).toMatchObject({
-                error: expectedError,
+            await waitFor(() => {
+                expect(ourPromise).resolves.toBeUndefined()
+                expect(result.current).toMatchObject({
+                    error: expectedError,
+                })
             })
         })
 
@@ -905,7 +883,7 @@ describe('useDataQuery', () => {
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
-            const { result, waitForNextUpdate } = renderHook(
+            const { result } = renderHook(
                 () => useDataQuery(query, { lazy: false }),
                 { wrapper }
             )
@@ -916,11 +894,11 @@ describe('useDataQuery', () => {
                 reactQueryPromise = result.current.refetch()
             })
 
-            await waitForNextUpdate()
-
-            expect(reactQueryPromise).resolves.toBeUndefined()
-            expect(result.current).toMatchObject({
-                error: expectedError,
+            await waitFor(() => {
+                expect(reactQueryPromise).resolves.toBeUndefined()
+                expect(result.current).toMatchObject({
+                    error: expectedError,
+                })
             })
         })
 
@@ -951,7 +929,7 @@ describe('useDataQuery', () => {
                 options: { variables: { id: one } },
             }
 
-            const { result, waitForNextUpdate } = renderHook(
+            const { result } = renderHook(
                 (props) => useDataQuery(props.query, props.options),
                 {
                     wrapper,
@@ -959,21 +937,21 @@ describe('useDataQuery', () => {
                 }
             )
 
-            await waitForNextUpdate()
-
-            expect(result.current).toMatchObject({
-                data: { x: resultOne },
+            await waitFor(() => {
+                expect(result.current).toMatchObject({
+                    data: { x: resultOne },
+                })
             })
 
             act(() => {
                 result.current.refetch({ id: two })
             })
 
-            await waitForNextUpdate()
-
-            expect(mockSpy).toHaveBeenCalledTimes(2)
-            expect(result.current).toMatchObject({
-                data: { x: resultTwo },
+            await waitFor(() => {
+                expect(mockSpy).toHaveBeenCalledTimes(2)
+                expect(result.current).toMatchObject({
+                    data: { x: resultTwo },
+                })
             })
         })
 
@@ -994,35 +972,35 @@ describe('useDataQuery', () => {
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
-            const { result, waitForNextUpdate } = renderHook(
+            const { result } = renderHook(
                 () => useDataQuery(query, { variables: initialVariables }),
                 { wrapper }
             )
 
-            await waitForNextUpdate()
-
-            expect(mockSpy).toHaveBeenLastCalledWith(
-                expect.anything(),
-                expect.objectContaining({ params: initialVariables }),
-                expect.anything()
-            )
+            await waitFor(() => {
+                expect(mockSpy).toHaveBeenLastCalledWith(
+                    expect.anything(),
+                    expect.objectContaining({ params: initialVariables }),
+                    expect.anything()
+                )
+            })
 
             act(() => {
                 result.current.refetch(newVariables)
             })
 
-            await waitForNextUpdate()
-
-            expect(mockSpy).toHaveBeenLastCalledWith(
-                expect.anything(),
-                expect.objectContaining({
-                    params: {
-                        ...initialVariables,
-                        ...newVariables,
-                    },
-                }),
-                expect.anything()
-            )
+            await waitFor(() => {
+                expect(mockSpy).toHaveBeenLastCalledWith(
+                    expect.anything(),
+                    expect.objectContaining({
+                        params: {
+                            ...initialVariables,
+                            ...newVariables,
+                        },
+                    }),
+                    expect.anything()
+                )
+            })
         })
     })
 })

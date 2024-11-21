@@ -6,7 +6,7 @@ export type Version = {
     tag?: string
 }
 
-export type DateInput = string | Date | number | null
+export type DateInput = string | Date | number | null | undefined
 
 interface SystemInfo {
     version: string
