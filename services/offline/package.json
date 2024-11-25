@@ -4,10 +4,11 @@
     "version": "3.11.0-alpha.1",
     "main": "./build/cjs/index.js",
     "module": "./build/es/index.js",
-    "types": "build/types/index.d.ts",
+    "types": "./build/types/index.d.ts",
     "exports": {
         "import": "./build/es/index.js",
-        "require": "./build/cjs/index.js"
+        "require": "./build/cjs/index.js",
+        "types": "./build/types/index.d.ts"
     },
     "repository": {
         "type": "git",

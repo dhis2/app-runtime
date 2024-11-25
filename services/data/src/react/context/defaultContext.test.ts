@@ -1,4 +1,4 @@
-import { defaultContext } from './defaultContext'
+import { defaultDataContext } from './defaultDataContext'
 
 describe('defaultContext', () => {
     const originalError = console.error
@@ -10,7 +10,7 @@ describe('defaultContext', () => {
     afterEach(() => (console.error = originalError))
 
     it('Should throw if query is called', () => {
-        const context = defaultContext
+        const context = defaultDataContext
         expect(
             context.engine.query({
                 test: {
@@ -28,7 +28,7 @@ describe('defaultContext', () => {
     })
 
     it('Should throw and log if mutate is called', () => {
-        const context = defaultContext
+        const context = defaultDataContext
         expect(
             context.engine.mutate({
                 type: 'create',

@@ -39,7 +39,7 @@ describe('stableVariablesHash', () => {
     })
 
     it('throws a clear error when the variables contain a circular reference', () => {
-        const unserializable = {
+        const unserializable: any = {
             value: 'value',
         }
         unserializable.circular = unserializable

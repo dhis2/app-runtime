@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
-import { FetchError, QueryExecuteOptions } from '../../engine'
+import { FetchError } from '@dhis2/data-engine'
+import type { QueryExecuteOptions } from '@dhis2/data-engine'
 import { ExecuteHookInput, ExecuteHookResult } from '../../types'
 import { useStaticInput } from './useStaticInput'
 

@@ -1,4 +1,4 @@
-import { Query, QueryOptions } from '../../engine'
+import type { Query, QueryOptions } from '@dhis2/data-engine'
 import { QueryRenderInput } from '../../types'
 import { useDataQuery } from '../hooks/useDataQuery'
 

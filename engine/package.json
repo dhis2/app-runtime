@@ -1,6 +1,8 @@
 {
-    "name": "@dhis2/app-service-plugin",
+    "name": "@dhis2/data-engine",
     "version": "3.11.0-alpha.1",
+    "description": "A standalone data query engine for DHIS2 REST API",
+    "repository": "https://github.com/dhis2/app-runtime.git",
     "main": "./build/cjs/index.js",
     "module": "./build/es/index.js",
     "types": "./build/types/index.d.ts",
@@ -9,34 +11,9 @@
         "require": "./build/cjs/index.js",
         "types": "./build/types/index.d.ts"
     },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/dhis2/app-runtime.git",
-        "directory": "services/plugin"
-    },
-    "author": "Thomas Zemp <tom@dhis2.org>",
+    "author": "Austin McGee <austin@dhis2.org>",
     "license": "BSD-3-Clause",
-    "publishConfig": {
-        "access": "public"
-    },
-    "files": [
-        "build/**"
-    ],
-    "dependencies": {
-        "post-robot": "^10.0.46"
-    },
-    "peerDependencies": {
-        "prop-types": "^15.7.2",
-        "react": "^16.8.6 || ^18",
-        "react-dom": "^16.8.6 || ^18",
-        "@dhis2/app-service-alerts": "3.11.0-alpha.1",
-        "@dhis2/app-service-data": "3.11.0-alpha.1"
-    },
-    "devDependencies": {
-        "@types/post-robot": "^10.0.3"
-    },
     "scripts": {
-        "clean": "rimraf ./build/*",
         "build:types": "tsc --emitDeclarationOnly --outDir ./build/types",
         "build:package": "d2-app-scripts build",
         "build": "concurrently -n build,types \"yarn build:package\" \"yarn build:types\"",

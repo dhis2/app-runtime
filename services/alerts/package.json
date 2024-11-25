@@ -6,7 +6,8 @@
     "types": "./build/types/index.d.ts",
     "exports": {
         "import": "./build/es/index.js",
-        "require": "./build/cjs/index.js"
+        "require": "./build/cjs/index.js",
+        "types": "./build/types/index.d.ts"
     },
     "repository": {
         "type": "git",

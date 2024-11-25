@@ -7,6 +7,7 @@
     "private": true,
     "workspaces": [
         "runtime",
+        "engine",
         "services/*"
     ],
     "devDependencies": {
@@ -40,10 +41,12 @@
         "build:config": "cd services/config && yarn build",
         "build:services": "yarn build:config && loop \"yarn build\" --cwd ./services --exclude config --exit-on-error",
         "build:runtime": "cd runtime && yarn build",
-        "build": "yarn build:services && yarn build:runtime && yarn install:examples",
+        "build:engine": "cd engine && yarn build",
+        "build": "yarn build:engine && yarn build:services && yarn build:runtime && yarn install:examples",
         "test:services": "loop \"yarn test\" --cwd ./services --exit-on-error",
         "test:runtime": "cd runtime && yarn test",
-        "test": "yarn test:services && yarn test:runtime",
+        "test:engine": "cd engine && yarn test",
+        "test": "yarn test:engine && yarn test:services && yarn test:runtime",
         "format": "d2-style apply js --all --no-stage && d2-style apply text --all --no-stage",
         "start": "yarn build && cd examples/query-playground && yarn start",
         "docs:build": "mkdir -p dist && cp docs/index.html dist/ && yarn build:playground",

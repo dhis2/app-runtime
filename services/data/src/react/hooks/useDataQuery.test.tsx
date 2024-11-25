@@ -85,6 +85,7 @@ describe('useDataQuery', () => {
                     case two:
                         return Promise.resolve(resultTwo)
                 }
+                return Promise.resolve(undefined)
             })
             const data = {
                 answer: mockSpy,
@@ -245,7 +246,7 @@ describe('useDataQuery', () => {
 
     describe('internal: deduplication', () => {
         it('Should deduplicate identical requests', async () => {
-            const mockSpy = jest.fn(() => 42)
+            const mockSpy = jest.fn(() => Promise.resolve(42))
             const data = {
                 answer: mockSpy,
             }
@@ -414,7 +415,7 @@ describe('useDataQuery', () => {
             let count = 0
             const spy = jest.fn(() => {
                 count++
-                return count
+                return Promise.resolve(count)
             })
             const data = {
                 answer: spy,
@@ -469,10 +470,10 @@ describe('useDataQuery', () => {
         it('Should only trigger a single request when refetch is called on a lazy query with new variables', async () => {
             const spy = jest.fn((type, query) => {
                 if (query.id === '1') {
-                    return 42
+                    return Promise.resolve(42)
                 }
 
-                return 0
+                return Promise.resolve(0)
             })
             const data = {
                 answer: spy,
@@ -511,10 +512,10 @@ describe('useDataQuery', () => {
         it('Should only trigger a single request when refetch is called on a lazy query with identical variables', async () => {
             const spy = jest.fn((type, query) => {
                 if (query.id === '1') {
-                    return 42
+                    return Promise.resolve(42)
                 }
 
-                return 0
+                return Promise.resolve(0)
             })
             const data = {
                 answer: spy,
@@ -553,7 +554,7 @@ describe('useDataQuery', () => {
 
         it('Should have a stable identity if the variables have not changed', async () => {
             const data = {
-                answer: () => 42,
+                answer: () => Promise.resolve(42),
             }
             const query = { x: { resource: 'answer' } }
             const wrapper = ({ children }) => (
@@ -750,7 +751,7 @@ describe('useDataQuery', () => {
                     params: ({ one, two, three }) => ({ one, two, three }),
                 },
             }
-            const spy = jest.fn(() => 42)
+            const spy = jest.fn(() => Promise.resolve(42))
             const data = { answer: spy }
             const wrapper = ({ children }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
@@ -917,6 +918,7 @@ describe('useDataQuery', () => {
                     case two:
                         return Promise.resolve(resultTwo)
                 }
+                return Promise.resolve(undefined)
             })
             const data = {
                 answer: mockSpy,

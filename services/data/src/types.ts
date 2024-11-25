@@ -1,8 +1,4 @@
-import DataEngine from './engine/DataEngine'
-import { QueryExecuteOptions } from './engine/types/ExecuteOptions'
-import { FetchError } from './engine/types/FetchError'
-import { JsonValue } from './engine/types/JsonValue'
-import { QueryVariables, QueryResult } from './engine/types/Query'
+import { DataEngine, QueryExecuteOptions, FetchError, JsonValue, QueryVariables, QueryResult } from '@dhis2/data-engine'
 
 export interface ContextType {
     engine: DataEngine

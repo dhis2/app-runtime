@@ -3,10 +3,11 @@
     "version": "3.11.0-alpha.1",
     "main": "./build/cjs/index.js",
     "module": "./build/es/index.js",
-    "types": "build/types/index.d.ts",
+    "types": "./build/types/index.d.ts",
     "exports": {
         "import": "./build/es/index.js",
-        "require": "./build/cjs/index.js"
+        "require": "./build/cjs/index.js",
+        "types": "./build/types/index.d.ts"
     },
     "repository": {
         "type": "git",
@@ -23,6 +24,7 @@
     ],
     "peerDependencies": {
         "@dhis2/app-service-config": "3.11.0-alpha.1",
+        "@dhis2/data-engine": "3.11.0-alpha.1",
         "prop-types": "^15.7.2",
         "react": "^16.8 || ^18",
         "react-dom": "^16.8 || ^18"

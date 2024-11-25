@@ -3,8 +3,7 @@
 import { useConfig } from '@dhis2/app-service-config'
 import React from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import { DataEngine } from '../../engine'
-import { RestAPILink } from '../../links'
+import { DataEngine, RestAPILink } from '@dhis2/data-engine'
 import { DataContext } from '../context/DataContext'
 
 export interface ProviderInput {
