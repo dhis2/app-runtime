@@ -39,7 +39,7 @@ const validateDeclarativeFields = (
         } else if (Array.isArray(query.params.fields)) {
             fields = query.params.fields.map((field) => String(field).trim())
         }
-        if (fields?.find((field) => /(^\*$|^:.+)/.test(field)))) {
+        if (fields?.find((field) => /(^\*$|^:.+)/.test(field))) {
             warn(
                 'Data queries should not use wildcard or dynamic field groups',
                 query.params.fields,
