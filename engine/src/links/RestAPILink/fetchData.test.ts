@@ -106,19 +106,24 @@ describe('networkFetch', () => {
         })
     })
 
+    const toContentTypeHeader = (type: 'json' | 'text' | string) => {
+        if (type === 'json') {
+            return 'application/json'
+        }
+        if (type === 'text') {
+            return 'text/plain'
+        }
+
+        return 'some/other-content-type'
+    }
     describe('fetchData', () => {
         const headers: Record<string, (type: string) => string> = {
-            'Content-Type': (type) =>
-                type === 'json'
-                    ? 'application/json'
-                    : type === 'text'
-                    ? 'text/plain'
-                    : 'some/other-content-type',
+            'Content-Type': (type) => toContentTypeHeader(type),
         }
         const mockFetch = jest.fn(async (url) => ({
             status: 200,
             headers: {
-                get: (name: string) => headers[name] && headers[name](url),
+                get: (name: string) => headers[name]?.(url),
             },
             json: async () => ({ foo: 'bar' }),
             text: async () => 'foobar',

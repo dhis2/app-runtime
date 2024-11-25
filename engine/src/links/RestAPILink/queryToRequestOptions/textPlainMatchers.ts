@@ -112,7 +112,7 @@ export const addOrUpdateConfigurationProperty = (
 ): boolean => {
     // NOTE: The corsWhitelist property does expect "application/json"
     const pattern = /^(configuration)\/([a-zA-Z]{1,50})$/
-    const match = resource.match(pattern)
+    const match = pattern.exec(resource)
     return type === 'create' && !!match && match[2] !== 'corsWhitelist'
 }
 

@@ -68,7 +68,7 @@ const isAction = (resource: string) => resource.startsWith(actionPrefix)
 const makeActionPath = (resource: string) =>
     joinPath(
         'dhis-web-commons',
-        `${resource.substr(actionPrefix.length)}.action`
+        `${resource.substring(actionPrefix.length)}.action`
     )
 
 const skipApiVersion = (

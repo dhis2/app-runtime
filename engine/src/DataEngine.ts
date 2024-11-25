@@ -17,7 +17,7 @@ const reduceResponses = (responses: JsonValue[], names: string[]) =>
     }, {})
 
 export class DataEngine {
-    private link: DataEngineLink
+    private readonly link: DataEngineLink
     public constructor(link: DataEngineLink) {
         this.link = link
     }

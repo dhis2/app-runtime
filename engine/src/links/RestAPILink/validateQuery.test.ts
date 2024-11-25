@@ -55,15 +55,15 @@ describe('validateQuery', () => {
                 'create'
             )
         ).toBe(true)
-        expect(console.warn).not.toHaveBeenCalled()
+        expect(warn).not.toHaveBeenCalled()
 
         expect(
             validateResourceQuery({ resource: 'visualizations' }, 'update')
         ).toBe(true)
-        expect(console.warn).not.toHaveBeenCalled()
+        expect(warn).not.toHaveBeenCalled()
 
         expect(validateResourceQuery({ resource: 'maps' }, 'delete')).toBe(true)
-        expect(console.warn).not.toHaveBeenCalled()
+        expect(warn).not.toHaveBeenCalled()
     })
 
     it('Should skip validation for non-normative and non-metadata resources', () => {
@@ -76,7 +76,7 @@ describe('validateQuery', () => {
                 'read'
             )
         ).toBe(true)
-        expect(console.warn).not.toHaveBeenCalled()
+        expect(warn).not.toHaveBeenCalled()
 
         expect(
             validateResourceQuery(
@@ -84,7 +84,7 @@ describe('validateQuery', () => {
                 'read'
             )
         ).toBe(true)
-        expect(console.warn).not.toHaveBeenCalled()
+        expect(warn).not.toHaveBeenCalled()
 
         expect(
             validateResourceQuery(
@@ -92,7 +92,7 @@ describe('validateQuery', () => {
                 'read'
             )
         ).toBe(true)
-        expect(console.warn).not.toHaveBeenCalled()
+        expect(warn).not.toHaveBeenCalled()
 
         expect(
             validateResourceQuery(
@@ -100,13 +100,13 @@ describe('validateQuery', () => {
                 'read'
             )
         ).toBe(true)
-        expect(console.warn).not.toHaveBeenCalled()
+        expect(warn).not.toHaveBeenCalled()
 
         process.env.NODE_ENV = 'test'
     })
 
     it('Should return true and not warn in production mode', () => {
-        console.warn = jest.fn()
+        const warn = (console.warn = jest.fn())
         process.env.NODE_ENV = 'production'
 
         expect(
@@ -118,7 +118,7 @@ describe('validateQuery', () => {
                 'read'
             )
         ).toBe(true)
-        expect(console.warn).not.toHaveBeenCalled()
+        expect(warn).not.toHaveBeenCalled()
 
         process.env.NODE_ENV = 'test'
     })

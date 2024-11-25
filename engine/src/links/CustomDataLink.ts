@@ -21,9 +21,9 @@ export interface CustomLinkOptions {
 }
 
 export class CustomDataLink implements DataEngineLink {
-    private failOnMiss: boolean
-    private loadForever: boolean
-    private data: CustomData
+    private readonly failOnMiss: boolean
+    private readonly loadForever: boolean
+    private readonly data: CustomData
     public constructor(
         customData: CustomData,
         { failOnMiss = true, loadForever = false }: CustomLinkOptions = {}
