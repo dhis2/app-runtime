@@ -4,8 +4,8 @@ import type {
     DataEngineLinkExecuteOptions,
 } from '../types/DataEngineLink'
 import type { FetchType } from '../types/ExecuteOptions'
-import type { ResolvedResourceQuery } from '../types/Query'
 import type { JsonValue } from '../types/JsonValue'
+import type { ResolvedResourceQuery } from '../types/Query'
 import { fetchData } from './RestAPILink/fetchData'
 import { joinPath } from './RestAPILink/path'
 import { queryToRequestOptions } from './RestAPILink/queryToRequestOptions'

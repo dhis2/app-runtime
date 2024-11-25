@@ -1,7 +1,7 @@
 import i18n from '@dhis2/d2-i18n'
 import PropTypes from 'prop-types'
 import React from 'react'
-import { Editor } from './Editor'
+import { Editor } from './Editor.jsx'
 import styles from './QueryResults.module.css'
 
 export const QueryResults = ({ result }) => {

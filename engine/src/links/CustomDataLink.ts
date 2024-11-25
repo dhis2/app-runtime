@@ -3,8 +3,8 @@ import type {
     DataEngineLinkExecuteOptions,
 } from '../types/DataEngineLink'
 import type { FetchType } from '../types/ExecuteOptions'
-import type { ResolvedResourceQuery } from '../types/Query'
 import type { JsonValue } from '../types/JsonValue'
+import type { ResolvedResourceQuery } from '../types/Query'
 
 export type CustomResourceFactory = (
     type: FetchType,

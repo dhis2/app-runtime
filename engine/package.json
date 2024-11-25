@@ -2,7 +2,6 @@
     "name": "@dhis2/data-engine",
     "version": "3.11.0-alpha.1",
     "description": "A standalone data query engine for DHIS2 REST API",
-    "repository": "https://github.com/dhis2/app-runtime.git",
     "main": "./build/cjs/index.js",
     "module": "./build/es/index.js",
     "types": "./build/types/index.d.ts",
@@ -11,8 +10,19 @@
         "require": "./build/cjs/index.js",
         "types": "./build/types/index.d.ts"
     },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dhis2/app-runtime.git",
+        "directory": "engine"
+    },
     "author": "Austin McGee <austin@dhis2.org>",
     "license": "BSD-3-Clause",
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "build/**"
+    ],
     "scripts": {
         "build:types": "tsc --emitDeclarationOnly --outDir ./build/types",
         "build:package": "d2-app-scripts build",

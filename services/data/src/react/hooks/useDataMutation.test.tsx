@@ -1,6 +1,6 @@
+import type { CreateMutation, UpdateMutation } from '@dhis2/data-engine'
 import { renderHook, act, waitFor } from '@testing-library/react'
 import * as React from 'react'
-import type { CreateMutation, UpdateMutation } from '@dhis2/data-engine'
 import { CustomDataProvider } from '../components/CustomDataProvider'
 import { useDataEngine } from './useDataEngine'
 import { useDataMutation } from './useDataMutation'

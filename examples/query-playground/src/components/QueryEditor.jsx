@@ -2,7 +2,7 @@ import i18n from '@dhis2/d2-i18n'
 import { Button, Radio } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
-import { Editor } from './Editor'
+import { Editor } from './Editor.jsx'
 import styles from './QueryEditor.module.css'
 
 const defaultQuery = {

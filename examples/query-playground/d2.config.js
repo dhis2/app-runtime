@@ -3,7 +3,7 @@ const config = {
     type: 'app',
 
     entryPoints: {
-        app: './src/App',
+        app: './src/App.jsx',
     },
 }
 

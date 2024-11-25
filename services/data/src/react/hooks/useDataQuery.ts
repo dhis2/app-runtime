@@ -1,12 +1,12 @@
-import { useState, useRef, useCallback, useDebugValue } from 'react'
-import { useQuery, setLogger } from 'react-query'
 import type {
     Query,
     QueryOptions,
     QueryResult,
     QueryVariables,
-    FetchError
+    FetchError,
 } from '@dhis2/data-engine'
+import { useState, useRef, useCallback, useDebugValue } from 'react'
+import { useQuery, setLogger } from 'react-query'
 import type { QueryRenderInput, QueryRefetchFunction } from '../../types'
 import { mergeAndCompareVariables } from './mergeAndCompareVariables'
 import { useDataEngine } from './useDataEngine'

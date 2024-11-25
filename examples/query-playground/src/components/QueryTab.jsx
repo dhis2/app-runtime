@@ -1,7 +1,7 @@
-import { PropTypes } from '@dhis2/prop-types'
+import { PropTypes } from 'prop-types'
 import React from 'react'
-import { QueryEditor } from './QueryEditor'
-import { QueryResults } from './QueryResults'
+import { QueryEditor } from './QueryEditor.jsx'
+import { QueryResults } from './QueryResults.jsx'
 import styles from './QueryTab.module.css'
 
 export const QueryTab = ({

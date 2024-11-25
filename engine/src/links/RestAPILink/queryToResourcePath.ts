@@ -1,12 +1,10 @@
 import type { DataEngineConfig } from '../../types/DataEngineConfig'
+import type { FetchType } from '../../types/ExecuteOptions'
 import type { ResolvedResourceQuery } from '../../types/Query'
 import type {
     QueryParameters,
     QueryParameterValue,
 } from '../../types/QueryParameters'
-
-import type { FetchType } from '../../types/ExecuteOptions'
-
 import { RestAPILink } from '../RestAPILink'
 import { joinPath } from './path'
 import { validateResourceQuery } from './validateQuery'
@@ -73,7 +71,10 @@ const makeActionPath = (resource: string) =>
         `${resource.substr(actionPrefix.length)}.action`
     )
 
-const skipApiVersion = (resource: string, config: DataEngineConfig): boolean => {
+const skipApiVersion = (
+    resource: string,
+    config: DataEngineConfig
+): boolean => {
     if (resource === 'tracker' || resource.startsWith('tracker/')) {
         if (!config.serverVersion?.minor || config.serverVersion?.minor < 38) {
             return true
