@@ -106,7 +106,7 @@ describe('networkFetch', () => {
         })
     })
 
-    const toContentTypeHeader = (type: 'json' | 'text' | string) => {
+    const toContentTypeHeader = (type: string) => {
         if (type === 'json') {
             return 'application/json'
         }

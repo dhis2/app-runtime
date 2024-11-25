@@ -15,7 +15,7 @@ describe('validateQuery', () => {
                 'read'
             )
         ).toBe(true)
-        expect(console.warn).not.toHaveBeenCalled()
+        expect(warn).not.toHaveBeenCalled()
         expect(
             validateResourceQuery(
                 {
@@ -25,7 +25,7 @@ describe('validateQuery', () => {
                 'read'
             )
         ).toBe(true)
-        expect(console.warn).not.toHaveBeenCalled()
+        expect(warn).not.toHaveBeenCalled()
         expect(
             validateResourceQuery(
                 {
@@ -39,7 +39,7 @@ describe('validateQuery', () => {
                 'read'
             )
         ).toBe(true)
-        expect(console.warn).not.toHaveBeenCalled()
+        expect(warn).not.toHaveBeenCalled()
     })
 
     it('Should return true for mutations', () => {
