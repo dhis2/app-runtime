@@ -1,20 +1,22 @@
+import { json } from '@codemirror/lang-json'
+import { githubLight } from '@uiw/codemirror-theme-github'
+import { monokai } from '@uiw/codemirror-theme-monokai'
+import CodeMirror from '@uiw/react-codemirror'
+import PropTypes from 'prop-types'
 import React from 'react'
-import AceEditor from 'react-ace'
+import styles from './Editor.module.css'
 
-import 'brace/mode/json'
-import 'brace/theme/monokai'
-import 'brace/theme/github'
-import './Editor.css'
-
-export const Editor = (props) => (
-    <AceEditor
-        fontSize={14}
-        mode="json"
-        theme="github"
-        editorProps={{ $blockScrolling: true }}
-        showPrintMargin={false}
+export const Editor = ({ theme, ...editorProps }) => (
+    <CodeMirror
+        className={styles.editor}
+        extensions={[json()]}
+        theme={theme === 'light' ? githubLight : monokai}
+        basicSetup={{ tabSize: 4 }}
         width="100%"
         height="100%"
-        {...props}
+        {...editorProps}
     />
 )
+Editor.propTypes = {
+    theme: PropTypes.oneOf(['light', 'dark']),
+}

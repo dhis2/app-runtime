@@ -1,16 +1,51 @@
-# [3.11.0-alpha.1](https://github.com/dhis2/app-runtime/compare/v3.10.4-alpha.1...v3.11.0-alpha.1) (2024-11-21)
-
-
-### Features
-
-* upgrade app-runtime React version to v18 ([#1387](https://github.com/dhis2/app-runtime/issues/1387)) ([0e4a3d5](https://github.com/dhis2/app-runtime/commit/0e4a3d5c0e9cf8884c1a46f32fa0876234b6d765))
-
-## [3.10.4-alpha.1](https://github.com/dhis2/app-runtime/compare/v3.10.3...v3.10.4-alpha.1) (2024-04-02)
+## [3.11.3](https://github.com/dhis2/app-runtime/compare/v3.11.2...v3.11.3) (2024-11-19)
 
 
 ### Bug Fixes
 
-* **deps:** remove cli-app-scripts peer dep ([7764439](https://github.com/dhis2/app-runtime/commit/776443957cf7bce70d644459b946dc9382dd9103))
+* add endpoint to text plain matchers ([#1390](https://github.com/dhis2/app-runtime/issues/1390)) ([bc25458](https://github.com/dhis2/app-runtime/commit/bc254581f65ec22104144f596032f40d670a73ce))
+
+## [3.11.2](https://github.com/dhis2/app-runtime/compare/v3.11.1...v3.11.2) (2024-10-14)
+
+
+### Bug Fixes
+
+* expand FetchErrorDetails type ([#1389](https://github.com/dhis2/app-runtime/issues/1389)) ([ff0ad60](https://github.com/dhis2/app-runtime/commit/ff0ad6077aecdb7627ec985a61c159159be6b8ea))
+
+## [3.11.1](https://github.com/dhis2/app-runtime/compare/v3.11.0...v3.11.1) (2024-10-09)
+
+
+### Bug Fixes
+
+* handle alert returned async by parentAlertsAdd [LIBS-695] ([#1388](https://github.com/dhis2/app-runtime/issues/1388)) ([9c989b2](https://github.com/dhis2/app-runtime/commit/9c989b2f9c408b7d5988dd0ec8756e86ddf2632f))
+
+# [3.11.0](https://github.com/dhis2/app-runtime/compare/v3.10.6...v3.11.0) (2024-09-10)
+
+
+### Features
+
+* fixed dimensions efficiency ([#1386](https://github.com/dhis2/app-runtime/issues/1386)) ([2b07a14](https://github.com/dhis2/app-runtime/commit/2b07a14ea7e781c1948cfa651a4ad5759a811c79))
+
+## [3.10.6](https://github.com/dhis2/app-runtime/compare/v3.10.5...v3.10.6) (2024-07-26)
+
+
+### Bug Fixes
+
+* **cacheable-section:** stable references to avoid loops [LIBS-642] ([#1385](https://github.com/dhis2/app-runtime/issues/1385)) ([e3a5fbf](https://github.com/dhis2/app-runtime/commit/e3a5fbfd3e290cc68493a97adbbd27b9f3dca082))
+
+## [3.10.5](https://github.com/dhis2/app-runtime/compare/v3.10.4...v3.10.5) (2024-06-24)
+
+
+### Bug Fixes
+
+* update plugin sizing definition ([#1383](https://github.com/dhis2/app-runtime/issues/1383)) ([266dc49](https://github.com/dhis2/app-runtime/commit/266dc49423516189cf4dee706cc78e720af744e2))
+
+## [3.10.4](https://github.com/dhis2/app-runtime/compare/v3.10.3...v3.10.4) (2024-04-09)
+
+
+### Bug Fixes
+
+* **deps:** remove cli-app-scripts peer dep [LIBS-587] ([#1379](https://github.com/dhis2/app-runtime/issues/1379)) ([3598375](https://github.com/dhis2/app-runtime/commit/3598375a826304b61b9b2cbd279043531628dc70))
 
 ## [3.10.3](https://github.com/dhis2/app-runtime/compare/v3.10.2...v3.10.3) (2024-03-20)
 
