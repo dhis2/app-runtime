@@ -1,3 +1,23 @@
+# [3.11.0-alpha.1](https://github.com/dhis2/app-runtime/compare/v3.10.4-alpha.1...v3.11.0-alpha.1) (2024-11-26)
+
+
+### Bug Fixes
+
+* **cacheable-section:** synchronously flush recording state for UI consistency ([04bc604](https://github.com/dhis2/app-runtime/commit/04bc6049e511911ae5b54a498fc2cde0dcbf6e19))
+* add endpoint to text plain matchers ([#1390](https://github.com/dhis2/app-runtime/issues/1390)) ([de8fbec](https://github.com/dhis2/app-runtime/commit/de8fbec456c23c6cd40019bd094932036bb0d8c2))
+* expand FetchErrorDetails type ([#1389](https://github.com/dhis2/app-runtime/issues/1389)) ([78ad0b3](https://github.com/dhis2/app-runtime/commit/78ad0b33b4e62d663e8ffc2ccffff24bcd27d396))
+* handle alert returned async by parentAlertsAdd [LIBS-695] ([#1388](https://github.com/dhis2/app-runtime/issues/1388)) ([bba9c23](https://github.com/dhis2/app-runtime/commit/bba9c2393a1c0bb29d8eb4a376015453769cca2e))
+* **cacheable-section:** stable references to avoid loops [LIBS-642] ([#1385](https://github.com/dhis2/app-runtime/issues/1385)) ([31562e9](https://github.com/dhis2/app-runtime/commit/31562e9cbed4d58b5e59a1a016f57bfadf1c4d66))
+* update plugin sizing definition ([#1383](https://github.com/dhis2/app-runtime/issues/1383)) ([38c09b9](https://github.com/dhis2/app-runtime/commit/38c09b975787928f4c77091c4f23342ca5a99859))
+* **deps:** remove cli-app-scripts peer dep [LIBS-587] ([#1379](https://github.com/dhis2/app-runtime/issues/1379)) ([9e22e88](https://github.com/dhis2/app-runtime/commit/9e22e88da951514d0ca4daaf235220b0f7318943))
+* **deps:** update cli-app-scripts for package/types race condition ([dee6795](https://github.com/dhis2/app-runtime/commit/dee679583f5b4388b74287f951cf789ae966bdc1))
+
+
+### Features
+
+* fixed dimensions efficiency ([#1386](https://github.com/dhis2/app-runtime/issues/1386)) ([b56ad2d](https://github.com/dhis2/app-runtime/commit/b56ad2d359e1ac1c7c57b1c39cba69b7b4dbdac7))
+* upgrade app-runtime React version to v18 ([#1387](https://github.com/dhis2/app-runtime/issues/1387)) ([0e4a3d5](https://github.com/dhis2/app-runtime/commit/0e4a3d5c0e9cf8884c1a46f32fa0876234b6d765))
+
 ## [3.11.3](https://github.com/dhis2/app-runtime/compare/v3.11.2...v3.11.3) (2024-11-19)
 
 
