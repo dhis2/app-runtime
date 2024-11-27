@@ -29,6 +29,13 @@
     flex-grow: 1;
 }
 
+/*
+max-height fixes sizing and scrolling for CodeMirror --
+it's a bit inelegant with a hardcoded constant, but figuring out a smart
+dynamic size was getting complicated with many nested elements in the DOM,
+so this saves a bit of a refactor
+*/
 .results {
     width: 50%;
+    max-height: calc(100vh - 98px);
 }
