@@ -1,3 +1,17 @@
+# [3.12.0-alpha.1](https://github.com/dhis2/app-runtime/compare/v3.11.3...v3.12.0-alpha.1) (2024-11-27)
+
+
+### Bug Fixes
+
+* **cacheable-section:** synchronously flush recording state for UI consistency ([#1394](https://github.com/dhis2/app-runtime/issues/1394)) ([50d216c](https://github.com/dhis2/app-runtime/commit/50d216cb4b7a98995b327cb997bcf6bbd873ea18))
+* **deps:** remove cli-app-scripts peer dep ([7764439](https://github.com/dhis2/app-runtime/commit/776443957cf7bce70d644459b946dc9382dd9103))
+* **deps:** update cli-app-scripts for package/types race condition ([7980364](https://github.com/dhis2/app-runtime/commit/79803646c152a805277b123250124a272f178d99))
+
+
+### Features
+
+* upgrade app-runtime React version to v18 ([#1387](https://github.com/dhis2/app-runtime/issues/1387)) ([0e4a3d5](https://github.com/dhis2/app-runtime/commit/0e4a3d5c0e9cf8884c1a46f32fa0876234b6d765))
+
 ## [3.11.3](https://github.com/dhis2/app-runtime/compare/v3.11.2...v3.11.3) (2024-11-19)
 
 
