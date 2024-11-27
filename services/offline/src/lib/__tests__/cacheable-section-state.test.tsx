@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react'
 import React, { FC } from 'react'
 import { mockOfflineInterface } from '../../utils/test-mocks'
 import { useCachedSection, useRecordingState } from '../cacheable-section-state'
