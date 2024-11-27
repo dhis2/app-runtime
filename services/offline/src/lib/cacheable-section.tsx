@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { useCallback, useEffect, useMemo } from 'react'
+import { flushSync } from 'react-dom'
 import { RecordingState } from '../types'
 import { useRecordingState, useCachedSection } from './cacheable-section-state'
 import { useOfflineInterface } from './offline-interface'
@@ -95,15 +96,23 @@ export function useCacheableSection(id: string): CacheableSectionControls {
                     sectionId: id,
                     recordingTimeoutDelay,
                     onStarted: () => {
-                        onRecordingStarted()
+                        // Flush this state update synchronously so that the
+                        // right recordingState is set before any other callbacks
+                        flushSync(() => {
+                            onRecordingStarted()
+                        })
                         onStarted && onStarted()
                     },
                     onCompleted: () => {
-                        onRecordingCompleted()
+                        flushSync(() => {
+                            onRecordingCompleted()
+                        })
                         onCompleted && onCompleted()
                     },
                     onError: (error) => {
-                        onRecordingError(error)
+                        flushSync(() => {
+                            onRecordingError(error)
+                        })
                         onError && onError(error)
                     },
                 })

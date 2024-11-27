@@ -27,7 +27,7 @@ afterEach(() => {
     ;(console.error as jest.Mock).mockRestore()
 })
 
-it.skip('renders in the default state initially', () => {
+it('renders in the default state initially', () => {
     const wrapper: FC<PropsWithChildren> = ({ children }) => (
         <OfflineProvider offlineInterface={mockOfflineInterface}>
             {children}
@@ -42,7 +42,7 @@ it.skip('renders in the default state initially', () => {
 })
 
 it('has stable references', () => {
-    const wrapper: FC = ({ children }) => (
+    const wrapper: FC<PropsWithChildren> = ({ children }) => (
         <OfflineProvider offlineInterface={mockOfflineInterface}>
             {children}
         </OfflineProvider>
@@ -66,9 +66,9 @@ it('has stable references', () => {
     expect(result.current.remove).toBe(origRemove)
 })
 
-it.skip('handles a successful recording', async (done) => {
+it('handles a successful recording', async (done) => {
     const [sectionId, timeoutDelay] = ['one', 1234]
-    const testOfflineInterface = {
+    const recordingSuccessOfflineInterface = {
         ...mockOfflineInterface,
         getCachedSections: jest
             .fn()
@@ -78,7 +78,7 @@ it.skip('handles a successful recording', async (done) => {
             ]),
     }
     const wrapper: FC<PropsWithChildren> = ({ children }) => (
-        <OfflineProvider offlineInterface={testOfflineInterface}>
+        <OfflineProvider offlineInterface={recordingSuccessOfflineInterface}>
             {children}
         </OfflineProvider>
     )
@@ -93,8 +93,16 @@ it.skip('handles a successful recording', async (done) => {
         expect(result.current.recordingState).toBe('default')
 
         // Test that 'isCached' gets updated
-        expect(testOfflineInterface.getCachedSections).toBeCalledTimes(2)
-        await waitFor(() => expect(result.current.isCached).toBe(true))
+        expect(
+            recordingSuccessOfflineInterface.getCachedSections
+        ).toBeCalledTimes(2)
+        // Recording states are updated synchronously, but getting isCached
+        // state is asynchronous -- need to wait for that here.
+        // An assertion is not used as the waitFor condition because it may skew
+        // the total number assertions in this test if it needs to retry. Number
+        // of assertions is checked at the bottom of this test to make sure both
+        // of these callbacks are called.
+        await waitFor(() => result.current.isCached === true)
         expect(result.current.isCached).toBe(true)
         expect(result.current.lastUpdated).toBeInstanceOf(Date)
 
@@ -125,7 +133,7 @@ it.skip('handles a successful recording', async (done) => {
     expect.assertions(11)
 })
 
-it.skip('handles a recording that encounters an error', async (done) => {
+it('handles a recording that encounters an error', async (done) => {
     // Suppress the expected error from console (in addition to 'act' warning)
     jest.spyOn(console, 'error').mockImplementation((...args) => {
         const actPattern =
@@ -138,12 +146,12 @@ it.skip('handles a recording that encounters an error', async (done) => {
         }
         return originalError.call(console, ...args)
     })
-    const testOfflineInterface = {
+    const recordingErrorOfflineInterface = {
         ...mockOfflineInterface,
         startRecording: errorRecordingMock,
     }
     const wrapper: FC<PropsWithChildren> = ({ children }) => (
-        <OfflineProvider offlineInterface={testOfflineInterface}>
+        <OfflineProvider offlineInterface={recordingErrorOfflineInterface}>
             {children}
         </OfflineProvider>
     )
@@ -181,13 +189,13 @@ it.skip('handles a recording that encounters an error', async (done) => {
     expect.assertions(6)
 })
 
-it.skip('handles an error starting the recording', async () => {
-    const testOfflineInterface = {
+it('handles an error starting the recording', async () => {
+    const messageErrorOfflineInterface = {
         ...mockOfflineInterface,
         startRecording: failedMessageRecordingMock,
     }
     const wrapper: FC<PropsWithChildren> = ({ children }) => (
-        <OfflineProvider offlineInterface={testOfflineInterface}>
+        <OfflineProvider offlineInterface={messageErrorOfflineInterface}>
             {children}
         </OfflineProvider>
     )
@@ -198,9 +206,9 @@ it.skip('handles an error starting the recording', async () => {
     )
 })
 
-it.skip('handles remove and updates sections', async () => {
+it('handles remove and updates sections', async () => {
     const sectionId = 'one'
-    const testOfflineInterface = {
+    const sectionOpsOfflineInterface = {
         ...mockOfflineInterface,
         getCachedSections: jest
             .fn()
@@ -210,7 +218,7 @@ it.skip('handles remove and updates sections', async () => {
             .mockResolvedValueOnce([]),
     }
     const wrapper: FC<PropsWithChildren> = ({ children }) => (
-        <OfflineProvider offlineInterface={testOfflineInterface}>
+        <OfflineProvider offlineInterface={sectionOpsOfflineInterface}>
             {children}
         </OfflineProvider>
     )
@@ -228,14 +236,14 @@ it.skip('handles remove and updates sections', async () => {
 
     expect(success).toBe(true)
     // Test that 'isCached' gets updated
-    expect(testOfflineInterface.getCachedSections).toBeCalledTimes(2)
+    expect(sectionOpsOfflineInterface.getCachedSections).toBeCalledTimes(2)
     await waitFor(() => expect(result.current.isCached).toBe(false))
     expect(result.current.isCached).toBe(false)
     expect(result.current.lastUpdated).toBeUndefined()
 })
 
-it.skip('handles a change in ID', async () => {
-    const testOfflineInterface = {
+it('handles a change in ID', async () => {
+    const idChangeOfflineInterface = {
         ...mockOfflineInterface,
         getCachedSections: jest
             .fn()
@@ -244,7 +252,7 @@ it.skip('handles a change in ID', async () => {
             ]),
     }
     const wrapper: FC<PropsWithChildren> = ({ children }) => (
-        <OfflineProvider offlineInterface={testOfflineInterface}>
+        <OfflineProvider offlineInterface={idChangeOfflineInterface}>
             {children}
         </OfflineProvider>
     )
@@ -259,7 +267,7 @@ it.skip('handles a change in ID', async () => {
     rerender('id-two')
 
     // Test that 'isCached' gets updated
-    // expect(testOfflineInterface.getCachedSections).toBeCalledTimes(2)
+    // expect(idChangeOfflineInterface.getCachedSections).toBeCalledTimes(2)
     await waitFor(() => expect(result.current.isCached).toBe(false))
     expect(result.current.isCached).toBe(false)
     expect(result.current.lastUpdated).toBeUndefined()
