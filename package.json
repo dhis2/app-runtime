@@ -48,17 +48,12 @@
         "start": "yarn build && cd examples/query-playground && yarn start",
         "docs:build": "mkdir -p dist && cp docs/index.html dist/ && yarn build:playground",
         "docs:serve": "d2-utils-docsite serve ./docs -o ./dist",
-        "lint": "d2-style check js && d2-style check text",
-        "postinstall": "patch-package"
+        "lint": "d2-style check js && d2-style check text"
     },
     "d2": {
         "docsite": {
             "name": "DHIS2 Application Runtime",
             "description": "A singular runtime dependency for applications on the [DHIS2 platform](https://platform.dhis2.nu)"
         }
-    },
-    "dependencies": {
-        "patch-package": "^8.0.0",
-        "postinstall-postinstall": "^2.1.0"
     }
 }
