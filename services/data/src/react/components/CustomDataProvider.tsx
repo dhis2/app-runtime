@@ -1,5 +1,5 @@
 import React from 'react'
-import { QueryClient, QueryClientProvider } from 'react-query'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { DataEngine } from '../../engine'
 import { CustomDataLink, CustomData, CustomLinkOptions } from '../../links'
 import { DataContext } from '../context/DataContext'

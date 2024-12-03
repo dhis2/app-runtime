@@ -32,7 +32,7 @@
         "coverage": "yarn test --coverage"
     },
     "dependencies": {
-        "react-query": "^3.39.3"
+        "@tanstack/react-query": "^4.36.1"
     },
     "peerDependencies": {
         "@dhis2/app-service-config": "3.12.0-alpha.1",

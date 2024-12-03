@@ -2,10 +2,22 @@
 
 import { useConfig } from '@dhis2/app-service-config'
 import React from 'react'
-import { QueryClient, QueryClientProvider } from 'react-query'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { DataEngine } from '../../engine'
 import { RestAPILink } from '../../links'
 import { DataContext } from '../context/DataContext'
+
+/**
+ * Used to silence the default react-query logger. Eventually we
+ * could expose the setLogger functionality and remove the call
+ * to setLogger here.
+ */
+const noop = () => {}
+const customLogger = {
+    log: noop,
+    warn: noop,
+    error: noop,
+}
 
 export interface ProviderInput {
     baseUrl?: string
@@ -27,6 +39,7 @@ export const queryClientOptions = {
             // Don't refetch after connection issues
             refetchOnReconnect: false,
         },
+        logger: customLogger,
     },
 }
 
