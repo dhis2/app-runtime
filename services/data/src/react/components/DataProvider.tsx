@@ -1,7 +1,11 @@
 /* eslint-disable react/no-unused-prop-types */
 
 import { useConfig } from '@dhis2/app-service-config'
-import { QueryClient, QueryClientProvider, type QueryClientConfig } from '@tanstack/react-query'
+import {
+    QueryClient,
+    QueryClientProvider,
+    type QueryClientConfig,
+} from '@tanstack/react-query'
 import React from 'react'
 import { DataEngine } from '../../engine'
 import { RestAPILink } from '../../links'
@@ -43,7 +47,7 @@ export const queryClientOptions: QueryClientConfig = {
             // https://tanstack.com/query/latest/docs/framework/react/guides/network-mode
             networkMode: 'always',
         },
-    }
+    },
 }
 
 const queryClient = new QueryClient(queryClientOptions)
