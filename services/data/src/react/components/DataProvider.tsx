@@ -40,6 +40,10 @@ export const queryClientOptions = {
             refetchOnReconnect: false,
         },
         logger: customLogger,
+        // RQv4 uses 'online' as the default, which pauses queries without network connection.
+        // 'always' reestablishes behavior from v3, and lets requests fire when offline
+        // https://tanstack.com/query/latest/docs/framework/react/guides/network-mode
+        networkMode: 'always',
     },
 }
 
