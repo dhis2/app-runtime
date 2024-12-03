@@ -11,17 +11,6 @@ import { DataEngine } from '../../engine'
 import { RestAPILink } from '../../links'
 import { DataContext } from '../context/DataContext'
 
-/**
- * Used to silence the default react-query logger. Eventually we
- * could expose the option to consumers
- */
-const noop = () => undefined
-const customLogger = {
-    log: noop,
-    warn: noop,
-    error: noop,
-}
-
 export interface ProviderInput {
     baseUrl?: string
     apiVersion?: number
@@ -29,7 +18,6 @@ export interface ProviderInput {
 }
 
 export const queryClientOptions: QueryClientConfig = {
-    logger: customLogger,
     defaultOptions: {
         queries: {
             // Disable automatic error retries
