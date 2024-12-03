@@ -1,8 +1,8 @@
 /* eslint-disable react/no-unused-prop-types */
 
 import { useConfig } from '@dhis2/app-service-config'
-import React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import React from 'react'
 import { DataEngine } from '../../engine'
 import { RestAPILink } from '../../links'
 import { DataContext } from '../context/DataContext'
@@ -12,7 +12,7 @@ import { DataContext } from '../context/DataContext'
  * could expose the setLogger functionality and remove the call
  * to setLogger here.
  */
-const noop = () => {}
+const noop = () => undefined
 const customLogger = {
     log: noop,
     warn: noop,
