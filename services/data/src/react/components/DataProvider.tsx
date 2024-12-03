@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unused-prop-types */
 
 import { useConfig } from '@dhis2/app-service-config'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider, type QueryClientConfig } from '@tanstack/react-query'
 import React from 'react'
 import { DataEngine } from '../../engine'
 import { RestAPILink } from '../../links'
@@ -9,8 +9,7 @@ import { DataContext } from '../context/DataContext'
 
 /**
  * Used to silence the default react-query logger. Eventually we
- * could expose the setLogger functionality and remove the call
- * to setLogger here.
+ * could expose the option to consumers
  */
 const noop = () => undefined
 const customLogger = {
@@ -25,7 +24,8 @@ export interface ProviderInput {
     children: React.ReactNode
 }
 
-export const queryClientOptions = {
+export const queryClientOptions: QueryClientConfig = {
+    logger: customLogger,
     defaultOptions: {
         queries: {
             // Disable automatic error retries
@@ -38,13 +38,12 @@ export const queryClientOptions = {
             refetchOnWindowFocus: false,
             // Don't refetch after connection issues
             refetchOnReconnect: false,
+            // RQv4 uses 'online' as the default, which pauses queries without network connection.
+            // 'always' reestablishes behavior from v3, and lets requests fire when offline
+            // https://tanstack.com/query/latest/docs/framework/react/guides/network-mode
+            networkMode: 'always',
         },
-        logger: customLogger,
-        // RQv4 uses 'online' as the default, which pauses queries without network connection.
-        // 'always' reestablishes behavior from v3, and lets requests fire when offline
-        // https://tanstack.com/query/latest/docs/framework/react/guides/network-mode
-        networkMode: 'always',
-    },
+    }
 }
 
 const queryClient = new QueryClient(queryClientOptions)
