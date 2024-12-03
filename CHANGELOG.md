@@ -1,3 +1,10 @@
+# [3.12.0-alpha.2](https://github.com/dhis2/app-runtime/compare/v3.12.0-alpha.1...v3.12.0-alpha.2) (2024-12-03)
+
+
+### Features
+
+* upgrade react query to v4 ([#1395](https://github.com/dhis2/app-runtime/issues/1395)) ([8b02fdf](https://github.com/dhis2/app-runtime/commit/8b02fdff62c175a115a68863be456db117c3ea5e))
+
 # [3.12.0-alpha.1](https://github.com/dhis2/app-runtime/compare/v3.11.3...v3.12.0-alpha.1) (2024-11-27)
 
 
