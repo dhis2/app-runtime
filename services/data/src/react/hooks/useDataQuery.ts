@@ -91,7 +91,9 @@ export const useDataQuery = <TQueryResult = QueryResult>(
         error,
         data,
         refetch: queryRefetch,
-    } = useQuery({ queryKey, queryFn, 
+    } = useQuery({
+        queryKey,
+        queryFn,
         enabled: queryState.current.enabled,
         onSuccess,
         onError,
@@ -120,10 +122,9 @@ export const useDataQuery = <TQueryResult = QueryResult>(
              * we'll need to call react-query's refetch directly
              */
             if (queryState.current.enabled && identical) {
-                return queryRefetch({
-                    cancelRefetch: true,
-                    throwOnError: false,
-                }).then(({ data }) => data)
+                return queryRefetch({ throwOnError: false }).then(
+                    ({ data }) => data
+                )
             }
 
             queryState.current.variables = mergedVariables
