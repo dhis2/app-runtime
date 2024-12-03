@@ -1,5 +1,5 @@
+import { useQuery } from '@tanstack/react-query'
 import { useState, useRef, useCallback, useDebugValue } from 'react'
-import { useQuery, setLogger } from 'react-query'
 import type {
     Query,
     QueryOptions,
@@ -11,20 +11,6 @@ import type { QueryRenderInput, QueryRefetchFunction } from '../../types'
 import { mergeAndCompareVariables } from './mergeAndCompareVariables'
 import { useDataEngine } from './useDataEngine'
 import { useStaticInput } from './useStaticInput'
-
-const noop = () => {
-    /**
-     * Used to silence the default react-query logger. Eventually we
-     * could expose the setLogger functionality and remove the call
-     * to setLogger here.
-     */
-}
-
-setLogger({
-    log: noop,
-    warn: noop,
-    error: noop,
-})
 
 type QueryState = {
     enabled: boolean
@@ -100,13 +86,14 @@ export const useDataQuery = <TQueryResult = QueryResult>(
         engine.query(staticQuery, { variables: queryState.current.variables })
 
     const {
-        isIdle,
-        isFetching,
-        isLoading,
+        status,
+        fetchStatus,
         error,
         data,
         refetch: queryRefetch,
-    } = useQuery(queryKey, queryFn, {
+    } = useQuery({
+        queryKey,
+        queryFn,
         enabled: queryState.current.enabled,
         onSuccess,
         onError,
@@ -135,10 +122,9 @@ export const useDataQuery = <TQueryResult = QueryResult>(
              * we'll need to call react-query's refetch directly
              */
             if (queryState.current.enabled && identical) {
-                return queryRefetch({
-                    cancelRefetch: true,
-                    throwOnError: false,
-                }).then(({ data }) => data)
+                return queryRefetch({ throwOnError: false }).then(
+                    ({ data }) => data
+                )
             }
 
             queryState.current.variables = mergedVariables
@@ -168,10 +154,15 @@ export const useDataQuery = <TQueryResult = QueryResult>(
 
     return {
         engine,
-        // A query is idle if it is lazy and no initial data is available.
-        called: !isIdle,
-        loading: isLoading,
-        fetching: isFetching,
+        // A query has not been called if it is lazy (fetchStatus = 'idle') and no initial data is available (status = 'loading').
+        // https://tanstack.com/query/v4/docs/framework/react/guides/queries
+        called: !(status === 'loading' && fetchStatus === 'idle'),
+        // 'loading' should only be true when actively fetching (fetchStatus = 'fetching') while there is no data yet (status = 'loading').
+        // If there is already data for the query, then 'loading' will not become 'true' when refetching, so the previous data can still be
+        // displayed while new data is fetched in the background
+        loading: fetchStatus === 'fetching' && status === 'loading',
+        // 'fetching' reflects the fetching behavior behind the scenes
+        fetching: fetchStatus === 'fetching',
         error: ourError,
         data,
         refetch,
