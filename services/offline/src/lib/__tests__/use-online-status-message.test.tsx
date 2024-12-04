@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react-hooks'
+import { renderHook, act } from '@testing-library/react'
 import React, { FC } from 'react'
 import { mockOfflineInterface } from '../../utils/test-mocks'
 import { OfflineProvider } from '../offline-provider'

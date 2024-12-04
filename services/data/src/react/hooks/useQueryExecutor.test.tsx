@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react-hooks'
+import { renderHook, act, waitFor } from '@testing-library/react'
 import { useQueryExecutor } from './useQueryExecutor'
 
 const testError = new Error('TEST ERROR')
@@ -33,7 +33,7 @@ describe('useQueryExecutor', () => {
     })
 
     it('When immediate, should start with called true and loading true', async () => {
-        const { result, waitForNextUpdate } = renderHook(() =>
+        const { result } = renderHook(() =>
             useQueryExecutor({
                 execute,
                 immediate: true,
@@ -47,16 +47,17 @@ describe('useQueryExecutor', () => {
             loading: true,
         })
 
-        await waitForNextUpdate()
-        expect(result.current).toMatchObject({
-            called: true,
-            loading: false,
-            data: 42,
+        await waitFor(() => {
+            expect(result.current).toMatchObject({
+                called: true,
+                loading: false,
+                data: 42,
+            })
         })
     })
 
     it('Should start when refetch called (if not immediate)', async () => {
-        const { result, waitForNextUpdate } = renderHook(() =>
+        const { result } = renderHook(() =>
             useQueryExecutor({
                 execute,
                 immediate: false,
@@ -79,16 +80,17 @@ describe('useQueryExecutor', () => {
             loading: true,
         })
 
-        await waitForNextUpdate()
-        expect(result.current).toMatchObject({
-            called: true,
-            loading: false,
-            data: 42,
+        await waitFor(() => {
+            expect(result.current).toMatchObject({
+                called: true,
+                loading: false,
+                data: 42,
+            })
         })
     })
 
     it('Should report an error when execute fails', async () => {
-        const { result, waitForNextUpdate } = renderHook(() =>
+        const { result } = renderHook(() =>
             useQueryExecutor({
                 execute: failingExecute,
                 immediate: false,
@@ -111,16 +113,17 @@ describe('useQueryExecutor', () => {
             loading: true,
         })
 
-        await waitForNextUpdate()
-        expect(result.current).toMatchObject({
-            called: true,
-            loading: false,
-            error: testError,
+        await waitFor(() => {
+            expect(result.current).toMatchObject({
+                called: true,
+                loading: false,
+                error: testError,
+            })
         })
     })
 
     it("Shouldn't abort+refetch when inputs change on subsequent renders", async () => {
-        const { result, waitForNextUpdate, rerender } = renderHook(
+        const { result, rerender } = renderHook(
             ({ onComplete }) =>
                 useQueryExecutor({
                     execute,
@@ -141,19 +144,20 @@ describe('useQueryExecutor', () => {
 
         rerender({ onComplete: () => null })
 
-        await waitForNextUpdate()
-        expect(result.current).toMatchObject({
-            called: true,
-            loading: false,
-            data: 42,
-        })
+        await waitFor(() => {
+            expect(result.current).toMatchObject({
+                called: true,
+                loading: false,
+                data: 42,
+            })
 
-        expect(theSignal && theSignal.aborted).toBe(false)
-        expect(execute).toHaveBeenCalledTimes(1)
+            expect(theSignal && theSignal.aborted).toBe(false)
+            expect(execute).toHaveBeenCalledTimes(1)
+        })
     })
 
     it('Should respect abort signal', async () => {
-        const { result, waitForNextUpdate } = renderHook(() =>
+        const { result } = renderHook(() =>
             useQueryExecutor({
                 execute,
                 immediate: false,

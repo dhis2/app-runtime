@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React, { useEffect, useCallback, useMemo } from 'react'
 import {
     GlobalStateStore,
+    GlobalStateStoreMutationCreator,
     IndexedDBCachedSection,
     RecordingState,
 } from '../types'
@@ -108,12 +109,14 @@ interface RecordingStateControls {
  */
 export function useRecordingState(id: string): RecordingStateControls {
     const recordingStateSelector = useCallback(
-        (state) => state.recordingStates[id],
+        (state: any) => state.recordingStates[id],
         [id]
     )
     const [recordingState] = useGlobalState(recordingStateSelector)
 
-    const setRecordingStateMutationCreator = useCallback(
+    const setRecordingStateMutationCreator = useCallback<
+        GlobalStateStoreMutationCreator<RecordingState>
+    >(
         (newState) => (state: any) => ({
             ...state,
             recordingStates: { ...state.recordingStates, [id]: newState },
@@ -155,7 +158,9 @@ export function useRecordingState(id: string): RecordingStateControls {
 function useSyncCachedSections() {
     const offlineInterface = useOfflineInterface()
 
-    const setCachedSectionsMutationCreator = useCallback(
+    const setCachedSectionsMutationCreator = useCallback<
+        GlobalStateStoreMutationCreator<CachedSectionsById>
+    >(
         (cachedSections) => (state: any) => ({
             ...state,
             cachedSections,
