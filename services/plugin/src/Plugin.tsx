@@ -29,12 +29,16 @@ export const Plugin = ({
     pluginShortName,
     height,
     width,
+    className,
+    clientWidth,
     ...propsToPassNonMemoized
 }: {
     pluginSource?: string
     pluginShortName?: string
     height?: string | number
     width?: string | number
+    className?: string
+    clientWidth?: string | number
     propsToPass: any
 }): JSX.Element => {
     const iframeRef = useRef<HTMLIFrameElement>(null)
@@ -91,6 +95,7 @@ export const Plugin = ({
                 setPluginWidth: !width ? setPluginWidth : null,
                 setInErrorState,
                 setCommunicationReceived,
+                clientWidth,
             }
 
             // if iframe has not sent initial request, set up a listener
@@ -143,7 +148,8 @@ export const Plugin = ({
             <iframe
                 ref={iframeRef}
                 src={pluginSource}
-                width={width ?? resizedWidth + 'px'}
+                className={className}
+                width={clientWidth ? resizedWidth : width ?? '100%'}
                 height={height ?? resizedHeight + 'px'}
                 style={{
                     border: 'none',
