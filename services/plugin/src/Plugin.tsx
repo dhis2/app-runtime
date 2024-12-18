@@ -143,20 +143,18 @@ export const Plugin = ({
         )
     }
 
-    if (pluginEntryPoint) {
-        return (
-            <iframe
-                ref={iframeRef}
-                src={pluginSource}
-                className={className}
-                width={clientWidth ? resizedWidth : width ?? '100%'}
-                height={height ?? resizedHeight + 'px'}
-                style={{
-                    border: 'none',
-                }}
-            ></iframe>
-        )
+    if (!pluginEntryPoint) {
+        return <></>
     }
 
-    return <></>
+    return (
+        <iframe
+            ref={iframeRef}
+            src={pluginSource}
+            className={className}
+            width={clientWidth ? resizedWidth : width ?? '100%'}
+            height={height ?? resizedHeight + 'px'}
+            style={{ border: 'none' }}
+        />
+    )
 }
