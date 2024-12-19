@@ -29,12 +29,16 @@ export const Plugin = ({
     pluginShortName,
     height,
     width,
+    className,
+    clientWidth,
     ...propsToPassNonMemoized
 }: {
     pluginSource?: string
     pluginShortName?: string
     height?: string | number
     width?: string | number
+    className?: string
+    clientWidth?: string | number
     propsToPass: any
 }): JSX.Element => {
     const iframeRef = useRef<HTMLIFrameElement>(null)
@@ -55,7 +59,14 @@ export const Plugin = ({
         useState<boolean>(false)
 
     const [inErrorState, setInErrorState] = useState<boolean>(false)
+    // height and width values to be set by callbacks passed to the plugin
+    // (these default sizes will be quickly overwritten by the plugin)
+    // in order to behave like a normal block element, by default, the height
+    // will be set by plugin contents, this state will be used
     const [resizedHeight, setPluginHeight] = useState<number>(150)
+    // ...and by default, plugin width will be defined by the container
+    // (width = 100%), so this state won't be used unless the `clientWidth`
+    // prop is used to have plugin width defined by plugin contents
     const [resizedWidth, setPluginWidth] = useState<number>(500)
 
     // since we do not know what props are passed, the dependency array has to be keys of whatever is standard prop
@@ -87,10 +98,13 @@ export const Plugin = ({
             const iframeProps = {
                 ...memoizedPropsToPass,
                 alertsAdd,
+                // if a dimension is specified or container driven, don't send
+                // a resize callback to the plugin
                 setPluginHeight: !height ? setPluginHeight : null,
-                setPluginWidth: !width ? setPluginWidth : null,
+                setPluginWidth: !width && clientWidth ? setPluginWidth : null,
                 setInErrorState,
                 setCommunicationReceived,
+                clientWidth,
             }
 
             // if iframe has not sent initial request, set up a listener
@@ -138,19 +152,20 @@ export const Plugin = ({
         )
     }
 
-    if (pluginEntryPoint) {
-        return (
-            <iframe
-                ref={iframeRef}
-                src={pluginSource}
-                width={width ?? resizedWidth + 'px'}
-                height={height ?? resizedHeight + 'px'}
-                style={{
-                    border: 'none',
-                }}
-            ></iframe>
-        )
+    if (!pluginEntryPoint) {
+        return <></>
     }
 
-    return <></>
+    return (
+        <iframe
+            ref={iframeRef}
+            src={pluginSource}
+            className={className}
+            // if clientWidth is set, then we want width to be set by plugin.
+            // otherwise, use a specified width, or 100% by default
+            width={clientWidth ? resizedWidth : width ?? '100%'}
+            height={height ?? resizedHeight}
+            style={{ border: 'none' }}
+        />
+    )
 }
