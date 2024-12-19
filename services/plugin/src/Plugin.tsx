@@ -162,7 +162,7 @@ export const Plugin = ({
             src={pluginSource}
             className={className}
             // if clientWidth is set, then we want width to be set by plugin.
-            // otherwise, 
+            // otherwise, use a specified width, or 100% by default
             width={clientWidth ? resizedWidth : width ?? '100%'}
             height={height ?? resizedHeight}
             style={{ border: 'none' }}
