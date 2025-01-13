@@ -4,6 +4,50 @@ import postRobot from 'post-robot'
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import PluginError from './PluginError'
 
+type PluginProps = {
+    /** URL to provide to iframe `src` */
+    pluginSource?: string
+    /**
+     * Short name of the target app/plugin to load -- its plugin launch URL 
+     * will be found from the instance's app list (`/api/apps`)
+     */
+    pluginShortName?: string
+    /**
+     * A defined height to used for the iframe. By default, the iframe will
+     * resize to its content's height
+     */
+    height?: string | number
+    /**
+     * A defined width to use on the iframe. By default, `100%` is used to
+     * approximate the styles of a normal block element
+     */
+    width?: string | number
+    /**
+     * Styles can be applied with className. Sizing styles will take precedence
+     * over `width` and `height` props.
+     *
+     * **Note:** If using default width and you want to add margins, you will
+     * probably want to wrap this `Plugin` in a `div` with the margin styles
+     * instead to achieve the `width: auto` behavior of a normal block element
+     */
+    className?: string
+    /**
+     * Set this if you want the width of the iframe to be driven by the
+     * contents inside the plugin.
+     *
+     * The value provided here will be used as the `width` of a `div` wrapping
+     * the plugin contents, which will be watched with a resize observer to
+     * update the size of the iframe according to the plugin content width.
+     *
+     * Therefore, **`'max-content'`** is probably the value you want to use.
+     * `'fit-content'` or `'min-content'` may also work, depending on your use
+     * case.
+     */
+    clientWidth?: string | number
+    /** Props that will be sent to the plugin */
+    propsToPassNonMemoized?: any
+}
+
 const appsInfoQuery = {
     apps: {
         resource: 'apps',
@@ -32,15 +76,7 @@ export const Plugin = ({
     className,
     clientWidth,
     ...propsToPassNonMemoized
-}: {
-    pluginSource?: string
-    pluginShortName?: string
-    height?: string | number
-    width?: string | number
-    className?: string
-    clientWidth?: string | number
-    propsToPass: any
-}): JSX.Element => {
+}: PluginProps): JSX.Element => {
     const iframeRef = useRef<HTMLIFrameElement>(null)
 
     const { add: alertsAdd } = useContext(AlertsManagerContext)
@@ -98,7 +134,7 @@ export const Plugin = ({
             const iframeProps = {
                 ...memoizedPropsToPass,
                 alertsAdd,
-                // If a dimension is either specified or container-driven, 
+                // If a dimension is either specified or container-driven,
                 // don't send a resize callback to the plugin. The plugin can
                 // use the presence or absence of these callbacks to determine
                 // how to handle sizing inside
