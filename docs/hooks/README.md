@@ -9,4 +9,4 @@ The DHIS2 Application Runtime supports [React Hooks](https://reactjs.org/docs/ho
 - [**useAlert**](useAlert) - Add an alert to the central alerts-context
 - [**useAlerts**](useAlerts) - Read the alerts from the alerts-context
 
-While these Hooks are incredibly powerful and usually preferable, some [Components](../components/README) are also provided which conveniently wrap their corresponding Hooks.
+While these Hooks are incredibly powerful and usually preferable, some [Components](/docs/app-runtime/components) are also provided which conveniently wrap their corresponding Hooks.

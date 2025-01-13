@@ -84,4 +84,4 @@ In the example above, the alert will be displayed with the message `Successfully
 
 In this guide, you learned how to display alerts in your application using the `useAlert` hook from the `@dhis2/app-runtime` library. You also learned how to handle different alert states and display dynamic alerts. You can now use this knowledge to display alerts in your application and provide feedback to your users.
 
-You can read more about the `useAlert` hook in the [official documentation](/docs/hooks/useAlert), and find all properties to be used in the `AlertBar` component in the [AlertBar documentation](/docs/ui/components/alertbar#props).
+You can read more about the `useAlert` hook in the [official documentation](/docs/app-runtime/hooks/useAlert), and find all properties to be used in the `AlertBar` component in the [AlertBar documentation](/docs/ui/components/alertbar#props).
