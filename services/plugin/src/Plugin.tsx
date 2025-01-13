@@ -8,7 +8,7 @@ type PluginProps = {
     /** URL to provide to iframe `src` */
     pluginSource?: string
     /**
-     * Short name of the target app/plugin to load -- its plugin launch URL 
+     * Short name of the target app/plugin to load -- its plugin launch URL
      * will be found from the instance's app list (`/api/apps`)
      */
     pluginShortName?: string
