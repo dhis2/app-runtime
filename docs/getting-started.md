@@ -6,14 +6,10 @@ The DHIS2 application runtime provides a common, consistent, single-dependency r
 
 ## Installation
 
+To use App Runtime in your project, install it as a dependency using `yarn`:
+
 ```bash
 yarn add @dhis2/app-runtime
-```
-
-or
-
-```bash
-npm install @dhis2/app-runtime
 ```
 
 :::info

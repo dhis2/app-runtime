@@ -33,16 +33,27 @@ Now that you have imported the `useAlert` hook, you can use it to send a default
 The `show` function is used to display the alert, while the `hide` function is used to hide the alert. After hiding (automatically or by code), the alert will be removed from the alert stack. But you can re-add it by calling the `show` function again. 
 
 ```js
-const { show, hide } = useAlert('This is a default alert message')
+const App() => {
+    // highlight-start
+    const { show, hide } = useAlert('This is a default alert message')
+    // highlight-end
 
-// Display the alert, somewhere else in your code
-show()
+    // Display the alert, somewhere later in your code
+    // highlight-start
+    show()
+    // highlight-end
+}
 ```
 
 To hide the alert, you can call the `hide` function, anywhere in your code where you have access to the `hide` function.
 
 ```js
-hide()
+const App() => {
+    // [...]
+    // highlight-start
+    hide()
+    // highlight-end
+}
 ```
 
 ## Step 3: Adding options to the alert
@@ -50,12 +61,15 @@ hide()
 You can also add options to the alert, such as the duration of the alert, the type of alert, and the action to be taken when the alert is clicked. 
 
 ```js
-
-const { show, hide } = useAlert('This is a default alert message', {
-    duration: 30000, // 30 seconds
-    critical: true, // show the alert as critical
-    permanent: true // don't auto-hide the alert
-})
+const App() => {
+    // highlight-start
+    const { show, hide } = useAlert('This is a default alert message', {
+        duration: 30000, // 30 seconds
+        critical: true, // show the alert as critical
+        permanent: true // don't auto-hide the alert
+    })
+    // highlight-end
+}
 ```
 
 :::info All Options
@@ -66,22 +80,39 @@ You can see the full list of options in the [AlertBar component documentation](/
 
 You can also display dynamic alerts by passing a function to the `useAlert` hook. This function will receive the arguments passed to the `show` function.
 
+The code below will be capable of displaying alerts with different messages and options depending on the arguments passed to the `show` function. Two of the states represented, in the image below:
+
+![Alert States](assets/alert-states.png)
+
+The first state is a critical alert with the message `Failed to update tb`, while the second state is a success alert with the message `Successfully updated tb`.
+
 ```js
-
-const { show, hide } = useAlert(
-    ({ program }) => `Successfully updated ${program}`,
-    ({ isActive }) => isActive ? { critical: true } : { success: true }
-)
-
-// Display the alert, somewhere else in your code
-
-show({ program: 'tb', isActive: true })
+const App() => {
+    // highlight-start
+    const { show, hide } = useAlert(
+        ({ program, success }) => (success ? `Successfully updated ${program}` : `Failed to update ${program}`),
+        ({ success }) => isActive ? { critical: true } : { success: true }
+    )
+    // highlight-end
+    
+    // Display the alert, somewhere else in your code
+    // highlight-start
+    show({ program: 'tb', success: true })
+    // highlight-end
+}
 ```
 
-In the example above, the alert will be displayed with the message `Successfully updated tb` and will be shown as critical. However, if you were to call the `show` function with `isActive: false`, the alert would be shown as a success alert. Changing the program name will also change the message displayed in the alert dynamically. Allowing you to only specify this alert once and reuse it with different messages and options depending on which program is updated.
+In the example above, the alert message will be displayed as `Failed to update tb` and will be shown as critical. However, if you were to call the `show` function with `success: true`, the alert would show with a success state and the message `Successfully updated tb`. Updating the name will also change the message displayed in the alert dynamically.
+
+This allows you to configure the Alert once and reuse it with different messages and options depending on the state of your application.
 
 ## Conclusion
 
 In this guide, you learned how to display alerts in your application using the `useAlert` hook from the `@dhis2/app-runtime` library. You also learned how to handle different alert states and display dynamic alerts. You can now use this knowledge to display alerts in your application and provide feedback to your users.
 
 You can read more about the `useAlert` hook in the [official documentation](/docs/app-runtime/hooks/useAlert), and find all properties to be used in the `AlertBar` component in the [AlertBar documentation](/docs/ui/components/alertbar#props).
+
+## Additional Resources
+
+- [AlertBar Component Documentation](/docs/ui/components/alertbar)
+- [AlertBar Demo](pathname:///demo/?path=/story/alert-bar--states)
