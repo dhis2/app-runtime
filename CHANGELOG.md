@@ -1,3 +1,10 @@
+## [3.12.1](https://github.com/dhis2/app-runtime/compare/v3.12.0...v3.12.1) (2025-01-16)
+
+
+### Bug Fixes
+
+* reference module types in package.json export declaration ([#1400](https://github.com/dhis2/app-runtime/issues/1400)) ([c266429](https://github.com/dhis2/app-runtime/commit/c2664291626c9360ffa618ea05d67584bb7caa7a))
+
 # [3.12.0](https://github.com/dhis2/app-runtime/compare/v3.11.3...v3.12.0) (2024-12-04)
 
 
