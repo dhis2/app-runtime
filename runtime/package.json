@@ -8,11 +8,13 @@
     "exports": {
         ".": {
             "import": "./build/es/index.js",
-            "require": "./build/cjs/index.js"
+            "require": "./build/cjs/index.js",
+            "types": "./build/types/index.d.ts"
         },
         "./experimental": {
             "import": "./build/es/experimental.js",
-            "require": "./build/cjs/experimental.js"
+            "require": "./build/cjs/experimental.js",
+            "types": "./build/types/experimental.d.ts"
         }
     },
     "repository": {
