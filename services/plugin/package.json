@@ -1,12 +1,13 @@
 {
     "name": "@dhis2/app-service-plugin",
-    "version": "3.12.0",
+    "version": "3.12.1",
     "main": "./build/cjs/index.js",
     "module": "./build/es/index.js",
     "types": "build/types/index.d.ts",
     "exports": {
         "import": "./build/es/index.js",
-        "require": "./build/cjs/index.js"
+        "require": "./build/cjs/index.js",
+        "types": "./build/types/index.d.ts"
     },
     "repository": {
         "type": "git",
@@ -28,8 +29,8 @@
         "prop-types": "^15.7.2",
         "react": "^16.8.6 || ^18",
         "react-dom": "^16.8.6 || ^18",
-        "@dhis2/app-service-alerts": "3.12.0",
-        "@dhis2/app-service-data": "3.12.0"
+        "@dhis2/app-service-alerts": "3.12.1",
+        "@dhis2/app-service-data": "3.12.1"
     },
     "devDependencies": {
         "@types/post-robot": "^10.0.3"
