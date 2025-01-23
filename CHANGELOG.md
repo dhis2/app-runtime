@@ -1,3 +1,10 @@
+# [3.13.0](https://github.com/dhis2/app-runtime/compare/v3.12.1...v3.13.0) (2025-01-23)
+
+
+### Features
+
+* new plugin sizing default and options ([#1398](https://github.com/dhis2/app-runtime/issues/1398)) ([d2554c1](https://github.com/dhis2/app-runtime/commit/d2554c1a00ecf57518e16719861e1e236bbdff50))
+
 ## [3.12.1](https://github.com/dhis2/app-runtime/compare/v3.12.0...v3.12.1) (2025-01-16)
 
 
