@@ -28,7 +28,7 @@ Now that you have imported the `useDataQuery` hook, you can use it in your compo
 
 ## Step 2: Define the query
 
-The next step is to define the query that you want to execute. The query is an object that contains the properties of the data you want to fetch. In this example, we'll be fetching Organisation Units from the DHIS2 API.
+The next step is to define the static query that you want to execute. The query is an object that contains the properties of the data you want to fetch. In this example, we'll be fetching Organisation Units from the DHIS2 API.
 
 You should define the query outside the render loop, such as on top of your file. This is because the query object is a static object that doesn't change during the lifecycle of the component.
 
@@ -53,6 +53,10 @@ const App() => {
 In the query object above, we define a property called `orgUnits` that contains the details of the query. The `resource` property specifies the endpoint of the API that we want to fetch data from. The `params` property contains additional parameters that we want to apply to the query, such as the fields we want to fetch and whether we want to paginate the results.
 
 We've enabled pagination by setting the `paging` property to `true`. This means that the results will be paginated, and we'll only get a subset of the results. This is the recommended approach as it is lighter on both the server and uses less data. We'll explain pagination at a later step in this guide.
+
+:::info Static Query
+In this example, we're using a static query, which means that the query is defined in the component file and doesn't change during the lifecycle of the component. You can also use dynamic queries, where the query is defined based on the state of the component. You can find more information about dynamic queries in the [useDataQuery documentation](/docs/app-runtime/hooks/usedataquery/#dynamic-query).
+:::
 
 ## Step 3: Execute the query
 
@@ -213,4 +217,6 @@ Filtering can be applied to every property of the resource you are querying. Alw
 
 ## Conclusion
 
-In this guide, we walked you through how to use the `useDataQuery` hook in your application to fetch data from the DHIS2 API. We covered how to define a query, execute the query, display the data, apply pagination, and apply filters to the query. By following these steps, you can fetch data from the DHIS2 API in your application with ease. You can now use this knowledge to fetch data from the DHIS2 API in your application and display it to your users, for every API endpoint available in the DHIS2 API.
+In this guide, we walked you through how to use the `useDataQuery` hook in your application to fetch data from the DHIS2 API using a Static Query. We covered how to define a query, execute the query, display the data, apply pagination, and apply filters to the query. By following these steps, you can fetch data from the DHIS2 API in your application with ease. You can now use this knowledge to fetch data from the DHIS2 API in your application and display it to your users, for every API endpoint available in the DHIS2 API.
+
+But besides static queries, you can also use dynamic queries. You can find more information about this in the [useDataQuery documentation](/docs/app-runtime/hooks/usedataquery/#dynamic-query). In the example of dynamic queries, you can see how to use the `useDataQuery` hook with a dynamic query, as well as how `refetch()` is used to fetch the next `page` of data.
