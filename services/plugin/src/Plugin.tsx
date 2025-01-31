@@ -181,7 +181,14 @@ export const Plugin = ({
                     console.error(err)
                 })
         }
-    }, [memoizedPropsToPass, inErrorState, alertsAdd])
+    }, [
+        memoizedPropsToPass,
+        inErrorState,
+        alertsAdd,
+        height,
+        width,
+        clientWidth,
+    ])
 
     useEffect(() => {
         // return the clean-up function
