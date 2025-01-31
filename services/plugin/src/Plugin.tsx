@@ -1,7 +1,16 @@
 import { AlertsManagerContext } from '@dhis2/app-service-alerts'
 import { useDataQuery } from '@dhis2/app-service-data'
 import postRobot from 'post-robot'
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, {
+    ReactEventHandler,
+    SyntheticEvent,
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react'
 import PluginError from './PluginError'
 
 type PluginProps = {
@@ -46,6 +55,8 @@ type PluginProps = {
     clientWidth?: string | number
     /** Props that will be sent to the plugin */
     propsToPassNonMemoized?: any
+    /** Event callback that will be called during the iframe's Load event */
+    onLoad?: ReactEventHandler<HTMLIFrameElement>
 }
 
 const appsInfoQuery = {
@@ -71,6 +82,7 @@ const getPluginEntryPoint = ({
 export const Plugin = ({
     pluginSource,
     pluginShortName,
+    onLoad,
     height,
     width,
     className,
@@ -88,11 +100,6 @@ export const Plugin = ({
             apps: data?.apps || [],
             appShortName: pluginShortName,
         })
-
-    const [communicationReceived, setCommunicationReceived] =
-        useState<boolean>(false)
-    const [prevCommunicationReceived, setPrevCommunicationReceived] =
-        useState<boolean>(false)
 
     const [inErrorState, setInErrorState] = useState<boolean>(false)
     // These are height and width values to be set by callbacks passed to the
@@ -118,68 +125,95 @@ export const Plugin = ({
         /* eslint-enable react-hooks/exhaustive-deps */
     )
 
-    useEffect(() => {
-        setCommunicationReceived(false)
-    }, [pluginEntryPoint])
+    const propsFromParentListenerRef = useRef<any>()
+    const communicationReceivedRef = useRef<boolean>(false)
 
-    useEffect(() => {
-        // if communicationReceived switches from false to true, the props have been sent
-        const prevCommunication = prevCommunicationReceived
-        setPrevCommunicationReceived(communicationReceived)
-        if (prevCommunication === false && communicationReceived === true) {
+    const setUpCommunication = useCallback(() => {
+        if (!iframeRef.current) {
             return
         }
 
-        if (iframeRef?.current) {
-            const iframeProps = {
-                ...memoizedPropsToPass,
-                alertsAdd,
-                // If a dimension is either specified or container-driven,
-                // don't send a resize callback to the plugin. The plugin can
-                // use the presence or absence of these callbacks to determine
-                // how to handle sizing inside
-                setPluginHeight: !height ? setPluginHeight : null,
-                setPluginWidth: !width && clientWidth ? setPluginWidth : null,
-                setInErrorState,
-                setCommunicationReceived,
-                clientWidth,
-            }
+        const iframeProps = {
+            ...memoizedPropsToPass,
+            alertsAdd,
+            // If a dimension is either specified or container-driven,
+            // don't send a resize callback to the plugin. The plugin can
+            // use the presence or absence of these callbacks to determine
+            // how to handle sizing inside
+            setPluginHeight: !height ? setPluginHeight : null,
+            setPluginWidth: !width && clientWidth ? setPluginWidth : null,
+            clientWidth,
+            setInErrorState,
+            // todo: what does this do? resets state from error component
+            // seems to work without...
+            // setCommunicationReceived,
+        }
 
-            // if iframe has not sent initial request, set up a listener
-            if (!communicationReceived && !inErrorState) {
-                const listener = postRobot.on(
+        // if iframe has not sent initial request, set up a listener
+        if (!communicationReceivedRef.current && !inErrorState) {
+            // avoid setting up twice
+            if (!propsFromParentListenerRef.current) {
+                propsFromParentListenerRef.current = postRobot.on(
                     'getPropsFromParent',
                     // listen for messages coming only from the iframe rendered by this component
                     { window: iframeRef.current.contentWindow },
                     (): any => {
-                        setCommunicationReceived(true)
+                        communicationReceivedRef.current = true
                         return iframeProps
                     }
                 )
-                return () => listener.cancel()
             }
-
-            // if iframe has sent initial request, send new props
-            if (
-                communicationReceived &&
-                iframeRef.current.contentWindow &&
-                !inErrorState
-            ) {
-                postRobot
-                    .send(
-                        iframeRef.current.contentWindow,
-                        'updated',
-                        iframeProps
-                    )
-                    .catch((err) => {
-                        // log postRobot errors, but do not bubble them up
-                        console.error(err)
-                    })
+            // return clean-up function
+            return () => {
+                propsFromParentListenerRef.current.cancel()
+                propsFromParentListenerRef.current = null
             }
         }
-        // prevCommunicationReceived update should not retrigger this hook
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [memoizedPropsToPass, communicationReceived, inErrorState, alertsAdd])
+
+        // if iframe has sent initial request, send new props
+        // (don't do before to avoid sending messages before listeners
+        // are ready)
+        if (iframeRef.current.contentWindow && !inErrorState) {
+            postRobot
+                .send(iframeRef.current.contentWindow, 'updated', iframeProps)
+                .catch((err) => {
+                    // log postRobot errors, but do not bubble them up
+                    console.error(err)
+                })
+        }
+    }, [
+        memoizedPropsToPass,
+        inErrorState,
+        alertsAdd,
+        height,
+        width,
+        clientWidth,
+    ])
+
+    useEffect(() => {
+        // return the clean-up function
+        return setUpCommunication()
+    }, [setUpCommunication])
+
+    const handleLoad = useCallback(
+        (event: SyntheticEvent<HTMLIFrameElement, Event>) => {
+            // reset communication received
+            communicationReceivedRef.current = false
+            if (propsFromParentListenerRef.current) {
+                propsFromParentListenerRef.current.cancel()
+                propsFromParentListenerRef.current = null
+            }
+
+            // Need to set this up again whenever the iframe contentWindow
+            // changes (e.g. navigations or reloads)
+            setUpCommunication()
+
+            if (onLoad) {
+                onLoad(event)
+            }
+        },
+        [onLoad, setUpCommunication]
+    )
 
     if (data && !pluginEntryPoint) {
         return (
@@ -207,6 +241,7 @@ export const Plugin = ({
             width={clientWidth ? resizedWidth : width ?? '100%'}
             height={height ?? resizedHeight}
             style={{ border: 'none' }}
+            onLoad={handleLoad}
         />
     )
 }
