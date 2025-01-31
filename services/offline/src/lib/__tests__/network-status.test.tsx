@@ -1,5 +1,10 @@
-import { render, screen, waitFor } from '@testing-library/react'
-import { act, renderHook } from '@testing-library/react-hooks'
+import {
+    render,
+    screen,
+    waitFor,
+    act,
+    renderHook,
+} from '@testing-library/react'
 import React from 'react'
 import { useNetworkStatus as useOnlineStatus } from '../network-status'
 
@@ -47,10 +52,9 @@ describe('state changes in response to browser "online" and "offline" events', (
         window.addEventListener = jest.fn(
             (event, cb) => (events[event] = cb as EventListener)
         )
-        const { result, waitForNextUpdate } = renderHook(
-            (...args) => useOnlineStatus(...args),
-            { initialProps: { debounceDelay: 50 } }
-        )
+        const { result } = renderHook((...args) => useOnlineStatus(...args), {
+            initialProps: { debounceDelay: 50 },
+        })
 
         act(() => {
             // Trigger callback captured by addEventListener mock
@@ -58,10 +62,10 @@ describe('state changes in response to browser "online" and "offline" events', (
         })
 
         // Wait for debounce
-        await waitForNextUpdate({ timeout: 60 })
-
-        expect(result.current.online).toBe(false)
-        expect(result.current.offline).toBe(true)
+        await waitFor(() => {
+            expect(result.current.online).toBe(false)
+            expect(result.current.offline).toBe(true)
+        })
     })
 
     it('switches from offline to online when the "online" event triggers', async () => {
@@ -70,20 +74,19 @@ describe('state changes in response to browser "online" and "offline" events', (
         window.addEventListener = jest.fn(
             (event, cb) => (events[event] = cb as EventListener)
         )
-        const { result, waitForNextUpdate } = renderHook(
-            (...args) => useOnlineStatus(...args),
-            { initialProps: { debounceDelay: 50 } }
-        )
+        const { result } = renderHook((...args) => useOnlineStatus(...args), {
+            initialProps: { debounceDelay: 50 },
+        })
 
         act(() => {
             events.online(new Event('online'))
         })
 
         // Wait for debounce
-        await waitForNextUpdate({ timeout: 60 })
-
-        expect(result.current.online).toBe(true)
-        expect(result.current.offline).toBe(false)
+        await waitFor(() => {
+            expect(result.current.online).toBe(true)
+            expect(result.current.offline).toBe(false)
+        })
     })
 })
 
@@ -95,9 +98,7 @@ describe('debouncing state changes', () => {
         window.addEventListener = jest.fn(
             (event, cb) => (events[event] = cb as EventListener)
         )
-        const { result, waitForNextUpdate } = renderHook(() =>
-            useOnlineStatus()
-        )
+        const { result } = renderHook(() => useOnlineStatus())
 
         await act(async () => {
             // Multiple events in succession
@@ -109,9 +110,11 @@ describe('debouncing state changes', () => {
         // Immediately, nothing should happen
         expect(result.current.online).toBe(true)
 
+        await wait(1000)
         // 1s later, final 'offline' event should resolve
-        await waitForNextUpdate({ timeout: 1009 })
-        expect(result.current.online).toBe(false)
+        await waitFor(() => {
+            expect(result.current.online).toBe(false)
+        })
     })
 
     it('can have debounce delay set to another number', async () => {
@@ -121,10 +124,9 @@ describe('debouncing state changes', () => {
         window.addEventListener = jest.fn(
             (event, cb) => (events[event] = cb as EventListener)
         )
-        const { result, waitForNextUpdate } = renderHook(
-            (...args) => useOnlineStatus(...args),
-            { initialProps: { debounceDelay: 50 } }
-        )
+        const { result } = renderHook((...args) => useOnlineStatus(...args), {
+            initialProps: { debounceDelay: 50 },
+        })
 
         await act(async () => {
             // Multiple events in succession
@@ -137,8 +139,9 @@ describe('debouncing state changes', () => {
         expect(result.current.online).toBe(true)
 
         // 50ms later, final "offline" event should finally resolve
-        await waitForNextUpdate({ timeout: 60 })
-        expect(result.current.online).toBe(false)
+        await waitFor(() => {
+            expect(result.current.online).toBe(false)
+        })
     })
 
     it('can use a debounceDelay of 0 to skip debouncing', async () => {
@@ -147,12 +150,9 @@ describe('debouncing state changes', () => {
         window.addEventListener = jest.fn(
             (event, cb) => (events[event] = cb as EventListener)
         )
-        const { result, waitForNextUpdate } = renderHook(
-            (...args) => useOnlineStatus(...args),
-            {
-                initialProps: { debounceDelay: 0 },
-            }
-        )
+        const { result } = renderHook((...args) => useOnlineStatus(...args), {
+            initialProps: { debounceDelay: 0 },
+        })
         await act(async () => {
             events.offline(new Event('offline'))
             events.online(new Event('online'))
@@ -160,11 +160,11 @@ describe('debouncing state changes', () => {
         })
 
         // await wait(0) didn't work here
-        await waitForNextUpdate({ timeout: 0 })
-
-        // There should be no delay before status is offline
-        expect(result.current.online).toBe(false)
-        expect(result.current.offline).toBe(true)
+        await waitFor(() => {
+            // There should be no delay before status is offline
+            expect(result.current.online).toBe(false)
+            expect(result.current.offline).toBe(true)
+        })
     })
 
     it('can have the debounce delay changed during its lifecycle', async () => {
@@ -174,7 +174,7 @@ describe('debouncing state changes', () => {
         window.addEventListener = jest.fn(
             (event, cb) => (events[event] = cb as EventListener)
         )
-        const { result, waitForNextUpdate, rerender } = renderHook(
+        const { result, rerender } = renderHook(
             (...args) => useOnlineStatus(...args),
             { initialProps: { debounceDelay: 150 } }
         )
@@ -190,7 +190,7 @@ describe('debouncing state changes', () => {
         expect(result.current.online).toBe(true)
 
         // 150ms later, final "offline" event should finally resolve
-        await waitForNextUpdate({ timeout: 160 })
+        await wait(160)
         expect(result.current.online).toBe(false)
 
         // Change to 50 ms debounce
@@ -207,7 +207,7 @@ describe('debouncing state changes', () => {
         expect(result.current.online).toBe(false)
 
         // 50ms later, final "online" event should finally resolve
-        await waitForNextUpdate({ timeout: 60 })
+        await wait(60)
         expect(result.current.online).toBe(true)
     })
 
@@ -341,10 +341,9 @@ describe('it updates the lastOnline value in local storage', () => {
         window.addEventListener = jest.fn(
             (event, cb) => (events[event] = cb as EventListener)
         )
-        const { result, waitForNextUpdate } = renderHook(
-            (...args) => useOnlineStatus(...args),
-            { initialProps: { debounceDelay: 0 } }
-        )
+        const { result } = renderHook((...args) => useOnlineStatus(...args), {
+            initialProps: { debounceDelay: 0 },
+        })
 
         // Correct initial state
         expect(localStorage.getItem(lastOnlineKey)).toBe(null)
@@ -355,7 +354,7 @@ describe('it updates the lastOnline value in local storage', () => {
         })
 
         // Wait for debounce
-        await waitForNextUpdate({ timeout: 0 })
+        await wait(500)
 
         expect(result.current.online).toBe(false)
         expect(result.current.offline).toBe(true)
@@ -429,12 +428,9 @@ describe('it updates the lastOnline value in local storage', () => {
         window.addEventListener = jest.fn(
             (event, cb) => (events[event] = cb as EventListener)
         )
-        const { result, waitForNextUpdate } = renderHook(
-            (...args) => useOnlineStatus(...args),
-            {
-                initialProps: { debounceDelay: 0 },
-            }
-        )
+        const { result } = renderHook((...args) => useOnlineStatus(...args), {
+            initialProps: { debounceDelay: 0 },
+        })
 
         expect(localStorage.getItem(lastOnlineKey)).toBe(testDateString)
         expect(result.current.lastOnline).toEqual(new Date(testDateString))
@@ -444,7 +440,7 @@ describe('it updates the lastOnline value in local storage', () => {
         })
 
         // Wait for debounce
-        await waitForNextUpdate({ timeout: 0 })
+        await wait(500)
 
         expect(result.current.online).toBe(true)
         expect(result.current.offline).toBe(false)
@@ -459,10 +455,9 @@ describe('it updates the lastOnline value in local storage', () => {
         window.addEventListener = jest.fn(
             (event, cb) => (events[event] = cb as EventListener)
         )
-        const { result, waitForNextUpdate } = renderHook(
-            (...args) => useOnlineStatus(...args),
-            { initialProps: { debounceDelay: 0 } }
-        )
+        const { result } = renderHook((...args) => useOnlineStatus(...args), {
+            initialProps: { debounceDelay: 0 },
+        })
 
         // Correct initial state
         expect(localStorage.getItem(lastOnlineKey)).toBe(null)
@@ -471,7 +466,7 @@ describe('it updates the lastOnline value in local storage', () => {
         act(() => {
             events.offline(new Event('offline'))
         })
-        await waitForNextUpdate({ timeout: 0 })
+        await waitFor(() => undefined)
 
         const firstDate = new Date(
             localStorage.getItem(lastOnlineKey) as string
@@ -481,17 +476,17 @@ describe('it updates the lastOnline value in local storage', () => {
         act(() => {
             events.offline(new Event('online'))
         })
-        await waitForNextUpdate({ timeout: 0 })
+        await wait(500)
 
         expect(result.current.lastOnline).toBe(null)
 
         // todo: this is an error from UTC strings' imprecision
-        await wait(1000)
+        await wait(500)
 
         act(() => {
             events.offline(new Event('offline'))
         })
-        await waitForNextUpdate({ timeout: 0 })
+        await wait(500)
 
         expect(
             new Date(localStorage.getItem(lastOnlineKey) as string)

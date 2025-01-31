@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { QueryOptions, Mutation } from '../../engine'
+import { QueryOptions, Mutation, QueryExecuteOptions } from '../../engine'
 import { MutationRenderInput } from '../../types'
 import { useDataEngine } from './useDataEngine'
 import { useQueryExecutor } from './useQueryExecutor'
@@ -16,7 +16,7 @@ export const useDataMutation = (
         name: 'mutation',
     })
     const execute = useCallback(
-        (options) => engine.mutate(theMutation, options),
+        (options: QueryExecuteOptions) => engine.mutate(theMutation, options),
         [engine, theMutation]
     )
     const {

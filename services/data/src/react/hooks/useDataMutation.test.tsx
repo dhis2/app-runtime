@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react-hooks'
+import { renderHook, act, waitFor } from '@testing-library/react'
 import * as React from 'react'
 import { CreateMutation, UpdateMutation } from '../../engine/types/Mutation'
 import { CustomDataProvider } from '../components/CustomDataProvider'
@@ -17,10 +17,9 @@ describe('useDataMutation', () => {
             <CustomDataProvider data={data}>{children}</CustomDataProvider>
         )
 
-        const { result, waitFor } = renderHook(
-            () => useDataMutation(mutation),
-            { wrapper }
-        )
+        const { result } = renderHook(() => useDataMutation(mutation), {
+            wrapper,
+        })
 
         const [mutate, beforeMutation] = result.current
         expect(beforeMutation).toMatchObject({
@@ -61,7 +60,7 @@ describe('useDataMutation', () => {
             <CustomDataProvider data={data}>{children}</CustomDataProvider>
         )
 
-        const { result, waitFor } = renderHook(
+        const { result } = renderHook(
             () => useDataMutation(mutation, { lazy: false }),
             { wrapper }
         )
@@ -94,7 +93,7 @@ describe('useDataMutation', () => {
             <CustomDataProvider data={data}>{children}</CustomDataProvider>
         )
 
-        const { result, waitFor } = renderHook(
+        const { result } = renderHook(
             () => useDataMutation(mutation, { onComplete }),
             { wrapper }
         )
@@ -134,7 +133,7 @@ describe('useDataMutation', () => {
             <CustomDataProvider data={data}>{children}</CustomDataProvider>
         )
 
-        const { result, waitFor } = renderHook(
+        const { result } = renderHook(
             () => useDataMutation(mutation, { onError }),
             { wrapper }
         )
@@ -171,7 +170,7 @@ describe('useDataMutation', () => {
             <CustomDataProvider data={data}>{children}</CustomDataProvider>
         )
 
-        const { result, waitFor } = renderHook(
+        const { result } = renderHook(
             () =>
                 useDataMutation(mutation, {
                     lazy: false,
@@ -270,10 +269,9 @@ describe('useDataMutation', () => {
             <CustomDataProvider data={data}>{children}</CustomDataProvider>
         )
 
-        const { result, waitFor } = renderHook(
-            () => useDataMutation(mutation),
-            { wrapper }
-        )
+        const { result } = renderHook(() => useDataMutation(mutation), {
+            wrapper,
+        })
 
         let mutatePromise
         const [mutate] = result.current

@@ -1,6 +1,7 @@
 {
     //TODO: This should move to app-platform for standardized typescript library builds
     "compilerOptions": {
+        "skipLibCheck": true,
         // Target latest version of ECMAScript.
         "target": "esnext",
         "declaration": true,

@@ -1,3 +1,60 @@
+# [3.13.0](https://github.com/dhis2/app-runtime/compare/v3.12.1...v3.13.0) (2025-01-23)
+
+
+### Features
+
+* new plugin sizing default and options ([#1398](https://github.com/dhis2/app-runtime/issues/1398)) ([d2554c1](https://github.com/dhis2/app-runtime/commit/d2554c1a00ecf57518e16719861e1e236bbdff50))
+
+## [3.12.1](https://github.com/dhis2/app-runtime/compare/v3.12.0...v3.12.1) (2025-01-16)
+
+
+### Bug Fixes
+
+* reference module types in package.json export declaration ([#1400](https://github.com/dhis2/app-runtime/issues/1400)) ([c266429](https://github.com/dhis2/app-runtime/commit/c2664291626c9360ffa618ea05d67584bb7caa7a))
+
+# [3.12.0](https://github.com/dhis2/app-runtime/compare/v3.11.3...v3.12.0) (2024-12-04)
+
+
+### Bug Fixes
+
+* **cacheable-section:** synchronously flush recording state for UI consistency ([#1394](https://github.com/dhis2/app-runtime/issues/1394)) ([50d216c](https://github.com/dhis2/app-runtime/commit/50d216cb4b7a98995b327cb997bcf6bbd873ea18))
+* **deps:** remove cli-app-scripts peer dep ([7764439](https://github.com/dhis2/app-runtime/commit/776443957cf7bce70d644459b946dc9382dd9103))
+* **deps:** update cli-app-scripts for package/types race condition ([7980364](https://github.com/dhis2/app-runtime/commit/79803646c152a805277b123250124a272f178d99))
+
+
+### Features
+
+* upgrade app-runtime React version to v18 ([#1387](https://github.com/dhis2/app-runtime/issues/1387)) ([0e4a3d5](https://github.com/dhis2/app-runtime/commit/0e4a3d5c0e9cf8884c1a46f32fa0876234b6d765))
+* upgrade react query to v4 ([#1395](https://github.com/dhis2/app-runtime/issues/1395)) ([8b02fdf](https://github.com/dhis2/app-runtime/commit/8b02fdff62c175a115a68863be456db117c3ea5e))
+
+# [3.12.0-alpha.2](https://github.com/dhis2/app-runtime/compare/v3.12.0-alpha.1...v3.12.0-alpha.2) (2024-12-03)
+
+
+### Features
+
+* upgrade react query to v4 ([#1395](https://github.com/dhis2/app-runtime/issues/1395)) ([8b02fdf](https://github.com/dhis2/app-runtime/commit/8b02fdff62c175a115a68863be456db117c3ea5e))
+
+# [3.12.0-alpha.1](https://github.com/dhis2/app-runtime/compare/v3.11.3...v3.12.0-alpha.1) (2024-11-27)
+
+
+### Bug Fixes
+
+* **cacheable-section:** synchronously flush recording state for UI consistency ([#1394](https://github.com/dhis2/app-runtime/issues/1394)) ([50d216c](https://github.com/dhis2/app-runtime/commit/50d216cb4b7a98995b327cb997bcf6bbd873ea18))
+* **deps:** remove cli-app-scripts peer dep ([7764439](https://github.com/dhis2/app-runtime/commit/776443957cf7bce70d644459b946dc9382dd9103))
+* **deps:** update cli-app-scripts for package/types race condition ([7980364](https://github.com/dhis2/app-runtime/commit/79803646c152a805277b123250124a272f178d99))
+
+
+### Features
+
+* upgrade app-runtime React version to v18 ([#1387](https://github.com/dhis2/app-runtime/issues/1387)) ([0e4a3d5](https://github.com/dhis2/app-runtime/commit/0e4a3d5c0e9cf8884c1a46f32fa0876234b6d765))
+
+## [3.11.3](https://github.com/dhis2/app-runtime/compare/v3.11.2...v3.11.3) (2024-11-19)
+
+
+### Bug Fixes
+
+* add endpoint to text plain matchers ([#1390](https://github.com/dhis2/app-runtime/issues/1390)) ([bc25458](https://github.com/dhis2/app-runtime/commit/bc254581f65ec22104144f596032f40d670a73ce))
+
 ## [3.11.2](https://github.com/dhis2/app-runtime/compare/v3.11.1...v3.11.2) (2024-10-14)
 
 

@@ -1,5 +1,5 @@
 import { AlertsProvider } from '@dhis2/app-service-alerts'
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 import {
     useCacheableSection,
@@ -43,7 +43,7 @@ const TestControls = ({
             />
             <div data-testid={`is-cached-${id}`}>{isCached ? 'yes' : 'no'}</div>
             <div data-testid={`last-updated-${id}`}>
-                {lastUpdated || 'never'}
+                {lastUpdated?.toISOString() ?? 'never'}
             </div>
             <div data-testid={`recording-state-${id}`}>{recordingState}</div>
         </>
@@ -303,12 +303,14 @@ describe('useCacheableSection can be used inside a child of CacheableSection', (
     it('handles a successful recording', async (done) => {
         const { getByTestId, queryByTestId } = screen
 
-        const onStarted = () => {
-            expect(getByTestId(/recording-state/)).toHaveTextContent(
-                'recording'
-            )
-            expect(getByTestId(/loading-mask/)).toBeInTheDocument()
-            expect(getByTestId(/section-rc/)).toBeInTheDocument()
+        const onStarted = async () => {
+            await waitFor(() => {
+                expect(getByTestId(/recording-state/)).toHaveTextContent(
+                    'recording'
+                )
+                expect(getByTestId(/loading-mask/)).toBeInTheDocument()
+                expect(getByTestId(/section-rc/)).toBeInTheDocument()
+            })
         }
         const onCompleted = () => {
             expect(getByTestId(/recording-state/)).toHaveTextContent('default')
@@ -325,13 +327,15 @@ describe('useCacheableSection can be used inside a child of CacheableSection', (
         render(<ChildTest makeRecordingHandler={makeRecordingHandler} />)
 
         await act(async () => {
-            fireEvent.click(getByTestId(/start-recording/))
+            await fireEvent.click(getByTestId(/start-recording/))
         })
 
-        // At this stage, should be pending
-        // - In this test case, 'controls' should not be rendered
-        expect(queryByTestId(/recording-state/)).not.toBeInTheDocument()
-        expect(queryByTestId(/section-rc/)).not.toBeInTheDocument()
-        expect.assertions(7)
+        await waitFor(() => {
+            // At this stage, should be pending
+            // - In this test case, 'controls' should not be rendered
+            expect(queryByTestId(/recording-state/)).not.toBeInTheDocument()
+            expect(queryByTestId(/section-rc/)).not.toBeInTheDocument()
+            expect.assertions(7)
+        })
     })
 })

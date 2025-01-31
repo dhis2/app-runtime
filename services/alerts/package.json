@@ -1,12 +1,13 @@
 {
     "name": "@dhis2/app-service-alerts",
-    "version": "3.11.2",
+    "version": "3.13.0",
     "main": "./build/cjs/index.js",
     "module": "./build/es/index.js",
     "types": "./build/types/index.d.ts",
     "exports": {
         "import": "./build/es/index.js",
-        "require": "./build/cjs/index.js"
+        "require": "./build/cjs/index.js",
+        "types": "./build/types/index.d.ts"
     },
     "repository": {
         "type": "git",
@@ -23,8 +24,8 @@
     ],
     "peerDependencies": {
         "prop-types": "^15.7.2",
-        "react": "^16.8.6",
-        "react-dom": "^16.8.6"
+        "react": "^16.8.6 || ^18",
+        "react-dom": "^16.8.6 || ^18"
     },
     "scripts": {
         "clean": "rimraf ./build/*",

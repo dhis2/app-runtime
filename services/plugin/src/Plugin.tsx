@@ -3,6 +3,7 @@ import { useDataQuery } from '@dhis2/app-service-data'
 import postRobot from 'post-robot'
 import React, {
     ReactEventHandler,
+    SyntheticEvent,
     useCallback,
     useContext,
     useEffect,
@@ -11,6 +12,52 @@ import React, {
     useState,
 } from 'react'
 import PluginError from './PluginError'
+
+type PluginProps = {
+    /** URL to provide to iframe `src` */
+    pluginSource?: string
+    /**
+     * Short name of the target app/plugin to load -- its plugin launch URL
+     * will be found from the instance's app list (`/api/apps`)
+     */
+    pluginShortName?: string
+    /**
+     * A defined height to used for the iframe. By default, the iframe will
+     * resize to its content's height
+     */
+    height?: string | number
+    /**
+     * A defined width to use on the iframe. By default, `100%` is used to
+     * approximate the styles of a normal block element
+     */
+    width?: string | number
+    /**
+     * Styles can be applied with className. Sizing styles will take precedence
+     * over `width` and `height` props.
+     *
+     * **Note:** If using default width and you want to add margins, you will
+     * probably want to wrap this `Plugin` in a `div` with the margin styles
+     * instead to achieve the `width: auto` behavior of a normal block element
+     */
+    className?: string
+    /**
+     * Set this if you want the width of the iframe to be driven by the
+     * contents inside the plugin.
+     *
+     * The value provided here will be used as the `width` of a `div` wrapping
+     * the plugin contents, which will be watched with a resize observer to
+     * update the size of the iframe according to the plugin content width.
+     *
+     * Therefore, **`'max-content'`** is probably the value you want to use.
+     * `'fit-content'` or `'min-content'` may also work, depending on your use
+     * case.
+     */
+    clientWidth?: string | number
+    /** Props that will be sent to the plugin */
+    propsToPassNonMemoized?: any
+    /** Event callback that will be called during the iframe's Load event */
+    onLoad?: ReactEventHandler<HTMLIFrameElement>
+}
 
 const appsInfoQuery = {
     apps: {
@@ -38,15 +85,10 @@ export const Plugin = ({
     onLoad,
     height,
     width,
+    className,
+    clientWidth,
     ...propsToPassNonMemoized
-}: {
-    pluginSource?: string
-    pluginShortName?: string
-    onLoad?: ReactEventHandler<HTMLIFrameElement>
-    height?: string | number
-    width?: string | number
-    propsToPass: any
-}): JSX.Element => {
+}: PluginProps): JSX.Element => {
     const iframeRef = useRef<HTMLIFrameElement>(null)
 
     const { add: alertsAdd } = useContext(AlertsManagerContext)
@@ -60,7 +102,14 @@ export const Plugin = ({
         })
 
     const [inErrorState, setInErrorState] = useState<boolean>(false)
+    // These are height and width values to be set by callbacks passed to the
+    // plugin (these default sizes will be quickly overwritten by the plugin).
+    // In order to behave like a normal block element, by default, the height
+    // will be set by plugin contents, and this state will be used
     const [resizedHeight, setPluginHeight] = useState<number>(150)
+    // ...and by default, plugin width will be defined by the container
+    // (width = 100%), so this state won't be used unless the `clientWidth`
+    // prop is used to have plugin width defined by plugin contents
     const [resizedWidth, setPluginWidth] = useState<number>(500)
 
     // since we do not know what props are passed, the dependency array has to be keys of whatever is standard prop
@@ -87,8 +136,13 @@ export const Plugin = ({
         const iframeProps = {
             ...memoizedPropsToPass,
             alertsAdd,
+            // If a dimension is either specified or container-driven,
+            // don't send a resize callback to the plugin. The plugin can
+            // use the presence or absence of these callbacks to determine
+            // how to handle sizing inside
             setPluginHeight: !height ? setPluginHeight : null,
-            setPluginWidth: !width ? setPluginWidth : null,
+            setPluginWidth: !width && clientWidth ? setPluginWidth : null,
+            clientWidth,
             setInErrorState,
             // todo: what does this do? resets state from error component
             // seems to work without...
@@ -135,7 +189,7 @@ export const Plugin = ({
     }, [setUpCommunication])
 
     const handleLoad = useCallback(
-        (event) => {
+        (event: SyntheticEvent<HTMLIFrameElement, Event>) => {
             // reset communication received
             communicationReceivedRef.current = false
             if (propsFromParentListenerRef.current) {
@@ -163,18 +217,24 @@ export const Plugin = ({
         )
     }
 
-    if (pluginEntryPoint) {
-        return (
-            <iframe
-                ref={iframeRef}
-                src={pluginSource}
-                width={width ?? resizedWidth + 'px'}
-                height={height ?? resizedHeight + 'px'}
-                style={{ border: 'none' }}
-                onLoad={handleLoad}
-            ></iframe>
-        )
+    if (!pluginEntryPoint) {
+        return <></>
     }
 
-    return <></>
+    return (
+        <iframe
+            ref={iframeRef}
+            src={pluginSource}
+            // Styles can be added via className. Sizing styles will take
+            // precedence over the `width` and `height` props
+            className={className}
+            // If clientWidth is set, then we want width to be set by plugin
+            // (resizedWidth). Thereafter, if a width is specified, use that
+            // Otherwise, use a specified width, or 100% by default
+            width={clientWidth ? resizedWidth : width ?? '100%'}
+            height={height ?? resizedHeight}
+            style={{ border: 'none' }}
+            onLoad={handleLoad}
+        />
+    )
 }
