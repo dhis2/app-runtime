@@ -11,8 +11,8 @@ In this guide, we'll walk you through, step by step, how to use the `useDataQuer
 
 To be able to use the `useDataQuery` hook in your application, you need to have the following:
 
-- A web application built using the DHIS2 Application Platform
-- A basic understanding of React hooks
+-   A web application built using the DHIS2 Application Platform
+-   A basic understanding of React hooks
 
 If you do not yet have a web application built using the DHIS2 Application Platform, you can follow the [Getting Started](/docs/quickstart/quickstart-web) guide to create a new application.
 
@@ -21,7 +21,7 @@ If you do not yet have a web application built using the DHIS2 Application Platf
 The first step is to import the `useDataQuery` hook from the `@dhis2/app-runtime` library. You can do this by adding the following import statement at the top of your component file:
 
 ```jsx
-import { useDataQuery } from '@dhis2/app-runtime';
+import { useDataQuery } from '@dhis2/app-runtime'
 ```
 
 Now that you have imported the `useDataQuery` hook, you can use it in your component to fetch data from the DHIS2 API.
@@ -46,7 +46,7 @@ const query = {
 // highlight-end
 
 const App() => {
-    
+
 }
 ```
 
@@ -139,23 +139,6 @@ Defensive programming is a practice where you write code that anticipates and ha
 In the query object, you can specify the `paging` property to paginate the results. By default, the `paging` property is set to `true`, which means that the results will be paginated. You can specify the `pageSize` property to control the number of items per page.
 
 ```js
-
-const query = {
-    orgUnits: {
-        resource: 'organisationUnits',
-        params: {
-            fields: ['id', 'displayName', 'level'],
-            paging: true,
-            pageSize: 10
-        }
-    }
-};
-```
-
-In the code above, we set the `paging` property to `true` and the `pageSize` property to `10`, which means that the results will be paginated with 10 items per page. You can use the `page` property to specify the page number you want to fetch.
-
-```js
-
 const query = {
     orgUnits: {
         resource: 'organisationUnits',
@@ -163,16 +146,31 @@ const query = {
             fields: ['id', 'displayName', 'level'],
             paging: true,
             pageSize: 10,
-            page: 2
-        }
-    }
-};
+        },
+    },
+}
+```
+
+In the code above, we set the `paging` property to `true` and the `pageSize` property to `10`, which means that the results will be paginated with 10 items per page. You can use the `page` property to specify the page number you want to fetch.
+
+```js
+const query = {
+    orgUnits: {
+        resource: 'organisationUnits',
+        params: {
+            fields: ['id', 'displayName', 'level'],
+            paging: true,
+            pageSize: 10,
+            page: 2,
+        },
+    },
+}
 ```
 
 In the code above, we set the `page` property to `2`, which means that we want to fetch the second page of results, so we'll be getting results 11-20. You can use the `pageCount` property to get the total number of pages available.
 
 ```js
-const pageCount = data.orgUnits.pager.pageCount;
+const pageCount = data.orgUnits.pager.pageCount
 ```
 
 :::note `pageCount` not always available
@@ -184,31 +182,29 @@ The `pageCount` property is not always available in the response. You should che
 You can apply filters to the query to filter the results based on certain criteria. You can use the `filter` property to specify the filters you want to apply. In this example we'll be filtering the Organisation Units where the name contains the word "health".
 
 ```js
-
 const query = {
     orgUnits: {
         resource: 'organisationUnits',
         params: {
             fields: ['id', 'displayName', 'level'],
             filter: 'displayName:like:health',
-        }
-    }
-};
+        },
+    },
+}
 ```
 
 Executing the query above will return all Organisation Units where the name contains the word "health". You can use the `filter` property to apply more complex filters by supplying an array of filter criteria. In this example, we'll be filtering the Organisation Units where the name contains the word "health" and the level is 4.
 
 ```js
-
 const query = {
     orgUnits: {
         resource: 'organisationUnits',
         params: {
             fields: ['id', 'displayName', 'level'],
-            filter: ['displayName:ilike:health','level:eq:4'],
-        }
-    }
-};
+            filter: ['displayName:ilike:health', 'level:eq:4'],
+        },
+    },
+}
 ```
 
 :::info

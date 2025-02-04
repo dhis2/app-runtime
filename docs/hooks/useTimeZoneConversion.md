@@ -128,7 +128,6 @@ This is an example cannot be copy/pasted unless you have implemented a component
 :::
 
 ```jsx
-
 import React from 'react'
 import { useTimeZoneConversion } from '@dhis2/app-runtime'
 import MyCalendarImplementation from './MyCalendarImplementation'
@@ -143,6 +142,7 @@ const FakeTime = () => {
     return <MyCalendarImplementation limitDate={nowServer} />
 }
 ```
+
 :::note
 In cases like the above, it is often better to rethink the approach and try to rely on client-representations of time. This will ensure that the dates used correspond to an actual true time representation.
 :::
