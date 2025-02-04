@@ -89,11 +89,6 @@ export const Plugin = ({
             appShortName: pluginShortName,
         })
 
-    const [communicationReceived, setCommunicationReceived] =
-        useState<boolean>(false)
-    const [prevCommunicationReceived, setPrevCommunicationReceived] =
-        useState<boolean>(false)
-
     const [inErrorState, setInErrorState] = useState<boolean>(false)
     // These are height and width values to be set by callbacks passed to the
     // plugin (these default sizes will be quickly overwritten by the plugin).
@@ -118,68 +113,81 @@ export const Plugin = ({
         /* eslint-enable react-hooks/exhaustive-deps */
     )
 
+    // Used to track changes to the plugin source
+    const prevEntryPointRef = useRef(pluginEntryPoint)
+    // Becomes `true` when we get the first message from a plugin, so we know
+    // it's ready to send messages to
+    const communicationReceivedRef = useRef(false)
+
+    // If plugin source changes, reset communicationReceived so new listeners
+    // can be set up on the new window. This also helps avoid sending prop
+    // updates meant for the new window to the old one
     useEffect(() => {
-        setCommunicationReceived(false)
+        if (pluginEntryPoint !== prevEntryPointRef.current) {
+            communicationReceivedRef.current = false
+            prevEntryPointRef.current = pluginEntryPoint
+        }
     }, [pluginEntryPoint])
 
+    // Set up communication listeners: if we haven't gotten a message from the
+    // plugin, set up a listener for its request for initial props. If we have
+    // received communication from the plugin, then on any props update, we can
+    // send them to the plugin
     useEffect(() => {
-        // if communicationReceived switches from false to true, the props have been sent
-        const prevCommunication = prevCommunicationReceived
-        setPrevCommunicationReceived(communicationReceived)
-        if (prevCommunication === false && communicationReceived === true) {
+        if (!iframeRef.current) {
             return
         }
 
-        if (iframeRef?.current) {
-            const iframeProps = {
-                ...memoizedPropsToPass,
-                alertsAdd,
-                // If a dimension is either specified or container-driven,
-                // don't send a resize callback to the plugin. The plugin can
-                // use the presence or absence of these callbacks to determine
-                // how to handle sizing inside
-                setPluginHeight: !height ? setPluginHeight : null,
-                setPluginWidth: !width && clientWidth ? setPluginWidth : null,
-                setInErrorState,
-                setCommunicationReceived,
-                clientWidth,
-            }
-
-            // if iframe has not sent initial request, set up a listener
-            if (!communicationReceived && !inErrorState) {
-                const listener = postRobot.on(
-                    'getPropsFromParent',
-                    // listen for messages coming only from the iframe rendered by this component
-                    { window: iframeRef.current.contentWindow },
-                    (): any => {
-                        setCommunicationReceived(true)
-                        return iframeProps
-                    }
-                )
-                return () => listener.cancel()
-            }
-
-            // if iframe has sent initial request, send new props
-            if (
-                communicationReceived &&
-                iframeRef.current.contentWindow &&
-                !inErrorState
-            ) {
-                postRobot
-                    .send(
-                        iframeRef.current.contentWindow,
-                        'updated',
-                        iframeProps
-                    )
-                    .catch((err) => {
-                        // log postRobot errors, but do not bubble them up
-                        console.error(err)
-                    })
-            }
+        const iframeProps = {
+            ...memoizedPropsToPass,
+            alertsAdd,
+            // If a dimension is either specified or container-driven,
+            // don't send a resize callback to the plugin. The plugin can
+            // use the presence or absence of these callbacks to determine
+            // how to handle sizing inside
+            setPluginHeight: !height ? setPluginHeight : null,
+            setPluginWidth: !width && clientWidth ? setPluginWidth : null,
+            setInErrorState,
+            clientWidth,
         }
-        // prevCommunicationReceived update should not retrigger this hook
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [memoizedPropsToPass, communicationReceived, inErrorState, alertsAdd])
+
+        // If iframe has not sent initial request, set up a listener
+        // (this will still be set up if plugin needs to reload)
+        if (!communicationReceivedRef.current && !inErrorState) {
+            const listener = postRobot.on(
+                'getPropsFromParent',
+                // listen for messages coming only from the iframe rendered by this component
+                { window: iframeRef.current.contentWindow },
+                (): any => {
+                    communicationReceivedRef.current = true
+                    return iframeProps
+                }
+            )
+            return () => listener.cancel()
+        }
+
+        // If iframe has sent initial request, send new props
+        if (
+            communicationReceivedRef.current &&
+            iframeRef.current.contentWindow &&
+            !inErrorState
+        ) {
+            postRobot
+                .send(iframeRef.current.contentWindow, 'updated', iframeProps)
+                .catch((err) => {
+                    // log postRobot errors, but do not bubble them up
+                    console.error(err)
+                })
+        }
+    }, [
+        memoizedPropsToPass,
+        inErrorState,
+        // The following should be pretty stable:
+        alertsAdd,
+        clientWidth,
+        height,
+        width,
+    ])
 
     if (data && !pluginEntryPoint) {
         return (
@@ -197,7 +205,7 @@ export const Plugin = ({
     return (
         <iframe
             ref={iframeRef}
-            src={pluginSource}
+            src={pluginEntryPoint}
             // Styles can be added via className. Sizing styles will take
             // precedence over the `width` and `height` props
             className={className}

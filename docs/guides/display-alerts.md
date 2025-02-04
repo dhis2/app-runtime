@@ -11,9 +11,9 @@ In this guide we'll walk you through, step by step, how to display an alert in y
 
 To be able to implement the alert in your application, you need to have the following:
 
-- A web application built using the DHIS2 Application Platform
-- A basic understanding of React hooks
-  
+-   A web application built using the DHIS2 Application Platform
+-   A basic understanding of React hooks
+
 If you do not yet have a web application built using the DHIS2 Application Platform, you can follow the [Getting Started](/docs/quickstart/quickstart-web) guide to create a new application.
 
 ## Step 1: Import the `useAlert` hook
@@ -30,7 +30,7 @@ Now that you have imported the `useAlert` hook, you can use it in your component
 
 Now that you have imported the `useAlert` hook, you can use it to send a default alert notification. The `useAlert` hook returns an object with two functions: `show` and `hide`.
 
-The `show` function is used to display the alert, while the `hide` function is used to hide the alert. After hiding (automatically or by code), the alert will be removed from the alert stack. But you can re-add it by calling the `show` function again. 
+The `show` function is used to display the alert, while the `hide` function is used to hide the alert. After hiding (automatically or by code), the alert will be removed from the alert stack. But you can re-add it by calling the `show` function again.
 
 ```js
 const App() => {
@@ -58,7 +58,7 @@ const App() => {
 
 ## Step 3: Adding options to the alert
 
-You can also add options to the alert, such as the duration of the alert, the type of alert, and the action to be taken when the alert is clicked. 
+You can also add options to the alert, such as the duration of the alert, the type of alert, and the action to be taken when the alert is clicked.
 
 ```js
 const App() => {
@@ -94,7 +94,7 @@ const App() => {
         ({ success }) => isActive ? { critical: true } : { success: true }
     )
     // highlight-end
-    
+
     // Display the alert, somewhere else in your code
     // highlight-start
     show({ program: 'tb', success: true })
@@ -114,5 +114,5 @@ You can read more about the `useAlert` hook in the [official documentation](/doc
 
 ## Additional Resources
 
-- [AlertBar Component Documentation](/docs/ui/components/alertbar)
-- [AlertBar Demo](pathname:///demo/?path=/story/alert-bar--states)
+-   [AlertBar Component Documentation](/docs/ui/components/alertbar)
+-   [AlertBar Demo](pathname:///demo/?path=/story/alert-bar--states)
