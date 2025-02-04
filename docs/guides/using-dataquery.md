@@ -55,7 +55,7 @@ In the query object above, we define a property called `orgUnits` that contains 
 We've enabled pagination by setting the `paging` property to `true`. This means that the results will be paginated, and we'll only get a subset of the results. This is the recommended approach as it is lighter on both the server and uses less data. We'll explain pagination at a later step in this guide.
 
 :::info Static Query
-In this example, we're using a static query, which means that the query is defined in the component file and doesn't change during the lifecycle of the component. You can also use dynamic queries, where the query is defined based on the state of the component. You can find more information about dynamic queries in the [useDataQuery documentation](/docs/app-runtime/hooks/usedataquery/#dynamic-query).
+In this example, we're using a static query, which means that the query is defined in the component file and doesn't change during the lifecycle of the component. You can also use dynamic queries, where the query is defined based on the state of the component. You can find more information about dynamic queries in the [useDataQuery documentation](/docs/app-runtime/hooks/useDataQuery/#dynamic-query).
 :::
 
 ## Step 3: Execute the query
@@ -215,4 +215,4 @@ Filtering can be applied to every property of the resource you are querying. Alw
 
 In this guide, we walked you through how to use the `useDataQuery` hook in your application to fetch data from the DHIS2 API using a Static Query. We covered how to define a query, execute the query, display the data, apply pagination, and apply filters to the query. By following these steps, you can fetch data from the DHIS2 API in your application with ease. You can now use this knowledge to fetch data from the DHIS2 API in your application and display it to your users, for every API endpoint available in the DHIS2 API.
 
-But besides static queries, you can also use dynamic queries. You can find more information about this in the [useDataQuery documentation](/docs/app-runtime/hooks/usedataquery/#dynamic-query). In the example of dynamic queries, you can see how to use the `useDataQuery` hook with a dynamic query, as well as how `refetch()` is used to fetch the next `page` of data.
+But besides static queries, you can also use dynamic queries. You can find more information about this in the [useDataQuery documentation](/docs/app-runtime/hooks/useDataQuery/#dynamic-query). In the example of dynamic queries, you can see how to use the `useDataQuery` hook with a dynamic query, as well as how `refetch()` is used to fetch the next `page` of data.
