@@ -1,3 +1,10 @@
+## [3.13.1](https://github.com/dhis2/app-runtime/compare/v3.13.0...v3.13.1) (2025-02-04)
+
+
+### Bug Fixes
+
+* **plugin:** don't send prop update when changing plugin source ([#1404](https://github.com/dhis2/app-runtime/issues/1404)) ([3ae0295](https://github.com/dhis2/app-runtime/commit/3ae0295ccb57f6b1f9509774a8f9b1603bdf3379))
+
 # [3.13.0](https://github.com/dhis2/app-runtime/compare/v3.12.1...v3.13.0) (2025-01-23)
 
 
