@@ -179,15 +179,9 @@ export const Plugin = ({
                     console.error(err)
                 })
         }
-    }, [
-        memoizedPropsToPass,
-        inErrorState,
-        // The following should be pretty stable:
-        alertsAdd,
-        clientWidth,
-        height,
-        width,
-    ])
+        // Skip `width` and `height` props to avoid updates when changing size:
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [memoizedPropsToPass, inErrorState, alertsAdd, clientWidth])
 
     if (data && !pluginEntryPoint) {
         return (
