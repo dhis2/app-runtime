@@ -129,6 +129,12 @@ export const Plugin = ({
         }
     }, [pluginEntryPoint])
 
+    // Tracking these as booleans means they can be used as dependencies for
+    // the useEffect to update props without triggering updates everytime their
+    // string/number value changes
+    const heightIsContentDriven = !height
+    const widthIsContentDriven = !width && clientWidth
+
     // Set up communication listeners: if we haven't gotten a message from the
     // plugin, set up a listener for its request for initial props. If we have
     // received communication from the plugin, then on any props update, we can
@@ -145,8 +151,8 @@ export const Plugin = ({
             // don't send a resize callback to the plugin. The plugin can
             // use the presence or absence of these callbacks to determine
             // how to handle sizing inside
-            setPluginHeight: !height ? setPluginHeight : null,
-            setPluginWidth: !width && clientWidth ? setPluginWidth : null,
+            setPluginHeight: heightIsContentDriven ? setPluginHeight : null,
+            setPluginWidth: widthIsContentDriven ? setPluginWidth : null,
             setInErrorState,
             clientWidth,
         }
@@ -179,9 +185,14 @@ export const Plugin = ({
                     console.error(err)
                 })
         }
-        // Skip `width` and `height` props to avoid updates when changing size:
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [memoizedPropsToPass, inErrorState, alertsAdd, clientWidth])
+    }, [
+        memoizedPropsToPass,
+        inErrorState,
+        alertsAdd,
+        heightIsContentDriven,
+        widthIsContentDriven,
+        clientWidth,
+    ])
 
     if (data && !pluginEntryPoint) {
         return (
