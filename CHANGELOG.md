@@ -1,3 +1,10 @@
+## [3.13.2](https://github.com/dhis2/app-runtime/compare/v3.13.1...v3.13.2) (2025-02-11)
+
+
+### Bug Fixes
+
+* **plugin:** avoid sending prop updates when height and width values change ([#1406](https://github.com/dhis2/app-runtime/issues/1406)) ([d263c25](https://github.com/dhis2/app-runtime/commit/d263c2534870f6d8673cea077f99f840ff94c909))
+
 ## [3.13.1](https://github.com/dhis2/app-runtime/compare/v3.13.0...v3.13.1) (2025-02-04)
 
 
