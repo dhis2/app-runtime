@@ -26,3 +26,7 @@ export {
 } from '@dhis2/app-service-offline'
 
 export { Provider } from './Provider'
+
+import type { Config } from './d2config.types'
+
+export declare type D2Config = Config
