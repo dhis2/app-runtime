@@ -125,9 +125,34 @@ export const Plugin = ({
         /* eslint-enable react-hooks/exhaustive-deps */
     )
 
+    // Used to track changes to the plugin source
+    const prevEntryPointRef = useRef(pluginEntryPoint)
+    // Becomes `true` when we get the first message from a plugin, so we know
+    // it's ready to send messages to
+    const communicationReceivedRef = useRef(false)
+    // Tracks post-robot listeners; may change if plugin navigates to a new URL
     const propsFromParentListenerRef = useRef<any>()
-    const communicationReceivedRef = useRef<boolean>(false)
 
+    // If plugin source changes, reset communicationReceived so new listeners
+    // can be set up on the new window. This also helps avoid sending prop
+    // updates meant for the new window to the old one
+    useEffect(() => {
+        if (pluginEntryPoint !== prevEntryPointRef.current) {
+            communicationReceivedRef.current = false
+            prevEntryPointRef.current = pluginEntryPoint
+        }
+    }, [pluginEntryPoint])
+
+    // Tracking these as booleans means they can be used as dependencies for
+    // the useEffect to update props without triggering updates everytime their
+    // string/number value changes
+    const heightIsContentDriven = !height
+    const widthIsContentDriven = !width && clientWidth
+
+    // Set up communication listeners: if we haven't gotten a message from the
+    // plugin, set up a listener for its request for initial props. If we have
+    // received communication from the plugin, then on any props update, we can
+    // send them to the plugin
     const setUpCommunication = useCallback(() => {
         if (!iframeRef.current) {
             return
@@ -140,18 +165,17 @@ export const Plugin = ({
             // don't send a resize callback to the plugin. The plugin can
             // use the presence or absence of these callbacks to determine
             // how to handle sizing inside
-            setPluginHeight: !height ? setPluginHeight : null,
-            setPluginWidth: !width && clientWidth ? setPluginWidth : null,
-            clientWidth,
+            setPluginHeight: heightIsContentDriven ? setPluginHeight : null,
+            setPluginWidth: widthIsContentDriven ? setPluginWidth : null,
             setInErrorState,
-            // todo: what does this do? resets state from error component
-            // seems to work without...
-            // setCommunicationReceived,
+            clientWidth,
         }
 
-        // if iframe has not sent initial request, set up a listener
+        // If iframe has not sent initial request, set up a listener
+        // (this will still be set up if plugin needs to reload)
         if (!communicationReceivedRef.current && !inErrorState) {
             // avoid setting up twice
+            // todo: any race conditions here?
             if (!propsFromParentListenerRef.current) {
                 propsFromParentListenerRef.current = postRobot.on(
                     'getPropsFromParent',
@@ -170,10 +194,14 @@ export const Plugin = ({
             }
         }
 
-        // if iframe has sent initial request, send new props
+        // If iframe has sent initial request, send new props
         // (don't do before to avoid sending messages before listeners
         // are ready)
-        if (iframeRef.current.contentWindow && !inErrorState) {
+        if (
+            communicationReceivedRef.current &&
+            iframeRef.current.contentWindow &&
+            !inErrorState
+        ) {
             postRobot
                 .send(iframeRef.current.contentWindow, 'updated', iframeProps)
                 .catch((err) => {
@@ -185,8 +213,8 @@ export const Plugin = ({
         memoizedPropsToPass,
         inErrorState,
         alertsAdd,
-        height,
-        width,
+        heightIsContentDriven,
+        widthIsContentDriven,
         clientWidth,
     ])
 
@@ -231,7 +259,7 @@ export const Plugin = ({
     return (
         <iframe
             ref={iframeRef}
-            src={pluginSource}
+            src={pluginEntryPoint}
             // Styles can be added via className. Sizing styles will take
             // precedence over the `width` and `height` props
             className={className}
