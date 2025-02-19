@@ -1,3 +1,31 @@
+## [3.13.2](https://github.com/dhis2/app-runtime/compare/v3.13.1...v3.13.2) (2025-02-11)
+
+
+### Bug Fixes
+
+* **plugin:** avoid sending prop updates when height and width values change ([#1406](https://github.com/dhis2/app-runtime/issues/1406)) ([d263c25](https://github.com/dhis2/app-runtime/commit/d263c2534870f6d8673cea077f99f840ff94c909))
+
+## [3.13.1](https://github.com/dhis2/app-runtime/compare/v3.13.0...v3.13.1) (2025-02-04)
+
+
+### Bug Fixes
+
+* **plugin:** don't send prop update when changing plugin source ([#1404](https://github.com/dhis2/app-runtime/issues/1404)) ([3ae0295](https://github.com/dhis2/app-runtime/commit/3ae0295ccb57f6b1f9509774a8f9b1603bdf3379))
+
+# [3.13.0](https://github.com/dhis2/app-runtime/compare/v3.12.1...v3.13.0) (2025-01-23)
+
+
+### Features
+
+* new plugin sizing default and options ([#1398](https://github.com/dhis2/app-runtime/issues/1398)) ([d2554c1](https://github.com/dhis2/app-runtime/commit/d2554c1a00ecf57518e16719861e1e236bbdff50))
+
+## [3.12.1](https://github.com/dhis2/app-runtime/compare/v3.12.0...v3.12.1) (2025-01-16)
+
+
+### Bug Fixes
+
+* reference module types in package.json export declaration ([#1400](https://github.com/dhis2/app-runtime/issues/1400)) ([c266429](https://github.com/dhis2/app-runtime/commit/c2664291626c9360ffa618ea05d67584bb7caa7a))
+
 # [3.12.0](https://github.com/dhis2/app-runtime/compare/v3.11.3...v3.12.0) (2024-12-04)
 
 
