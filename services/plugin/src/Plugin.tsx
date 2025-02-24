@@ -1,7 +1,14 @@
 import { AlertsManagerContext } from '@dhis2/app-service-alerts'
 import { useDataQuery } from '@dhis2/app-service-data'
 import postRobot from 'post-robot'
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, {
+    ReactEventHandler,
+    useContext,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react'
 import PluginError from './PluginError'
 
 type PluginProps = {
@@ -46,6 +53,8 @@ type PluginProps = {
     clientWidth?: string | number
     /** Props that will be sent to the plugin */
     propsToPassNonMemoized?: any
+    /** Event callback that will be called during the iframe's Load event */
+    onLoad?: ReactEventHandler<HTMLIFrameElement>
 }
 
 const appsInfoQuery = {
@@ -71,6 +80,7 @@ const getPluginEntryPoint = ({
 export const Plugin = ({
     pluginSource,
     pluginShortName,
+    onLoad,
     height,
     width,
     className,
@@ -220,6 +230,7 @@ export const Plugin = ({
             width={clientWidth ? resizedWidth : width ?? '100%'}
             height={height ?? resizedHeight}
             style={{ border: 'none' }}
+            onLoad={onLoad}
         />
     )
 }
