@@ -24,15 +24,15 @@ const { loading, error, data, refetch } = useDataQuery(query, options)
 
 ## Output
 
-|    Name     |                    Type                    | Description                                                                                                                                                                            |
-| :---------: | :----------------------------------------: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **called**  |                 _boolean_                  | **true** if the data request has been initiated with either `lazy: false` or `refetch()` at least once                                                                                 |
-| **loading** |                 _boolean_                  | **true** if the data is not yet available and no error has yet been encountered                                                                                                        |
-| **fetching** | _boolean_ | **true** if the hook is actively making a request for data in the background. Unlike `loading`, which can only be **true** *if there is no data received yet*, `fetching` can be true if there is data available. |
-|  **error**  |       _Error_<br/>or<br/>_undefined_       | **undefined** if no error has occurred, otherwise the Error which was thrown                                                                                                           |
-|  **data**   |    _QueryResult_<br/>or<br/>_undefined_    | **undefined** if the data is loading or an error has occurred, otherwise a map from the name of each **QueryDefinition** defined in the **Query** to the resulting data for that query |
-| **refetch** |                 _Function_                 | This function can be called to refetch the data and can accept variables (see Examples below). Any in-flight HTTP requests will automatically be aborted.                              |
-| **engine**  | [_Data Engine_](../advanced/DataEngine.md) | A reference to the DataEngine instance                                                                                                                                                 |
+|     Name     |                    Type                    | Description                                                                                                                                                                                                       |
+| :----------: | :----------------------------------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|  **called**  |                 _boolean_                  | **true** if the data request has been initiated with either `lazy: false` or `refetch()` at least once                                                                                                            |
+| **loading**  |                 _boolean_                  | **true** if the data is not yet available and no error has yet been encountered                                                                                                                                   |
+| **fetching** |                 _boolean_                  | **true** if the hook is actively making a request for data in the background. Unlike `loading`, which can only be **true** _if there is no data received yet_, `fetching` can be true if there is data available. |
+|  **error**   |       _Error_<br/>or<br/>_undefined_       | **undefined** if no error has occurred, otherwise the Error which was thrown                                                                                                                                      |
+|   **data**   |    _QueryResult_<br/>or<br/>_undefined_    | **undefined** if the data is loading or an error has occurred, otherwise a map from the name of each **QueryDefinition** defined in the **Query** to the resulting data for that query                            |
+| **refetch**  |                 _Function_                 | This function can be called to refetch the data and can accept variables (see Examples below). Any in-flight HTTP requests will automatically be aborted.                                                         |
+|  **engine**  | [_Data Engine_](../advanced/DataEngine.md) | A reference to the DataEngine instance                                                                                                                                                                            |
 
 ## Examples
 
