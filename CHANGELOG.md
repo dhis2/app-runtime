@@ -1,3 +1,10 @@
+# [3.14.0](https://github.com/dhis2/app-runtime/compare/v3.13.2...v3.14.0) (2025-02-25)
+
+
+### Features
+
+* **plugin:** add onLoad prop for Plugin ([#1407](https://github.com/dhis2/app-runtime/issues/1407)) ([78d1bd3](https://github.com/dhis2/app-runtime/commit/78d1bd3f53749f6fc78e988acb5d9f7db36307c6))
+
 ## [3.13.2](https://github.com/dhis2/app-runtime/compare/v3.13.1...v3.13.2) (2025-02-11)
 
 

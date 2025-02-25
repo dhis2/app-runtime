@@ -1,7 +1,7 @@
 {
     "name": "@dhis2/app-service-offline",
     "description": "A runtime service for online/offline detection and offline caching",
-    "version": "3.13.2",
+    "version": "3.14.0",
     "main": "./build/cjs/index.js",
     "module": "./build/es/index.js",
     "types": "build/types/index.d.ts",
@@ -34,7 +34,7 @@
         "coverage": "yarn test --coverage"
     },
     "peerDependencies": {
-        "@dhis2/app-service-config": "3.13.2",
+        "@dhis2/app-service-config": "3.14.0",
         "prop-types": "^15.7.2",
         "react": "^16.8.6 || ^18",
         "react-dom": "^16.8.6 || ^18"
