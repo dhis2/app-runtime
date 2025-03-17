@@ -254,7 +254,7 @@ describe('isExpressionDescriptionValidation', () => {
     })
     it('retuns false for a POST to a different resource', () => {
         expect(
-            isMetadataPackageInstallation('create', {
+            isExpressionDescriptionValidation('create', {
                 resource: 'indicators/expression/somethingelse',
             })
         ).toBe(false)
@@ -268,7 +268,7 @@ describe('isExpressionDescriptionValidation', () => {
     })
     it('retuns false for a POST to a different resource', () => {
         expect(
-            isMetadataPackageInstallation('create', {
+            isExpressionDescriptionValidation('create', {
                 resource: 'programIndicators/expression/somethingelse',
             })
         ).toBe(false)
@@ -285,7 +285,7 @@ describe('isFilterDescriptionValidation', () => {
     })
     it('retuns false for a POST to a different resource', () => {
         expect(
-            isMetadataPackageInstallation('create', {
+            isFilterDescriptionValidation('create', {
                 resource: 'programIndicators/filter/somethingelse',
             })
         ).toBe(false)
