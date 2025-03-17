@@ -130,3 +130,12 @@ export const isExpressionDescriptionValidation = (
     const pattern = /^(indicators|programIndicators)\/expression\/description$/
     return type === 'create' && pattern.test(resource)
 }
+
+// POST to 'programIndicator/filter/description' (validate a filter)
+export const isFilterDescriptionValidation = (
+    type: FetchType,
+    { resource }: ResolvedResourceQuery
+): boolean => {
+    const pattern = /^programIndicators\/filter\/description$/
+    return type === 'create' && pattern.test(resource)
+}
