@@ -1,3 +1,10 @@
+## [3.14.2](https://github.com/dhis2/app-runtime/compare/v3.14.1...v3.14.2) (2025-05-29)
+
+
+### Bug Fixes
+
+* expose TS types internal to the data engine ([#1412](https://github.com/dhis2/app-runtime/issues/1412)) ([9803646](https://github.com/dhis2/app-runtime/commit/98036468fce8f26ffb95ef7b25b610fe3d26b3fa))
+
 ## [3.14.1](https://github.com/dhis2/app-runtime/compare/v3.14.0...v3.14.1) (2025-03-17)
 
 
