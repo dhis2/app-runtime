@@ -1,3 +1,10 @@
+## [3.14.3](https://github.com/dhis2/app-runtime/compare/v3.14.2...v3.14.3) (2025-06-02)
+
+
+### Bug Fixes
+
+* update cli-app-scripts to fix build issue ([#1413](https://github.com/dhis2/app-runtime/issues/1413)) ([ee2f7af](https://github.com/dhis2/app-runtime/commit/ee2f7af19b3d4fce9153747afcca882d1744db0f))
+
 ## [3.14.2](https://github.com/dhis2/app-runtime/compare/v3.14.1...v3.14.2) (2025-05-29)
 
 
