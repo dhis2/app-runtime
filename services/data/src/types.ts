@@ -16,6 +16,7 @@ export interface ContextInput {
 
 export type QueryOptions = Query
 export type MutationOptions = Mutation
+export type ExecuteOptions = QueryExecuteOptions
 export type RefetchOptions = QueryVariables
 export type RefetchFunction<ReturnType> = (
     options?: RefetchOptions
