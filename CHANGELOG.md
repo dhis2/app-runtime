@@ -1,3 +1,10 @@
+## [3.14.4](https://github.com/dhis2/app-runtime/compare/v3.14.3...v3.14.4) (2025-06-05)
+
+
+### Bug Fixes
+
+* expose Query, Mutation and ExecuteOptions types ([#1414](https://github.com/dhis2/app-runtime/issues/1414)) ([a1d2315](https://github.com/dhis2/app-runtime/commit/a1d23158c74c34af9160079b195a4e1eccccc346))
+
 ## [3.14.3](https://github.com/dhis2/app-runtime/compare/v3.14.2...v3.14.3) (2025-06-02)
 
 
