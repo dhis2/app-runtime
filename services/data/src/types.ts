@@ -2,7 +2,8 @@ import DataEngine from './engine/DataEngine'
 import { QueryExecuteOptions } from './engine/types/ExecuteOptions'
 import { FetchError } from './engine/types/FetchError'
 import { JsonValue } from './engine/types/JsonValue'
-import { QueryVariables, QueryResult } from './engine/types/Query'
+import { Mutation } from './engine/types/Mutation'
+import { QueryVariables, QueryResult, Query } from './engine/types/Query'
 
 export interface ContextType {
     engine: DataEngine
@@ -13,6 +14,8 @@ export interface ContextInput {
     apiVersion: number
 }
 
+export type QueryOptions = Query
+export type MutationOptions = Mutation
 export type RefetchOptions = QueryVariables
 export type RefetchFunction<ReturnType> = (
     options?: RefetchOptions
