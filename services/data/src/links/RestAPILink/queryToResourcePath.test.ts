@@ -41,6 +41,26 @@ describe('queryToResourcePath', () => {
             )
         })
     })
+    describe('legacy', () => {
+        it('should return the apps bundle url if using `legacy::bundledApps`', () => {
+            const query: ResolvedResourceQuery = {
+                resource: 'legacy::bundledApps',
+            }
+            expect(queryToResourcePath(link, query, 'read')).toBe(
+                'dhis-web-apps/apps-bundle.json'
+            )
+            console.log({ apiPath })
+        })
+        it('should return the specified path if using `legacy::<customPath>`', () => {
+            const query: ResolvedResourceQuery = {
+                resource: 'legacy::dhis-web-apps',
+            }
+            expect(queryToResourcePath(link, query, 'read')).toBe(
+                'dhis-web-apps'
+            )
+            console.log({ apiPath })
+        })
+    })
     describe('resource with dot', () => {
         it('should leave dots in resources', () => {
             const query: ResolvedResourceQuery = {
