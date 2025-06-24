@@ -22,10 +22,12 @@
     "files": [
         "build/**"
     ],
+    "dependencies": {
+        "prop-types": "^15.7.2"
+    },
     "peerDependencies": {
-        "prop-types": "^15.7.2",
-        "react": "^16.8.6 || ^18",
-        "react-dom": "^16.8.6 || ^18"
+        "react": "^16 || ^18",
+        "react-dom": "^16 || ^18"
     },
     "scripts": {
         "clean": "rimraf ./build/*",
