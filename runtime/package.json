@@ -35,10 +35,10 @@
         "@dhis2/app-service-data": "3.14.4",
         "@dhis2/app-service-alerts": "3.14.4",
         "@dhis2/app-service-offline": "3.14.4",
-        "@dhis2/app-service-plugin": "3.14.4"
+        "@dhis2/app-service-plugin": "3.14.4",
+        "prop-types": "^15.7.2"
     },
     "peerDependencies": {
-        "prop-types": "^15.7.2",
         "react": "^16.8.6 || ^18",
         "react-dom": "^16.8.6 || ^18"
     },

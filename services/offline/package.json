@@ -34,12 +34,12 @@
         "coverage": "yarn test --coverage"
     },
     "peerDependencies": {
-        "@dhis2/app-service-config": "3.14.4",
-        "prop-types": "^15.7.2",
+        "@dhis2/app-service-config": "^3.14.4",
         "react": "^16.8.6 || ^18",
         "react-dom": "^16.8.6 || ^18"
     },
     "dependencies": {
-        "lodash": "^4.17.21"
+        "lodash": "^4.17.21",
+        "prop-types": "^15.7.2"
     }
 }
