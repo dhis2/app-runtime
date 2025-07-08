@@ -1,3 +1,10 @@
+## [3.14.5](https://github.com/dhis2/app-runtime/compare/v3.14.4...v3.14.5) (2025-07-08)
+
+
+### Bug Fixes
+
+* update dependencies to get rid of d2 init warnings ([#1415](https://github.com/dhis2/app-runtime/issues/1415)) ([ec044f3](https://github.com/dhis2/app-runtime/commit/ec044f37b5d919c51346aedde986ac6d6a63bafc))
+
 ## [3.14.4](https://github.com/dhis2/app-runtime/compare/v3.14.3...v3.14.4) (2025-06-05)
 
 
