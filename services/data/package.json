@@ -38,7 +38,7 @@
     },
     "peerDependencies": {
         "@dhis2/app-service-config": "^3.14.4",
-        "react": "^16 || ^18",
-        "react-dom": "^16 || ^18"
+        "react": "^16.8.6 || ^18",
+        "react-dom": "^16.8.6 || ^18"
     }
 }
