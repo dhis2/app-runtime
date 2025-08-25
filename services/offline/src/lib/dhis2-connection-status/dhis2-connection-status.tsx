@@ -151,8 +151,16 @@ export const Dhis2ConnectionStatusProvider = ({
         })
         smartIntervalRef.current = smartInterval
 
-        const handleBlur = () => smartInterval.pause()
-        const handleFocus = () => smartInterval.resume()
+        // Use visibility change instead of focus/blur to continue while focus
+        // might be in iframes
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'hidden') {
+                smartInterval.pause()
+            } else {
+                // visibilityState === 'visible'
+                smartInterval.resume()
+            }
+        }
         // Pinging when going offline should be low/no-cost in both online and
         // local servers
         const handleOffline = () => smartInterval.invokeCallbackImmediately()
@@ -163,14 +171,15 @@ export const Dhis2ConnectionStatusProvider = ({
             15000
         )
 
-        window.addEventListener('blur', handleBlur)
-        window.addEventListener('focus', handleFocus)
+        document.addEventListener('visibilitychange', handleVisibilityChange)
         window.addEventListener('offline', handleOffline)
         window.addEventListener('online', handleOnline)
 
         return () => {
-            window.removeEventListener('blur', handleBlur)
-            window.removeEventListener('focus', handleFocus)
+            document.removeEventListener(
+                'visibilitychange',
+                handleVisibilityChange
+            )
             window.removeEventListener('offline', handleOffline)
             window.removeEventListener('online', handleOnline)
 
