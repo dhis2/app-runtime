@@ -1,3 +1,10 @@
+## [3.14.6](https://github.com/dhis2/app-runtime/compare/v3.14.5...v3.14.6) (2025-09-30)
+
+
+### Bug Fixes
+
+* improve query response and input types ([#1416](https://github.com/dhis2/app-runtime/issues/1416)) ([68c3930](https://github.com/dhis2/app-runtime/commit/68c3930fc027a20cb277640effb17a42ec366cff))
+
 ## [3.14.5](https://github.com/dhis2/app-runtime/compare/v3.14.4...v3.14.5) (2025-07-08)
 
 
