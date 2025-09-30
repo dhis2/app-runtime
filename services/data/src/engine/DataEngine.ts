@@ -8,7 +8,7 @@ import { DataEngineLink } from './types/DataEngineLink'
 import { QueryExecuteOptions } from './types/ExecuteOptions'
 import { JsonMap, JsonValue } from './types/JsonValue'
 import { Mutation } from './types/Mutation'
-import { Query } from './types/Query'
+import type { Query, ResourceQuery } from './types/Query'
 
 const reduceResponses = (responses: JsonValue[], names: string[]) =>
     responses.reduce<JsonMap>((out, response, idx) => {
@@ -22,7 +22,19 @@ export class DataEngine {
         this.link = link
     }
 
+    // Overload 1: When no generic is provided, accept any Query and return inferred type
     public query(
+        query: Query,
+        options?: QueryExecuteOptions
+    ): Promise<Record<keyof typeof query, unknown>>
+
+    // Overload 2: When generic is provided, enforce that query keys match the generic keys
+    public query<T extends Record<string, unknown>>(
+        query: Record<keyof T, ResourceQuery>,
+        options?: QueryExecuteOptions
+    ): Promise<T>
+
+    public query<TResult extends Record<string, unknown>>(
         query: Query,
         {
             variables = {},
@@ -30,7 +42,7 @@ export class DataEngine {
             onComplete,
             onError,
         }: QueryExecuteOptions = {}
-    ): Promise<JsonMap> {
+    ): Promise<TResult | Record<keyof typeof query, unknown>> {
         const names = Object.keys(query)
         const queries = names
             .map((name) => query[name])
@@ -48,7 +60,7 @@ export class DataEngine {
             .then((results) => {
                 const data = reduceResponses(results, names)
                 onComplete && onComplete(data)
-                return data
+                return data as TResult | Record<keyof typeof query, unknown>
             })
             .catch((error) => {
                 onError && onError(error)
