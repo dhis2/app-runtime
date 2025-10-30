@@ -4,6 +4,7 @@ import {
     validateResourceQuery,
     validateResourceQueries,
 } from './helpers/validate'
+import { requestOptionsToFetchType } from './links/RestAPILink/queryToRequestOptions'
 import type { DataEngineLink } from './types/DataEngineLink'
 import type { QueryExecuteOptions } from './types/ExecuteOptions'
 import type { JsonMap, JsonValue } from './types/JsonValue'
@@ -95,6 +96,69 @@ export class DataEngine {
                 throw error
             })
     }
+
+    public async fetch(
+        path: string,
+        init: RequestInit = {},
+        executeOptions?: QueryExecuteOptions
+    ): Promise<unknown> {
+        const type = requestOptionsToFetchType(init)
+
+        if (path.indexOf('://') !== -1) {
+            throw new Error(
+                'Absolute URLs are not supported by the DHIS2 DataEngine fetch interface'
+            )
+        }
+        const uri = new URL(path, 'http://dummybaseurl')
+        const [_, resource, id, queryString] =
+            uri.pathname.match(/^\/([^\/]+)(?:\/([^?]*))?/) || []
+        
+        const params = Object.fromEntries(uri.searchParams)
+
+        if (type === 'read') {
+            const queryResult = await this.query(
+                {
+                    result: {
+                        resource,
+                        id,
+                        params
+                    } as ResourceQuery,
+                },
+                executeOptions
+            )
+            return queryResult.result
+        }
+        return this.mutate(
+            {
+                type,
+                resource,
+                id,
+                params,
+                data: init.body?.valueOf(), // TODO: should we parse stringified JSON here?
+            } as Mutation,
+            executeOptions
+        )
+    }
+    
+    public get(path: string, executeOptions?: QueryExecuteOptions) {
+        return this.fetch(path, { method: 'GET' }, executeOptions)
+    }
+    public post(path: string, body: any, executeOptions?: QueryExecuteOptions) {
+        return this.fetch(path, { method: 'POST', body }, executeOptions)
+    }
+    public put(path: string, body: any, executeOptions?: QueryExecuteOptions) {
+        return this.fetch(path, { method: 'PUT', body }, executeOptions)
+    }
+    public patch(path: string, body: any, executeOptions?: QueryExecuteOptions) {
+        return this.fetch(path, { method: 'PATCH', body }, executeOptions)
+    }
+    public jsonPatch(path: string, patches: Array<any>, executeOptions?: QueryExecuteOptions) {
+        return this.fetch(path, { method: 'PATCH', body: patches as any, headers: { 'Content-Type': 'application/json-patch+json' } }, executeOptions)
+    }
+    public delete(path: string, executeOptions?: QueryExecuteOptions) {
+        return this.fetch(path, { method: 'DELETE' }, executeOptions)
+    }
+    
 }
 
 export default DataEngine

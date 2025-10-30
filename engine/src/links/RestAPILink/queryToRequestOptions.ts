@@ -24,6 +24,27 @@ const getMethod = (type: FetchType): string => {
     }
 }
 
+export const requestOptionsToFetchType = (init: RequestInit): FetchType => {
+    const method = init.method ?? 'GET'
+    const headers = Object.fromEntries(new Headers(init.headers).entries());
+    const contentType = headers['Content-Type']
+    switch (method) {
+        case 'GET':
+            return 'read'
+        case 'POST':
+            return 'create'
+        case 'PATCH':
+            if (contentType === 'application/json-patch+json') {
+                return 'json-patch'
+            }
+            return 'update'
+        case 'DELETE':
+            return 'delete'
+        default:
+            throw new Error(`Unsupported request method ${method}`)
+    }
+}
+
 export const queryToRequestOptions = (
     type: FetchType,
     query: ResolvedResourceQuery,
