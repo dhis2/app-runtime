@@ -134,6 +134,7 @@ export class DataEngine {
                 resource,
                 id,
                 params,
+                partial: type === 'update' && init.method === 'PATCH',
                 data: init.body?.valueOf(), // TODO: should we parse stringified JSON here?
             } as Mutation,
             executeOptions
