@@ -7,8 +7,6 @@ import {
     QueryResult,
 } from '@dhis2/data-engine'
 
-export type { Mutation } from './engine/types/Mutation'
-export type { Query } from './engine/types/Query'
 export interface ContextType {
     engine: DataEngine
 }
