@@ -1,21 +1,21 @@
 import { InvalidQueryError } from '../errors/InvalidQueryError'
 import { ResolvedResourceQuery } from '../types/Query'
 
-const validQueryKeys = ['resource', 'id', 'params', 'data']
-const validTypes = [
+const validQueryKeys = new Set(['resource', 'id', 'params', 'data'])
+const validTypes = new Set([
     'read',
     'create',
     'update',
     'replace',
     'delete',
     'json-patch',
-]
+])
 
 export const getResourceQueryErrors = (
     type: string,
     query: ResolvedResourceQuery
 ): string[] => {
-    if (!validTypes.includes(type)) {
+    if (!validTypes.has(type)) {
         return [`Unknown query or mutation type ${type}`]
     }
     if (typeof query !== 'object') {
@@ -48,11 +48,11 @@ export const getResourceQueryErrors = (
         )
     }
     const invalidKeys = Object.keys(query).filter(
-        (k) => !validQueryKeys.includes(k)
+        (k) => !validQueryKeys.has(k)
     )
-    invalidKeys.forEach((k) => {
+    for (let k of invalidKeys) {
         errors.push(`Property ${k} is not supported`)
-    })
+    }
 
     return errors
 }

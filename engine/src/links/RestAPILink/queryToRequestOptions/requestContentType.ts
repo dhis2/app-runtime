@@ -102,7 +102,7 @@ export const requestBodyForContentType = (
     contentType: RequestContentType,
     { data }: ResolvedResourceQuery
 ): undefined | string | FormData | URLSearchParams => {
-    if (typeof data === 'undefined') {
+    if (data === undefined) {
         return undefined
     }
 

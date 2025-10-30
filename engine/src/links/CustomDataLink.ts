@@ -49,7 +49,7 @@ export class CustomDataLink implements DataEngineLink {
                     `No data provided for resource type ${query.resource}!`
                 )
             }
-            return Promise.resolve(null)
+            return null
         }
 
         switch (typeof customResource) {
@@ -60,7 +60,7 @@ export class CustomDataLink implements DataEngineLink {
                 return customResource
             case 'function': {
                 const result = await customResource(type, query, options)
-                if (typeof result === 'undefined' && this.failOnMiss) {
+                if (result === undefined && this.failOnMiss) {
                     throw new Error(
                         `The custom function for resource ${query.resource} must always return a value but returned ${result}`
                     )

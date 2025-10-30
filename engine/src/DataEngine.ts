@@ -61,11 +61,11 @@ export class DataEngine {
         )
             .then((results) => {
                 const data = reduceResponses(results, names)
-                onComplete && onComplete(data)
+                onComplete?.(data)
                 return data as TResult | Record<keyof typeof query, unknown>
             })
             .catch((error) => {
-                onError && onError(error)
+                onError?.(error)
                 throw error
             })
     }
@@ -89,11 +89,11 @@ export class DataEngine {
         })
         return result
             .then((data) => {
-                onComplete && onComplete(data)
+                onComplete?.(data)
                 return data
             })
             .catch((error) => {
-                onError && onError(error)
+                onError?.(error)
                 throw error
             })
     }
@@ -105,14 +105,14 @@ export class DataEngine {
     ): Promise<unknown> {
         const type = requestOptionsToFetchType(init)
 
-        if (path.indexOf('://') !== -1) {
+        if (path.includes('://')) {
             throw new Error(
                 'Absolute URLs are not supported by the DHIS2 DataEngine fetch interface'
             )
         }
         const uri = new URL(path, 'http://dummybaseurl')
         const [, resource, id] =
-            uri.pathname.match(/^\/([^/]+)(?:\/([^?]*))?/) || []
+            /^\/([^/]+)(?:\/([^?]*))?/.exec(uri.pathname) ?? []
 
         const params = Object.fromEntries(uri.searchParams)
 
@@ -136,7 +136,7 @@ export class DataEngine {
                 id,
                 params,
                 partial: type === 'update' && init.method === 'PATCH',
-                data: init.body?.valueOf(), // TODO: should we parse stringified JSON here?
+                data: init.body?.valueOf(),
             } as Mutation,
             executeOptions
         )
