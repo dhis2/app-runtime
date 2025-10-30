@@ -110,9 +110,9 @@ export class DataEngine {
             )
         }
         const uri = new URL(path, 'http://dummybaseurl')
-        const [_, resource, id, queryString] =
-            uri.pathname.match(/^\/([^\/]+)(?:\/([^?]*))?/) || []
-        
+        const [, resource, id] =
+            uri.pathname.match(/^\/([^/]+)(?:\/([^?]*))?/) || []
+
         const params = Object.fromEntries(uri.searchParams)
 
         if (type === 'read') {
@@ -121,7 +121,7 @@ export class DataEngine {
                     result: {
                         resource,
                         id,
-                        params
+                        params,
                     } as ResourceQuery,
                 },
                 executeOptions
@@ -139,7 +139,7 @@ export class DataEngine {
             executeOptions
         )
     }
-    
+
     public get(path: string, executeOptions?: QueryExecuteOptions) {
         return this.fetch(path, { method: 'GET' }, executeOptions)
     }
@@ -149,16 +149,31 @@ export class DataEngine {
     public put(path: string, body: any, executeOptions?: QueryExecuteOptions) {
         return this.fetch(path, { method: 'PUT', body }, executeOptions)
     }
-    public patch(path: string, body: any, executeOptions?: QueryExecuteOptions) {
+    public patch(
+        path: string,
+        body: any,
+        executeOptions?: QueryExecuteOptions
+    ) {
         return this.fetch(path, { method: 'PATCH', body }, executeOptions)
     }
-    public jsonPatch(path: string, patches: Array<any>, executeOptions?: QueryExecuteOptions) {
-        return this.fetch(path, { method: 'PATCH', body: patches as any, headers: { 'Content-Type': 'application/json-patch+json' } }, executeOptions)
+    public jsonPatch(
+        path: string,
+        patches: Array<any>,
+        executeOptions?: QueryExecuteOptions
+    ) {
+        return this.fetch(
+            path,
+            {
+                method: 'PATCH',
+                body: patches as any,
+                headers: { 'Content-Type': 'application/json-patch+json' },
+            },
+            executeOptions
+        )
     }
     public delete(path: string, executeOptions?: QueryExecuteOptions) {
         return this.fetch(path, { method: 'DELETE' }, executeOptions)
     }
-    
 }
 
 export default DataEngine

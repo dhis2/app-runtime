@@ -26,7 +26,7 @@ const getMethod = (type: FetchType): string => {
 
 export const requestOptionsToFetchType = (init: RequestInit): FetchType => {
     const method = init.method ?? 'GET'
-    const headers = Object.fromEntries(new Headers(init.headers).entries());
+    const headers = Object.fromEntries(new Headers(init.headers).entries())
     const contentType = headers['Content-Type']
     switch (method) {
         case 'GET':

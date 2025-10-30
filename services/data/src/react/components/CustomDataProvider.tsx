@@ -1,7 +1,7 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import React from 'react'
 import { DataEngine, CustomDataLink } from '@dhis2/data-engine'
 import type { CustomData, CustomLinkOptions } from '@dhis2/data-engine'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import React from 'react'
 import { DataContext } from '../context/DataContext'
 import { queryClientOptions as queryClientDefaults } from './DataProvider'
 

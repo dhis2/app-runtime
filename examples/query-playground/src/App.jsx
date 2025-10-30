@@ -1,8 +1,8 @@
+import { useConfig } from '@dhis2/app-runtime'
+import { DataEngine, RestAPILink } from '@dhis2/data-engine'
 import { CssVariables } from '@dhis2/ui'
 import React, { useEffect } from 'react'
-import { DataEngine, RestAPILink } from '@dhis2/data-engine'
 import { QueryRepl } from './QueryRepl.jsx'
-import { useConfig } from '@dhis2/app-runtime'
 
 export default function App() {
     const config = useConfig()

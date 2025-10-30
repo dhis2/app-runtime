@@ -1,12 +1,12 @@
-import { useQuery } from '@tanstack/react-query'
-import { useState, useRef, useCallback, useDebugValue } from 'react'
 import type {
     Query,
     QueryOptions,
     QueryResult,
     QueryVariables,
-    FetchError
+    FetchError,
 } from '@dhis2/data-engine'
+import { useQuery } from '@tanstack/react-query'
+import { useState, useRef, useCallback, useDebugValue } from 'react'
 import type { QueryRenderInput, QueryRefetchFunction } from '../../types'
 import { mergeAndCompareVariables } from './mergeAndCompareVariables'
 import { useDataEngine } from './useDataEngine'
