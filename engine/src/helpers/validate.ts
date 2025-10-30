@@ -47,10 +47,8 @@ export const getResourceQueryErrors = (
             "Mutation type 'json-patch' requires property 'data' to be of type Array"
         )
     }
-    const invalidKeys = Object.keys(query).filter(
-        (k) => !validQueryKeys.has(k)
-    )
-    for (let k of invalidKeys) {
+    const invalidKeys = Object.keys(query).filter((k) => !validQueryKeys.has(k))
+    for (const k of invalidKeys) {
         errors.push(`Property ${k} is not supported`)
     }
 
