@@ -1,5 +1,5 @@
 {
-    "version": "3.11.0-alpha.1",
+    "version": "3.14.6",
     "description": "A singular runtime dependency for applications on the DHIS2 platform",
     "repository": "https://github.com/dhis2/app-runtime.git",
     "author": "Austin McGee <austin@dhis2.org>",
@@ -11,9 +11,10 @@
         "services/*"
     ],
     "devDependencies": {
-        "@dhis2/cli-app-scripts": "^12.0.0-alpha.24",
+        "@dhis2/cli-app-scripts": "^12.6.3",
         "@dhis2/cli-style": "10.4.3",
         "@dhis2/cli-utils-docsite": "^2.0.3",
+        "@testing-library/dom": "^10.4.0",
         "@testing-library/jest-dom": "^6.6.3",
         "@testing-library/react": "^16.0.1",
         "@types/jest": "^24.9.0",
@@ -33,7 +34,7 @@
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "rimraf": "^3.0.0",
-        "typescript": "^4.0.5"
+        "typescript": "^5.7.3"
     },
     "scripts": {
         "install:examples": "loop \"yarn install --force --check-files\" --cwd ./examples --exit-on-aggregate-error",
@@ -51,17 +52,12 @@
         "start": "yarn build && cd examples/query-playground && yarn start",
         "docs:build": "mkdir -p dist && cp docs/index.html dist/ && yarn build:playground",
         "docs:serve": "d2-utils-docsite serve ./docs -o ./dist",
-        "lint": "d2-style check js && d2-style check text",
-        "postinstall": "patch-package"
+        "lint": "d2-style check js && d2-style check text"
     },
     "d2": {
         "docsite": {
             "name": "DHIS2 Application Runtime",
             "description": "A singular runtime dependency for applications on the [DHIS2 platform](https://platform.dhis2.nu)"
         }
-    },
-    "dependencies": {
-        "patch-package": "^8.0.0",
-        "postinstall-postinstall": "^2.1.0"
     }
 }

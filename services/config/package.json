@@ -1,6 +1,6 @@
 {
     "name": "@dhis2/app-service-config",
-    "version": "3.11.0-alpha.1",
+    "version": "3.14.6",
     "main": "./build/cjs/index.js",
     "module": "./build/es/index.js",
     "types": "./build/types/index.d.ts",
@@ -22,8 +22,10 @@
     "files": [
         "build/**"
     ],
+    "dependencies": {
+        "prop-types": "^15.7.2"
+    },
     "peerDependencies": {
-        "prop-types": "^15.7.2",
         "react": "^16.8.6 || ^18",
         "react-dom": "^16.8.6 || ^18"
     },

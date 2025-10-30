@@ -9,7 +9,7 @@ export const QueryResults = ({ result }) => {
         <div className={styles.results}>
             <Editor
                 value={result}
-                theme="github"
+                theme="light"
                 readOnly={true}
                 name="results"
                 placeholder={i18n.t('Results will appear here...')}

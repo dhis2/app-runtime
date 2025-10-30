@@ -43,7 +43,7 @@ const TestControls = ({
             />
             <div data-testid={`is-cached-${id}`}>{isCached ? 'yes' : 'no'}</div>
             <div data-testid={`last-updated-${id}`}>
-                {lastUpdated || 'never'}
+                {lastUpdated?.toISOString() ?? 'never'}
             </div>
             <div data-testid={`recording-state-${id}`}>{recordingState}</div>
         </>
@@ -112,7 +112,7 @@ describe('Coordination between useCacheableSection and CacheableSection', () => 
         expect(getByTestId(/controls-rc/)).toBeInTheDocument()
     })
 
-    it.skip('handles a successful recording', async (done) => {
+    it('handles a successful recording', async (done) => {
         const { getByTestId, queryByTestId } = screen
 
         const onStarted = () => {
@@ -147,7 +147,7 @@ describe('Coordination between useCacheableSection and CacheableSection', () => 
         expect.assertions(7)
     })
 
-    it.skip('handles a recording that encounters an error', async (done) => {
+    it('handles a recording that encounters an error', async (done) => {
         // Suppress the expected error from console (in addition to 'act' warning)
         jest.spyOn(console, 'error').mockImplementation((...args) => {
             const actPattern =
@@ -255,7 +255,7 @@ describe('Performant state management', () => {
         expect(getByTestId('section-rc-2')).toHaveTextContent('1')
     })
 
-    it.skip('isolates rerenders from other consumers', async (done) => {
+    it('isolates rerenders from other consumers', async (done) => {
         const { getByTestId } = screen
         // Make assertions
         const onCompleted = () => {
@@ -300,12 +300,12 @@ describe('useCacheableSection can be used inside a child of CacheableSection', (
         )
     }
 
-    it.skip('handles a successful recording', async (done) => {
-        const { getByTestId, queryByTestId, findByTestId } = screen
+    it('handles a successful recording', async (done) => {
+        const { getByTestId, queryByTestId } = screen
 
         const onStarted = async () => {
             await waitFor(() => {
-                expect(getByTestId(/recording-state/)).toBeInTheDocument(
+                expect(getByTestId(/recording-state/)).toHaveTextContent(
                     'recording'
                 )
                 expect(getByTestId(/loading-mask/)).toBeInTheDocument()
@@ -326,9 +326,9 @@ describe('useCacheableSection can be used inside a child of CacheableSection', (
 
         render(<ChildTest makeRecordingHandler={makeRecordingHandler} />)
 
-        // await act(async () => {
-        await fireEvent.click(getByTestId(/start-recording/))
-        // })
+        await act(async () => {
+            await fireEvent.click(getByTestId(/start-recording/))
+        })
 
         await waitFor(() => {
             // At this stage, should be pending

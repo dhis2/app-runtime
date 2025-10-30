@@ -10,7 +10,7 @@ import {
     TabBar,
     Tab,
 } from '@dhis2/ui'
-import { PropTypes } from 'prop-types'
+import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styles from './TabControls.module.css'
 

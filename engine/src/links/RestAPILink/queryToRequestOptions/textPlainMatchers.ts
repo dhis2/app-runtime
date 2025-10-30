@@ -122,9 +122,20 @@ export const isMetadataPackageInstallation = (
     { resource }: ResolvedResourceQuery
 ): boolean => type === 'create' && resource === 'synchronization/metadataPull'
 
-// POST to 'indicaators/expression/description' (validate an expression)
+// POST to 'indicators/expression/description' or 'programIndicator/expression/description' (validate an expression)
 export const isExpressionDescriptionValidation = (
     type: FetchType,
     { resource }: ResolvedResourceQuery
-): boolean =>
-    type === 'create' && resource === 'indicators/expression/description'
+): boolean => {
+    const pattern = /^(indicators|programIndicators)\/expression\/description$/
+    return type === 'create' && pattern.test(resource)
+}
+
+// POST to 'programIndicator/filter/description' (validate a filter)
+export const isFilterDescriptionValidation = (
+    type: FetchType,
+    { resource }: ResolvedResourceQuery
+): boolean => {
+    const pattern = /^programIndicators\/filter\/description$/
+    return type === 'create' && pattern.test(resource)
+}

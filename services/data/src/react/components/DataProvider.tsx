@@ -2,8 +2,12 @@
 
 import { useConfig } from '@dhis2/app-service-config'
 import { DataEngine, RestAPILink } from '@dhis2/data-engine'
+import {
+    QueryClient,
+    QueryClientProvider,
+    type QueryClientConfig,
+} from '@tanstack/react-query'
 import React from 'react'
-import { QueryClient, QueryClientProvider } from 'react-query'
 import { DataContext } from '../context/DataContext'
 
 export interface ProviderInput {
@@ -12,7 +16,7 @@ export interface ProviderInput {
     children: React.ReactNode
 }
 
-export const queryClientOptions = {
+export const queryClientOptions: QueryClientConfig = {
     defaultOptions: {
         queries: {
             // Disable automatic error retries
@@ -25,6 +29,10 @@ export const queryClientOptions = {
             refetchOnWindowFocus: false,
             // Don't refetch after connection issues
             refetchOnReconnect: false,
+            // RQv4 uses 'online' as the default, which pauses queries without network connection.
+            // 'always' reestablishes behavior from v3, and lets requests fire when offline
+            // https://tanstack.com/query/latest/docs/framework/react/guides/network-mode
+            networkMode: 'always',
         },
     },
 }

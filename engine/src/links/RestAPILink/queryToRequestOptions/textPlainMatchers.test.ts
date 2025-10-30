@@ -9,6 +9,7 @@ import {
     addOrUpdateConfigurationProperty,
     isMetadataPackageInstallation,
     isExpressionDescriptionValidation,
+    isFilterDescriptionValidation,
 } from './textPlainMatchers'
 
 describe('isReplyToMessageConversation', () => {
@@ -253,8 +254,39 @@ describe('isExpressionDescriptionValidation', () => {
     })
     it('retuns false for a POST to a different resource', () => {
         expect(
-            isMetadataPackageInstallation('create', {
+            isExpressionDescriptionValidation('create', {
                 resource: 'indicators/expression/somethingelse',
+            })
+        ).toBe(false)
+    })
+    it('returns true for a POST to "programIndicators/expression/description"', () => {
+        expect(
+            isExpressionDescriptionValidation('create', {
+                resource: 'programIndicators/expression/description',
+            })
+        ).toBe(true)
+    })
+    it('retuns false for a POST to a different resource', () => {
+        expect(
+            isExpressionDescriptionValidation('create', {
+                resource: 'programIndicators/expression/somethingelse',
+            })
+        ).toBe(false)
+    })
+})
+
+describe('isFilterDescriptionValidation', () => {
+    it('returns true for a POST to "programIndicators/filter/description"', () => {
+        expect(
+            isFilterDescriptionValidation('create', {
+                resource: 'programIndicators/filter/description',
+            })
+        ).toBe(true)
+    })
+    it('retuns false for a POST to a different resource', () => {
+        expect(
+            isFilterDescriptionValidation('create', {
+                resource: 'programIndicators/filter/somethingelse',
             })
         ).toBe(false)
     })

@@ -51,7 +51,7 @@ export const QueryEditor = ({
         execute({ query: parsed, type }).then(setResult)
     }
 
-    const onKeyPress = (event) => {
+    const onKeyDown = (event) => {
         if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
             onExecute()
             event.stopPropagation()
@@ -59,14 +59,14 @@ export const QueryEditor = ({
     }
 
     return (
-        <div className={styles.editor} onKeyPress={onKeyPress}>
+        <div className={styles.editor} onKeyDown={onKeyDown}>
             <Editor
                 value={currentQuery}
-                theme="monokai"
+                theme="dark"
                 onChange={setQuery}
                 name="editor"
                 placeholder={i18n.t('Enter a query here...')}
-                focus={true}
+                autoFocus={true}
             />
 
             {error && <span className={styles.error}>{error}</span>}

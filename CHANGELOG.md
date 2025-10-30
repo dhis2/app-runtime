@@ -1,16 +1,164 @@
-# [3.11.0-alpha.1](https://github.com/dhis2/app-runtime/compare/v3.10.4-alpha.1...v3.11.0-alpha.1) (2024-11-21)
+## [3.14.6](https://github.com/dhis2/app-runtime/compare/v3.14.5...v3.14.6) (2025-09-30)
+
+
+### Bug Fixes
+
+* improve query response and input types ([#1416](https://github.com/dhis2/app-runtime/issues/1416)) ([68c3930](https://github.com/dhis2/app-runtime/commit/68c3930fc027a20cb277640effb17a42ec366cff))
+
+## [3.14.5](https://github.com/dhis2/app-runtime/compare/v3.14.4...v3.14.5) (2025-07-08)
+
+
+### Bug Fixes
+
+* update dependencies to get rid of d2 init warnings ([#1415](https://github.com/dhis2/app-runtime/issues/1415)) ([ec044f3](https://github.com/dhis2/app-runtime/commit/ec044f37b5d919c51346aedde986ac6d6a63bafc))
+
+## [3.14.4](https://github.com/dhis2/app-runtime/compare/v3.14.3...v3.14.4) (2025-06-05)
+
+
+### Bug Fixes
+
+* expose Query, Mutation and ExecuteOptions types ([#1414](https://github.com/dhis2/app-runtime/issues/1414)) ([a1d2315](https://github.com/dhis2/app-runtime/commit/a1d23158c74c34af9160079b195a4e1eccccc346))
+
+## [3.14.3](https://github.com/dhis2/app-runtime/compare/v3.14.2...v3.14.3) (2025-06-02)
+
+
+### Bug Fixes
+
+* update cli-app-scripts to fix build issue ([#1413](https://github.com/dhis2/app-runtime/issues/1413)) ([ee2f7af](https://github.com/dhis2/app-runtime/commit/ee2f7af19b3d4fce9153747afcca882d1744db0f))
+
+## [3.14.2](https://github.com/dhis2/app-runtime/compare/v3.14.1...v3.14.2) (2025-05-29)
+
+
+### Bug Fixes
+
+* expose TS types internal to the data engine ([#1412](https://github.com/dhis2/app-runtime/issues/1412)) ([9803646](https://github.com/dhis2/app-runtime/commit/98036468fce8f26ffb95ef7b25b610fe3d26b3fa))
+
+## [3.14.1](https://github.com/dhis2/app-runtime/compare/v3.14.0...v3.14.1) (2025-03-17)
+
+
+### Bug Fixes
+
+* add endpoint to text plain matchers ([#1410](https://github.com/dhis2/app-runtime/issues/1410)) ([e3296ef](https://github.com/dhis2/app-runtime/commit/e3296efabe50570252365491b38feeba16d5b96c))
+
+# [3.14.0](https://github.com/dhis2/app-runtime/compare/v3.13.2...v3.14.0) (2025-02-25)
+
+
+### Features
+
+* **plugin:** add onLoad prop for Plugin ([#1407](https://github.com/dhis2/app-runtime/issues/1407)) ([78d1bd3](https://github.com/dhis2/app-runtime/commit/78d1bd3f53749f6fc78e988acb5d9f7db36307c6))
+
+## [3.13.2](https://github.com/dhis2/app-runtime/compare/v3.13.1...v3.13.2) (2025-02-11)
+
+
+### Bug Fixes
+
+* **plugin:** avoid sending prop updates when height and width values change ([#1406](https://github.com/dhis2/app-runtime/issues/1406)) ([d263c25](https://github.com/dhis2/app-runtime/commit/d263c2534870f6d8673cea077f99f840ff94c909))
+
+## [3.13.1](https://github.com/dhis2/app-runtime/compare/v3.13.0...v3.13.1) (2025-02-04)
+
+
+### Bug Fixes
+
+* **plugin:** don't send prop update when changing plugin source ([#1404](https://github.com/dhis2/app-runtime/issues/1404)) ([3ae0295](https://github.com/dhis2/app-runtime/commit/3ae0295ccb57f6b1f9509774a8f9b1603bdf3379))
+
+# [3.13.0](https://github.com/dhis2/app-runtime/compare/v3.12.1...v3.13.0) (2025-01-23)
+
+
+### Features
+
+* new plugin sizing default and options ([#1398](https://github.com/dhis2/app-runtime/issues/1398)) ([d2554c1](https://github.com/dhis2/app-runtime/commit/d2554c1a00ecf57518e16719861e1e236bbdff50))
+
+## [3.12.1](https://github.com/dhis2/app-runtime/compare/v3.12.0...v3.12.1) (2025-01-16)
+
+
+### Bug Fixes
+
+* reference module types in package.json export declaration ([#1400](https://github.com/dhis2/app-runtime/issues/1400)) ([c266429](https://github.com/dhis2/app-runtime/commit/c2664291626c9360ffa618ea05d67584bb7caa7a))
+
+# [3.12.0](https://github.com/dhis2/app-runtime/compare/v3.11.3...v3.12.0) (2024-12-04)
+
+
+### Bug Fixes
+
+* **cacheable-section:** synchronously flush recording state for UI consistency ([#1394](https://github.com/dhis2/app-runtime/issues/1394)) ([50d216c](https://github.com/dhis2/app-runtime/commit/50d216cb4b7a98995b327cb997bcf6bbd873ea18))
+* **deps:** remove cli-app-scripts peer dep ([7764439](https://github.com/dhis2/app-runtime/commit/776443957cf7bce70d644459b946dc9382dd9103))
+* **deps:** update cli-app-scripts for package/types race condition ([7980364](https://github.com/dhis2/app-runtime/commit/79803646c152a805277b123250124a272f178d99))
+
+
+### Features
+
+* upgrade app-runtime React version to v18 ([#1387](https://github.com/dhis2/app-runtime/issues/1387)) ([0e4a3d5](https://github.com/dhis2/app-runtime/commit/0e4a3d5c0e9cf8884c1a46f32fa0876234b6d765))
+* upgrade react query to v4 ([#1395](https://github.com/dhis2/app-runtime/issues/1395)) ([8b02fdf](https://github.com/dhis2/app-runtime/commit/8b02fdff62c175a115a68863be456db117c3ea5e))
+
+# [3.12.0-alpha.2](https://github.com/dhis2/app-runtime/compare/v3.12.0-alpha.1...v3.12.0-alpha.2) (2024-12-03)
+
+
+### Features
+
+* upgrade react query to v4 ([#1395](https://github.com/dhis2/app-runtime/issues/1395)) ([8b02fdf](https://github.com/dhis2/app-runtime/commit/8b02fdff62c175a115a68863be456db117c3ea5e))
+
+# [3.12.0-alpha.1](https://github.com/dhis2/app-runtime/compare/v3.11.3...v3.12.0-alpha.1) (2024-11-27)
+
+
+### Bug Fixes
+
+* **cacheable-section:** synchronously flush recording state for UI consistency ([#1394](https://github.com/dhis2/app-runtime/issues/1394)) ([50d216c](https://github.com/dhis2/app-runtime/commit/50d216cb4b7a98995b327cb997bcf6bbd873ea18))
+* **deps:** remove cli-app-scripts peer dep ([7764439](https://github.com/dhis2/app-runtime/commit/776443957cf7bce70d644459b946dc9382dd9103))
+* **deps:** update cli-app-scripts for package/types race condition ([7980364](https://github.com/dhis2/app-runtime/commit/79803646c152a805277b123250124a272f178d99))
 
 
 ### Features
 
 * upgrade app-runtime React version to v18 ([#1387](https://github.com/dhis2/app-runtime/issues/1387)) ([0e4a3d5](https://github.com/dhis2/app-runtime/commit/0e4a3d5c0e9cf8884c1a46f32fa0876234b6d765))
 
-## [3.10.4-alpha.1](https://github.com/dhis2/app-runtime/compare/v3.10.3...v3.10.4-alpha.1) (2024-04-02)
+## [3.11.3](https://github.com/dhis2/app-runtime/compare/v3.11.2...v3.11.3) (2024-11-19)
 
 
 ### Bug Fixes
 
-* **deps:** remove cli-app-scripts peer dep ([7764439](https://github.com/dhis2/app-runtime/commit/776443957cf7bce70d644459b946dc9382dd9103))
+* add endpoint to text plain matchers ([#1390](https://github.com/dhis2/app-runtime/issues/1390)) ([bc25458](https://github.com/dhis2/app-runtime/commit/bc254581f65ec22104144f596032f40d670a73ce))
+
+## [3.11.2](https://github.com/dhis2/app-runtime/compare/v3.11.1...v3.11.2) (2024-10-14)
+
+
+### Bug Fixes
+
+* expand FetchErrorDetails type ([#1389](https://github.com/dhis2/app-runtime/issues/1389)) ([ff0ad60](https://github.com/dhis2/app-runtime/commit/ff0ad6077aecdb7627ec985a61c159159be6b8ea))
+
+## [3.11.1](https://github.com/dhis2/app-runtime/compare/v3.11.0...v3.11.1) (2024-10-09)
+
+
+### Bug Fixes
+
+* handle alert returned async by parentAlertsAdd [LIBS-695] ([#1388](https://github.com/dhis2/app-runtime/issues/1388)) ([9c989b2](https://github.com/dhis2/app-runtime/commit/9c989b2f9c408b7d5988dd0ec8756e86ddf2632f))
+
+# [3.11.0](https://github.com/dhis2/app-runtime/compare/v3.10.6...v3.11.0) (2024-09-10)
+
+
+### Features
+
+* fixed dimensions efficiency ([#1386](https://github.com/dhis2/app-runtime/issues/1386)) ([2b07a14](https://github.com/dhis2/app-runtime/commit/2b07a14ea7e781c1948cfa651a4ad5759a811c79))
+
+## [3.10.6](https://github.com/dhis2/app-runtime/compare/v3.10.5...v3.10.6) (2024-07-26)
+
+
+### Bug Fixes
+
+* **cacheable-section:** stable references to avoid loops [LIBS-642] ([#1385](https://github.com/dhis2/app-runtime/issues/1385)) ([e3a5fbf](https://github.com/dhis2/app-runtime/commit/e3a5fbfd3e290cc68493a97adbbd27b9f3dca082))
+
+## [3.10.5](https://github.com/dhis2/app-runtime/compare/v3.10.4...v3.10.5) (2024-06-24)
+
+
+### Bug Fixes
+
+* update plugin sizing definition ([#1383](https://github.com/dhis2/app-runtime/issues/1383)) ([266dc49](https://github.com/dhis2/app-runtime/commit/266dc49423516189cf4dee706cc78e720af744e2))
+
+## [3.10.4](https://github.com/dhis2/app-runtime/compare/v3.10.3...v3.10.4) (2024-04-09)
+
+
+### Bug Fixes
+
+* **deps:** remove cli-app-scripts peer dep [LIBS-587] ([#1379](https://github.com/dhis2/app-runtime/issues/1379)) ([3598375](https://github.com/dhis2/app-runtime/commit/3598375a826304b61b9b2cbd279043531628dc70))
 
 ## [3.10.3](https://github.com/dhis2/app-runtime/compare/v3.10.2...v3.10.3) (2024-03-20)
 

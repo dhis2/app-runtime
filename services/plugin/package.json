@@ -1,6 +1,6 @@
 {
     "name": "@dhis2/app-service-plugin",
-    "version": "3.11.0-alpha.1",
+    "version": "3.14.6",
     "main": "./build/cjs/index.js",
     "module": "./build/es/index.js",
     "types": "./build/types/index.d.ts",
@@ -23,14 +23,14 @@
         "build/**"
     ],
     "dependencies": {
-        "post-robot": "^10.0.46"
+        "post-robot": "^10.0.46",
+        "prop-types": "^15.7.2"
     },
     "peerDependencies": {
-        "prop-types": "^15.7.2",
+        "@dhis2/app-service-alerts": "3.14.6",
+        "@dhis2/app-service-data": "3.14.6",
         "react": "^16.8.6 || ^18",
-        "react-dom": "^16.8.6 || ^18",
-        "@dhis2/app-service-alerts": "3.11.0-alpha.1",
-        "@dhis2/app-service-data": "3.11.0-alpha.1"
+        "react-dom": "^16.8.6 || ^18"
     },
     "devDependencies": {
         "@types/post-robot": "^10.0.3"
