@@ -1,11 +1,12 @@
 import type { ResolvedResourceQuery, FetchType } from '../../../types'
+import { JSON_PATCH_CONTENT_TYPE } from '../../../types/JSONPatch'
 import * as multipartFormDataMatchers from './multipartFormDataMatchers'
 import * as textPlainMatchers from './textPlainMatchers'
 import * as xWwwFormUrlencodedMatchers from './xWwwFormUrlencodedMatchers'
 
 type RequestContentType =
     | 'application/json'
-    | 'application/json-patch+json'
+    | typeof JSON_PATCH_CONTENT_TYPE
     | 'text/plain'
     | 'multipart/form-data'
     | 'application/x-www-form-urlencoded'
@@ -62,7 +63,7 @@ export const requestContentType = (
     }
 
     if (type === 'json-patch') {
-        return 'application/json-patch+json'
+        return JSON_PATCH_CONTENT_TYPE
     }
 
     if (resourceExpectsTextPlain(type, query)) {
@@ -107,7 +108,7 @@ export const requestBodyForContentType = (
 
     if (
         contentType === 'application/json' ||
-        contentType === 'application/json-patch+json'
+        contentType === JSON_PATCH_CONTENT_TYPE
     ) {
         return JSON.stringify(data)
     }

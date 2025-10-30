@@ -1,4 +1,5 @@
 import type { FetchType } from '../../types/ExecuteOptions'
+import { JSON_PATCH_CONTENT_TYPE } from '../../types/JSONPatch'
 import type { ResolvedResourceQuery } from '../../types/Query'
 import {
     requestContentType,
@@ -27,14 +28,15 @@ const getMethod = (type: FetchType): string => {
 export const requestOptionsToFetchType = (init: RequestInit): FetchType => {
     const method = init.method ?? 'GET'
     const headers = Object.fromEntries(new Headers(init.headers).entries())
-    const contentType = headers['Content-Type']
+    const contentType = headers['content-type']
+    console.log(headers, contentType)
     switch (method) {
         case 'GET':
             return 'read'
         case 'POST':
             return 'create'
         case 'PATCH':
-            if (contentType === 'application/json-patch+json') {
+            if (contentType === JSON_PATCH_CONTENT_TYPE) {
                 return 'json-patch'
             }
             return 'update'

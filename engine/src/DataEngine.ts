@@ -7,6 +7,7 @@ import {
 import { requestOptionsToFetchType } from './links/RestAPILink/queryToRequestOptions'
 import type { DataEngineLink } from './types/DataEngineLink'
 import type { QueryExecuteOptions } from './types/ExecuteOptions'
+import { JSON_PATCH_CONTENT_TYPE, type JSONPatch } from './types/JSONPatch'
 import type { JsonMap, JsonValue } from './types/JsonValue'
 import type { Mutation } from './types/Mutation'
 import type { Query, ResourceQuery } from './types/Query'
@@ -159,7 +160,7 @@ export class DataEngine {
     }
     public jsonPatch(
         path: string,
-        patches: Array<any>,
+        patches: JSONPatch,
         executeOptions?: QueryExecuteOptions
     ) {
         return this.fetch(
@@ -167,7 +168,7 @@ export class DataEngine {
             {
                 method: 'PATCH',
                 body: patches as any,
-                headers: { 'Content-Type': 'application/json-patch+json' },
+                headers: { 'Content-Type': JSON_PATCH_CONTENT_TYPE },
             },
             executeOptions
         )
