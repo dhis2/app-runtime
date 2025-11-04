@@ -30,6 +30,7 @@
         "@dhis2/app-service-config": "file:../../services/config",
         "@dhis2/app-service-data": "file:../../services/data",
         "@dhis2/app-service-offline": "file:../../services/offline",
-        "@dhis2/app-service-plugin": "file:../../services/plugin"
+        "@dhis2/app-service-plugin": "file:../../services/plugin",
+        "@dhis2/data-engine": "file:../../engine"
     }
 }

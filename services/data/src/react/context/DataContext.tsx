@@ -1,5 +1,5 @@
 import React from 'react'
 import { ContextType } from '../../types'
-import { defaultContext } from './defaultContext'
+import { defaultDataContext } from './defaultDataContext'
 
-export const DataContext = React.createContext<ContextType>(defaultContext)
+export const DataContext = React.createContext<ContextType>(defaultDataContext)

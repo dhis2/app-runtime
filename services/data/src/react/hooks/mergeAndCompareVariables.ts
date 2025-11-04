@@ -1,4 +1,4 @@
-import type { QueryVariables } from '../../engine'
+import type { QueryVariables } from '@dhis2/data-engine'
 import { stableVariablesHash } from './stableVariablesHash'
 
 export const mergeAndCompareVariables = (

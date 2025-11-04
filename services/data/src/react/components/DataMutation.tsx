@@ -1,4 +1,4 @@
-import { Mutation, MutationOptions } from '../../engine'
+import type { Mutation, MutationOptions } from '@dhis2/data-engine'
 import { MutationRenderInput } from '../../types'
 import { useDataMutation } from '../hooks/useDataMutation'
 

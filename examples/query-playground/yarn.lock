@@ -1702,34 +1702,42 @@
     moment "^2.24.0"
 
 "@dhis2/app-runtime@*", "@dhis2/app-runtime@^3.12.0", "@dhis2/app-runtime@file:../../runtime":
-  version "3.14.2"
+  version "3.14.6"
   dependencies:
-    "@dhis2/app-service-alerts" "3.14.2"
-    "@dhis2/app-service-config" "3.14.2"
-    "@dhis2/app-service-data" "3.14.2"
-    "@dhis2/app-service-offline" "3.14.2"
-    "@dhis2/app-service-plugin" "3.14.2"
+    "@dhis2/app-service-alerts" "3.14.6"
+    "@dhis2/app-service-config" "3.14.6"
+    "@dhis2/app-service-data" "3.14.6"
+    "@dhis2/app-service-offline" "3.14.6"
+    "@dhis2/app-service-plugin" "3.14.6"
+    prop-types "^15.7.2"
 
-"@dhis2/app-service-alerts@3.14.2", "@dhis2/app-service-alerts@file:../../services/alerts":
-  version "3.14.2"
+"@dhis2/app-service-alerts@3.14.6", "@dhis2/app-service-alerts@file:../../services/alerts":
+  version "3.14.6"
+  dependencies:
+    prop-types "^15.7.2"
 
-"@dhis2/app-service-config@3.14.2", "@dhis2/app-service-config@file:../../services/config":
-  version "3.14.2"
+"@dhis2/app-service-config@3.14.6", "@dhis2/app-service-config@file:../../services/config":
+  version "3.14.6"
+  dependencies:
+    prop-types "^15.7.2"
 
-"@dhis2/app-service-data@3.14.2", "@dhis2/app-service-data@file:../../services/data":
-  version "3.14.2"
+"@dhis2/app-service-data@3.14.6", "@dhis2/app-service-data@file:../../services/data":
+  version "3.14.6"
   dependencies:
     "@tanstack/react-query" "^4.36.1"
+    prop-types "^15.7.2"
 
-"@dhis2/app-service-offline@3.14.2", "@dhis2/app-service-offline@file:../../services/offline":
-  version "3.14.2"
+"@dhis2/app-service-offline@3.14.6", "@dhis2/app-service-offline@file:../../services/offline":
+  version "3.14.6"
   dependencies:
     lodash "^4.17.21"
+    prop-types "^15.7.2"
 
-"@dhis2/app-service-plugin@3.14.2", "@dhis2/app-service-plugin@file:../../services/plugin":
-  version "3.14.2"
+"@dhis2/app-service-plugin@3.14.6", "@dhis2/app-service-plugin@file:../../services/plugin":
+  version "3.14.6"
   dependencies:
     post-robot "^10.0.46"
+    prop-types "^15.7.2"
 
 "@dhis2/app-shell@12.0.0":
   version "12.0.0"
@@ -1834,6 +1842,9 @@
     "@types/i18next" "^11.9.0"
     i18next "^10.3"
     moment "^2.24.0"
+
+"@dhis2/data-engine@file:../../engine":
+  version "3.14.6"
 
 "@dhis2/multi-calendar-dates@2.0.0":
   version "2.0.0"
@@ -2632,10 +2643,17 @@
     "@babel/parser" "^7.1.0"
     "@babel/types" "^7.0.0"
 
-"@types/babel__traverse@*", "@types/babel__traverse@^7.0.4", "@types/babel__traverse@^7.0.6":
+"@types/babel__traverse@*", "@types/babel__traverse@^7.0.6":
   version "7.20.5"
   resolved "https://registry.yarnpkg.com/@types/babel__traverse/-/babel__traverse-7.20.5.tgz#7b7502be0aa80cc4ef22978846b983edaafcd4dd"
   integrity sha512-WXCyOcRtH37HAUkpXhUduaxdm82b4GSlyTqajXviN4EfiuPgNYR109xMCKvpl6zPIpua0DGlMEDCq+g8EdoheQ==
+  dependencies:
+    "@babel/types" "^7.20.7"
+
+"@types/babel__traverse@^7.0.4":
+  version "7.20.6"
+  resolved "https://registry.yarnpkg.com/@types/babel__traverse/-/babel__traverse-7.20.6.tgz#8dc9f0ae0f202c08d8d4dab648912c8d6038e3f7"
+  integrity sha512-r1bzfrm0tomOI8g1SzvCaQHo6Lcv6zu0EA+W2kHrt8dyrHQxGzBBL4kdkzIS+jBMV+EYcMAEAqXqYaLJq5rOZg==
   dependencies:
     "@babel/types" "^7.20.7"
 

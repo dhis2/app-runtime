@@ -1,6 +1,6 @@
+import type { CreateMutation, UpdateMutation } from '@dhis2/data-engine'
 import { renderHook, act, waitFor } from '@testing-library/react'
 import * as React from 'react'
-import { CreateMutation, UpdateMutation } from '../../engine/types/Mutation'
 import { CustomDataProvider } from '../components/CustomDataProvider'
 import { useDataEngine } from './useDataEngine'
 import { useDataMutation } from './useDataMutation'
@@ -164,7 +164,7 @@ describe('useDataMutation', () => {
             id: ({ id }) => id,
             data: { answer: '?' },
         }
-        const answerSpy = jest.fn(() => 42)
+        const answerSpy = jest.fn(() => Promise.resolve(42))
         const data = { answer: answerSpy }
         const wrapper = ({ children }) => (
             <CustomDataProvider data={data}>{children}</CustomDataProvider>
