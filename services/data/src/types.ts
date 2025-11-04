@@ -5,11 +5,9 @@ import type {
     JsonValue,
     QueryVariables,
     QueryResult,
-    Mutation,
-    Query
 } from '@dhis2/data-engine'
 
-export type { Mutation, Query }
+export type { Mutation, Query } from '@dhis2/data-engine'
 
 export interface ContextType {
     engine: DataEngine
