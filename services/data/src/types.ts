@@ -1,11 +1,15 @@
-import {
+import type {
     DataEngine,
     QueryExecuteOptions,
     FetchError,
     JsonValue,
     QueryVariables,
     QueryResult,
+    Mutation,
+    Query
 } from '@dhis2/data-engine'
+
+export type { Mutation, Query }
 
 export interface ContextType {
     engine: DataEngine
