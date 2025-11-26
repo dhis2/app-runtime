@@ -7,11 +7,14 @@
     "scripts": {
         "build": "d2-app-scripts build",
         "build:standalone": "d2-app-scripts build --standalone",
-        "start": "d2-app-scripts start",
+        "start": "dotenv -- cross-var d2-app-scripts start --proxy %DHIS2_PROXY_URL% --port 3000",
         "test": "d2-app-scripts test"
     },
     "devDependencies": {
-        "@dhis2/cli-app-scripts": "^12.0.0"
+        "@dhis2/cli-app-scripts": "^12.0.0",
+        "cross-var": "^1.1.0",
+        "dotenv": "^16.5.0",
+        "dotenv-cli": "^8.0.0"
     },
     "dependencies": {
         "@codemirror/lang-json": "^6.0.1",
@@ -29,6 +32,7 @@
         "@dhis2/app-service-alerts": "file:../../services/alerts",
         "@dhis2/app-service-config": "file:../../services/config",
         "@dhis2/app-service-data": "file:../../services/data",
+        "@dhis2/app-service-user": "file:../../services/user",
         "@dhis2/app-service-offline": "file:../../services/offline",
         "@dhis2/app-service-plugin": "file:../../services/plugin"
     }

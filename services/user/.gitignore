@@ -1,7 +1,5 @@
-yarn-error.log
-
 # DHIS2 Platform
 node_modules
-.env
 .d2
 src/locales
+build
