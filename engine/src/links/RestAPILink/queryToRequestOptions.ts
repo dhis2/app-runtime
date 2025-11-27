@@ -49,7 +49,7 @@ export const requestOptionsToFetchType = (init: RequestInit): FetchType => {
 export const queryToRequestOptions = (
     type: FetchType,
     query: ResolvedResourceQuery,
-    signal?: AbortSignal
+    signal: AbortSignal | null | undefined
 ): RequestInit => {
     const contentType = requestContentType(type, query)
 
