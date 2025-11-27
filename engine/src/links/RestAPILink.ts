@@ -1,3 +1,4 @@
+import { LRUCache } from '../helpers/LRUCache'
 import type { DataEngineConfig } from '../types/DataEngineConfig'
 import type {
     DataEngineLink,
@@ -6,6 +7,7 @@ import type {
 import type { FetchType } from '../types/ExecuteOptions'
 import type { JsonValue } from '../types/JsonValue'
 import type { ResolvedResourceQuery } from '../types/Query'
+import { QueryAlias, QueryAliasCache } from '../types/QueryAlias'
 import { fetchData } from './RestAPILink/fetchData'
 import { joinPath } from './RestAPILink/path'
 import { queryToRequestOptions } from './RestAPILink/queryToRequestOptions'
@@ -16,6 +18,8 @@ export class RestAPILink implements DataEngineLink {
     public readonly versionedApiPath: string
     public readonly unversionedApiPath: string
 
+    public readonly queryAliasCache: QueryAliasCache = new LRUCache<string, QueryAlias>(100)
+
     public constructor(config: DataEngineConfig) {
         this.config = config
         this.versionedApiPath = joinPath('api', String(config.apiVersion))
@@ -23,7 +27,7 @@ export class RestAPILink implements DataEngineLink {
     }
 
     private fetch(path: string, options: RequestInit): Promise<JsonValue> {
-        return fetchData(joinPath(this.config.baseUrl, path), options)
+        return fetchData(joinPath(this.config.baseUrl, path), options, this)
     }
 
     public executeResourceQuery(

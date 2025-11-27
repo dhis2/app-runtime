@@ -3,7 +3,7 @@ import type { JsonValue } from './JsonValue'
 import type { ResolvedResourceQuery } from './Query'
 
 export interface DataEngineLinkExecuteOptions {
-    signal?: AbortSignal
+    signal: AbortSignal | null | undefined
 }
 
 export interface DataEngineLink {

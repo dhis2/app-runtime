@@ -7,4 +7,5 @@ export interface DataEngineConfig {
         patch?: number
         full: string
     }
+    apiToken?: string
 }
