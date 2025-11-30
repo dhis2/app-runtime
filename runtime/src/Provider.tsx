@@ -8,7 +8,7 @@ import React from 'react'
 
 type ProviderInput = {
     config: Config
-    userInfo: CurrentUser | undefined
+    userInfo: CurrentUser
     children: React.ReactNode
     offlineInterface?: any // temporary until offline service has types
     plugin: boolean
