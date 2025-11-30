@@ -12,6 +12,14 @@ const mockUser = {
     organisationUnits: []
 }
 
+const defaultUser = {
+    id: '..',
+    username: '..',
+    displayName: '..',
+    authorities: [],
+    organisationUnits: []
+}
+
 test('When a valid userInfo object is provided', () => {
     const wrapper = ({ children }) => (
             <UserProvider userInfo={mockUser}>
@@ -29,5 +37,5 @@ test('When the userInfo object provided is undefined', async () => {
             </UserProvider>
     )
     const { result } = renderHook(() => useCurrentUserInfo(), { wrapper })
-    expect(result.current).toBeUndefined()
+    expect(result.current).toEqual(defaultUser)
 })
