@@ -1,10 +1,8 @@
 import React from 'react'
-import { renderHook, waitFor } from '@testing-library/react'
-import { UserProvider } from '../UserProvider'
-import { useCurrentUserInfo } from '../useCurrentUserInfo'
-import { CustomDataProvider } from '@dhis2/app-service-data'
+import { renderHook } from '@testing-library/react'
+import { useCurrentUserInfo, UserProvider } from '../UserProvider'
 
-const mockUserProvidedViaProps = {
+const mockUser = {
    id: 'user123',
     username: 'Test User',
     firstName: 'Test',
@@ -14,54 +12,22 @@ const mockUserProvidedViaProps = {
     organisationUnits: []
 }
 
-const mockUserFetchedViaDataQuery = {
-    id: 'remoteUser123',
-    username: 'remoteUser',
-    firstName: 'Remote',
-    surname: 'User',
-    displayName: 'Remote User (from data query)',
-    authorities: [],
-    organisationUnits: []
-}
-
-
-test('returns the user from props when userInfo is provided', () => {
+test('When a valid userInfo object is provided', () => {
     const wrapper = ({ children }) => (
-        <CustomDataProvider data={{}}>
-            <UserProvider userInfo={mockUserProvidedViaProps}>
+            <UserProvider userInfo={mockUser}>
                 {children}
             </UserProvider>
-        </CustomDataProvider>
     )
-
     const { result } = renderHook(() => useCurrentUserInfo(), { wrapper })
-
-    expect(result.current.user).toEqual(mockUserProvidedViaProps)
-    expect(result.current.loading).toBe(false)
-    expect(result.current.error).toBeUndefined()
+    expect(result.current).toEqual(mockUser)
 })
 
-
-test('fetches user via useDataQuery when userInfo is not provided', async () => {
-    const mockData = {
-        me: async () => mockUserFetchedViaDataQuery
-    }
-
+test('When the userInfo object provided is empty', async () => {
     const wrapper = ({ children }) => (
-        <CustomDataProvider data={mockData}>
-            <UserProvider userInfo={undefined}>
+            <UserProvider userInfo={{} as any}>
                 {children}
             </UserProvider>
-        </CustomDataProvider>
     )
-
     const { result } = renderHook(() => useCurrentUserInfo(), { wrapper })
-
-    expect(result.current.loading).toBe(true)
-    expect(result.current.user).toBeUndefined()
-
-    await waitFor(() => {
-        expect(result.current.loading).toBe(false)
-        expect(result.current.user).toEqual(mockUserFetchedViaDataQuery)
-    })
+    expect(result.current).toBeUndefined()
 })

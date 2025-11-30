@@ -1,3 +1,2 @@
-export { UserProvider } from './UserProvider'
-export { useCurrentUserInfo } from './useCurrentUserInfo'
-export type { CurrentUser, CurrentUserState } from './types'
+export { UserProvider, useCurrentUserInfo } from './UserProvider'
+export type { CurrentUser } from './types'

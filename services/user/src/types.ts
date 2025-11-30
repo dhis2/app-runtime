@@ -1,5 +1,3 @@
-import { FetchError, QueryRefetchFunction } from '@dhis2/app-service-data'
-
 export interface CurrentUser {
     id: string
     username: string
@@ -63,12 +61,4 @@ export interface CurrentUser {
     translations?: Array<any>
 
     twoFactorType?: string
-}
-
-
-export interface CurrentUserState {
-    user: CurrentUser | undefined
-    loading: boolean
-    error: FetchError | undefined
-    refetch: QueryRefetchFunction | (() => void)
 }
