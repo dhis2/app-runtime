@@ -8,7 +8,7 @@ Access the current authenticated DHIS2 user's information from the [Provider](..
 import { useCurrentUserInfo } from '@dhis2/app-runtime'
 
 // Within a functional component body
-const { user, loading, error, refetch } = useCurrentUserInfo()
+const user = useCurrentUserInfo();
 ```
 
 ## Input
@@ -17,7 +17,7 @@ _None_
 
 ## Output
 
-This hook returns an object of type [CurrentUserState](../types/CurrentUserState.md)
+This hook returns an object of type [CurrentUser](../types/CurrentUser.md)
 
 ## Example
 
@@ -26,7 +26,7 @@ import React from 'react'
 import { useCurrentUserInfo } from '@dhis2/app-runtime'
 
 export const MyComponent = () => {
-    const { user, loading, error, refetch } = useCurrentUserInfo()
+   const user = useCurrentUserInfo();
     return (
         <div>
             <span>

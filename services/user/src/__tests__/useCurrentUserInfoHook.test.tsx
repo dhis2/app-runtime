@@ -22,9 +22,9 @@ test('When a valid userInfo object is provided', () => {
     expect(result.current).toEqual(mockUser)
 })
 
-test('When the userInfo object provided is empty', async () => {
+test('When the userInfo object provided is undefined', async () => {
     const wrapper = ({ children }) => (
-            <UserProvider userInfo={{} as any}>
+            <UserProvider userInfo={undefined as any}>
                 {children}
             </UserProvider>
     )
