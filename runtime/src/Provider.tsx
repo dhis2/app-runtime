@@ -32,9 +32,7 @@ export const Provider = ({
         >
             <DataProvider>
                 <OfflineProvider offlineInterface={offlineInterface}>
-                    <UserProvider userInfo={userInfo}>
-                        {children}
-                    </UserProvider>
+                    <UserProvider userInfo={userInfo}>{children}</UserProvider>
                 </OfflineProvider>
             </DataProvider>
         </AlertsProvider>
@@ -42,8 +40,3 @@ export const Provider = ({
 )
 
 Provider.displayName = 'DHIS2RuntimeProvider'
-
-
-
-
-

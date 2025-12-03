@@ -3,8 +3,7 @@ export interface CurrentUser {
     username: string
     displayName: string
     authorities: string[]
-    organisationUnits: Array<{ id: string; }>
-
+    organisationUnits: Array<{ id: string }>
     name?: string
     surname?: string
     firstName?: string
@@ -24,10 +23,8 @@ export interface CurrentUser {
     languages?: string
     gender?: string
     jobTitle?: string
-
     created?: string
     lastUpdated?: string
-
     access?: {
         manage: boolean
         externalize?: boolean
@@ -37,7 +34,6 @@ export interface CurrentUser {
         delete: boolean
         [key: string]: any
     }
-
     settings?: {
         keyDbLocale?: string
         keyMessageSmsNotification?: boolean
@@ -48,9 +44,8 @@ export interface CurrentUser {
         keyMessageEmailNotification?: boolean
         [key: string]: any
     }
-
-    userGroups?: Array<{ id: string; }>
-    userRoles?: Array<{ id: string; }>
+    userGroups?: Array<{ id: string }>
+    userRoles?: Array<{ id: string }>
     dataViewOrganisationUnits?: Array<{ id: string }>
     teiSearchOrganisationUnits?: Array<{ id: string }>
     programs?: Array<string>
@@ -59,6 +54,5 @@ export interface CurrentUser {
     attributeValues?: Array<any>
     favorites?: Array<any>
     translations?: Array<any>
-
     twoFactorType?: string
 }
