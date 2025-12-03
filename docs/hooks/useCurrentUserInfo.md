@@ -8,7 +8,7 @@ Access the current authenticated DHIS2 user's information from the [Provider](..
 import { useCurrentUserInfo } from '@dhis2/app-runtime'
 
 // Within a functional component body
-const user = useCurrentUserInfo();
+const user = useCurrentUserInfo()
 ```
 
 ## Input
@@ -26,7 +26,7 @@ import React from 'react'
 import { useCurrentUserInfo } from '@dhis2/app-runtime'
 
 export const MyComponent = () => {
-   const user = useCurrentUserInfo();
+    const user = useCurrentUserInfo()
     return (
         <div>
             <span>
