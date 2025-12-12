@@ -4,11 +4,11 @@
 
 ## Alert
 
-| Prop      | Type       | Description                                                                                                                                                                      |
-| --------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `message` | `string`   | The alert message to display                                                                                                                                                     |
-| `id`      | `number`   | Can be used as `key` when mapping over `alerts`                                                                                                                                  |
-| `remove`  | `function` | Call this to remove the `alert`                                                                                                                                                  |
+| Prop      | Type       | Description                                                                                                                                                                |
+| --------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `message` | `string`   | The alert message to display                                                                                                                                               |
+| `id`      | `number`   | Can be used as `key` when mapping over `alerts`                                                                                                                            |
+| `remove`  | `function` | Call this to remove the `alert`                                                                                                                                            |
 | `options` | `object`   | A configuration object that matches the props of the alert component, for example [a @dhis2/ui `AlertBar`](https://developers.dhis2.org/docs/ui/components/alertbar#props) |
 
 :::info Usage note
