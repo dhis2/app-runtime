@@ -1,5 +1,5 @@
 {
-    "version": "3.14.6",
+    "version": "3.14.7",
     "description": "A singular runtime dependency for applications on the DHIS2 platform",
     "repository": "https://github.com/dhis2/app-runtime.git",
     "author": "Austin McGee <austin@dhis2.org>",
@@ -54,7 +54,7 @@
     "d2": {
         "docsite": {
             "name": "DHIS2 Application Runtime",
-            "description": "A singular runtime dependency for applications on the [DHIS2 platform](https://platform.dhis2.nu)"
+            "description": "A singular runtime dependency for applications on the [DHIS2 platform](https://developers.dhis2.org/docs/app-platform/getting-started)"
         }
     }
 }

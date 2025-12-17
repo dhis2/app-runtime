@@ -122,12 +122,13 @@ export const isMetadataPackageInstallation = (
     { resource }: ResolvedResourceQuery
 ): boolean => type === 'create' && resource === 'synchronization/metadataPull'
 
-// POST to 'indicators/expression/description' or 'programIndicator/expression/description' (validate an expression)
+// POST to 'indicators/expression/description', 'programIndicator/expression/description', or 'validationRules/expression/description' (validate an expression)
 export const isExpressionDescriptionValidation = (
     type: FetchType,
     { resource }: ResolvedResourceQuery
 ): boolean => {
-    const pattern = /^(indicators|programIndicators)\/expression\/description$/
+    const pattern =
+        /^(indicators|programIndicators|validationRules)\/expression\/description$/
     return type === 'create' && pattern.test(resource)
 }
 

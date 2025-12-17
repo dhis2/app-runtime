@@ -22,4 +22,4 @@ The following must be polyfilled to support older and non-compliant browsers (i.
 
 ## Usage
 
-See [the docs](https://runtime.dhis2.nu) for usage and examples
+See [the docs](https://developers.dhis2.org/docs/app-runtime/getting-started) for usage and examples

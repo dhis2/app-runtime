@@ -1,3 +1,10 @@
+## [3.14.7](https://github.com/dhis2/app-runtime/compare/v3.14.6...v3.14.7) (2025-12-17)
+
+
+### Bug Fixes
+
+* use content type text/plain for mutations to validationRules/expression/description ([#1420](https://github.com/dhis2/app-runtime/issues/1420)) ([da955b3](https://github.com/dhis2/app-runtime/commit/da955b36be0211e8a0909cf5feac30f43e50671f))
+
 ## [3.14.6](https://github.com/dhis2/app-runtime/compare/v3.14.5...v3.14.6) (2025-09-30)
 
 
