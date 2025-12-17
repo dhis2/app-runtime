@@ -273,6 +273,20 @@ describe('isExpressionDescriptionValidation', () => {
             })
         ).toBe(false)
     })
+    it('returns true for a POST to "validationRules/expression/description"', () => {
+        expect(
+            isExpressionDescriptionValidation('create', {
+                resource: 'validationRules/expression/description',
+            })
+        ).toBe(true)
+    })
+    it('retuns false for a POST to a different validationRules resource', () => {
+        expect(
+            isExpressionDescriptionValidation('create', {
+                resource: 'validationRules/expression/somethingelse',
+            })
+        ).toBe(false)
+    })
 })
 
 describe('isFilterDescriptionValidation', () => {
