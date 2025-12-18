@@ -1,4 +1,4 @@
-# DHIS2 App Data Service
+# DHIS2 App User Service
 
 Application User Services for [DHIS2](https://dhis2.org) applications
 
