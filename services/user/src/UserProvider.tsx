@@ -1,25 +1,18 @@
 import React, { useContext } from 'react'
 import { CurrentUser } from './types'
 
-const defaultUser: CurrentUser = {
-    id: '..',
-    username: '..',
-    displayName: '..',
-    authorities: [],
-    organisationUnits: [],
-}
 
-const UserContext = React.createContext<CurrentUser>(defaultUser)
+const UserContext = React.createContext<CurrentUser|undefined>(undefined)
 
 export const UserProvider = ({
     userInfo,
     children,
 }: {
-    userInfo: CurrentUser
+    userInfo: CurrentUser | undefined
     children: React.ReactNode
 }) => {
     return (
-        <UserContext.Provider value={userInfo ?? defaultUser}>
+        <UserContext.Provider value={userInfo}>
             {children}
         </UserContext.Provider>
     )
