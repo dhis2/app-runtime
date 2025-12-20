@@ -1774,6 +1774,11 @@
     "@dhis2/pwa" "12.10.0"
     moment "^2.24.0"
 
+"@dhis2/app-service-user@./services/user":
+  version "3.14.6"
+  dependencies:
+    prop-types "^15.7.2"
+
 "@dhis2/app-shell@12.10.0":
   version "12.10.0"
   resolved "https://registry.yarnpkg.com/@dhis2/app-shell/-/app-shell-12.10.0.tgz#5b339997d6f680f3d15ef2a33d25ccf0fb81ce7f"
