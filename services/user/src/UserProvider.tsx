@@ -1,8 +1,7 @@
 import React, { useContext } from 'react'
 import { CurrentUser } from './types'
 
-
-const UserContext = React.createContext<CurrentUser|undefined>(undefined)
+const UserContext = React.createContext<CurrentUser | undefined>(undefined)
 
 export const UserProvider = ({
     userInfo,
@@ -12,9 +11,7 @@ export const UserProvider = ({
     children: React.ReactNode
 }) => {
     return (
-        <UserContext.Provider value={userInfo}>
-            {children}
-        </UserContext.Provider>
+        <UserContext.Provider value={userInfo}>{children}</UserContext.Provider>
     )
 }
 
