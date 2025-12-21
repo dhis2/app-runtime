@@ -1,0 +1,43 @@
+{
+    "name": "@dhis2/app-service-user",
+    "version": "3.14.6",
+    "main": "./build/cjs/index.js",
+    "module": "./build/es/index.js",
+    "types": "build/types/index.d.ts",
+    "exports": {
+        "import": "./build/es/index.js",
+        "require": "./build/cjs/index.js",
+        "types": "./build/types/index.d.ts"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dhis2/app-runtime.git",
+        "directory": "services/user"
+    },
+    "author": "Austin McGee <austin@dhis2.org>",
+    "license": "BSD-3-Clause",
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "build/**"
+    ],
+    "dependencies": {
+        "prop-types": "^15.7.2"
+    },
+    "peerDependencies": {
+        "react": "^16.8.6 || ^18",
+        "react-dom": "^16.8.6 || ^18"
+    },
+    "scripts": {
+        "clean": "rimraf ./build/*",
+        "build:types": "tsc --emitDeclarationOnly --outDir ./build/types",
+        "build:package": "d2-app-scripts build",
+        "build": "concurrently -n build,types \"yarn build:package\" \"yarn build:types\"",
+        "watch": "NODE_ENV=development concurrently -n build,types \"yarn build:package --watch\" \"yarn build:types --watch\"",
+        "type-check": "tsc --noEmit --allowJs --checkJs",
+        "type-check:watch": "yarn type-check --watch",
+        "test": "TZ=Etc/UTC d2-app-scripts test",
+        "coverage": "yarn test --coverage"
+    }
+}
