@@ -33,7 +33,6 @@
     "dependencies": {
         "@dhis2/app-service-config": "3.14.7",
         "@dhis2/app-service-data": "3.14.7",
-        "@dhis2/app-service-user": "3.14.7",
         "@dhis2/app-service-alerts": "3.14.7",
         "@dhis2/app-service-offline": "3.14.7",
         "@dhis2/app-service-plugin": "3.14.7",
