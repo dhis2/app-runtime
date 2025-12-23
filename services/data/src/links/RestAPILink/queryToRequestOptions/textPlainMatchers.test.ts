@@ -287,6 +287,20 @@ describe('isExpressionDescriptionValidation', () => {
             })
         ).toBe(false)
     })
+    it('returns true for a POST to "predictors/expression/description"', () => {
+        expect(
+            isExpressionDescriptionValidation('create', {
+                resource: 'predictors/expression/description',
+            })
+        ).toBe(true)
+    })
+    it('retuns false for a POST to a different predictors resource', () => {
+        expect(
+            isExpressionDescriptionValidation('create', {
+                resource: 'predictors/expression/somethingelse',
+            })
+        ).toBe(false)
+    })    
 })
 
 describe('isFilterDescriptionValidation', () => {
@@ -305,3 +319,21 @@ describe('isFilterDescriptionValidation', () => {
         ).toBe(false)
     })
 })
+
+describe('isSkipTestDescriptionValid', () => {
+    it('returns true for a POST to "predictors/skipTest/description"', () => {
+        expect(
+            isSkipTestDescriptionValid('create', {
+                resource: 'predictors/skipTest/description',
+            })
+        ).toBe(true)
+    })
+    it('retuns false for a POST to a different resource', () => {
+        expect(
+            isSkipTestDescriptionValid('create', {
+                resource: 'predictors/skipTest/somethingelse',
+            })
+        ).toBe(false)
+    })
+})
+
