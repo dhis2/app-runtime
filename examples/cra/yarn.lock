@@ -1047,34 +1047,47 @@
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
 "@dhis2/app-runtime@file:../../runtime":
-  version "3.14.2"
+  version "3.14.7"
   dependencies:
-    "@dhis2/app-service-alerts" "3.14.2"
-    "@dhis2/app-service-config" "3.14.2"
-    "@dhis2/app-service-data" "3.14.2"
-    "@dhis2/app-service-offline" "3.14.2"
-    "@dhis2/app-service-plugin" "3.14.2"
+    "@dhis2/app-service-alerts" "3.14.7"
+    "@dhis2/app-service-config" "3.14.7"
+    "@dhis2/app-service-data" "3.14.7"
+    "@dhis2/app-service-offline" "3.14.7"
+    "@dhis2/app-service-plugin" "3.14.7"
+    prop-types "^15.7.2"
 
-"@dhis2/app-service-alerts@3.14.2", "@dhis2/app-service-alerts@file:../../services/alerts":
-  version "3.14.2"
+"@dhis2/app-service-alerts@3.14.7", "@dhis2/app-service-alerts@file:../../services/alerts":
+  version "3.14.7"
+  dependencies:
+    prop-types "^15.7.2"
 
-"@dhis2/app-service-config@3.14.2", "@dhis2/app-service-config@file:../../services/config":
-  version "3.14.2"
+"@dhis2/app-service-config@3.14.7", "@dhis2/app-service-config@file:../../services/config":
+  version "3.14.7"
+  dependencies:
+    prop-types "^15.7.2"
 
-"@dhis2/app-service-data@3.14.2", "@dhis2/app-service-data@file:../../services/data":
-  version "3.14.2"
+"@dhis2/app-service-data@3.14.7", "@dhis2/app-service-data@file:../../services/data":
+  version "3.14.7"
   dependencies:
     "@tanstack/react-query" "^4.36.1"
+    prop-types "^15.7.2"
 
-"@dhis2/app-service-offline@3.14.2", "@dhis2/app-service-offline@file:../../services/offline":
-  version "3.14.2"
+"@dhis2/app-service-offline@3.14.7", "@dhis2/app-service-offline@file:../../services/offline":
+  version "3.14.7"
   dependencies:
     lodash "^4.17.21"
+    prop-types "^15.7.2"
 
-"@dhis2/app-service-plugin@3.14.2", "@dhis2/app-service-plugin@file:../../services/plugin":
-  version "3.14.2"
+"@dhis2/app-service-plugin@3.14.7", "@dhis2/app-service-plugin@file:../../services/plugin":
+  version "3.14.7"
   dependencies:
     post-robot "^10.0.46"
+    prop-types "^15.7.2"
+
+"@dhis2/app-service-user@file:../../services/user":
+  version "3.14.6"
+  dependencies:
+    prop-types "^15.7.2"
 
 "@hapi/address@2.x.x":
   version "2.1.4"
