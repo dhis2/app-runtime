@@ -1,18 +1,19 @@
-import { Config } from '@dhis2/app-service-config'
+import type { Config } from '@dhis2/app-service-config'
 import { ResolvedResourceQuery } from '../../engine'
 import { RestAPILink } from '../RestAPILink'
 import { queryToResourcePath } from './queryToResourcePath'
 
-const createLink = (config) => new RestAPILink(config)
+const createLink = (config: Config) => new RestAPILink(config)
 const defaultConfig: Config = {
-    basePath: '<base>',
-    apiVersion: '37',
+    apiVersion: 37,
     serverVersion: {
         major: 2,
         minor: 37,
         patch: 11,
+        full: '2.37.11',
     },
-}
+} as Config
+
 const link = createLink(defaultConfig)
 const apiPath = link.versionedApiPath
 
@@ -197,7 +198,7 @@ describe('queryToResourcePath', () => {
                 minor: 38,
                 patch: 0,
             },
-        }
+        } as Config
         expect(queryToResourcePath(createLink(v38config), query, 'read')).toBe(
             `${link.versionedApiPath}/tracker`
         )
