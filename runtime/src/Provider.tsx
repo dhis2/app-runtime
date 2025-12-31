@@ -3,10 +3,12 @@ import { ConfigProvider } from '@dhis2/app-service-config'
 import { Config } from '@dhis2/app-service-config/build/types/types'
 import { DataProvider } from '@dhis2/app-service-data'
 import { OfflineProvider } from '@dhis2/app-service-offline'
+import { CurrentUser, UserProvider } from '@dhis2/app-service-user'
 import React from 'react'
 
 type ProviderInput = {
     config: Config
+    userInfo: CurrentUser | undefined
     children: React.ReactNode
     offlineInterface?: any // temporary until offline service has types
     plugin: boolean
@@ -15,6 +17,7 @@ type ProviderInput = {
 }
 export const Provider = ({
     config,
+    userInfo,
     children,
     offlineInterface,
     plugin,
@@ -29,7 +32,7 @@ export const Provider = ({
         >
             <DataProvider>
                 <OfflineProvider offlineInterface={offlineInterface}>
-                    {children}
+                    <UserProvider userInfo={userInfo}>{children}</UserProvider>
                 </OfflineProvider>
             </DataProvider>
         </AlertsProvider>
