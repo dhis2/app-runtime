@@ -3,7 +3,8 @@ import { ConfigProvider } from '@dhis2/app-service-config'
 import { Config } from '@dhis2/app-service-config/build/types/types'
 import { DataProvider } from '@dhis2/app-service-data'
 import { OfflineProvider } from '@dhis2/app-service-offline'
-import { CurrentUser, UserProvider } from '@dhis2/app-service-user'
+import { UserProvider } from '@dhis2/app-service-user'
+import type { CurrentUser } from '@dhis2/app-service-user'
 import React from 'react'
 
 type ProviderInput = {
