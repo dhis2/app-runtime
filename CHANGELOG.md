@@ -1,3 +1,10 @@
+# [3.15.0](https://github.com/dhis2/app-runtime/compare/v3.14.8...v3.15.0) (2026-01-05)
+
+
+### Features
+
+* enable useCurrentUserInfo service and hook ([#1417](https://github.com/dhis2/app-runtime/issues/1417)) ([#1425](https://github.com/dhis2/app-runtime/issues/1425)) ([1b2550f](https://github.com/dhis2/app-runtime/commit/1b2550fdbae1d0b266a02637318c67f493c4a917))
+
 ## [3.14.8](https://github.com/dhis2/app-runtime/compare/v3.14.7...v3.14.8) (2026-01-05)
 
 
