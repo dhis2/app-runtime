@@ -1,3 +1,16 @@
+## [3.14.8](https://github.com/dhis2/app-runtime/compare/v3.14.7...v3.14.8) (2026-01-05)
+
+
+### Bug Fixes
+
+* rerun pipeline ([0593525](https://github.com/dhis2/app-runtime/commit/0593525e3df66e7b443b3301e4653e8bc9d15355))
+* revert yarn.lock ([#1426](https://github.com/dhis2/app-runtime/issues/1426)) ([5d4ebde](https://github.com/dhis2/app-runtime/commit/5d4ebdea8bea4b3b3fa3517867d15675164f8417))
+
+
+### Features
+
+* add useCurrentUserInfo hook ([#1417](https://github.com/dhis2/app-runtime/issues/1417)) ([e5cbc63](https://github.com/dhis2/app-runtime/commit/e5cbc638e6dc51c59981bd24423ebfeacd5fb563)), closes [#1420](https://github.com/dhis2/app-runtime/issues/1420)
+
 ## [3.14.7](https://github.com/dhis2/app-runtime/compare/v3.14.6...v3.14.7) (2025-12-17)
 
 
