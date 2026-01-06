@@ -8,7 +8,7 @@ The `CurrentUser` type is returned by the [useCurrentUserInfo](../hooks/useCurre
 |          **username**          |    string    | Username used to log in.                       |
 |        **displayName**         |    string    | Full display name of the user.                 |
 |        **authorities**         |   string[]   | List of user authority codes.                  |
-|     **organisationUnits**      | Array<{id}>  | Organisation units assigned to the user.       |
+|     **organisationUnits**      | Array<\{id}>  | Organisation units assigned to the user.       |
 |            **name**            |   string?    | User's full name (optional).                   |
 |          **surname**           |   string?    | User's surname (optional).                     |
 |         **firstName**          |   string?    | User's first name (optional).                  |
@@ -32,13 +32,13 @@ The `CurrentUser` type is returned by the [useCurrentUserInfo](../hooks/useCurre
 |        **lastUpdated**         |   string?    | ISO timestamp of last update.                  |
 |           **access**           |   object?    | Access permissions for the user.               |
 |          **settings**          |   object?    | User interface and system preference settings. |
-|         **userGroups**         | Array<{id}>? | Groups the user belongs to.                    |
-|         **userRoles**          | Array<{id}>? | User roles assigned.                           |
-| **dataViewOrganisationUnits**  | Array<{id}>? | Org units allowed for data view access.        |
-| **teiSearchOrganisationUnits** | Array<{id}>? | Org units used for TEI searching.              |
+|         **userGroups**         | Array<\{id}>? | Groups the user belongs to.                    |
+|         **userRoles**          | Array<\{id}>? | User roles assigned.                           |
+| **dataViewOrganisationUnits**  | Array<\{id}>? | Org units allowed for data view access.        |
+| **teiSearchOrganisationUnits** | Array<\{id}>? | Org units used for TEI searching.              |
 |          **programs**          |  string[]?   | Programs assigned to the user.                 |
 |          **dataSets**          |  string[]?   | Data sets the user has access to.              |
-|         **patTokens**          | Array<{id}>? | Personal access tokens.                        |
+|         **patTokens**          | Array<\{id}>? | Personal access tokens.                        |
 |      **attributeValues**       |    any[]?    | Additional attribute values.                   |
 |         **favorites**          |    any[]?    | User favorites stored in DHIS2.                |
 |        **translations**        |    any[]?    | Translated fields for the user.                |
