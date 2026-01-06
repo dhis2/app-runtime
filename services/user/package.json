@@ -1,6 +1,5 @@
 {
-    "name": "@dhis2/app-service-offline",
-    "description": "A runtime service for online/offline detection and offline caching",
+    "name": "@dhis2/app-service-user",
     "version": "3.15.0",
     "main": "./build/cjs/index.js",
     "module": "./build/es/index.js",
@@ -13,9 +12,9 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/dhis2/app-runtime.git",
-        "directory": "services/offline"
+        "directory": "services/user"
     },
-    "author": "Kai Vandivier <kai@dhis2.org>",
+    "author": "Austin McGee <austin@dhis2.org>",
     "license": "BSD-3-Clause",
     "publishConfig": {
         "access": "public"
@@ -23,23 +22,22 @@
     "files": [
         "build/**"
     ],
+    "dependencies": {
+        "prop-types": "^15.7.2"
+    },
+    "peerDependencies": {
+        "react": "^16.8.6 || ^18",
+        "react-dom": "^16.8.6 || ^18"
+    },
     "scripts": {
+        "clean": "rimraf ./build/*",
         "build:types": "tsc --emitDeclarationOnly --outDir ./build/types",
         "build:package": "d2-app-scripts build",
         "build": "concurrently -n build,types \"yarn build:package\" \"yarn build:types\"",
         "watch": "NODE_ENV=development concurrently -n build,types \"yarn build:package --watch\" \"yarn build:types --watch\"",
         "type-check": "tsc --noEmit --allowJs --checkJs",
         "type-check:watch": "yarn type-check --watch",
-        "test": "d2-app-scripts test",
+        "test": "TZ=Etc/UTC d2-app-scripts test",
         "coverage": "yarn test --coverage"
-    },
-    "peerDependencies": {
-        "@dhis2/app-service-config": "3.15.0",
-        "react": "^16.8.6 || ^18",
-        "react-dom": "^16.8.6 || ^18"
-    },
-    "dependencies": {
-        "lodash": "^4.17.21",
-        "prop-types": "^15.7.2"
     }
 }
