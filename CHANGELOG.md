@@ -1,3 +1,10 @@
+## [3.15.1](https://github.com/dhis2/app-runtime/compare/v3.15.0...v3.15.1) (2026-01-06)
+
+
+### Bug Fixes
+
+* additional resources requiring text payload [LIBS-815] ([#1422](https://github.com/dhis2/app-runtime/issues/1422)) ([f7d2b93](https://github.com/dhis2/app-runtime/commit/f7d2b932bd6e0f0d8bcfc269a504ac2ec58b72a6))
+
 # [3.15.0](https://github.com/dhis2/app-runtime/compare/v3.14.8...v3.15.0) (2026-01-05)
 
 
