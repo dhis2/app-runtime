@@ -10,6 +10,7 @@ import {
     isMetadataPackageInstallation,
     isExpressionDescriptionValidation,
     isFilterDescriptionValidation,
+    isSkipTestDescriptionValid,
 } from './textPlainMatchers'
 
 describe('isReplyToMessageConversation', () => {
@@ -300,7 +301,7 @@ describe('isExpressionDescriptionValidation', () => {
                 resource: 'predictors/expression/somethingelse',
             })
         ).toBe(false)
-    })    
+    })
 })
 
 describe('isFilterDescriptionValidation', () => {
@@ -336,4 +337,3 @@ describe('isSkipTestDescriptionValid', () => {
         ).toBe(false)
     })
 })
-
