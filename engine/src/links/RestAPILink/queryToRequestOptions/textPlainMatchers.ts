@@ -149,3 +149,12 @@ export const isSkipTestDescriptionValid = (
     const pattern = /^predictors\/skipTest\/description$/
     return type === 'create' && pattern.test(resource)
 }
+
+// POST to 'programRules/condition/description' (validate a program rule condition)
+export const isConditionDescriptionValidation = (
+    type: FetchType,
+    { resource }: ResolvedResourceQuery
+): boolean => {
+    const pattern = /^programRules\/condition\/description$/
+    return type === 'create' && pattern.test(resource)
+}
