@@ -43,7 +43,7 @@
         "build:services": "yarn build:config && loop \"yarn build\" --cwd ./services --exclude config --exit-on-error",
         "build:runtime": "cd runtime && yarn build",
         "build:engine": "cd engine && yarn build",
-        "build": "yarn build:engine && yarn build:services && yarn build:runtime && yarn install:examples",
+        "build": "yarn build:services && yarn build:engine && yarn build:runtime && yarn install:examples",
         "test:services": "loop \"yarn test\" --cwd ./services --exit-on-error",
         "test:runtime": "cd runtime && yarn test",
         "test:engine": "cd engine && yarn test",
