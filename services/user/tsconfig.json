@@ -1,0 +1,10 @@
+{
+    "extends": "../../tsconfig.json",
+    "include": ["src"],
+    "exclude": [
+        "src/setupRTL.ts",
+        "src/__tests__",
+        "**/*.test.ts",
+        "**/*.test.tsx"
+    ]
+}

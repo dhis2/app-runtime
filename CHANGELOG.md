@@ -1,3 +1,37 @@
+## [3.15.1](https://github.com/dhis2/app-runtime/compare/v3.15.0...v3.15.1) (2026-01-06)
+
+
+### Bug Fixes
+
+* additional resources requiring text payload [LIBS-815] ([#1422](https://github.com/dhis2/app-runtime/issues/1422)) ([f7d2b93](https://github.com/dhis2/app-runtime/commit/f7d2b932bd6e0f0d8bcfc269a504ac2ec58b72a6))
+
+# [3.15.0](https://github.com/dhis2/app-runtime/compare/v3.14.8...v3.15.0) (2026-01-05)
+
+
+### Features
+
+* enable useCurrentUserInfo service and hook ([#1417](https://github.com/dhis2/app-runtime/issues/1417)) ([#1425](https://github.com/dhis2/app-runtime/issues/1425)) ([1b2550f](https://github.com/dhis2/app-runtime/commit/1b2550fdbae1d0b266a02637318c67f493c4a917))
+
+## [3.14.8](https://github.com/dhis2/app-runtime/compare/v3.14.7...v3.14.8) (2026-01-05)
+
+
+### Bug Fixes
+
+* rerun pipeline ([0593525](https://github.com/dhis2/app-runtime/commit/0593525e3df66e7b443b3301e4653e8bc9d15355))
+* revert yarn.lock ([#1426](https://github.com/dhis2/app-runtime/issues/1426)) ([5d4ebde](https://github.com/dhis2/app-runtime/commit/5d4ebdea8bea4b3b3fa3517867d15675164f8417))
+
+
+### Features
+
+* add useCurrentUserInfo hook ([#1417](https://github.com/dhis2/app-runtime/issues/1417)) ([e5cbc63](https://github.com/dhis2/app-runtime/commit/e5cbc638e6dc51c59981bd24423ebfeacd5fb563)), closes [#1420](https://github.com/dhis2/app-runtime/issues/1420)
+
+## [3.14.7](https://github.com/dhis2/app-runtime/compare/v3.14.6...v3.14.7) (2025-12-17)
+
+
+### Bug Fixes
+
+* use content type text/plain for mutations to validationRules/expression/description ([#1420](https://github.com/dhis2/app-runtime/issues/1420)) ([da955b3](https://github.com/dhis2/app-runtime/commit/da955b36be0211e8a0909cf5feac30f43e50671f))
+
 ## [3.14.6](https://github.com/dhis2/app-runtime/compare/v3.14.5...v3.14.6) (2025-09-30)
 
 

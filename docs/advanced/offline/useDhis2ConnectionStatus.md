@@ -1,6 +1,6 @@
 # useDhis2ConnectionStatus
 
-> This feature can only be used when PWA is enabled in `d2.config.js`. See the [App Platform docs](https://platform.dhis2.nu/#/pwa/pwa) for more information.
+> This feature can only be used when PWA is enabled in `d2.config.js`. See the [App Platform docs](https://developers.dhis2.org/docs/app-platform/pwa/) for more information.
 
 This hook is used to detect whether or not the app can connect to the DHIS2 server. This can be useful, for example, to make changes in the UI to prevent the user from taking actions that would cause errors while unable to reach the server.
 
