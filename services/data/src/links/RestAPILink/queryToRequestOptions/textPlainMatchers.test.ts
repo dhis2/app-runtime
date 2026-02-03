@@ -11,6 +11,7 @@ import {
     isExpressionDescriptionValidation,
     isFilterDescriptionValidation,
     isSkipTestDescriptionValid,
+    isConditionDescriptionValidation,
 } from './textPlainMatchers'
 
 describe('isReplyToMessageConversation', () => {
@@ -333,6 +334,23 @@ describe('isSkipTestDescriptionValid', () => {
         expect(
             isSkipTestDescriptionValid('create', {
                 resource: 'predictors/skipTest/somethingelse',
+            })
+        ).toBe(false)
+    })
+})
+
+describe('isConditionDescriptionValidation', () => {
+    it('returns true for a POST to "programRules/condition/description"', () => {
+        expect(
+            isConditionDescriptionValidation('create', {
+                resource: 'programRules/condition/description',
+            })
+        ).toBe(true)
+    })
+    it('retuns false for a POST to a different resource', () => {
+        expect(
+            isConditionDescriptionValidation('create', {
+                resource: 'programRules/condition/somethingelse',
             })
         ).toBe(false)
     })
