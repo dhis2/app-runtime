@@ -1,4 +1,7 @@
 import { FetchError } from '../../errors/FetchError'
+import { LRUCache } from '../../helpers/LRUCache'
+import { DataEngineConfig } from '../../types'
+import { QueryAlias } from '../../types/QueryAlias'
 import { parseStatus, fetchData, parseContentType } from './fetchData'
 
 describe('networkFetch', () => {
@@ -129,25 +132,33 @@ describe('networkFetch', () => {
             text: async () => 'foobar',
             blob: async () => 'blob of foobar',
         }))
+
+        const mockRefs = {
+            config: {
+                baseUrl: '',
+                apiVersion: 42
+            } as DataEngineConfig,
+            queryAliasCache: new LRUCache<string, QueryAlias>(100)
+        }
         beforeEach(() => {
             jest.clearAllMocks()
         })
 
         it('Should correctly parse a successful JSON response', () => {
             ;(global as any).fetch = mockFetch
-            expect(fetchData('json', {})).resolves.toMatchObject({
+            expect(fetchData('json', {}, mockRefs)).resolves.toMatchObject({
                 foo: 'bar',
             })
         })
 
         it('Should correctly parse a successful TEXT response', () => {
             ;(global as any).fetch = mockFetch
-            expect(fetchData('text')).resolves.toBe('foobar')
+            expect(fetchData('text', {}, mockRefs)).resolves.toBe('foobar')
         })
 
         it('Should correctly parse a successful BLOB response', () => {
             ;(global as any).fetch = mockFetch
-            expect(fetchData('something else')).resolves.toBe('blob of foobar')
+            expect(fetchData('something else', {}, mockRefs)).resolves.toBe('blob of foobar')
         })
 
         it('Should throw a FetchError if fetch fails', () => {
@@ -155,7 +166,7 @@ describe('networkFetch', () => {
                 throw new Error()
             })
 
-            expect(fetchData('failure', {})).rejects.toBeInstanceOf(FetchError)
+            expect(fetchData('failure', {}, mockRefs)).rejects.toBeInstanceOf(FetchError)
         })
     })
 })

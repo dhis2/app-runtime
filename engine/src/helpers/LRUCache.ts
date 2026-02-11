@@ -1,5 +1,5 @@
 export class LRUCache<K, V> {
-  private cache: Map<K, V>;
+  private readonly cache: Map<K, V>;
   private readonly capacity: number;
 
   constructor(capacity: number) {
