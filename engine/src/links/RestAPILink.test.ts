@@ -11,6 +11,12 @@ describe('RestAPILink', () => {
         await link.executeResourceQuery('read', { resource: 'something' }, {})
         expect(fetchData).toHaveBeenCalledWith('http://url/api/42/something', {
             method: 'GET',
-        })
+        }, expect.objectContaining({
+            config: {
+                baseUrl: 'http://url',
+                apiVersion: 42
+            },
+            queryAliasCache: expect.anything()
+        }))
     })
 })

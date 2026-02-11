@@ -33,7 +33,7 @@ export class RestAPILink implements DataEngineLink {
     public executeResourceQuery(
         type: FetchType,
         query: ResolvedResourceQuery,
-        { signal }: DataEngineLinkExecuteOptions
+        { signal }: DataEngineLinkExecuteOptions = {}
     ): Promise<JsonValue> {
         return this.fetch(
             queryToResourcePath(this, query, type),

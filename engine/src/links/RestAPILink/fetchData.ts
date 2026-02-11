@@ -106,8 +106,8 @@ const fetchWithContext = (
     url: string,
     requestOptions: RequestInit,
     refs: FetchDataRefs
-) =>
-    fetch(url, {
+) => {
+    const requestInit: RequestInit = {
         ...requestOptions,
         credentials: 'include',
         headers: {
@@ -118,7 +118,9 @@ const fetchWithContext = (
                 : '',
             ...requestOptions.headers,
         },
-    })
+    }
+    return fetch(url, requestInit)
+}
 
 const fetchDirectOrCreateAlias = async (
     url: string,
