@@ -29,8 +29,9 @@ import { DataEngine, RestAPILink, type DataEngineConfig } from '@dhis2/data-engi
 const config: DataEngineConfig  = {
     baseUrl: 'https://my-dhis2-server.com',
     apiVersion: 42,
-    apiKey: 'MY_PERSONAL_ACCESS_TOKEN'
+    apiToken: 'MY_PERSONAL_ACCESS_TOKEN'
 }
+const link = new RestAPILink(config)
 
 // Construct the DataEngine using the RestAPILink
 const engine = new DataEngine(link)
@@ -74,9 +75,13 @@ Server version fields:
 
 The server version is used to toggle different features which are only supported with certain DHIS2 server versions.  If it is not supplied, the DataEngine will operate assuming an older version of DHIS2.
 
+In the future, the DataEngine may optionally fetch this automatically from the server's `/system/info` endpoint
+
 ## Authentication
 
+Unlike in browser contexts, where authentication is transmitted via HTTP-only session cookies, server environments need another way to authenticate API requests.  To accomplish this, the config object supports an `apiToken` property which should be a Personal Access Token granting access to the target DHIS2 instance.
 
+**SECURITY NOTE** Do NOT use personal access tokens in browser environments.  PATs should always be stored securely and passed to server scripts in secure ways, for example using environment variables or secret vaults instead of command-line arguments.
 
 ## API
 
