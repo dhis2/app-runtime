@@ -1,3 +1,10 @@
+# [3.17.0-beta.2](https://github.com/dhis2/app-runtime/compare/v3.17.0-beta.1...v3.17.0-beta.2) (2026-02-11)
+
+
+### Features
+
+* support api key authentication and automatic query alias creation ([#1418](https://github.com/dhis2/app-runtime/issues/1418)) ([6e8e9f6](https://github.com/dhis2/app-runtime/commit/6e8e9f696b2e7b9f6f76a533143048f3c9150453))
+
 # [3.17.0-beta.1](https://github.com/dhis2/app-runtime/compare/v3.16.0...v3.17.0-beta.1) (2026-02-11)
 
 
