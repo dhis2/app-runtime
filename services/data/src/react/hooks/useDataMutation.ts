@@ -1,5 +1,9 @@
+import type {
+    QueryOptions,
+    Mutation,
+    QueryExecuteOptions,
+} from '@dhis2/data-engine'
 import { useCallback } from 'react'
-import { QueryOptions, Mutation, QueryExecuteOptions } from '../../engine'
 import { MutationRenderInput } from '../../types'
 import { useDataEngine } from './useDataEngine'
 import { useQueryExecutor } from './useQueryExecutor'

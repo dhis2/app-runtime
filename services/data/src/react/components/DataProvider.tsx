@@ -1,14 +1,13 @@
 /* eslint-disable react/no-unused-prop-types */
 
 import { useConfig } from '@dhis2/app-service-config'
+import { DataEngine, RestAPILink } from '@dhis2/data-engine'
 import {
     QueryClient,
     QueryClientProvider,
     type QueryClientConfig,
 } from '@tanstack/react-query'
 import React from 'react'
-import { DataEngine } from '../../engine'
-import { RestAPILink } from '../../links'
 import { DataContext } from '../context/DataContext'
 
 export interface ProviderInput {
