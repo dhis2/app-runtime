@@ -1,9 +1,9 @@
-import type { LRUCache } from "../helpers/LRUCache"
+import type { LRUCache } from '../helpers/LRUCache'
 
 export type QueryAlias = {
-    id: string,
-    path: string,
-    href: string,
+    id: string
+    path: string
+    href: string
     target: string
 }
 

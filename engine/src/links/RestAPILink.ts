@@ -18,7 +18,10 @@ export class RestAPILink implements DataEngineLink {
     public readonly versionedApiPath: string
     public readonly unversionedApiPath: string
 
-    public readonly queryAliasCache: QueryAliasCache = new LRUCache<string, QueryAlias>(100)
+    public readonly queryAliasCache: QueryAliasCache = new LRUCache<
+        string,
+        QueryAlias
+    >(100)
 
     public constructor(config: DataEngineConfig) {
         this.config = config

@@ -136,9 +136,9 @@ describe('networkFetch', () => {
         const mockRefs = {
             config: {
                 baseUrl: '',
-                apiVersion: 42
+                apiVersion: 42,
             } as DataEngineConfig,
-            queryAliasCache: new LRUCache<string, QueryAlias>(100)
+            queryAliasCache: new LRUCache<string, QueryAlias>(100),
         }
         beforeEach(() => {
             jest.clearAllMocks()
@@ -158,7 +158,9 @@ describe('networkFetch', () => {
 
         it('Should correctly parse a successful BLOB response', () => {
             ;(global as any).fetch = mockFetch
-            expect(fetchData('something else', {}, mockRefs)).resolves.toBe('blob of foobar')
+            expect(fetchData('something else', {}, mockRefs)).resolves.toBe(
+                'blob of foobar'
+            )
         })
 
         it('Should throw a FetchError if fetch fails', () => {
@@ -166,7 +168,9 @@ describe('networkFetch', () => {
                 throw new Error()
             })
 
-            expect(fetchData('failure', {}, mockRefs)).rejects.toBeInstanceOf(FetchError)
+            expect(fetchData('failure', {}, mockRefs)).rejects.toBeInstanceOf(
+                FetchError
+            )
         })
     })
 })

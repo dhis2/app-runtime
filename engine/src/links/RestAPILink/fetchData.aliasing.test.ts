@@ -1,5 +1,5 @@
-import { fetchData } from './fetchData'
 import { LRUCache } from '../../helpers/LRUCache'
+import { fetchData } from './fetchData'
 
 const ALIAS_NOT_FOUND_MESSAGE =
     'No query alias found with this hash id, it may have expired.'
@@ -9,15 +9,23 @@ type FetchRefs = {
     config: any
 }
 
-const makeResponse = (
-    body: any,
+const makeResponse = ({
+    body,
     status = 200,
     statusText = '',
-    contentType = 'application/json'
-) => ({
+    contentType = 'application/json',
+}: {
+    body: any
+    status?: number
+    statusText?: string
+    contentType?: string
+}) => ({
     status,
     statusText,
-    headers: { get: (k: string) => (k.toLowerCase() === 'content-type' ? contentType : null) },
+    headers: {
+        get: (k: string) =>
+            k.toLowerCase() === 'content-type' ? contentType : null,
+    },
     json: async () => body,
     text: async () => (typeof body === 'string' ? body : JSON.stringify(body)),
     blob: async () => body,
@@ -62,22 +70,40 @@ describe('fetchData - query alias creation and caching', () => {
         // 1) initial long url -> 414
         // 2) POST to alias endpoint -> returns alias object
         // 3) fetch alias.href -> returns data
-        ;(global as any).fetch = jest.fn(async (reqUrl: string, reqInit: any) => {
-            if (reqUrl === longUrl) {
-                return makeResponse(null, 414, 'URI Too Long')
-            }
+        ;(global as any).fetch = jest.fn(
+            async (reqUrl: string, reqInit: any) => {
+                if (reqUrl === longUrl) {
+                    return makeResponse({
+                        body: null,
+                        status: 414,
+                        statusText: 'URI Too Long',
+                    })
+                }
 
-            if (reqUrl === aliasEndpoint) {
-                aliasCreateCalls += 1
-                return makeResponse(alias1, 200, 'OK')
-            }
+                if (reqUrl === aliasEndpoint) {
+                    aliasCreateCalls += 1
+                    return makeResponse({
+                        body: alias1,
+                        status: 200,
+                        statusText: 'OK',
+                    })
+                }
 
-            if (reqUrl === alias1.href) {
-                return makeResponse(data, 200, 'OK')
-            }
+                if (reqUrl === alias1.href) {
+                    return makeResponse({
+                        body: data,
+                        status: 200,
+                        statusText: 'OK',
+                    })
+                }
 
-            return makeResponse(null, 500, 'Unknown')
-        })
+                return makeResponse({
+                    body: null,
+                    status: 500,
+                    statusText: 'Unknown',
+                })
+            }
+        )
 
         const result = await fetchData(longUrl, { method: 'GET' }, refs as any)
 
@@ -106,32 +132,53 @@ describe('fetchData - query alias creation and caching', () => {
 
         // track how many times alias endpoint is called and return alias1 then alias2
         aliasCreateCalls = 0
-
-        ;(global as any).fetch = jest.fn(async (reqUrl: string, reqInit: any) => {
-            // If the original long URL is called, simulate 414 (only on first-run scenarios)
-            if (reqUrl === longUrl) {
-                return makeResponse(null, 414, 'URI Too Long')
-            }
-
-            // Alias creation endpoint
-            if (reqUrl === aliasEndpoint) {
-                aliasCreateCalls += 1
-                return makeResponse(aliasCreateCalls === 1 ? alias1 : alias2, 200, 'OK')
-            }
-
-            // Calls to alias href - if aliasExpired flag is set, simulate 404 with special statusText
-            if (reqUrl === alias1.href || reqUrl === alias2.href) {
-                const isAlias1 = reqUrl === alias1.href
-                if (isAlias1 && aliasExpired) {
-                    return makeResponse(null, 404, ALIAS_NOT_FOUND_MESSAGE)
+        ;(global as any).fetch = jest.fn(
+            async (reqUrl: string, reqInit: any) => {
+                // If the original long URL is called, simulate 414 (only on first-run scenarios)
+                if (reqUrl === longUrl) {
+                    return makeResponse({
+                        body: null,
+                        status: 414,
+                        statusText: 'URI Too Long',
+                    })
                 }
 
-                // Return data depending on which alias
-                return makeResponse(isAlias1 ? dataA : dataB, 200, 'OK')
-            }
+                // Alias creation endpoint
+                if (reqUrl === aliasEndpoint) {
+                    aliasCreateCalls += 1
+                    return makeResponse({
+                        body: aliasCreateCalls === 1 ? alias1 : alias2,
+                        status: 200,
+                        statusText: 'OK',
+                    })
+                }
 
-            return makeResponse(null, 500, 'Unknown')
-        })
+                // Calls to alias href - if aliasExpired flag is set, simulate 404 with special statusText
+                if (reqUrl === alias1.href || reqUrl === alias2.href) {
+                    const isAlias1 = reqUrl === alias1.href
+                    if (isAlias1 && aliasExpired) {
+                        return makeResponse({
+                            body: null,
+                            status: 404,
+                            statusText: ALIAS_NOT_FOUND_MESSAGE,
+                        })
+                    }
+
+                    // Return data depending on which alias
+                    return makeResponse({
+                        body: isAlias1 ? dataA : dataB,
+                        status: 200,
+                        statusText: 'OK',
+                    })
+                }
+
+                return makeResponse({
+                    body: null,
+                    status: 500,
+                    statusText: 'Unknown',
+                })
+            }
+        )
 
         // First request: will trigger alias creation (alias1) and return dataA
         const r1 = await fetchData(longUrl, { method: 'GET' }, refs as any)

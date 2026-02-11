@@ -81,20 +81,18 @@ const createQueryAlias = async (
     requestOptions: RequestInit,
     refs: FetchDataRefs
 ) => {
-    const alias = <QueryAlias>(
-        await fetchData(
-            joinPath(
-                refs.config.baseUrl,
-                'api',
-                String(refs.config.apiVersion),
-                'query/alias'
-            ),
-            {
-                signal: requestOptions.signal,
-                body: JSON.stringify({ target: url }),
-            },
-            refs
-        )
+    const alias = <QueryAlias>await fetchData(
+        joinPath(
+            refs.config.baseUrl,
+            'api',
+            String(refs.config.apiVersion),
+            'query/alias'
+        ),
+        {
+            signal: requestOptions.signal,
+            body: JSON.stringify({ target: url }),
+        },
+        refs
     )
 
     refs.queryAliasCache.set(url, alias)
