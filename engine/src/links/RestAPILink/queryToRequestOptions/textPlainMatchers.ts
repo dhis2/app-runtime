@@ -122,12 +122,13 @@ export const isMetadataPackageInstallation = (
     { resource }: ResolvedResourceQuery
 ): boolean => type === 'create' && resource === 'synchronization/metadataPull'
 
-// POST to 'indicators/expression/description' or 'programIndicator/expression/description' (validate an expression)
+// POST to '*/expression/description', (indicators,programIndicators,validationRules,predictors) (validate an expression)
 export const isExpressionDescriptionValidation = (
     type: FetchType,
     { resource }: ResolvedResourceQuery
 ): boolean => {
-    const pattern = /^(indicators|programIndicators)\/expression\/description$/
+    const pattern =
+        /^(indicators|programIndicators|validationRules|predictors)\/expression\/description$/
     return type === 'create' && pattern.test(resource)
 }
 
@@ -137,5 +138,23 @@ export const isFilterDescriptionValidation = (
     { resource }: ResolvedResourceQuery
 ): boolean => {
     const pattern = /^programIndicators\/filter\/description$/
+    return type === 'create' && pattern.test(resource)
+}
+
+// POST to 'predictors/skipTest/description' (validate a filter)
+export const isSkipTestDescriptionValid = (
+    type: FetchType,
+    { resource }: ResolvedResourceQuery
+): boolean => {
+    const pattern = /^predictors\/skipTest\/description$/
+    return type === 'create' && pattern.test(resource)
+}
+
+// POST to 'programRules/condition/description' (validate a program rule condition)
+export const isConditionDescriptionValidation = (
+    type: FetchType,
+    { resource }: ResolvedResourceQuery
+): boolean => {
+    const pattern = /^programRules\/condition\/description$/
     return type === 'create' && pattern.test(resource)
 }

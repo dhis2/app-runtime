@@ -1,4 +1,4 @@
-import { Version } from '@dhis2/app-service-config'
+import type { Version } from '@dhis2/app-service-config'
 
 /**
  * Checks the server version to see if the /api/ping endpoint is available for

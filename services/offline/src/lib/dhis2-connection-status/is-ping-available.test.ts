@@ -1,4 +1,4 @@
-import { Version } from '@dhis2/app-service-config'
+import type { Version } from '@dhis2/app-service-config'
 import { isPingAvailable } from './is-ping-available'
 
 const fixedVersions: Version[] = [

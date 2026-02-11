@@ -8,5 +8,6 @@ The DHIS2 Application Runtime supports [React Hooks](https://reactjs.org/docs/ho
 -   [**useDataEngine**](useDataEngine) _(Advanced)_ - Access the underlying [Data Engine](../advanced/DataEngine) instance
 -   [**useAlert**](useAlert) - Add an alert to the central alerts-context
 -   [**useAlerts**](useAlerts) - Read the alerts from the alerts-context
+-   [**useCurrentUserInfo**](useCurrentUserInfo) - Access the current authenticated DHIS2 user's information
 
 While these Hooks are incredibly powerful and usually preferable, some [Components](/docs/app-runtime/components) are also provided which conveniently wrap their corresponding Hooks.

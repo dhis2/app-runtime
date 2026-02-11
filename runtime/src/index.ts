@@ -11,6 +11,8 @@ export {
 
 export { useConfig, useTimeZoneConversion } from '@dhis2/app-service-config'
 
+export { useCurrentUserInfo } from '@dhis2/app-service-user'
+
 export { useAlerts, useAlert } from '@dhis2/app-service-alerts'
 
 export {

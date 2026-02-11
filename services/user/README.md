@@ -1,6 +1,6 @@
-# DHIS2 App Data Service
+# DHIS2 App User Service
 
-Declarative data fetching for [DHIS2](https://dhis2.org) applications
+Application User Services for [DHIS2](https://dhis2.org) applications
 
 This library is intended for use with the [DHIS2 Application Platform](https://github.com/dhis2/app-platform).
 
@@ -8,4 +8,4 @@ This library is intended for use with the [DHIS2 Application Platform](https://g
 
 This package is internal to `@dhis2/app-runtime` and generally should not be installed independently.
 
-See [the docs](https://developers.dhis2.org/docs/app-runtime/getting-started) for more.
+See [the docs](https://runtime.dhis2.nu) for more.

@@ -10,6 +10,8 @@ import {
     isMetadataPackageInstallation,
     isExpressionDescriptionValidation,
     isFilterDescriptionValidation,
+    isSkipTestDescriptionValid,
+    isConditionDescriptionValidation,
 } from './textPlainMatchers'
 
 describe('isReplyToMessageConversation', () => {
@@ -273,6 +275,34 @@ describe('isExpressionDescriptionValidation', () => {
             })
         ).toBe(false)
     })
+    it('returns true for a POST to "validationRules/expression/description"', () => {
+        expect(
+            isExpressionDescriptionValidation('create', {
+                resource: 'validationRules/expression/description',
+            })
+        ).toBe(true)
+    })
+    it('retuns false for a POST to a different validationRules resource', () => {
+        expect(
+            isExpressionDescriptionValidation('create', {
+                resource: 'validationRules/expression/somethingelse',
+            })
+        ).toBe(false)
+    })
+    it('returns true for a POST to "predictors/expression/description"', () => {
+        expect(
+            isExpressionDescriptionValidation('create', {
+                resource: 'predictors/expression/description',
+            })
+        ).toBe(true)
+    })
+    it('retuns false for a POST to a different predictors resource', () => {
+        expect(
+            isExpressionDescriptionValidation('create', {
+                resource: 'predictors/expression/somethingelse',
+            })
+        ).toBe(false)
+    })
 })
 
 describe('isFilterDescriptionValidation', () => {
@@ -287,6 +317,40 @@ describe('isFilterDescriptionValidation', () => {
         expect(
             isFilterDescriptionValidation('create', {
                 resource: 'programIndicators/filter/somethingelse',
+            })
+        ).toBe(false)
+    })
+})
+
+describe('isSkipTestDescriptionValid', () => {
+    it('returns true for a POST to "predictors/skipTest/description"', () => {
+        expect(
+            isSkipTestDescriptionValid('create', {
+                resource: 'predictors/skipTest/description',
+            })
+        ).toBe(true)
+    })
+    it('retuns false for a POST to a different resource', () => {
+        expect(
+            isSkipTestDescriptionValid('create', {
+                resource: 'predictors/skipTest/somethingelse',
+            })
+        ).toBe(false)
+    })
+})
+
+describe('isConditionDescriptionValidation', () => {
+    it('returns true for a POST to "programRules/condition/description"', () => {
+        expect(
+            isConditionDescriptionValidation('create', {
+                resource: 'programRules/condition/description',
+            })
+        ).toBe(true)
+    })
+    it('retuns false for a POST to a different resource', () => {
+        expect(
+            isConditionDescriptionValidation('create', {
+                resource: 'programRules/condition/somethingelse',
             })
         ).toBe(false)
     })

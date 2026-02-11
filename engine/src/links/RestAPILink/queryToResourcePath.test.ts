@@ -5,15 +5,16 @@ import { queryToResourcePath } from './queryToResourcePath'
 
 const createLink = (config: DataEngineConfig) => new RestAPILink(config)
 const defaultConfig: DataEngineConfig = {
-    baseUrl: 'http://localhost:8080',
-    apiVersion: 37,
+    basePath: '<base>',
+    apiVersion: '37',
     serverVersion: {
         major: 2,
         minor: 37,
         patch: 11,
         full: '2.37.11',
     },
-}
+} as unknown as DataEngineConfig
+
 const link = createLink(defaultConfig)
 const apiPath = link.versionedApiPath
 
@@ -199,7 +200,7 @@ describe('queryToResourcePath', () => {
                 patch: 0,
                 full: '2.38.0',
             },
-        }
+        } as DataEngineConfig
         expect(queryToResourcePath(createLink(v38config), query, 'read')).toBe(
             `${link.versionedApiPath}/tracker`
         )
