@@ -1,3 +1,10 @@
+# [3.17.0-beta.1](https://github.com/dhis2/app-runtime/compare/v3.16.0...v3.17.0-beta.1) (2026-02-11)
+
+
+### Features
+
+* move data engine to a standalone package without react dependency [LIBS-711] ([#1392](https://github.com/dhis2/app-runtime/issues/1392)) ([f16c5c8](https://github.com/dhis2/app-runtime/commit/f16c5c81671edbd80ad6b525bef582b04b4737ab))
+
 # [3.16.0](https://github.com/dhis2/app-runtime/compare/v3.15.1...v3.16.0) (2026-02-03)
 
 
