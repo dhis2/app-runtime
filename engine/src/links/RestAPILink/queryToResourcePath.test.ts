@@ -1,10 +1,10 @@
-import type { Config } from '@dhis2/app-service-config'
-import { ResolvedResourceQuery } from '../../types/Query'
+import type { DataEngineConfig } from '../../types/DataEngineConfig'
+import type { ResolvedResourceQuery } from '../../types/Query'
 import { RestAPILink } from '../RestAPILink'
 import { queryToResourcePath } from './queryToResourcePath'
 
-const createLink = (config: Config) => new RestAPILink(config)
-const defaultConfig: Config = {
+const createLink = (config: DataEngineConfig) => new RestAPILink(config)
+const defaultConfig: DataEngineConfig = {
     basePath: '<base>',
     apiVersion: '37',
     serverVersion: {
@@ -13,7 +13,7 @@ const defaultConfig: Config = {
         patch: 11,
         full: '2.37.11',
     },
-} as unknown as Config
+} as unknown as DataEngineConfig
 
 const link = createLink(defaultConfig)
 const apiPath = link.versionedApiPath
@@ -192,7 +192,7 @@ describe('queryToResourcePath', () => {
         const query: ResolvedResourceQuery = {
             resource: 'tracker',
         }
-        const v38config: Config = {
+        const v38config: DataEngineConfig = {
             ...defaultConfig,
             serverVersion: {
                 major: 2,
@@ -200,7 +200,7 @@ describe('queryToResourcePath', () => {
                 patch: 0,
                 full: '2.38.0',
             },
-        } as Config
+        } as DataEngineConfig
         expect(queryToResourcePath(createLink(v38config), query, 'read')).toBe(
             `${link.versionedApiPath}/tracker`
         )

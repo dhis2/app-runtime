@@ -1,6 +1,17 @@
 import { FetchError } from '../../errors/FetchError'
 import type { FetchErrorDetails } from '../../errors/FetchError'
+import { DataEngineConfig } from '../../types'
 import type { JsonValue } from '../../types/JsonValue'
+import { QueryAlias, QueryAliasCache } from '../../types/QueryAlias'
+import { joinPath } from './path'
+
+export type FetchDataRefs = {
+    queryAliasCache: QueryAliasCache
+    config: DataEngineConfig
+}
+
+const ALIAS_NOT_FOUND_MESSAGE =
+    'No query alias found with this hash id, it may have expired.'
 
 export const parseContentType = (contentType: string | null) =>
     contentType ? contentType.split(';')[0].trim().toLowerCase() : ''
@@ -54,19 +65,110 @@ export const parseStatus = async (response: Response) => {
     return response
 }
 
-export function fetchData(
+const isRequestUriTooLongError = (response: Response) => {
+    // TODO: in some situations could this cause a network error instead of a 414 HTTP response?
+    if (response.status === 414) {
+        // A network hop rejected this request because the URI is too long,
+        // when possible we will retry using the Query Alias URI shortener
+
+        return true
+    }
+    return false
+}
+
+const createQueryAlias = async (
     url: string,
-    options: RequestInit = {}
-): Promise<JsonValue> {
-    return fetch(url, {
-        ...options,
+    requestOptions: RequestInit,
+    refs: FetchDataRefs
+) => {
+    const alias = <QueryAlias>await fetchData(
+        joinPath(
+            refs.config.baseUrl,
+            'api',
+            String(refs.config.apiVersion),
+            'query/alias'
+        ),
+        {
+            signal: requestOptions.signal,
+            body: JSON.stringify({ target: url }),
+        },
+        refs
+    )
+
+    refs.queryAliasCache.set(url, alias)
+
+    return fetchWithContext(alias.href, requestOptions, refs)
+}
+
+const fetchWithContext = (
+    url: string,
+    requestOptions: RequestInit,
+    refs: FetchDataRefs
+) => {
+    const requestInit: RequestInit = {
+        ...requestOptions,
         credentials: 'include',
         headers: {
             'X-Requested-With': 'XMLHttpRequest',
             Accept: 'application/json',
-            ...options.headers,
+            Authorization: refs.config.apiToken
+                ? `ApiToken ${refs.config.apiToken}`
+                : '',
+            ...requestOptions.headers,
         },
-    })
+    }
+    return fetch(url, requestInit)
+}
+
+const fetchDirectOrCreateAlias = async (
+    url: string,
+    requestOptions: RequestInit,
+    refs: FetchDataRefs
+) => {
+    const response = await fetchWithContext(url, requestOptions, refs)
+
+    if (isRequestUriTooLongError(response)) {
+        return createQueryAlias(url, requestOptions, refs)
+    }
+
+    return response
+}
+
+const fetchAlias = async (
+    alias: QueryAlias,
+    options: RequestInit,
+    refs: FetchDataRefs
+) => {
+    const response = await fetchWithContext(alias.href, options, refs)
+
+    if (
+        response.status === 404 &&
+        response.statusText === ALIAS_NOT_FOUND_MESSAGE
+    ) {
+        // If the query itself no longer exists it may have expired or been evicted by the server.
+        // Create a new query alias and cache it
+        // TODO: detecting based on statusText is brittle, we should look into including an error code in the response
+        return createQueryAlias(alias.target, options, refs)
+    }
+
+    return fetchWithContext(alias.href, options, refs)
+}
+
+export function fetchData(
+    url: string,
+    requestOptions: RequestInit,
+    refs: FetchDataRefs
+): Promise<JsonValue> {
+    const alias = refs.queryAliasCache.get(url)
+
+    const hasCachedAlias = alias !== undefined
+
+    const fetchPromise: Promise<Response> = hasCachedAlias
+        ? fetchAlias(alias, requestOptions, refs)
+        : fetchDirectOrCreateAlias(url, requestOptions, refs)
+
+    return fetchPromise
+
         .catch((err) => {
             throw new FetchError({
                 type: 'network',
