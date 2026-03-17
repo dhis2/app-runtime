@@ -71,6 +71,21 @@ const makeActionPath = (resource: string) =>
         `${resource.substr(actionPrefix.length)}.action`
     )
 
+const legacyPrefix = 'legacy::'
+const isLegacy = (resource: string) => resource.startsWith(legacyPrefix)
+const makeLegacyPath = (resource: string) => {
+    switch (resource) {
+        case 'legacy::bundledApps': {
+            return 'dhis-web-apps/apps-bundle.json'
+        }
+        // Not necessary here, but brainstorming:
+        // you can use whatever path you want 🤷
+        default: {
+            return resource.replace(legacyPrefix, '')
+        }
+    }
+}
+
 const skipApiVersion = (resource: string, config: Config): boolean => {
     if (resource === 'tracker' || resource.startsWith('tracker/')) {
         if (!config.serverVersion?.minor || config.serverVersion?.minor < 38) {
@@ -99,6 +114,8 @@ export const queryToResourcePath = (
 
     const base = isAction(resource)
         ? makeActionPath(resource)
+        : isLegacy(resource)
+        ? makeLegacyPath(resource)
         : joinPath(apiBase, resource, id)
 
     validateResourceQuery(query, type)
