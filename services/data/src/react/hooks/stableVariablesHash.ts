@@ -2,8 +2,7 @@ function hasObjectPrototype(o: any): boolean {
     return Object.prototype.toString.call(o) === '[object Object]'
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export function isPlainObject(o: any): o is Object {
+export function isPlainObject(o: any): o is object {
     if (!hasObjectPrototype(o)) {
         return false
     }

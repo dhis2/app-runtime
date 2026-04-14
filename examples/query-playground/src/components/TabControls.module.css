@@ -10,5 +10,5 @@
 
 .editButton:hover {
     background: var(--colors-white);
-    box-shadow: inset 1px 1px 1px rgba(0,0,0,0.4);
+    box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.4);
 }

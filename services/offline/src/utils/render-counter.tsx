@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/immutability */
 import React from 'react'
 
 interface RenderCounts {

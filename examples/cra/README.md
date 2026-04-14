@@ -10,6 +10,6 @@ This sample application requests data from the public-facing API at [localhost:8
 
 The behavior of the example application can be controlled using the following environment variables:
 
--   **REACT_APP_D2_BASE_URL**: The base url passed to the Provider _(default `http://localhost:8080`)_
--   **REACT_APP_D2_API_VERSION**: The API version passed to the Provider _(default `33`)_
--   **REACT_APP_D2_PROVIDER_TYPE**: The type of Provider to use _(options `runtime`[default], `data`)_
+- **REACT_APP_D2_BASE_URL**: The base url passed to the Provider _(default `http://localhost:8080`)_
+- **REACT_APP_D2_API_VERSION**: The API version passed to the Provider _(default `33`)_
+- **REACT_APP_D2_PROVIDER_TYPE**: The type of Provider to use _(options `runtime`[default], `data`)_

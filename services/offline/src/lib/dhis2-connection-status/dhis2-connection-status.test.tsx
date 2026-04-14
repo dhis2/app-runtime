@@ -242,7 +242,7 @@ describe('interval behavior', () => {
             }
 
             // expect ping mock not to have been called
-            expect(mockPing).not.toHaveBeenCalled
+            expect(mockPing).not.toHaveBeenCalled()
         })
 
         test('if the status is the same, the ping delay is reset to the current', () => {

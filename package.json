@@ -12,8 +12,10 @@
     ],
     "devDependencies": {
         "@dhis2/cli-app-scripts": "^12.6.3",
-        "@dhis2/cli-style": "10.7.10",
         "@dhis2/cli-utils-docsite": "^2.0.3",
+        "@dhis2/config-eslint": "^0.2.2",
+        "@dhis2/config-prettier": "^0.2.2",
+        "@eslint/compat": "^2.0.5",
         "@testing-library/dom": "^10.4.0",
         "@testing-library/jest-dom": "^6.6.3",
         "@testing-library/react": "^16.0.1",
@@ -22,14 +24,14 @@
         "@types/node": "^13.1.8",
         "@types/react": "^18.3.12",
         "@types/react-dom": "^18.3.1",
-        "@typescript-eslint/eslint-plugin": "^5.47.0",
-        "@typescript-eslint/parser": "^5.47.0",
         "concurrently": "^5.0.2",
-        "eslint-config-prettier": "^6.15.0",
-        "eslint-plugin-react-hooks": "^4.2.0",
+        "eslint": "9",
         "fake-indexeddb": "^3.1.3",
+        "husky": "^9.1.7",
         "idb": "^6.1.3",
+        "lint-staged": "^16.4.0",
         "loop": "^3.3.4",
+        "prettier": "^3.8.2",
         "prop-types": "^15.7.2",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
@@ -48,16 +50,23 @@
         "test:runtime": "cd runtime && yarn test",
         "test:engine": "cd engine && yarn test",
         "test": "yarn test:engine && yarn test:services && yarn test:runtime",
-        "format": "d2-style apply js --all --no-stage && d2-style apply text --all --no-stage",
+        "format": "prettier . -w",
         "start": "yarn build && cd examples/query-playground && yarn start",
         "docs:build": "mkdir -p dist && cp docs/index.html dist/ && yarn build:playground",
         "docs:serve": "d2-utils-docsite serve ./docs -o ./dist",
-        "lint": "d2-style check js && d2-style check text"
+        "lint": "eslint && prettier -c .",
+        "prepare": "husky"
     },
     "d2": {
         "docsite": {
             "name": "DHIS2 Application Runtime",
             "description": "A singular runtime dependency for applications on the [DHIS2 platform](https://developers.dhis2.org/docs/app-platform/getting-started)"
         }
+    },
+    "lint-staged": {
+        "*": [
+            "yarn prettier . --write",
+            "yarn lint"
+        ]
     }
 }

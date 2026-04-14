@@ -71,6 +71,7 @@ describe('fetchData - query alias creation and caching', () => {
         // 2) POST to alias endpoint -> returns alias object
         // 3) fetch alias.href -> returns data
         ;(global as any).fetch = jest.fn(
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             async (reqUrl: string, reqInit: any) => {
                 if (reqUrl === longUrl) {
                     return makeResponse({
@@ -133,6 +134,7 @@ describe('fetchData - query alias creation and caching', () => {
         // track how many times alias endpoint is called and return alias1 then alias2
         aliasCreateCalls = 0
         ;(global as any).fetch = jest.fn(
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             async (reqUrl: string, reqInit: any) => {
                 // If the original long URL is called, simulate 414 (only on first-run scenarios)
                 if (reqUrl === longUrl) {
