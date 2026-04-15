@@ -11,8 +11,8 @@ In this guide, we'll walk you through, step by step, how to use the `useDataQuer
 
 To be able to use the `useDataQuery` hook in your application, you need to have the following:
 
--   A web application built using the DHIS2 Application Platform
--   A basic understanding of React hooks
+- A web application built using the DHIS2 Application Platform
+- A basic understanding of React hooks
 
 If you do not yet have a web application built using the DHIS2 Application Platform, you can follow the [Getting Started](/docs/quickstart/quickstart-web) guide to create a new application.
 

@@ -34,7 +34,9 @@ it('renders in the default state initially', () => {
         </OfflineProvider>
     )
 
-    const { result } = renderHook(() => useCacheableSection('one'), { wrapper })
+    const { result } = renderHook(() => useCacheableSection('one'), {
+        wrapper,
+    })
 
     expect(result.current.recordingState).toBe('default')
     expect(result.current.isCached).toBe(false)
@@ -155,7 +157,9 @@ it('handles a recording that encounters an error', async (done) => {
             {children}
         </OfflineProvider>
     )
-    const { result } = renderHook(() => useCacheableSection('one'), { wrapper })
+    const { result } = renderHook(() => useCacheableSection('one'), {
+        wrapper,
+    })
 
     const assertRecordingStarted = () => {
         expect(result.current.recordingState).toBe('recording')
@@ -199,7 +203,9 @@ it('handles an error starting the recording', async () => {
             {children}
         </OfflineProvider>
     )
-    const { result } = renderHook(() => useCacheableSection('err'), { wrapper })
+    const { result } = renderHook(() => useCacheableSection('err'), {
+        wrapper,
+    })
 
     await expect(result.current.startRecording()).rejects.toThrow(
         'Failed message' // from failedMessageRecordingMock

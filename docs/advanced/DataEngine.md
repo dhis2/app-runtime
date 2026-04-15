@@ -101,25 +101,25 @@ To construct a RestAPI link, pass a configuration object to the following constr
 
 The Engine returned has the following methods:
 
--   `query(query: Query, options?: QueryExecuteOptions): Promise<T>` — Execute one or more resource queries. The `query` parameter is an object mapping keys to `ResourceQuery` objects; the returned value is an object mapping the same keys to their results.
--   `mutate(mutation: Mutation, options?: QueryExecuteOptions): Promise<unknown>` — Execute a mutation. Supported mutation types include `create`, `update`, `delete`, etc., depending on the link implementation.
--   `fetch(path: string, init?: RequestInit, executeOptions?: QueryExecuteOptions)` — Run a fetch-style request through the engine. Absolute URLs are not supported; paths are resolved against the server base.
--   Convenience methods: `get`, `post`, `put`, `patch`, `jsonPatch`, `delete` — thin wrappers around `fetch` with the appropriate HTTP method.
+- `query(query: Query, options?: QueryExecuteOptions): Promise<T>` — Execute one or more resource queries. The `query` parameter is an object mapping keys to `ResourceQuery` objects; the returned value is an object mapping the same keys to their results.
+- `mutate(mutation: Mutation, options?: QueryExecuteOptions): Promise<unknown>` — Execute a mutation. Supported mutation types include `create`, `update`, `delete`, etc., depending on the link implementation.
+- `fetch(path: string, init?: RequestInit, executeOptions?: QueryExecuteOptions)` — Run a fetch-style request through the engine. Absolute URLs are not supported; paths are resolved against the server base.
+- Convenience methods: `get`, `post`, `put`, `patch`, `jsonPatch`, `delete` — thin wrappers around `fetch` with the appropriate HTTP method.
 
 ### `QueryExecuteOptions`
 
 Common options supported by `query` and `mutate`:
 
--   `variables` — Object with variables to resolve dynamic queries.
--   `signal` — `AbortSignal` to cancel the request.
--   `onComplete` — Callback invoked with the result when the request completes.
--   `onError` — Callback invoked when the request errors.
+- `variables` — Object with variables to resolve dynamic queries.
+- `signal` — `AbortSignal` to cancel the request.
+- `onComplete` — Callback invoked with the result when the request completes.
+- `onError` — Callback invoked when the request errors.
 
 ### Notes on `fetch`
 
--   `fetch` will map the provided `init` (method, body, headers) to either a `query` or `mutation` call internally. If the computed type is `read` it will call `query` and return the `result` property; otherwise it will call `mutate`.
--   `jsonPatch(path, patches, options)` sends a PATCH request with `Content-Type: application/json-patch+json`.
--   Absolute URLs (paths containing `://`) are rejected to avoid cross-origin usage through the engine.
+- `fetch` will map the provided `init` (method, body, headers) to either a `query` or `mutation` call internally. If the computed type is `read` it will call `query` and return the `result` property; otherwise it will call `mutate`.
+- `jsonPatch(path, patches, options)` sends a PATCH request with `Content-Type: application/json-patch+json`.
+- Absolute URLs (paths containing `://`) are rejected to avoid cross-origin usage through the engine.
 
 ## Examples
 

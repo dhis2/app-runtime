@@ -6,6 +6,7 @@ describe('<PluginError />', () => {
     it('should render without failing', async () => {
         const missingEntryPoint = false
         const appShortName = 'some_app'
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const wrapper = () => (
             <PluginError
                 missingEntryPoint={missingEntryPoint}

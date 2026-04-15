@@ -6,10 +6,10 @@ The [CustomDataProvider](https://github.com/dhis2/app-runtime/blob/master/servic
 
 The CustomDataProvider accepts four props:
 
--   children: a valid React node.
--   [data](https://github.com/dhis2/app-runtime/blob/master/services/data/src/links/CustomDataLink.ts#L15): an object that defines the replies for certain resources. See below for examples.
--   [options](https://github.com/dhis2/app-runtime/blob/master/services/data/src/links/CustomDataLink.ts#L18): an object with the keys `loadForever` and `failOnMiss`. Set `loadForever` to `true` to force queries to keep loading indefinitely. Set `failOnMiss` to `true` to throw an error for any requests that have no matching reply defined in `data`
--   queryClientOptions: allows you to override the default queryClientOptions, see the [react-query docs](https://react-query.tanstack.com/reference/QueryClient) for the format and available options.
+- children: a valid React node.
+- [data](https://github.com/dhis2/app-runtime/blob/master/services/data/src/links/CustomDataLink.ts#L15): an object that defines the replies for certain resources. See below for examples.
+- [options](https://github.com/dhis2/app-runtime/blob/master/services/data/src/links/CustomDataLink.ts#L18): an object with the keys `loadForever` and `failOnMiss`. Set `loadForever` to `true` to force queries to keep loading indefinitely. Set `failOnMiss` to `true` to throw an error for any requests that have no matching reply defined in `data`
+- queryClientOptions: allows you to override the default queryClientOptions, see the [react-query docs](https://react-query.tanstack.com/reference/QueryClient) for the format and available options.
 
 ## Static replies
 
@@ -35,6 +35,6 @@ Instead of defining a static response it is also possible to supply a function. 
 
 The supplied callback will be called with three arguments, namely:
 
--   [type](https://github.com/dhis2/app-runtime/blob/master/services/data/src/engine/types/ExecuteOptions.ts#L4)
--   [query](https://github.com/dhis2/app-runtime/blob/master/services/data/src/engine/types/Query.ts#L15)
--   [options](https://github.com/dhis2/app-runtime/blob/master/services/data/src/engine/types/DataEngineLink.ts#L5)
+- [type](https://github.com/dhis2/app-runtime/blob/master/services/data/src/engine/types/ExecuteOptions.ts#L4)
+- [query](https://github.com/dhis2/app-runtime/blob/master/services/data/src/engine/types/Query.ts#L15)
+- [options](https://github.com/dhis2/app-runtime/blob/master/services/data/src/engine/types/DataEngineLink.ts#L5)

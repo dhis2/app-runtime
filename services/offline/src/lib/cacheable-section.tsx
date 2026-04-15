@@ -101,19 +101,19 @@ export function useCacheableSection(id: string): CacheableSectionControls {
                         flushSync(() => {
                             onRecordingStarted()
                         })
-                        onStarted && onStarted()
+                        onStarted?.()
                     },
                     onCompleted: () => {
                         flushSync(() => {
                             onRecordingCompleted()
                         })
-                        onCompleted && onCompleted()
+                        onCompleted?.()
                     },
                     onError: (error) => {
                         flushSync(() => {
                             onRecordingError(error)
                         })
-                        onError && onError(error)
+                        onError?.(error)
                     },
                 })
                 .then(() => setRecordingState(recordingStates.pending))

@@ -20,7 +20,7 @@
     align-items: center;
 }
 
-.controls :global([data-test="dhis2-uicore-field-content"]) {
+.controls :global([data-test='dhis2-uicore-field-content']) {
     display: flex;
 }
 

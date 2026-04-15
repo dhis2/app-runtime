@@ -18,10 +18,10 @@ _text_
 
 ### Checklist
 
--   [ ] Have written Documentation
-    -   _If not needed, explain why, otherwise remove this bullet point_
--   [ ] Has tests coverage
-    -   _If not needed, explain why, otherwise remove this bullet point_
+- [ ] Have written Documentation
+    - _If not needed, explain why, otherwise remove this bullet point_
+- [ ] Has tests coverage
+    - _If not needed, explain why, otherwise remove this bullet point_
 
 ---
 
@@ -29,7 +29,7 @@ _text_
 
 <!-- Remove if not applicable -->
 
--   _issue_
+- _issue_
 
 ---
 

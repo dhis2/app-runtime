@@ -7,6 +7,7 @@ import { TabControls } from './components/TabControls.jsx'
 import { useExecuteQuery } from './hooks/useExecuteQuery'
 import { useTabs } from './hooks/useTabs'
 import styles from './QueryRepl.module.css'
+
 import './locales/index.js'
 
 export const QueryRepl = () => {
