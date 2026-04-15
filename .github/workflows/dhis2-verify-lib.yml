@@ -1,6 +1,9 @@
 name: 'dhis2: verify (lib)'
 
-on: [push, pull_request]
+on:
+    push:
+    pull_request:
+        types: ['opened', 'edited', 'reopened', 'synchronize']
 
 env:
     GIT_AUTHOR_NAME: '@dhis2-bot'
