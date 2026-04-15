@@ -1,3 +1,10 @@
+# [3.17.0-beta.3](https://github.com/dhis2/app-runtime/compare/v3.17.0-beta.2...v3.17.0-beta.3) (2026-04-15)
+
+
+### Bug Fixes
+
+* move from cli-style to shared configs ([#1434](https://github.com/dhis2/app-runtime/issues/1434)) ([9a08180](https://github.com/dhis2/app-runtime/commit/9a081809409692c4b38ffacbd52302ab3a3d99e0))
+
 # [3.17.0-beta.2](https://github.com/dhis2/app-runtime/compare/v3.17.0-beta.1...v3.17.0-beta.2) (2026-02-11)
 
 ### Features
