@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/use-memo, react-hooks/exhaustive-deps */
 import { AlertsManagerContext } from '@dhis2/app-service-alerts'
 import { useDataQuery } from '@dhis2/app-service-data'
 import postRobot from 'post-robot'
@@ -114,13 +115,11 @@ export const Plugin = ({
     // we exclude height/width from memoization to avoid updates for these properties
     const memoizedPropsToPass = useMemo(
         () => propsToPassNonMemoized,
-        /* eslint-disable react-hooks/exhaustive-deps */
         [
             ...Object.keys(propsToPassNonMemoized)
                 .sort()
                 .map((k) => (propsToPassNonMemoized as any)[k]),
         ]
-        /* eslint-enable react-hooks/exhaustive-deps */
     )
 
     // Used to track changes to the plugin source
@@ -227,7 +226,7 @@ export const Plugin = ({
             // If clientWidth is set, then we want width to be set by plugin
             // (resizedWidth). Thereafter, if a width is specified, use that
             // Otherwise, use a specified width, or 100% by default
-            width={clientWidth ? resizedWidth : width ?? '100%'}
+            width={clientWidth ? resizedWidth : (width ?? '100%')}
             height={height ?? resizedHeight}
             style={{ border: 'none' }}
             onLoad={onLoad}

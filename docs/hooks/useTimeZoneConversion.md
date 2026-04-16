@@ -44,9 +44,9 @@ Both `fromServerDate` and `fromClientDate` will return a `DHIS2Date` object corr
 
 This means, the same underlying value of `1675425600000` will be interpreted differently depending on the time zone.
 
--   `Fri Feb 03 2023 13:00:00` in Oslo (Norway)
--   `Fri Feb 03 2023 12:00:00` in Freetown (Sierra Leone)
--   `Sat Feb 04 2023 01:00:00` in Suva (Fiji).
+- `Fri Feb 03 2023 13:00:00` in Oslo (Norway)
+- `Fri Feb 03 2023 12:00:00` in Freetown (Sierra Leone)
+- `Sat Feb 04 2023 01:00:00` in Suva (Fiji).
 
 In general, it is likely to be less error prone to consistently make comparisons in the browser's time zone (after correcting for time zone differences), so `fromServerDate` is the function applicable for must use cases. `fromClientDate` exists primarily to help get a string representation of the server time zone (see "fromClientDate / server time stamp representation" example below).
 

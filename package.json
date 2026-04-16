@@ -1,5 +1,5 @@
 {
-    "version": "3.16.0",
+    "version": "3.17.0-beta.4",
     "description": "A singular runtime dependency for applications on the DHIS2 platform",
     "repository": "https://github.com/dhis2/app-runtime.git",
     "author": "Austin McGee <austin@dhis2.org>",
@@ -7,12 +7,15 @@
     "private": true,
     "workspaces": [
         "runtime",
+        "engine",
         "services/*"
     ],
     "devDependencies": {
         "@dhis2/cli-app-scripts": "^12.6.3",
-        "@dhis2/cli-style": "10.4.3",
         "@dhis2/cli-utils-docsite": "^2.0.3",
+        "@dhis2/config-eslint": "^0.2.2",
+        "@dhis2/config-prettier": "^0.2.2",
+        "@eslint/compat": "^2.0.5",
         "@testing-library/dom": "^10.4.0",
         "@testing-library/jest-dom": "^6.6.3",
         "@testing-library/react": "^16.0.1",
@@ -21,14 +24,14 @@
         "@types/node": "^13.1.8",
         "@types/react": "^18.3.12",
         "@types/react-dom": "^18.3.1",
-        "@typescript-eslint/eslint-plugin": "^5.47.0",
-        "@typescript-eslint/parser": "^5.47.0",
         "concurrently": "^5.0.2",
-        "eslint-config-prettier": "^6.15.0",
-        "eslint-plugin-react-hooks": "^4.2.0",
+        "eslint": "9",
         "fake-indexeddb": "^3.1.3",
+        "husky": "^9.1.7",
         "idb": "^6.1.3",
+        "lint-staged": "^16.4.0",
         "loop": "^3.3.4",
+        "prettier": "^3.8.2",
         "prop-types": "^15.7.2",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
@@ -39,22 +42,31 @@
         "install:examples": "loop \"yarn install --force --check-files\" --cwd ./examples --exit-on-aggregate-error",
         "build:playground": "cd examples/query-playground && yarn && PUBLIC_URL=/playground yarn build:standalone && cp -rf build/app ../../dist/playground",
         "build:config": "cd services/config && yarn build",
-        "build:services": "yarn build:config && loop \"yarn build\" --cwd ./services --exclude config --exit-on-error",
+        "build:services": "loop \"yarn build\" --cwd ./services --exclude config --exit-on-error",
         "build:runtime": "cd runtime && yarn build",
-        "build": "yarn build:services && yarn build:runtime && yarn install:examples",
+        "build:engine": "cd engine && yarn build",
+        "build": "yarn build:config && yarn build:engine && yarn build:services && yarn build:runtime && yarn install:examples",
         "test:services": "loop \"yarn test\" --cwd ./services --exit-on-error",
         "test:runtime": "cd runtime && yarn test",
-        "test": "yarn test:services && yarn test:runtime",
-        "format": "d2-style apply js --all --no-stage && d2-style apply text --all --no-stage",
+        "test:engine": "cd engine && yarn test",
+        "test": "yarn test:engine && yarn test:services && yarn test:runtime",
+        "format": "prettier . -w",
         "start": "yarn build && cd examples/query-playground && yarn start",
         "docs:build": "mkdir -p dist && cp docs/index.html dist/ && yarn build:playground",
         "docs:serve": "d2-utils-docsite serve ./docs -o ./dist",
-        "lint": "d2-style check js && d2-style check text"
+        "lint": "eslint && prettier -c .",
+        "prepare": "husky"
     },
     "d2": {
         "docsite": {
             "name": "DHIS2 Application Runtime",
             "description": "A singular runtime dependency for applications on the [DHIS2 platform](https://developers.dhis2.org/docs/app-platform/getting-started)"
         }
+    },
+    "lint-staged": {
+        "*": [
+            "yarn prettier . --write",
+            "yarn lint"
+        ]
     }
 }

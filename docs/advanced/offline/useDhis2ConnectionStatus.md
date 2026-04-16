@@ -41,9 +41,9 @@ The `isConnected` value is primarily detected by the service worker, which liste
 
 During periods when there’s no network traffic from the app, “pings” will be used **conservatively** to see if the server is reachable. There are several measures taken to limit the usage of these pings:
 
--   While the connection status is stable, the intervals between pings will increase exponentially up to a long interval.
--   Any new network traffic from the app will postpone future pings.
--   If the app is not focused, no pings will be sent.
+- While the connection status is stable, the intervals between pings will increase exponentially up to a long interval.
+- Any new network traffic from the app will postpone future pings.
+- If the app is not focused, no pings will be sent.
 
 ### Supported versions
 

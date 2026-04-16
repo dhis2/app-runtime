@@ -1,11 +1,14 @@
-import DataEngine from './engine/DataEngine'
-import { QueryExecuteOptions } from './engine/types/ExecuteOptions'
-import { FetchError } from './engine/types/FetchError'
-import { JsonValue } from './engine/types/JsonValue'
-import { QueryVariables, QueryResult } from './engine/types/Query'
+import type {
+    DataEngine,
+    QueryExecuteOptions,
+    FetchError,
+    JsonValue,
+    QueryVariables,
+    QueryResult,
+} from '@dhis2/data-engine'
 
-export type { Mutation } from './engine/types/Mutation'
-export type { Query } from './engine/types/Query'
+export type { Mutation, Query } from '@dhis2/data-engine'
+
 export interface ContextType {
     engine: DataEngine
 }
@@ -51,8 +54,9 @@ export interface QueryState<TQueryResult> {
     data?: TQueryResult
 }
 
-export interface QueryRenderInput<TQueryResult = QueryResult>
-    extends QueryState<TQueryResult> {
+export interface QueryRenderInput<
+    TQueryResult = QueryResult,
+> extends QueryState<TQueryResult> {
     engine: DataEngine
     refetch: QueryRefetchFunction
 }

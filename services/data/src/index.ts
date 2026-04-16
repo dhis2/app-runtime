@@ -1,12 +1,5 @@
-export {
-    DataQuery,
-    DataMutation,
-    DataProvider,
-    CustomDataProvider,
-} from './react'
+export * from './react'
 
-export { useDataEngine, useDataQuery, useDataMutation } from './react'
-
-export { FetchError } from './engine'
+export { FetchError } from '@dhis2/data-engine'
 
 export type * from './types'

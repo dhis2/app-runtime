@@ -1,7 +1,6 @@
+import { DataEngine, RestAPILink } from '@dhis2/data-engine'
 import { render } from '@testing-library/react'
 import React from 'react'
-import { DataEngine } from '../../engine'
-import { RestAPILink } from '../../links'
 import { DataContext } from '../context/DataContext'
 import { DataProvider } from './DataProvider'
 

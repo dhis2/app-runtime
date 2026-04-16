@@ -1,6 +1,7 @@
 name: 'dhis2: verify (commits)'
 
 on:
+    push:
     pull_request:
         types: ['opened', 'edited', 'reopened', 'synchronize']
 
@@ -13,12 +14,11 @@ jobs:
               with:
                   node-version: 20.x
                   cache: 'yarn'
-            - run: yarn install --frozen-lockfile
+            - run: yarn add -W @commitlint/config-conventional
             - id: commitlint
-              run: echo ::set-output name=config_path::$(node -e "process.stdout.write(require('@dhis2/cli-style').config.commitlint)")
-            - uses: JulienKode/pull-request-name-linter-action@v0.5.0
-              with:
-                  configuration-path: ${{ steps.commitlint.outputs.config_path }}
+              run: |
+                  curl https://raw.githubusercontent.com/dhis2/cli-style/refs/heads/master/config/commitlint.config.js -o commitlint.config.js
+            - uses: JulienKode/pull-request-name-linter-action@v20.1.0 # uses config from commitlint.config.js by default
 
     lint-commits:
         runs-on: ubuntu-latest
@@ -31,9 +31,13 @@ jobs:
               with:
                   node-version: 20.x
                   cache: 'yarn'
-            - run: yarn install --frozen-lockfile
+            - run: yarn add -W @commitlint/config-conventional@13
             - id: commitlint
-              run: echo ::set-output name=config_path::$(node -e "process.stdout.write(require('@dhis2/cli-style').config.commitlint)")
+              run: |
+                  curl https://raw.githubusercontent.com/dhis2/cli-style/refs/heads/master/config/commitlint.config.js -o commitlint.config.js
+                  echo ::set-output name=config_path::commitlint.config.js
+            - run: echo ${{ steps.commitlint.outputs.config_path }}
+            - run: cat ${{ steps.commitlint.outputs.config_path }}
             - uses: wagoid/commitlint-github-action@v4
               with:
                   configFile: ${{ steps.commitlint.outputs.config_path }}
