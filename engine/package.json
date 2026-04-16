@@ -1,6 +1,6 @@
 {
     "name": "@dhis2/data-engine",
-    "version": "3.17.0-beta.3",
+    "version": "3.17.0-beta.4",
     "description": "A standalone data query engine for DHIS2 REST API",
     "main": "./build/cjs/index.js",
     "module": "./build/es/index.js",

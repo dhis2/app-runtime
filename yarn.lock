@@ -1634,15 +1634,15 @@
     prop-types "^15.7.2"
 
 "@dhis2/app-runtime@file:/home/runner/work/app-runtime/app-runtime/runtime":
-  version "3.17.0-beta.3"
+  version "3.17.0-beta.4"
   resolved "file:runtime"
   dependencies:
-    "@dhis2/app-service-alerts" "3.17.0-beta.3"
-    "@dhis2/app-service-config" "3.17.0-beta.3"
-    "@dhis2/app-service-data" "3.17.0-beta.3"
-    "@dhis2/app-service-offline" "3.17.0-beta.3"
-    "@dhis2/app-service-plugin" "3.17.0-beta.3"
-    "@dhis2/app-service-user" "3.17.0-beta.3"
+    "@dhis2/app-service-alerts" "3.17.0-beta.4"
+    "@dhis2/app-service-config" "3.17.0-beta.4"
+    "@dhis2/app-service-data" "3.17.0-beta.4"
+    "@dhis2/app-service-offline" "3.17.0-beta.4"
+    "@dhis2/app-service-plugin" "3.17.0-beta.4"
+    "@dhis2/app-service-user" "3.17.0-beta.4"
     prop-types "^15.7.2"
 
 "@dhis2/app-service-alerts@3.16.0":
@@ -1652,8 +1652,8 @@
   dependencies:
     prop-types "^15.7.2"
 
-"@dhis2/app-service-alerts@3.17.0-beta.3", "@dhis2/app-service-alerts@file:/home/runner/work/app-runtime/app-runtime/services/alerts":
-  version "3.17.0-beta.3"
+"@dhis2/app-service-alerts@3.17.0-beta.4", "@dhis2/app-service-alerts@file:/home/runner/work/app-runtime/app-runtime/services/alerts":
+  version "3.17.0-beta.4"
   resolved "file:services/alerts"
   dependencies:
     prop-types "^15.7.2"
@@ -1665,8 +1665,8 @@
   dependencies:
     prop-types "^15.7.2"
 
-"@dhis2/app-service-config@3.17.0-beta.3", "@dhis2/app-service-config@file:/home/runner/work/app-runtime/app-runtime/services/config":
-  version "3.17.0-beta.3"
+"@dhis2/app-service-config@3.17.0-beta.4", "@dhis2/app-service-config@file:/home/runner/work/app-runtime/app-runtime/services/config":
+  version "3.17.0-beta.4"
   resolved "file:services/config"
   dependencies:
     prop-types "^15.7.2"
@@ -1679,8 +1679,8 @@
     "@tanstack/react-query" "^4.36.1"
     prop-types "^15.7.2"
 
-"@dhis2/app-service-data@3.17.0-beta.3", "@dhis2/app-service-data@file:/home/runner/work/app-runtime/app-runtime/services/data":
-  version "3.17.0-beta.3"
+"@dhis2/app-service-data@3.17.0-beta.4", "@dhis2/app-service-data@file:/home/runner/work/app-runtime/app-runtime/services/data":
+  version "3.17.0-beta.4"
   resolved "file:services/data"
   dependencies:
     "@tanstack/react-query" "^4.36.1"
@@ -1694,8 +1694,8 @@
     lodash "^4.17.21"
     prop-types "^15.7.2"
 
-"@dhis2/app-service-offline@3.17.0-beta.3", "@dhis2/app-service-offline@file:/home/runner/work/app-runtime/app-runtime/services/offline":
-  version "3.17.0-beta.3"
+"@dhis2/app-service-offline@3.17.0-beta.4", "@dhis2/app-service-offline@file:/home/runner/work/app-runtime/app-runtime/services/offline":
+  version "3.17.0-beta.4"
   resolved "file:services/offline"
   dependencies:
     lodash "^4.17.21"
@@ -1709,8 +1709,8 @@
     post-robot "^10.0.46"
     prop-types "^15.7.2"
 
-"@dhis2/app-service-plugin@3.17.0-beta.3", "@dhis2/app-service-plugin@file:/home/runner/work/app-runtime/app-runtime/services/plugin":
-  version "3.17.0-beta.3"
+"@dhis2/app-service-plugin@3.17.0-beta.4", "@dhis2/app-service-plugin@file:/home/runner/work/app-runtime/app-runtime/services/plugin":
+  version "3.17.0-beta.4"
   resolved "file:services/plugin"
   dependencies:
     post-robot "^10.0.46"
@@ -1723,8 +1723,8 @@
   dependencies:
     prop-types "^15.7.2"
 
-"@dhis2/app-service-user@3.17.0-beta.3", "@dhis2/app-service-user@file:/home/runner/work/app-runtime/app-runtime/services/user":
-  version "3.17.0-beta.3"
+"@dhis2/app-service-user@3.17.0-beta.4", "@dhis2/app-service-user@file:/home/runner/work/app-runtime/app-runtime/services/user":
+  version "3.17.0-beta.4"
   resolved "file:services/user"
   dependencies:
     prop-types "^15.7.2"
@@ -1886,8 +1886,8 @@
     i18next "^10.3"
     moment "^2.24.0"
 
-"@dhis2/data-engine@3.17.0-beta.3", "@dhis2/data-engine@file:/home/runner/work/app-runtime/app-runtime/engine":
-  version "3.17.0-beta.3"
+"@dhis2/data-engine@3.17.0-beta.4", "@dhis2/data-engine@file:/home/runner/work/app-runtime/app-runtime/engine":
+  version "3.17.0-beta.4"
   resolved "file:engine"
 
 "@dhis2/multi-calendar-dates@2.1.2":

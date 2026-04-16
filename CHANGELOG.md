@@ -1,3 +1,10 @@
+# [3.17.0-beta.4](https://github.com/dhis2/app-runtime/compare/v3.17.0-beta.3...v3.17.0-beta.4) (2026-04-16)
+
+
+### Bug Fixes
+
+* linting issue ([#1435](https://github.com/dhis2/app-runtime/issues/1435)) ([38ef33d](https://github.com/dhis2/app-runtime/commit/38ef33d8118af5e4cd84015b7d30ead789710c39))
+
 # [3.17.0-beta.3](https://github.com/dhis2/app-runtime/compare/v3.17.0-beta.2...v3.17.0-beta.3) (2026-04-15)
 
 
