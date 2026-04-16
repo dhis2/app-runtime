@@ -1620,111 +1620,53 @@
     "@dhis2/pwa" "12.10.4"
     moment "^2.24.0"
 
-"@dhis2/app-runtime@^3", "@dhis2/app-runtime@^3.11.1", "@dhis2/app-runtime@^3.14.3":
-  version "3.16.0"
-  resolved "https://registry.npmjs.org/@dhis2/app-runtime/-/app-runtime-3.16.0.tgz"
-  integrity sha512-4PbXIpjoclQwVPkZrZwKUUPqN4UWbTE6nuC4h70q2fY6rHEE+QPSBIEDno+rxpQIMy+HtZm0hrDEUK387EMKjA==
-  dependencies:
-    "@dhis2/app-service-alerts" "3.16.0"
-    "@dhis2/app-service-config" "3.16.0"
-    "@dhis2/app-service-data" "3.16.0"
-    "@dhis2/app-service-offline" "3.16.0"
-    "@dhis2/app-service-plugin" "3.16.0"
-    "@dhis2/app-service-user" "3.16.0"
-    prop-types "^15.7.2"
-
-"@dhis2/app-runtime@file:/home/runner/work/app-runtime/app-runtime/runtime":
-  version "3.17.0-beta.4"
+"@dhis2/app-runtime@^3", "@dhis2/app-runtime@^3.11.1", "@dhis2/app-runtime@^3.14.3", "@dhis2/app-runtime@file:/home/runner/work/app-runtime/app-runtime/runtime":
+  version "3.17.0"
   resolved "file:runtime"
   dependencies:
-    "@dhis2/app-service-alerts" "3.17.0-beta.4"
-    "@dhis2/app-service-config" "3.17.0-beta.4"
-    "@dhis2/app-service-data" "3.17.0-beta.4"
-    "@dhis2/app-service-offline" "3.17.0-beta.4"
-    "@dhis2/app-service-plugin" "3.17.0-beta.4"
-    "@dhis2/app-service-user" "3.17.0-beta.4"
+    "@dhis2/app-service-alerts" "3.17.0"
+    "@dhis2/app-service-config" "3.17.0"
+    "@dhis2/app-service-data" "3.17.0"
+    "@dhis2/app-service-offline" "3.17.0"
+    "@dhis2/app-service-plugin" "3.17.0"
+    "@dhis2/app-service-user" "3.17.0"
     prop-types "^15.7.2"
 
-"@dhis2/app-service-alerts@3.16.0":
-  version "3.16.0"
-  resolved "https://registry.npmjs.org/@dhis2/app-service-alerts/-/app-service-alerts-3.16.0.tgz"
-  integrity sha512-aTC47gbYebuf0yJfSX7POpmaC+ejG7DCBmAm+qBL3NkBqlsmNI3A0sO9EjztEvkuxnLA/WRuKhu1an+0jsmpTw==
-  dependencies:
-    prop-types "^15.7.2"
-
-"@dhis2/app-service-alerts@3.17.0-beta.4", "@dhis2/app-service-alerts@file:/home/runner/work/app-runtime/app-runtime/services/alerts":
-  version "3.17.0-beta.4"
+"@dhis2/app-service-alerts@3.17.0", "@dhis2/app-service-alerts@file:/home/runner/work/app-runtime/app-runtime/services/alerts":
+  version "3.17.0"
   resolved "file:services/alerts"
   dependencies:
     prop-types "^15.7.2"
 
-"@dhis2/app-service-config@3.16.0":
-  version "3.16.0"
-  resolved "https://registry.npmjs.org/@dhis2/app-service-config/-/app-service-config-3.16.0.tgz"
-  integrity sha512-kU9aavV8GBjRP8NU/ZsmOuQSSs8p5kcX3bTaCvlw7dgRA4eHscdG24JaHYqAfPFQI0ntPT88Qf8m86Obz375cA==
-  dependencies:
-    prop-types "^15.7.2"
-
-"@dhis2/app-service-config@3.17.0-beta.4", "@dhis2/app-service-config@file:/home/runner/work/app-runtime/app-runtime/services/config":
-  version "3.17.0-beta.4"
+"@dhis2/app-service-config@3.17.0", "@dhis2/app-service-config@file:/home/runner/work/app-runtime/app-runtime/services/config":
+  version "3.17.0"
   resolved "file:services/config"
   dependencies:
     prop-types "^15.7.2"
 
-"@dhis2/app-service-data@3.16.0":
-  version "3.16.0"
-  resolved "https://registry.npmjs.org/@dhis2/app-service-data/-/app-service-data-3.16.0.tgz"
-  integrity sha512-RFF4wg2m/6dIEl1KmiaX2bw3TPMgB6R9gu27HyOCFNYT808wtFkvyrpa8TAWjF4m+y+yLZyKtHO0yEXp7otfHQ==
-  dependencies:
-    "@tanstack/react-query" "^4.36.1"
-    prop-types "^15.7.2"
-
-"@dhis2/app-service-data@3.17.0-beta.4", "@dhis2/app-service-data@file:/home/runner/work/app-runtime/app-runtime/services/data":
-  version "3.17.0-beta.4"
+"@dhis2/app-service-data@3.17.0", "@dhis2/app-service-data@file:/home/runner/work/app-runtime/app-runtime/services/data":
+  version "3.17.0"
   resolved "file:services/data"
   dependencies:
     "@tanstack/react-query" "^4.36.1"
     prop-types "^15.7.2"
 
-"@dhis2/app-service-offline@3.16.0":
-  version "3.16.0"
-  resolved "https://registry.npmjs.org/@dhis2/app-service-offline/-/app-service-offline-3.16.0.tgz"
-  integrity sha512-I67msCV3miwh4La4Dpb0HI2dab5Hs20mNmJGPbaN7WLizxbgVMvyrqtTXBGOT7iZulTgc0fB4zUSAaeE3r7pvA==
-  dependencies:
-    lodash "^4.17.21"
-    prop-types "^15.7.2"
-
-"@dhis2/app-service-offline@3.17.0-beta.4", "@dhis2/app-service-offline@file:/home/runner/work/app-runtime/app-runtime/services/offline":
-  version "3.17.0-beta.4"
+"@dhis2/app-service-offline@3.17.0", "@dhis2/app-service-offline@file:/home/runner/work/app-runtime/app-runtime/services/offline":
+  version "3.17.0"
   resolved "file:services/offline"
   dependencies:
     lodash "^4.17.21"
     prop-types "^15.7.2"
 
-"@dhis2/app-service-plugin@3.16.0":
-  version "3.16.0"
-  resolved "https://registry.npmjs.org/@dhis2/app-service-plugin/-/app-service-plugin-3.16.0.tgz"
-  integrity sha512-pjjlHLEdLFFr+fuDKjBBjeYM8nyZuBOl1Pi/jCzsAq1HdmxkPI4hIhsCbRkoRWpIs7s9EW0ONI/vf2bkxnct1Q==
-  dependencies:
-    post-robot "^10.0.46"
-    prop-types "^15.7.2"
-
-"@dhis2/app-service-plugin@3.17.0-beta.4", "@dhis2/app-service-plugin@file:/home/runner/work/app-runtime/app-runtime/services/plugin":
-  version "3.17.0-beta.4"
+"@dhis2/app-service-plugin@3.17.0", "@dhis2/app-service-plugin@file:/home/runner/work/app-runtime/app-runtime/services/plugin":
+  version "3.17.0"
   resolved "file:services/plugin"
   dependencies:
     post-robot "^10.0.46"
     prop-types "^15.7.2"
 
-"@dhis2/app-service-user@3.16.0":
-  version "3.16.0"
-  resolved "https://registry.npmjs.org/@dhis2/app-service-user/-/app-service-user-3.16.0.tgz"
-  integrity sha512-3bFeiy4NDtwvzo+mF9q70B6GslNKf0lbr9Ujb6PXsp9IqJpahzqFvzMDruTjP/eAdOCNE6o/UL8ZHgSux7aVTg==
-  dependencies:
-    prop-types "^15.7.2"
-
-"@dhis2/app-service-user@3.17.0-beta.4", "@dhis2/app-service-user@file:/home/runner/work/app-runtime/app-runtime/services/user":
-  version "3.17.0-beta.4"
+"@dhis2/app-service-user@3.17.0", "@dhis2/app-service-user@file:/home/runner/work/app-runtime/app-runtime/services/user":
+  version "3.17.0"
   resolved "file:services/user"
   dependencies:
     prop-types "^15.7.2"
@@ -1886,8 +1828,8 @@
     i18next "^10.3"
     moment "^2.24.0"
 
-"@dhis2/data-engine@3.17.0-beta.4", "@dhis2/data-engine@file:/home/runner/work/app-runtime/app-runtime/engine":
-  version "3.17.0-beta.4"
+"@dhis2/data-engine@3.17.0", "@dhis2/data-engine@file:/home/runner/work/app-runtime/app-runtime/engine":
+  version "3.17.0"
   resolved "file:engine"
 
 "@dhis2/multi-calendar-dates@2.1.2":

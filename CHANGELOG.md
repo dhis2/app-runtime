@@ -1,3 +1,17 @@
+# [3.17.0](https://github.com/dhis2/app-runtime/compare/v3.16.0...v3.17.0) (2026-04-16)
+
+
+### Bug Fixes
+
+* linting issue ([#1435](https://github.com/dhis2/app-runtime/issues/1435)) ([38ef33d](https://github.com/dhis2/app-runtime/commit/38ef33d8118af5e4cd84015b7d30ead789710c39))
+* move from cli-style to shared configs ([#1434](https://github.com/dhis2/app-runtime/issues/1434)) ([9a08180](https://github.com/dhis2/app-runtime/commit/9a081809409692c4b38ffacbd52302ab3a3d99e0))
+
+
+### Features
+
+* move data engine to a standalone package without react dependency [LIBS-711] ([#1392](https://github.com/dhis2/app-runtime/issues/1392)) ([f16c5c8](https://github.com/dhis2/app-runtime/commit/f16c5c81671edbd80ad6b525bef582b04b4737ab))
+* support api key authentication and automatic query alias creation ([#1418](https://github.com/dhis2/app-runtime/issues/1418)) ([6e8e9f6](https://github.com/dhis2/app-runtime/commit/6e8e9f696b2e7b9f6f76a533143048f3c9150453))
+
 # [3.17.0-beta.4](https://github.com/dhis2/app-runtime/compare/v3.17.0-beta.3...v3.17.0-beta.4) (2026-04-16)
 
 
