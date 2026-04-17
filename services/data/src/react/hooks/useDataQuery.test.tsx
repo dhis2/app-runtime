@@ -1,3 +1,4 @@
+import type { QueryVariables } from '@dhis2/data-engine'
 import { renderHook, waitFor, act } from '@testing-library/react'
 import * as React from 'react'
 import { CustomDataProvider } from '../components/CustomDataProvider'
@@ -8,7 +9,7 @@ describe('useDataQuery', () => {
         it('Should call onComplete with the data after a successful fetch', async () => {
             const query = { x: { resource: 'answer' } }
             const data = { answer: 42 }
-            const wrapper = ({ children }) => (
+            const wrapper = ({ children }: { children?: React.ReactNode }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
             const onComplete = jest.fn()
@@ -43,7 +44,7 @@ describe('useDataQuery', () => {
                     throw expectedError
                 },
             }
-            const wrapper = ({ children }) => (
+            const wrapper = ({ children }: { children?: React.ReactNode }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
             const onComplete = jest.fn()
@@ -76,7 +77,10 @@ describe('useDataQuery', () => {
             const resultOne = 1
             const resultTwo = 2
             const query = {
-                x: { resource: 'answer', id: ({ id }) => id },
+                x: {
+                    resource: 'answer',
+                    id: ({ id }: QueryVariables) => id as string,
+                },
             }
             const mockSpy = jest.fn((_, { id }) => {
                 switch (id) {
@@ -141,7 +145,7 @@ describe('useDataQuery', () => {
             const query = { x: { resource: 'answer' } }
             const mockSpy = jest.fn(() => Promise.resolve(42))
             const data = { answer: mockSpy }
-            const wrapper = ({ children }) => (
+            const wrapper = ({ children }: { children?: React.ReactNode }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
@@ -183,7 +187,7 @@ describe('useDataQuery', () => {
             const query = {
                 x: { resource: 'answer' },
             }
-            const wrapper = ({ children }) => (
+            const wrapper = ({ children }: { children?: React.ReactNode }) => (
                 <CustomDataProvider
                     data={data}
                     queryClientOptions={queryClientOptions}
@@ -253,7 +257,7 @@ describe('useDataQuery', () => {
             const query = {
                 x: { resource: 'answer' },
             }
-            const wrapper = ({ children }) => (
+            const wrapper = ({ children }: { children?: React.ReactNode }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
@@ -293,7 +297,7 @@ describe('useDataQuery', () => {
         it('Should return the data for a single resource query on success', async () => {
             const query = { x: { resource: 'answer' } }
             const data = { answer: 42 }
-            const wrapper = ({ children }) => (
+            const wrapper = ({ children }: { children?: React.ReactNode }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
@@ -321,7 +325,7 @@ describe('useDataQuery', () => {
                 y: { resource: 'opposite' },
             }
             const data = { answer: 42, opposite: 24 }
-            const wrapper = ({ children }) => (
+            const wrapper = ({ children }: { children?: React.ReactNode }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
@@ -353,7 +357,7 @@ describe('useDataQuery', () => {
                     throw expectedError
                 },
             }
-            const wrapper = ({ children }) => (
+            const wrapper = ({ children }: { children?: React.ReactNode }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
@@ -387,7 +391,7 @@ describe('useDataQuery', () => {
                 },
                 opposite: 24,
             }
-            const wrapper = ({ children }) => (
+            const wrapper = ({ children }: { children?: React.ReactNode }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
@@ -423,7 +427,7 @@ describe('useDataQuery', () => {
             const query = {
                 x: { resource: 'answer' },
             }
-            const wrapper = ({ children }) => (
+            const wrapper = ({ children }: { children?: React.ReactNode }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
@@ -479,9 +483,12 @@ describe('useDataQuery', () => {
                 answer: spy,
             }
             const query = {
-                x: { resource: 'answer', id: ({ id }) => id },
+                x: {
+                    resource: 'answer',
+                    id: ({ id }: QueryVariables) => id as string,
+                },
             }
-            const wrapper = ({ children }) => (
+            const wrapper = ({ children }: { children?: React.ReactNode }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
@@ -521,9 +528,12 @@ describe('useDataQuery', () => {
                 answer: spy,
             }
             const query = {
-                x: { resource: 'answer', id: ({ id }) => id },
+                x: {
+                    resource: 'answer',
+                    id: ({ id }: QueryVariables) => id as string,
+                },
             }
-            const wrapper = ({ children }) => (
+            const wrapper = ({ children }: { children?: React.ReactNode }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
@@ -557,7 +567,7 @@ describe('useDataQuery', () => {
                 answer: () => Promise.resolve(42),
             }
             const query = { x: { resource: 'answer' } }
-            const wrapper = ({ children }) => (
+            const wrapper = ({ children }: { children?: React.ReactNode }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
@@ -592,7 +602,7 @@ describe('useDataQuery', () => {
                 answer: mockSpy,
             }
             const query = { x: { resource: 'answer' } }
-            const wrapper = ({ children }) => (
+            const wrapper = ({ children }: { children?: React.ReactNode }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
@@ -648,7 +658,7 @@ describe('useDataQuery', () => {
             const query = { x: { resource: 'answer' } }
             const mockSpy = jest.fn(() => Promise.resolve(42))
             const data = { answer: mockSpy }
-            const wrapper = ({ children }) => (
+            const wrapper = ({ children }: { children?: React.ReactNode }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
@@ -685,7 +695,7 @@ describe('useDataQuery', () => {
         it('Should call onComplete after a successful refetch', async () => {
             const query = { x: { resource: 'answer' } }
             const data = { answer: 42 }
-            const wrapper = ({ children }) => (
+            const wrapper = ({ children }: { children?: React.ReactNode }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
             const onComplete = jest.fn()
@@ -719,7 +729,7 @@ describe('useDataQuery', () => {
                     throw expectedError
                 },
             }
-            const wrapper = ({ children }) => (
+            const wrapper = ({ children }: { children?: React.ReactNode }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
             const onComplete = jest.fn()
@@ -748,12 +758,16 @@ describe('useDataQuery', () => {
             const query = {
                 x: {
                     resource: 'answer',
-                    params: ({ one, two, three }) => ({ one, two, three }),
+                    params: ({ one, two, three }: QueryVariables) => ({
+                        one,
+                        two,
+                        three,
+                    }),
                 },
             }
             const spy = jest.fn(() => Promise.resolve(42))
             const data = { answer: spy }
-            const wrapper = ({ children }) => (
+            const wrapper = ({ children }: { children?: React.ReactNode }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
@@ -788,7 +802,7 @@ describe('useDataQuery', () => {
         it('Should return a promise that resolves with the data on success when refetching and lazy', async () => {
             const query = { x: { resource: 'answer' } }
             const data = { answer: 42 }
-            const wrapper = ({ children }) => (
+            const wrapper = ({ children }: { children?: React.ReactNode }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
@@ -797,7 +811,7 @@ describe('useDataQuery', () => {
                 { wrapper }
             )
 
-            let ourPromise
+            let ourPromise!: Promise<unknown>
             act(() => {
                 // This refetch will trigger our own refetch logic as the query is lazy
                 ourPromise = result.current.refetch()
@@ -816,7 +830,7 @@ describe('useDataQuery', () => {
         it('Should return a promise that resolves with the data on success when refetching and not lazy', async () => {
             const query = { x: { resource: 'answer' } }
             const data = { answer: 42 }
-            const wrapper = ({ children }) => (
+            const wrapper = ({ children }: { children?: React.ReactNode }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
@@ -825,7 +839,7 @@ describe('useDataQuery', () => {
                 { wrapper }
             )
 
-            let reactQueryPromise
+            let reactQueryPromise!: Promise<unknown>
             act(() => {
                 // This refetch will trigger react query's refetch logic as the query is not lazy
                 reactQueryPromise = result.current.refetch()
@@ -849,7 +863,7 @@ describe('useDataQuery', () => {
                     throw expectedError
                 },
             }
-            const wrapper = ({ children }) => (
+            const wrapper = ({ children }: { children?: React.ReactNode }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
@@ -858,7 +872,7 @@ describe('useDataQuery', () => {
                 { wrapper }
             )
 
-            let ourPromise
+            let ourPromise!: Promise<unknown>
             act(() => {
                 // This refetch will trigger our own refetch logic as the query is lazy
                 ourPromise = result.current.refetch()
@@ -880,7 +894,7 @@ describe('useDataQuery', () => {
                     throw expectedError
                 },
             }
-            const wrapper = ({ children }) => (
+            const wrapper = ({ children }: { children?: React.ReactNode }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 
@@ -889,7 +903,7 @@ describe('useDataQuery', () => {
                 { wrapper }
             )
 
-            let reactQueryPromise
+            let reactQueryPromise!: Promise<unknown>
             act(() => {
                 // This refetch will trigger react query's refetch logic as the query is not lazy
                 reactQueryPromise = result.current.refetch()
@@ -909,7 +923,10 @@ describe('useDataQuery', () => {
             const resultOne = 1
             const resultTwo = 2
             const query = {
-                x: { resource: 'answer', id: ({ id }) => id },
+                x: {
+                    resource: 'answer',
+                    id: ({ id }: QueryVariables) => id as string,
+                },
             }
             const mockSpy = jest.fn((_, { id }) => {
                 switch (id) {
@@ -963,14 +980,18 @@ describe('useDataQuery', () => {
             const query = {
                 x: {
                     resource: 'answer',
-                    params: ({ one, two, three }) => ({ one, two, three }),
+                    params: ({ one, two, three }: QueryVariables) => ({
+                        one,
+                        two,
+                        three,
+                    }),
                 },
             }
             const mockSpy = jest.fn(() => Promise.resolve(42))
             const data = {
                 answer: mockSpy,
             }
-            const wrapper = ({ children }) => (
+            const wrapper = ({ children }: { children?: React.ReactNode }) => (
                 <CustomDataProvider data={data}>{children}</CustomDataProvider>
             )
 

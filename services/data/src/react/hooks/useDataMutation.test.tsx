@@ -1,4 +1,8 @@
-import type { CreateMutation, UpdateMutation } from '@dhis2/data-engine'
+import type {
+    CreateMutation,
+    UpdateMutation,
+    QueryVariables,
+} from '@dhis2/data-engine'
 import { renderHook, act, waitFor } from '@testing-library/react'
 import * as React from 'react'
 import { CustomDataProvider } from '../components/CustomDataProvider'
@@ -13,7 +17,7 @@ describe('useDataMutation', () => {
             data: { answer: '?' },
         }
         const data = { answer: 42 }
-        const wrapper = ({ children }) => (
+        const wrapper = ({ children }: { children?: React.ReactNode }) => (
             <CustomDataProvider data={data}>{children}</CustomDataProvider>
         )
 
@@ -56,7 +60,7 @@ describe('useDataMutation', () => {
             data: { answer: '?' },
         }
         const data = { answer: 42 }
-        const wrapper = ({ children }) => (
+        const wrapper = ({ children }: { children?: React.ReactNode }) => (
             <CustomDataProvider data={data}>{children}</CustomDataProvider>
         )
 
@@ -89,7 +93,7 @@ describe('useDataMutation', () => {
             data: { answer: '?' },
         }
         const data = { answer: 42 }
-        const wrapper = ({ children }) => (
+        const wrapper = ({ children }: { children?: React.ReactNode }) => (
             <CustomDataProvider data={data}>{children}</CustomDataProvider>
         )
 
@@ -129,7 +133,7 @@ describe('useDataMutation', () => {
                 throw error
             },
         }
-        const wrapper = ({ children }) => (
+        const wrapper = ({ children }: { children?: React.ReactNode }) => (
             <CustomDataProvider data={data}>{children}</CustomDataProvider>
         )
 
@@ -158,15 +162,15 @@ describe('useDataMutation', () => {
     })
 
     it('should resolve variables', async () => {
-        const mutation: UpdateMutation = {
+        const mutation = {
             type: 'update',
             resource: 'answer',
-            id: ({ id }) => id,
+            id: ({ id }: QueryVariables) => id as string,
             data: { answer: '?' },
-        }
+        } as unknown as UpdateMutation
         const answerSpy = jest.fn(() => Promise.resolve(42))
         const data = { answer: answerSpy }
-        const wrapper = ({ children }) => (
+        const wrapper = ({ children }: { children?: React.ReactNode }) => (
             <CustomDataProvider data={data}>{children}</CustomDataProvider>
         )
 
@@ -211,7 +215,7 @@ describe('useDataMutation', () => {
             resource: 'answer',
             data: { answer: '?' },
         }
-        const wrapper = ({ children }) => (
+        const wrapper = ({ children }: { children?: React.ReactNode }) => (
             <CustomDataProvider data={{}}>{children}</CustomDataProvider>
         )
 
@@ -236,7 +240,7 @@ describe('useDataMutation', () => {
             data: { answer: '?' },
         }
         const data = { answer: 42 }
-        const wrapper = ({ children }) => (
+        const wrapper = ({ children }: { children?: React.ReactNode }) => (
             <CustomDataProvider data={data}>{children}</CustomDataProvider>
         )
 
@@ -265,7 +269,7 @@ describe('useDataMutation', () => {
             data: { answer: '?' },
         }
         const data = { answer: 42 }
-        const wrapper = ({ children }) => (
+        const wrapper = ({ children }: { children?: React.ReactNode }) => (
             <CustomDataProvider data={data}>{children}</CustomDataProvider>
         )
 
@@ -273,7 +277,7 @@ describe('useDataMutation', () => {
             wrapper,
         })
 
-        let mutatePromise
+        let mutatePromise!: Promise<unknown>
         const [mutate] = result.current
         act(() => {
             mutatePromise = mutate()

@@ -40,10 +40,10 @@ export function stableVariablesHash(value: any): string {
             isPlainObject(val)
                 ? Object.keys(val)
                       .sort()
-                      .reduce((result, key) => {
-                          result[key] = val[key]
+                      .reduce((result: Record<string, unknown>, key) => {
+                          result[key] = (val as Record<string, unknown>)[key]
                           return result
-                      }, {} as any)
+                      }, {})
                 : val
         )
     } catch (e) {

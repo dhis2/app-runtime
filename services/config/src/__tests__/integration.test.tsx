@@ -8,6 +8,7 @@ const mockConfig: Config = {
     baseUrl: 'http://test.com',
     apiVersion: 42,
     serverVersion: {
+        full: '2.35-SNAPSHOT',
         major: 2,
         minor: 35,
         patch: undefined,
@@ -16,6 +17,7 @@ const mockConfig: Config = {
     systemInfo: {
         contextPath: 'http://localhost:3000',
         version: '2.35-SNAPSHOT',
+        serverTimeZoneId: 'UTC',
     },
 }
 

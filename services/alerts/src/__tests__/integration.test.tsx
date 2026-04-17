@@ -137,7 +137,7 @@ describe('useAlert and useAlerts used together', () => {
         })
 
         act(() => {
-            result.current.alerts[0].remove()
+            result.current.alerts[0].remove!()
         })
 
         expect(result.current.alerts).toHaveLength(0)
@@ -374,7 +374,7 @@ describe('useAlert and useAlerts used together', () => {
         expect(result.current.alerts[1].id).toBe(2)
 
         act(() => {
-            result.current.alerts[0].remove()
+            result.current.alerts[0].remove!()
         })
 
         expect(result.current.alerts).toHaveLength(1)
