@@ -13,7 +13,7 @@ const mockUser = {
 }
 
 test('When a valid userInfo object is provided', () => {
-    const wrapper = ({ children }) => (
+    const wrapper = ({ children }: { children?: React.ReactNode }) => (
         <UserProvider userInfo={mockUser}>{children}</UserProvider>
     )
     const { result } = renderHook(() => useCurrentUserInfo(), { wrapper })
@@ -21,7 +21,7 @@ test('When a valid userInfo object is provided', () => {
 })
 
 test('When the userInfo object provided is undefined', async () => {
-    const wrapper = ({ children }) => (
+    const wrapper = ({ children }: { children?: React.ReactNode }) => (
         <UserProvider userInfo={undefined as any}>{children}</UserProvider>
     )
     const { result } = renderHook(() => useCurrentUserInfo(), { wrapper })

@@ -45,7 +45,7 @@ const INTERVALS_TO_REACH_MAX_DELAY = Math.ceil(
         1
 )
 
-const wrapper: React.FC = ({ children }) => (
+const wrapper: React.FC<{ children?: React.ReactNode }> = ({ children }) => (
     <ConfigProvider
         config={{
             baseUrl: '..',
@@ -118,7 +118,9 @@ describe('initialization to the right values based on offline interface', () => 
             ...mockOfflineInterface,
             latestIsConnected: false,
         }
-        const customWrapper: React.FC = ({ children }) => (
+        const customWrapper: React.FC<{ children?: React.ReactNode }> = ({
+            children,
+        }) => (
             <OfflineProvider offlineInterface={customMockOfflineInterface}>
                 {children}
             </OfflineProvider>
@@ -146,7 +148,9 @@ describe('initialization to the right values based on offline interface', () => 
             ...mockOfflineInterface,
             latestIsConnected: null,
         }
-        const customWrapper: React.FC = ({ children }) => (
+        const customWrapper: React.FC<{ children?: React.ReactNode }> = ({
+            children,
+        }) => (
             <OfflineProvider offlineInterface={customMockOfflineInterface}>
                 {children}
             </OfflineProvider>
@@ -703,7 +707,9 @@ describe('lastConnected status', () => {
                 ...mockOfflineInterface,
                 latestIsConnected: false,
             }
-            const customWrapper: React.FC = ({ children }) => (
+            const customWrapper: React.FC<{ children?: React.ReactNode }> = ({
+                children,
+            }) => (
                 <OfflineProvider offlineInterface={customMockOfflineInterface}>
                     {children}
                 </OfflineProvider>
@@ -733,7 +739,9 @@ describe('lastConnected status', () => {
                 ...mockOfflineInterface,
                 latestIsConnected: false,
             }
-            const customWrapper: React.FC = ({ children }) => (
+            const customWrapper: React.FC<{ children?: React.ReactNode }> = ({
+                children,
+            }) => (
                 <OfflineProvider offlineInterface={customMockOfflineInterface}>
                     {children}
                 </OfflineProvider>
@@ -765,7 +773,9 @@ describe('lastConnected status', () => {
             ...mockOfflineInterface,
             latestIsConnected: false,
         }
-        const customWrapper: React.FC = ({ children }) => (
+        const customWrapper: React.FC<{ children?: React.ReactNode }> = ({
+            children,
+        }) => (
             <ConfigProvider
                 config={{
                     baseUrl: '..',
@@ -829,7 +839,9 @@ describe('lastConnected status', () => {
             ...mockOfflineInterface,
             latestIsConnected: false,
         }
-        const customWrapper: React.FC = ({ children }) => (
+        const customWrapper: React.FC<{ children?: React.ReactNode }> = ({
+            children,
+        }) => (
             <ConfigProvider
                 config={{
                     baseUrl: '..',
@@ -879,7 +891,9 @@ describe('lastConnected status', () => {
 })
 
 describe("when the /api/ping endpoint isn't supported", () => {
-    const customWrapper: React.FC = ({ children }) => (
+    const customWrapper: React.FC<{ children?: React.ReactNode }> = ({
+        children,
+    }) => (
         <ConfigProvider
             config={{
                 baseUrl: '..',

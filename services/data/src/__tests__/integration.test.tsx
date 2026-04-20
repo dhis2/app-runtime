@@ -7,7 +7,7 @@ describe('<DataQuery />', () => {
         const data = {
             answer: 42,
         }
-        const wrapper = ({ children }) => (
+        const wrapper = ({ children }: { children?: React.ReactNode }) => (
             <CustomDataProvider data={data}>{children}</CustomDataProvider>
         )
         const renderFunction = jest.fn(() => null)
@@ -46,7 +46,7 @@ describe('<DataQuery />', () => {
                 throw expectedError
             },
         }
-        const wrapper = ({ children }) => (
+        const wrapper = ({ children }: { children?: React.ReactNode }) => (
             <CustomDataProvider data={data}>{children}</CustomDataProvider>
         )
         const renderFunction = jest.fn(() => null)

@@ -7,7 +7,7 @@ describe('<DataMutation />', () => {
         const endpointSpy = jest.fn(() => Promise.resolve(42))
         const mutation = {
             resource: 'answer',
-            type: 'create',
+            type: 'create' as const,
             data: {
                 question: '?',
             },
@@ -15,10 +15,10 @@ describe('<DataMutation />', () => {
         const data = {
             answer: endpointSpy,
         }
-        const wrapper = ({ children }) => (
+        const wrapper = ({ children }: { children?: React.ReactNode }) => (
             <CustomDataProvider data={data}>{children}</CustomDataProvider>
         )
-        const renderSpy = jest.fn(() => null)
+        const renderSpy: jest.Mock = jest.fn(() => null)
         render(<DataMutation mutation={mutation}>{renderSpy}</DataMutation>, {
             wrapper,
         })
