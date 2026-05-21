@@ -33,9 +33,8 @@ const makeResponse = ({
 
 describe('fetchData - query alias creation and caching', () => {
     const baseUrl = 'http://example.com'
-    const apiVersion = 34
     const longUrl = `${baseUrl}/very/long/query?with=params&that=make&the=uri&long`
-    const aliasEndpoint = `${baseUrl}/api/${apiVersion}/query/alias`
+    const aliasEndpoint = `${baseUrl}/api/query/alias`
 
     let refs: FetchRefs
     let aliasCreateCalls = 0
@@ -50,7 +49,6 @@ describe('fetchData - query alias creation and caching', () => {
             queryAliasCache: new LRUCache<string, any>(10),
             config: {
                 baseUrl,
-                apiVersion,
                 apiToken: undefined,
             },
         }

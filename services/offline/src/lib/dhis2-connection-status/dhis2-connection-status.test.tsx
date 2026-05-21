@@ -49,7 +49,6 @@ const wrapper: React.FC<{ children?: React.ReactNode }> = ({ children }) => (
     <ConfigProvider
         config={{
             baseUrl: '..',
-            apiVersion: 42,
             // ensure this is a server version where pings are enabled
             serverVersion: { major: 2, minor: 40, patch: 0, full: 'n/a' },
         }}
@@ -779,7 +778,6 @@ describe('lastConnected status', () => {
             <ConfigProvider
                 config={{
                     baseUrl: '..',
-                    apiVersion: 42,
                     serverVersion: {
                         major: 2,
                         minor: 40,
@@ -845,7 +843,6 @@ describe('lastConnected status', () => {
             <ConfigProvider
                 config={{
                     baseUrl: '..',
-                    apiVersion: 42,
                     appName: testAppName,
                     serverVersion: {
                         major: 2,
@@ -897,7 +894,6 @@ describe("when the /api/ping endpoint isn't supported", () => {
         <ConfigProvider
             config={{
                 baseUrl: '..',
-                apiVersion: 42,
                 // an unsupported version:
                 serverVersion: { major: 2, minor: 39, patch: 0, full: 'n/a' },
             }}

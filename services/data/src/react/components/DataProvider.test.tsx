@@ -8,7 +8,7 @@ describe('DataProvider', () => {
     it('Should pass a new engine and RestAPILink to consumers', () => {
         const renderFunction = jest.fn()
         render(
-            <DataProvider baseUrl="test" apiVersion={42}>
+            <DataProvider baseUrl="test">
                 <DataContext.Consumer>{renderFunction}</DataContext.Consumer>
             </DataProvider>
         )

@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react'
 import React, { ReactNode } from 'react'
 import { ConfigProvider, useTimeZoneConversion } from '../index'
 
-const defaultConfig = { baseUrl: '/', apiVersion: 40 }
+const defaultConfig = { baseUrl: '/' }
 const defaultSystemInfo = {
     version: '40',
     contextPath: '',
@@ -13,7 +13,7 @@ const defaultSystemInfo = {
 
 describe('useTimeZoneConversion', () => {
     it('Hook returns a fromClientDate and fromServerDate function', () => {
-        const config = { baseUrl: '/', apiVersion: 30 }
+        const config = { baseUrl: '/' }
         const wrapper = ({ children }: { children?: ReactNode }) => (
             <ConfigProvider config={config}>{children}</ConfigProvider>
         )

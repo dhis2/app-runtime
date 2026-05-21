@@ -6,7 +6,6 @@ import { Config } from '../types'
 
 const mockConfig: Config = {
     baseUrl: 'http://test.com',
-    apiVersion: 42,
     serverVersion: {
         full: '2.35-SNAPSHOT',
         major: 2,
@@ -23,9 +22,7 @@ const mockConfig: Config = {
 
 describe('Testing custom config provider', () => {
     it('Should render without failing', async () => {
-        const consumerFunction = jest.fn(
-            (config) => `${config.baseUrl}:${config.apiVersion}`
-        )
+        const consumerFunction = jest.fn((config) => `${config.baseUrl}`)
         const { getByText } = render(
             <ConfigProvider config={mockConfig}>
                 <ConfigContext.Consumer>
@@ -34,7 +31,7 @@ describe('Testing custom config provider', () => {
             </ConfigProvider>
         )
 
-        expect(getByText(/http:\/\/test.com:42/i)).not.toBeUndefined()
+        expect(getByText(/http:\/\/test.com/i)).not.toBeUndefined()
         expect(consumerFunction).toHaveBeenCalledTimes(1)
         expect(consumerFunction).toHaveBeenLastCalledWith(mockConfig)
     })
