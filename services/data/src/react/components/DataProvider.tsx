@@ -11,7 +11,6 @@ import { DataContext } from '../context/DataContext'
 
 export interface ProviderInput {
     baseUrl?: string
-    apiVersion?: number
     children: React.ReactNode
 }
 

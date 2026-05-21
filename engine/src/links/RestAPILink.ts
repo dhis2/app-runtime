@@ -15,8 +15,7 @@ import { queryToResourcePath } from './RestAPILink/queryToResourcePath'
 
 export class RestAPILink implements DataEngineLink {
     public readonly config: DataEngineConfig
-    public readonly versionedApiPath: string
-    public readonly unversionedApiPath: string
+    public readonly apiPath: string
 
     public readonly queryAliasCache: QueryAliasCache = new LRUCache<
         string,
@@ -25,8 +24,7 @@ export class RestAPILink implements DataEngineLink {
 
     public constructor(config: DataEngineConfig) {
         this.config = config
-        this.versionedApiPath = joinPath('api', String(config.apiVersion))
-        this.unversionedApiPath = joinPath('api')
+        this.apiPath = joinPath('api')
     }
 
     private fetch(path: string, options: RequestInit): Promise<JsonValue> {
