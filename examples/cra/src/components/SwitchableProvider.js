@@ -4,14 +4,7 @@ import React from 'react'
 
 export const SwitchableProvider = ({ type, config, children }) => {
     if (type === 'data') {
-        return (
-            <DataProvider
-                baseUrl={config.baseUrl}
-                apiVersion={config.apiVersion}
-            >
-                {children}
-            </DataProvider>
-        )
+        return <DataProvider baseUrl={config.baseUrl}>{children}</DataProvider>
     } else if (type === 'runtime') {
         return <Provider config={config}>{children}</Provider>
     }
