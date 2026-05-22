@@ -32,7 +32,6 @@ import {
 // Specify the configuration object and construct a RestAPILink
 const config: DataEngineConfig = {
     baseUrl: 'https://my-dhis2-server.com',
-    apiVersion: 42,
     apiToken: 'MY_PERSONAL_ACCESS_TOKEN',
 }
 const link = new RestAPILink(config)
@@ -66,7 +65,6 @@ The following configuration properties are supported:
 | property        | required | description                                                                                                        |
 | --------------- | -------: | ------------------------------------------------------------------------------------------------------------------ |
 | `baseUrl`       |      yes | Base URL of the DHIS2 server (for example: https://play.dhis2.org)                                                 |
-| `apiVersion`    |      yes | Numeric API version to target (for example: `38`)                                                                  |
 | `serverVersion` |       no | Optional server version object with fields `major`, `minor`, optional `patch`, and `full` string (see table below) |
 | `apiToken`      |       no | Optional API token (personal access token) used for authentication when using token-based auth                     |
 
