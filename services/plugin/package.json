@@ -20,7 +20,7 @@
         "access": "public"
     },
     "files": [
-        "build/**"
+        "**"
     ],
     "dependencies": {
         "post-robot": "^10.0.46",

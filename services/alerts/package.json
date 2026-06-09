@@ -20,7 +20,7 @@
         "access": "public"
     },
     "files": [
-        "build/**"
+        "**"
     ],
     "dependencies": {
         "prop-types": "^15.7.2"

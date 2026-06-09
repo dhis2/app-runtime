@@ -21,7 +21,7 @@
         "access": "public"
     },
     "files": [
-        "build/**"
+        "**"
     ],
     "scripts": {
         "build:types": "tsc --emitDeclarationOnly --outDir ./build/types",

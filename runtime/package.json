@@ -28,7 +28,7 @@
         "access": "public"
     },
     "files": [
-        "build/**"
+        "**"
     ],
     "dependencies": {
         "@dhis2/app-service-config": "3.17.0",
