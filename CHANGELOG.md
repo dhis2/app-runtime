@@ -1,3 +1,10 @@
+# [3.18.0-beta.1](https://github.com/dhis2/app-runtime/compare/v3.17.0...v3.18.0-beta.1) (2026-06-09)
+
+
+### Features
+
+* infer type of app-runtime queries ([9dc21db](https://github.com/dhis2/app-runtime/commit/9dc21db62b6803e43608176b35a509438b4eb3be))
+
 # [3.17.0](https://github.com/dhis2/app-runtime/compare/v3.16.0...v3.17.0) (2026-04-16)
 
 
