@@ -1,7 +1,11 @@
+import type { paths } from '@dhis2/api-types'
+import type {
+    DeriveResourceTypeMap,
+    InferQueryResult,
+} from '@dhis2/api-types/utils'
 import type {
     Query,
     QueryOptions,
-    QueryResult,
     QueryVariables,
     FetchError,
 } from '@dhis2/data-engine'
@@ -12,6 +16,11 @@ import { mergeAndCompareVariables } from './mergeAndCompareVariables'
 import { useDataEngine } from './useDataEngine'
 import { useStaticInput } from './useStaticInput'
 
+// Pre-compute the default resource→item map once from the latest API version's paths type.
+// Consumers targeting an older DHIS2 version can pass an explicit TResult built with
+// InferQueryResult<typeof query, DeriveResourceTypeMap<v4xPaths>> as the second generic.
+type DefaultMap = DeriveResourceTypeMap<paths>
+
 type QueryState = {
     enabled: boolean
     variables?: QueryVariables
@@ -19,15 +28,18 @@ type QueryState = {
     refetchCallback?: (data: any) => void
 }
 
-export const useDataQuery = <TQueryResult = QueryResult>(
-    query: Query,
+export const useDataQuery = <
+    Q extends Query,
+    TResult = InferQueryResult<Q, DefaultMap>,
+>(
+    query: Q,
     {
         onComplete: userOnSuccess,
         onError: userOnError,
         variables: initialVariables = {},
         lazy: initialLazy = false,
-    }: QueryOptions<TQueryResult> = {}
-): QueryRenderInput<TQueryResult> => {
+    }: QueryOptions<TResult> = {}
+): QueryRenderInput<TResult> => {
     const [staticQuery] = useStaticInput<Query>(query, {
         warn: true,
         name: 'query',
@@ -132,7 +144,7 @@ export const useDataQuery = <TQueryResult = QueryResult>(
             queryState.current.enabled = true
 
             // This promise does not currently reject on errors
-            const refetchPromise = new Promise<TQueryResult>((resolve) => {
+            const refetchPromise = new Promise<TResult>((resolve) => {
                 queryState.current.refetchCallback = (data) => {
                     resolve(data)
                 }

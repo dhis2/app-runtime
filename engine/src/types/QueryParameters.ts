@@ -16,5 +16,8 @@ export type QueryParameterValue =
 
 export interface QueryParameters {
     pageSize?: number
-    [key: string]: QueryParameterValue
+    // Allow readonly string arrays (e.g. `["id", "name"] as const`) so callers can
+    // declare fields as a const tuple for type inference without a type cast.
+    fields?: string | readonly string[]
+    [key: string]: QueryParameterValue | readonly string[]
 }
