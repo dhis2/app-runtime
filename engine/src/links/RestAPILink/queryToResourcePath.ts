@@ -45,7 +45,7 @@ const queryParametersMapToArray = (
         } else if (params[key] !== null && params[key] !== undefined) {
             out.push({
                 key,
-                value: params[key],
+                value: params[key] as QueryParameterValue,
             })
         }
         return out
