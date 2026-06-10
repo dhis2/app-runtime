@@ -1,3 +1,10 @@
+# [3.18.0-beta.2](https://github.com/dhis2/app-runtime/compare/v3.18.0-beta.1...v3.18.0-beta.2) (2026-06-10)
+
+
+### Bug Fixes
+
+* pin correct version of types library ([403eb65](https://github.com/dhis2/app-runtime/commit/403eb6570b341a8ab2b13c4a9bf1fa921cc6133e))
+
 # [3.18.0-beta.1](https://github.com/dhis2/app-runtime/compare/v3.17.0...v3.18.0-beta.1) (2026-06-09)
 
 
