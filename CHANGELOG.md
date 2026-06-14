@@ -1,3 +1,10 @@
+## [3.17.1](https://github.com/dhis2/app-runtime/compare/v3.17.0...v3.17.1) (2026-06-14)
+
+
+### Bug Fixes
+
+* publish all files to npm ([2f896c6](https://github.com/dhis2/app-runtime/commit/2f896c6eb437b1e4c7d66722b43b2e0007b681eb))
+
 # [3.17.0](https://github.com/dhis2/app-runtime/compare/v3.16.0...v3.17.0) (2026-04-16)
 
 
