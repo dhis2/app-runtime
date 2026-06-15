@@ -6,7 +6,6 @@ import { queryToResourcePath } from './queryToResourcePath'
 const createLink = (config: DataEngineConfig) => new RestAPILink(config)
 const defaultConfig: DataEngineConfig = {
     basePath: '<base>',
-    apiVersion: '37',
     serverVersion: {
         major: 2,
         minor: 37,
@@ -16,7 +15,7 @@ const defaultConfig: DataEngineConfig = {
 } as unknown as DataEngineConfig
 
 const link = createLink(defaultConfig)
-const apiPath = link.versionedApiPath
+const apiPath = link.apiPath
 
 const actionPrefix = `dhis-web-commons/`
 const actionPostfix = '.action'
@@ -170,39 +169,21 @@ describe('queryToResourcePath', () => {
         expect(() => queryToResourcePath(link, query, 'read')).toThrow()
     })
 
-    it('should return an unversioned endpoint for the new tracker importer (in version 2.37)', () => {
+    it('should return an endpoint for the tracker resource', () => {
         const query: ResolvedResourceQuery = {
             resource: 'tracker',
         }
         expect(queryToResourcePath(link, query, 'read')).toBe(
-            `${link.unversionedApiPath}/tracker`
+            `${apiPath}/tracker`
         )
     })
 
-    it('should return an unversioned endpoint sub-resources of the new tracker importer (in version 2.37)', () => {
+    it('should return an unversioned endpoint for the tracker importer', () => {
         const query: ResolvedResourceQuery = {
             resource: 'tracker/test',
         }
         expect(queryToResourcePath(link, query, 'read')).toBe(
-            `${link.unversionedApiPath}/tracker/test`
-        )
-    })
-
-    it('should return a VERSIONED endpoint for the new tracker importer (in version 2.38)', () => {
-        const query: ResolvedResourceQuery = {
-            resource: 'tracker',
-        }
-        const v38config: DataEngineConfig = {
-            ...defaultConfig,
-            serverVersion: {
-                major: 2,
-                minor: 38,
-                patch: 0,
-                full: '2.38.0',
-            },
-        } as DataEngineConfig
-        expect(queryToResourcePath(createLink(v38config), query, 'read')).toBe(
-            `${link.versionedApiPath}/tracker`
+            `${apiPath}/tracker/test`
         )
     })
 })

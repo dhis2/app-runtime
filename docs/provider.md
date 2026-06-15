@@ -13,7 +13,6 @@ import { Provider } from '@dhis2/app-runtime'
 
 const appConfig = {
     baseUrl: 'play.dhis2.org/dev',
-    apiVersion: 33,
 }
 
 export const App = () => (

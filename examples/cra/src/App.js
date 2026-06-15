@@ -8,7 +8,6 @@ import { SwitchableProvider } from './components/SwitchableProvider'
 
 const config = {
     baseUrl: process.env.REACT_APP_D2_BASE_URL || 'http://localhost:8080',
-    apiVersion: process.env.REACT_APP_D2_API_VERSION || 33,
 }
 
 const providerType = (

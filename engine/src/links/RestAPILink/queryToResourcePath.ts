@@ -1,4 +1,3 @@
-import type { DataEngineConfig } from '../../types/DataEngineConfig'
 import type { FetchType } from '../../types/ExecuteOptions'
 import type { ResolvedResourceQuery } from '../../types/Query'
 import type {
@@ -71,24 +70,6 @@ const makeActionPath = (resource: string) =>
         `${resource.substring(actionPrefix.length)}.action`
     )
 
-const skipApiVersion = (
-    resource: string,
-    config: DataEngineConfig
-): boolean => {
-    if (resource === 'tracker' || resource.startsWith('tracker/')) {
-        if (!config.serverVersion?.minor || config.serverVersion?.minor < 38) {
-            return true
-        }
-    }
-
-    // The `/api/ping` endpoint is unversioned
-    if (resource === 'ping') {
-        return true
-    }
-
-    return false
-}
-
 export const queryToResourcePath = (
     link: RestAPILink,
     query: ResolvedResourceQuery,
@@ -96,13 +77,9 @@ export const queryToResourcePath = (
 ): string => {
     const { resource, id, params = {} } = query
 
-    const apiBase = skipApiVersion(resource, link.config)
-        ? link.unversionedApiPath
-        : link.versionedApiPath
-
     const base = isAction(resource)
         ? makeActionPath(resource)
-        : joinPath(apiBase, resource, id)
+        : joinPath(link.apiPath, resource, id)
 
     validateResourceQuery(query, type)
 

@@ -15,7 +15,6 @@ export interface ContextType {
 
 export interface ContextInput {
     baseUrl: string
-    apiVersion: number
 }
 
 export type ExecuteOptions = QueryExecuteOptions

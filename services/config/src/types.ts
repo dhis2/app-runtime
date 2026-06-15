@@ -16,7 +16,6 @@ interface SystemInfo {
 
 export interface Config {
     baseUrl: string
-    apiVersion: number
     appName?: string
     appVersion?: Version
     serverVersion?: Version

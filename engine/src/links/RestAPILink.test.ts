@@ -7,17 +7,16 @@ jest.mock('./RestAPILink/fetchData', () => ({
 
 describe('RestAPILink', () => {
     it('should call fetch with the expected URL', async () => {
-        const link = new RestAPILink({ baseUrl: 'http://url', apiVersion: 42 })
+        const link = new RestAPILink({ baseUrl: 'http://url' })
         await link.executeResourceQuery('read', { resource: 'something' }, {})
         expect(fetchData).toHaveBeenCalledWith(
-            'http://url/api/42/something',
+            'http://url/api/something',
             {
                 method: 'GET',
             },
             expect.objectContaining({
                 config: {
                     baseUrl: 'http://url',
-                    apiVersion: 42,
                 },
                 queryAliasCache: expect.anything(),
             })

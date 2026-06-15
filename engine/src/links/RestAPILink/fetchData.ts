@@ -82,12 +82,7 @@ const createQueryAlias = async (
     refs: FetchDataRefs
 ) => {
     const alias = <QueryAlias>await fetchData(
-        joinPath(
-            refs.config.baseUrl,
-            'api',
-            String(refs.config.apiVersion),
-            'query/alias'
-        ),
+        joinPath(refs.config.baseUrl, 'api', 'query/alias'),
         {
             signal: requestOptions.signal,
             body: JSON.stringify({ target: url }),

@@ -2,7 +2,7 @@
 'use strict'
 
 // Simple test script for @dhis2/data-engine
-// Usage: node node-engine-test.js --url https://play.dhis2.org/2.37.8 --apiKey <KEY> [--apiVersion 41]
+// Usage: node node-engine-test.js --url https://play.dhis2.org/2.37.8 --apiKey <KEY>
 
 const { DataEngine, RestAPILink } = require('@dhis2/data-engine')
 
@@ -19,16 +19,13 @@ const parseArg = (name, short) => {
 
 const baseUrl = parseArg('url', 'u') || parseArg('baseUrl', 'b')
 const apiKey = parseArg('apiKey', 'k') || parseArg('api-key', 'k')
-const apiVersionArg = parseArg('apiVersion', 'v')
 
 if (!baseUrl || !apiKey) {
     console.error(
-        'Usage: node node-engine-test.js --url <baseUrl> --apiKey <key> [--apiVersion <num>]'
+        'Usage: node node-engine-test.js --url <baseUrl> --apiKey <key>'
     )
     process.exit(2)
 }
-
-const apiVersion = apiVersionArg ? Number(apiVersionArg) : 41
 
 // Ensure global fetch exists (Node 18+). If not present, instruct the user.
 if (typeof fetch === 'undefined') {
@@ -42,7 +39,6 @@ async function main() {
     try {
         const config = {
             baseUrl,
-            apiVersion,
             apiToken: apiKey,
         }
 

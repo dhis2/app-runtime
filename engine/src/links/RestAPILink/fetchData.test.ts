@@ -136,7 +136,6 @@ describe('networkFetch', () => {
         const mockRefs = {
             config: {
                 baseUrl: '',
-                apiVersion: 42,
             } as DataEngineConfig,
             queryAliasCache: new LRUCache<string, QueryAlias>(100),
         }
