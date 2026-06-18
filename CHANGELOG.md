@@ -1,3 +1,10 @@
+## [3.17.2](https://github.com/dhis2/app-runtime/compare/v3.17.1...v3.17.2) (2026-06-18)
+
+
+### Bug Fixes
+
+* add data-engine as a dependency of data service ([65adbfd](https://github.com/dhis2/app-runtime/commit/65adbfd4c73f49b7d92a2540a351c273314bb256))
+
 ## [3.17.1](https://github.com/dhis2/app-runtime/compare/v3.17.0...v3.17.1) (2026-06-14)
 
 
