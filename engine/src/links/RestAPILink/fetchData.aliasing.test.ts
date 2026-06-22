@@ -113,6 +113,34 @@ describe('fetchData - query alias creation and caching', () => {
         expect(aliasCreateCalls).toBe(1)
     })
 
+    it('uses cached alias with a single fetch, not two', async () => {
+        const data = { result: 'cached' }
+        const alias1 = {
+            id: 'alias-1',
+            path: '/alias/1',
+            href: `${baseUrl}/alias/1`,
+            target: longUrl,
+        }
+
+        // Pre-populate the cache so fetchAlias is used directly
+        refs.queryAliasCache.set(longUrl, alias1)
+
+        const mockFetch = jest.fn(async (reqUrl: string) => {
+            if (reqUrl === alias1.href) {
+                return makeResponse({ body: data, status: 200 })
+            }
+            return makeResponse({ body: null, status: 500 })
+        })
+        ;(global as any).fetch = mockFetch
+
+        const result = await fetchData(longUrl, { method: 'GET' }, refs as any)
+
+        expect(result).toEqual(data)
+        // alias.href must be fetched exactly once — the first response must be returned directly
+        expect(mockFetch).toHaveBeenCalledTimes(1)
+        expect(mockFetch).toHaveBeenCalledWith(alias1.href, expect.any(Object))
+    })
+
     it('reuses cached alias until server reports it expired, then recreates and caches a new alias', async () => {
         const dataA = { result: 'A' }
         const dataB = { result: 'B' }

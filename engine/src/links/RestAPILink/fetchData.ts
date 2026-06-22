@@ -151,7 +151,7 @@ const fetchAlias = async (
         return createQueryAlias(alias.target, options, refs)
     }
 
-    return fetchWithContext(alias.href, options, refs)
+    return response
 }
 
 export function fetchData(
