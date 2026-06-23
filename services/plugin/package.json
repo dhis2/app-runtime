@@ -1,6 +1,6 @@
 {
     "name": "@dhis2/app-service-plugin",
-    "version": "3.17.2",
+    "version": "3.17.3",
     "main": "./build/cjs/index.js",
     "module": "./build/es/index.js",
     "types": "./build/types/index.d.ts",
@@ -27,8 +27,8 @@
         "prop-types": "^15.7.2"
     },
     "peerDependencies": {
-        "@dhis2/app-service-alerts": "3.17.2",
-        "@dhis2/app-service-data": "3.17.2",
+        "@dhis2/app-service-alerts": "3.17.3",
+        "@dhis2/app-service-data": "3.17.3",
         "react": "^16.8.6 || ^18",
         "react-dom": "^16.8.6 || ^18"
     },

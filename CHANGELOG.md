@@ -1,3 +1,10 @@
+## [3.17.3](https://github.com/dhis2/app-runtime/compare/v3.17.2...v3.17.3) (2026-06-23)
+
+
+### Bug Fixes
+
+* avoid redundant network request when serving cached query alias ([#1442](https://github.com/dhis2/app-runtime/issues/1442)) ([8b71404](https://github.com/dhis2/app-runtime/commit/8b71404183fc91ae423b49a2e1195d6582beb893))
+
 ## [3.17.2](https://github.com/dhis2/app-runtime/compare/v3.17.1...v3.17.2) (2026-06-18)
 
 
