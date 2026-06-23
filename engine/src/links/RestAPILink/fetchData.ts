@@ -97,6 +97,7 @@ const createQueryAlias = async (
         {
             method: 'POST',
             signal: requestOptions.signal,
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ target }),
         },
         refs
