@@ -158,16 +158,16 @@ jobs:
 
     notify-integration:
         runs-on: ubuntu-latest
-        needs: [integration-test]
-        if: "always() && needs.integration-test.result != 'skipped' && (github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/master')"
+        needs: [build, lint, test, integration-test, publish]
+        if: "always() && (github.ref == 'refs/heads/master' || needs.integration-test.result == 'failure')"
         steps:
             - uses: rtCamp/action-slack-notify@v2
               env:
                   SLACK_WEBHOOK: ${{ secrets.SLACK_BACKEND_WEBHOOK }}
                   SLACK_CHANNEL: 'team-extensibility-notifications'
-                  SLACK_TITLE: 'Integration tests (${{ needs.integration-test.result }}) — DHIS2 2.43'
+                  SLACK_TITLE: "CI (${{ contains(needs.*.result, 'failure') && 'failure' || needs.integration-test.result }}) — DHIS2 2.43"
                   SLACK_MESSAGE: "${{ github.event_name == 'pull_request' && format('PR #{0}: {1}', github.event.pull_request.number, github.event.pull_request.title) || github.ref_name }} — <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run>"
-                  SLACK_COLOR: ${{ needs.integration-test.result }}
+                  SLACK_COLOR: "${{ contains(needs.*.result, 'failure') && 'failure' || needs.integration-test.result }}"
 
     publish:
         runs-on: ubuntu-latest
