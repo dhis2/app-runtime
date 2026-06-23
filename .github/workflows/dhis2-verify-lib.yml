@@ -4,6 +4,7 @@ on:
     push:
     pull_request:
         types: ['opened', 'edited', 'reopened', 'synchronize']
+    workflow_dispatch:
 
 env:
     GIT_AUTHOR_NAME: '@dhis2-bot'
@@ -112,6 +113,61 @@ jobs:
 
             - name: Test
               run: yarn test
+
+    integration-test:
+        runs-on: ubuntu-latest
+        needs: [build]
+        if: "!contains(github.event.head_commit.message, '[skip ci]')"
+        timeout-minutes: 25
+
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22.x
+
+            - uses: actions/cache@v4
+              id: yarn-cache
+              with:
+                  path: '**/node_modules'
+                  key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+            - uses: actions/download-artifact@v4
+              with:
+                  name: lib-build
+
+            - name: Install integration dependencies
+              run: yarn --cwd integration install --frozen-lockfile
+
+            - name: Start DHIS2 stack
+              working-directory: ./integration
+              run: docker compose up -d
+
+            - name: Run integration tests
+              run: yarn test:integration
+              env:
+                  DHIS2_BASE_URL: http://localhost:18080
+                  DHIS2_USERNAME: admin
+                  DHIS2_PASSWORD: district
+                  DHIS2_API_VERSION: 43
+
+            - name: Stop DHIS2 stack
+              if: always()
+              working-directory: ./integration
+              run: docker compose down -v
+
+    notify-integration:
+        runs-on: ubuntu-latest
+        needs: [build, lint, test, integration-test, publish]
+        if: "always() && (github.ref == 'refs/heads/master' || needs.integration-test.result == 'failure')"
+        steps:
+            - uses: rtCamp/action-slack-notify@v2
+              env:
+                  SLACK_WEBHOOK: ${{ secrets.SLACK_EXTENSIBILITY_WEBHOOK }}
+                  SLACK_CHANNEL: 'team-extensibility-notifications'
+                  SLACK_TITLE: "CI (${{ contains(needs.*.result, 'failure') && 'failure' || needs.integration-test.result }}) — DHIS2 2.43"
+                  SLACK_MESSAGE: "${{ github.event_name == 'pull_request' && format('PR #{0}: {1}', github.event.pull_request.number, github.event.pull_request.title) || github.ref_name }} — <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run>"
+                  SLACK_COLOR: "${{ contains(needs.*.result, 'failure') && 'failure' || needs.integration-test.result }}"
 
     publish:
         runs-on: ubuntu-latest
