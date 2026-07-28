@@ -32,5 +32,8 @@
         "type-check:watch": "yarn type-check --watch",
         "test": "d2-app-scripts test",
         "coverage": "yarn test --coverage"
+    },
+    "dependencies": {
+        "p-limit": "^7.3.1"
     }
 }
