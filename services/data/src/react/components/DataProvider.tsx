@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unused-prop-types */
 import { useConfig } from '@dhis2/app-service-config'
 import { DataEngine, RestAPILink } from '@dhis2/data-engine'
 import {
@@ -6,7 +5,7 @@ import {
     QueryClientProvider,
     type QueryClientConfig,
 } from '@tanstack/react-query'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { DataContext } from '../context/DataContext'
 
 export interface ProviderInput {
@@ -38,20 +37,34 @@ export const queryClientOptions: QueryClientConfig = {
 
 const queryClient = new QueryClient(queryClientOptions)
 
-export const DataProvider = (props: ProviderInput): JSX.Element => {
-    const config = {
-        ...useConfig(),
-        ...props,
-    }
+export const DataProvider = ({
+    baseUrl,
+    apiVersion,
+    children,
+}: ProviderInput): JSX.Element => {
+    const config = useConfig()
+    const resolvedConfig = useMemo(() => {
+        const newConfig = { ...config }
+        if (typeof baseUrl === 'string') {
+            newConfig.baseUrl = baseUrl
+        }
+        if (typeof apiVersion === 'number') {
+            newConfig.apiVersion = apiVersion
+        }
+        return newConfig
+    }, [config, baseUrl, apiVersion])
 
-    const link = new RestAPILink(config)
-    const engine = new DataEngine(link)
-    const context = { engine }
+    const link = useMemo(
+        () => new RestAPILink(resolvedConfig),
+        [resolvedConfig]
+    )
+    const engine = useMemo(() => new DataEngine(link), [link])
+    const context = useMemo(() => ({ engine }), [engine])
 
     return (
         <QueryClientProvider client={queryClient}>
             <DataContext.Provider value={context}>
-                {props.children}
+                {children}
             </DataContext.Provider>
         </QueryClientProvider>
     )
