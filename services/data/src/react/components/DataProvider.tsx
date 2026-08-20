@@ -53,13 +53,11 @@ export const DataProvider = ({
         }
         return newConfig
     }, [config, baseUrl, apiVersion])
-
-    const link = useMemo(
-        () => new RestAPILink(resolvedConfig),
-        [resolvedConfig]
-    )
-    const engine = useMemo(() => new DataEngine(link), [link])
-    const context = useMemo(() => ({ engine }), [engine])
+    const context = useMemo(() => {
+        const link = new RestAPILink(resolvedConfig)
+        const engine = new DataEngine(link)
+        return { engine }
+    }, [resolvedConfig])
 
     return (
         <QueryClientProvider client={queryClient}>
