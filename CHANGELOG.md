@@ -1,3 +1,10 @@
+## [3.17.4](https://github.com/dhis2/app-runtime/compare/v3.17.3...v3.17.4) (2026-08-23)
+
+
+### Bug Fixes
+
+* **data-service:** stabilize data engine context ([#1445](https://github.com/dhis2/app-runtime/issues/1445)) ([2337108](https://github.com/dhis2/app-runtime/commit/23371080ec9ad9e58241ac07b8980522823b39c9))
+
 ## [3.17.3](https://github.com/dhis2/app-runtime/compare/v3.17.2...v3.17.3) (2026-06-23)
 
 
