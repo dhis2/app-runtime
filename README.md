@@ -13,6 +13,10 @@ yarn build # runs yarn build on each directory under ./services, and then in ./r
 yarn start # builds all services, builds the runtime, and starts the query playground server
 ```
 
+## Integration tests
+
+See [`integration/README.md`](./integration/README.md) for setup, environment variables, and how to run the tests locally and in CI.
+
 ## Examples
 
 A `create-react-app` example is available at [./examples/cra](./examples/cra). If running `yarn install` locally in the example directory, be sure to run it with `yarn install --force --check-files` so that it pulls in the runtime (specified as a `file:` dependency).

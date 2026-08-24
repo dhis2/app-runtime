@@ -81,6 +81,12 @@ const createQueryAlias = async (
     requestOptions: RequestInit,
     refs: FetchDataRefs
 ) => {
+    // DHIS2 requires the target to be a root-relative path (/api/...).
+    // Strip the baseUrl prefix if present so absolute URLs don't cause a 400.
+    const target = url.startsWith(refs.config.baseUrl)
+        ? url.slice(refs.config.baseUrl.length)
+        : url
+
     const alias = <QueryAlias>await fetchData(
         joinPath(
             refs.config.baseUrl,
@@ -89,15 +95,24 @@ const createQueryAlias = async (
             'query/alias'
         ),
         {
+            method: 'POST',
             signal: requestOptions.signal,
-            body: JSON.stringify({ target: url }),
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ target }),
         },
         refs
     )
 
-    refs.queryAliasCache.set(url, alias)
+    // DHIS2 constructs the href using its own internal origin, which may differ
+    // from the baseUrl the client is using (e.g. when behind a reverse proxy on
+    // a different port). Normalize it so the subsequent fetch reaches the right host.
+    const normalizedAlias = {
+        ...alias,
+        href: alias.href.replace(/^https?:\/\/[^/]+/, refs.config.baseUrl),
+    }
+    refs.queryAliasCache.set(url, normalizedAlias)
 
-    return fetchWithContext(alias.href, requestOptions, refs)
+    return fetchWithContext(normalizedAlias.href, requestOptions, refs)
 }
 
 const fetchWithContext = (

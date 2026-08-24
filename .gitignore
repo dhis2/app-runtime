@@ -1,4 +1,5 @@
 node_modules
+integration/.integration-config.json
 .d2
 .pnp
 .pnp.js

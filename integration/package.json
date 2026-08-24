@@ -1,0 +1,17 @@
+{
+    "name": "@dhis2/app-runtime-integration-tests",
+    "private": true,
+    "version": "0.0.0",
+    "description": "Integration tests for @dhis2/app-runtime against a live DHIS2 instance",
+    "scripts": {
+        "test": "vitest run",
+        "test:local": "sh scripts/test-local.sh"
+    },
+    "dependencies": {
+        "@dhis2/data-engine": "file:../engine"
+    },
+    "devDependencies": {
+        "@types/node": "*",
+        "vitest": "^2.0.0"
+    }
+}
