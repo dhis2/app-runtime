@@ -172,5 +172,55 @@ describe('networkFetch', () => {
                 FetchError
             )
         })
+
+        it('Should throw a network FetchError if fetch fails without aborting', async () => {
+            const err = new TypeError('Failed to fetch')
+            ;(global as any).fetch = jest.fn(async () => {
+                throw err
+            })
+
+            await expect(
+                fetchData('failure', {}, mockRefs)
+            ).rejects.toMatchObject({
+                type: 'network',
+                message: 'An unknown network error occurred',
+                details: err,
+            })
+        })
+
+        it('Should throw an aborted FetchError if fetch rejects with an AbortError', async () => {
+            const err = new DOMException(
+                'The user aborted a request.',
+                'AbortError'
+            )
+            ;(global as any).fetch = jest.fn(async () => {
+                throw err
+            })
+
+            await expect(
+                fetchData('aborted', {}, mockRefs)
+            ).rejects.toMatchObject({
+                type: 'aborted',
+                message: 'Aborted',
+                details: err,
+            })
+        })
+
+        it('Should throw an aborted FetchError if the signal was aborted', async () => {
+            const controller = new AbortController()
+            const reason = new Error('custom abort reason')
+            ;(global as any).fetch = jest.fn(async () => {
+                controller.abort()
+                throw reason
+            })
+
+            await expect(
+                fetchData('aborted', { signal: controller.signal }, mockRefs)
+            ).rejects.toMatchObject({
+                type: 'aborted',
+                message: 'Aborted',
+                details: reason,
+            })
+        })
     })
 })
