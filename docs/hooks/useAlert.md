@@ -2,6 +2,8 @@
 
 `useAlert(message, options?) → { show, hide }`
 
+`show` and `hide` are stable across renders, so they are safe to use in `useCallback` and `useEffect` dependency lists. `show` always uses the latest `message` and `options`.
+
 ## Hook arguments
 
 | Name      | Type                   | Description                                                                                                 |
