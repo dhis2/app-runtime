@@ -1,3 +1,10 @@
+## [3.17.5](https://github.com/dhis2/app-runtime/compare/v3.17.4...v3.17.5) (2026-11-09)
+
+
+### Bug Fixes
+
+* **data-engine:** reject aborted requests with an aborted FetchError ([#1446](https://github.com/dhis2/app-runtime/issues/1446)) ([165f105](https://github.com/dhis2/app-runtime/commit/165f1057b41faf8379f4dd04a157abaccc4b66d8))
+
 ## [3.17.4](https://github.com/dhis2/app-runtime/compare/v3.17.3...v3.17.4) (2026-08-23)
 
 
