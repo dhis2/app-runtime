@@ -170,6 +170,13 @@ export function fetchData(
     return fetchPromise
 
         .catch((err) => {
+            if (err?.name === 'AbortError' || requestOptions.signal?.aborted) {
+                throw new FetchError({
+                    type: 'aborted',
+                    message: 'Aborted',
+                    details: err,
+                })
+            }
             throw new FetchError({
                 type: 'network',
                 message: 'An unknown network error occurred',
