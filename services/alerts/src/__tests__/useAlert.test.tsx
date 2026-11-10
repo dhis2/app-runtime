@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react'
 import React, { ReactNode } from 'react'
 import { AlertsManagerContext, AlertsProvider, useAlert } from '../index'
-import type { AlertsManager } from '../types'
+import type { AlertOptions, AlertsManager } from '../types'
 
 const createWrapper = (manager: Partial<AlertsManager> = {}) => {
     const value: AlertsManager = {
@@ -83,7 +83,12 @@ describe('useAlert', () => {
         const { value, wrapper } = createWrapper()
         const { result, rerender } = renderHook(
             ({ options }) => useAlert('message', options),
-            { wrapper, initialProps: { options: { success: true } } }
+            {
+                wrapper,
+                initialProps: {
+                    options: { success: true } as AlertOptions,
+                },
+            }
         )
         const { show } = result.current
 
