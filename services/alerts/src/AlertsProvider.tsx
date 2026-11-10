@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useMemo, useState } from 'react'
 import { AlertsContext } from './AlertsContext'
 import { AlertsManagerContext } from './AlertsManagerContext'
 import { makeAlertsManager } from './makeAlertsManager'
@@ -19,11 +19,14 @@ export const AlertsProvider = ({
     const [alertsManager] = useState<AlertsManager>(() =>
         makeAlertsManager(setAlerts, plugin)
     )
+    // Memoized so useAlert consumers don't re-render whenever alerts change
+    const alertsManagerValue = useMemo(
+        () => ({ ...alertsManager, parentAlertsAdd, showAlertsInPlugin }),
+        [alertsManager, parentAlertsAdd, showAlertsInPlugin]
+    )
 
     return (
-        <AlertsManagerContext.Provider
-            value={{ ...alertsManager, parentAlertsAdd, showAlertsInPlugin }}
-        >
+        <AlertsManagerContext.Provider value={alertsManagerValue}>
             <AlertsContext.Provider value={alerts}>
                 {children}
             </AlertsContext.Provider>
