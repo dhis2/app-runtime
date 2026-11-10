@@ -11,19 +11,16 @@ export const useAlert = (
     const alertRef = useRef(<Alert | null>null)
     // Read the latest message and options when `show` is called, so `show`
     // stays stable even when callers pass inline functions or objects.
-    // The refs are updated after commit because a render may be discarded.
-    const messageRef = useRef(message)
-    const optionsRef = useRef(options)
+    // The ref is updated after commit because a render may be discarded.
+    const argsRef = useRef({ message, options })
 
     useLayoutEffect(() => {
-        messageRef.current = message
-        optionsRef.current = options
-    })
+        argsRef.current = { message, options }
+    }, [message, options])
 
     const show = useCallback(
         (props?: any) => {
-            const message = messageRef.current
-            const options = optionsRef.current
+            const { message, options } = argsRef.current
             const resolvedMessage = String(
                 typeof message === 'function' ? message(props) : message
             )
