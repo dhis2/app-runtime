@@ -1,3 +1,10 @@
+## [3.17.6](https://github.com/dhis2/app-runtime/compare/v3.17.5...v3.17.6) (2026-11-10)
+
+
+### Bug Fixes
+
+* **alerts:** keep useAlert's show function stable across renders ([#1447](https://github.com/dhis2/app-runtime/issues/1447)) ([a9a435d](https://github.com/dhis2/app-runtime/commit/a9a435da6a72f08842700e7028d88553e725941a))
+
 ## [3.17.5](https://github.com/dhis2/app-runtime/compare/v3.17.4...v3.17.5) (2026-11-09)
 
 
