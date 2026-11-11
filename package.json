@@ -49,6 +49,8 @@
         "test:services": "loop \"yarn test\" --cwd ./services --exit-on-error",
         "test:runtime": "cd runtime && yarn test",
         "test:engine": "cd engine && yarn test",
+        "test:integration": "yarn --cwd integration test",
+        "test:integration:local": "yarn --cwd integration test:local",
         "test": "yarn test:engine && yarn test:services && yarn test:runtime",
         "format": "prettier . -w",
         "start": "yarn build && cd examples/query-playground && yarn start",
