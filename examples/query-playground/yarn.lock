@@ -1715,46 +1715,47 @@
     prop-types "^15.7.2"
 
 "@dhis2/app-runtime@^3.12.0", "@dhis2/app-runtime@file:../../runtime":
-  version "3.17.0-beta.2"
+  version "3.17.3"
   dependencies:
-    "@dhis2/app-service-alerts" "3.17.0-beta.2"
-    "@dhis2/app-service-config" "3.17.0-beta.2"
-    "@dhis2/app-service-data" "3.17.0-beta.2"
-    "@dhis2/app-service-offline" "3.17.0-beta.2"
-    "@dhis2/app-service-plugin" "3.17.0-beta.2"
-    "@dhis2/app-service-user" "3.17.0-beta.2"
+    "@dhis2/app-service-alerts" "3.17.3"
+    "@dhis2/app-service-config" "3.17.3"
+    "@dhis2/app-service-data" "3.17.3"
+    "@dhis2/app-service-offline" "3.17.3"
+    "@dhis2/app-service-plugin" "3.17.3"
+    "@dhis2/app-service-user" "3.17.3"
     prop-types "^15.7.2"
 
-"@dhis2/app-service-alerts@3.16.0", "@dhis2/app-service-alerts@3.17.0-beta.2", "@dhis2/app-service-alerts@file:../../services/alerts":
-  version "3.17.0-beta.2"
-  dependencies:
-    prop-types "^15.7.2"
-
-"@dhis2/app-service-config@3.16.0", "@dhis2/app-service-config@3.17.0-beta.2", "@dhis2/app-service-config@file:../../services/config":
-  version "3.17.0-beta.2"
+"@dhis2/app-service-alerts@3.16.0", "@dhis2/app-service-alerts@3.17.3", "@dhis2/app-service-alerts@file:../../services/alerts":
+  version "3.17.3"
   dependencies:
     prop-types "^15.7.2"
 
-"@dhis2/app-service-data@3.16.0", "@dhis2/app-service-data@3.17.0-beta.2", "@dhis2/app-service-data@file:../../services/data":
-  version "3.17.0-beta.2"
+"@dhis2/app-service-config@3.16.0", "@dhis2/app-service-config@3.17.3", "@dhis2/app-service-config@file:../../services/config":
+  version "3.17.3"
   dependencies:
+    prop-types "^15.7.2"
+
+"@dhis2/app-service-data@3.16.0", "@dhis2/app-service-data@3.17.3", "@dhis2/app-service-data@file:../../services/data":
+  version "3.17.3"
+  dependencies:
+    "@dhis2/data-engine" "3.17.3"
     "@tanstack/react-query" "^4.36.1"
     prop-types "^15.7.2"
 
-"@dhis2/app-service-offline@3.16.0", "@dhis2/app-service-offline@3.17.0-beta.2", "@dhis2/app-service-offline@file:../../services/offline":
-  version "3.17.0-beta.2"
+"@dhis2/app-service-offline@3.16.0", "@dhis2/app-service-offline@3.17.3", "@dhis2/app-service-offline@file:../../services/offline":
+  version "3.17.3"
   dependencies:
     lodash "^4.17.21"
     prop-types "^15.7.2"
 
-"@dhis2/app-service-plugin@3.16.0", "@dhis2/app-service-plugin@3.17.0-beta.2", "@dhis2/app-service-plugin@file:../../services/plugin":
-  version "3.17.0-beta.2"
+"@dhis2/app-service-plugin@3.16.0", "@dhis2/app-service-plugin@3.17.3", "@dhis2/app-service-plugin@file:../../services/plugin":
+  version "3.17.3"
   dependencies:
     post-robot "^10.0.46"
     prop-types "^15.7.2"
 
-"@dhis2/app-service-user@3.16.0", "@dhis2/app-service-user@3.17.0-beta.2", "@dhis2/app-service-user@file:../../services/user":
-  version "3.17.0-beta.2"
+"@dhis2/app-service-user@3.16.0", "@dhis2/app-service-user@3.17.3", "@dhis2/app-service-user@file:../../services/user":
+  version "3.17.3"
   dependencies:
     prop-types "^15.7.2"
 
@@ -1862,8 +1863,10 @@
     i18next "^10.3"
     moment "^2.24.0"
 
-"@dhis2/data-engine@file:../../engine":
-  version "3.17.0-beta.2"
+"@dhis2/data-engine@3.17.3", "@dhis2/data-engine@file:../../engine":
+  version "3.17.3"
+  dependencies:
+    p-limit "^7.3.1"
 
 "@dhis2/multi-calendar-dates@2.0.0":
   version "2.0.0"
@@ -7725,6 +7728,13 @@ p-limit@^3.0.2:
   dependencies:
     yocto-queue "^0.1.0"
 
+p-limit@^7.3.1:
+  version "7.3.1"
+  resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-7.3.1.tgz#ded48cbfa10b161a9928120261fa82c9a282eb3f"
+  integrity sha512-0trZaiG7Y7kN/Egy9a8j47t9osC0Tch4PaIWd9yGF6bvmlk7muExRvGNYb8sXBwEKMoNKsbNN9P8EefuQekE4Q==
+  dependencies:
+    yocto-queue "^1.2.1"
+
 p-locate@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/p-locate/-/p-locate-3.0.0.tgz#322d69a05c0264b25997d9f40cd8a891ab0064a4"
@@ -10687,6 +10697,11 @@ yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
+
+yocto-queue@^1.2.1:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-1.2.2.tgz#3e09c95d3f1aa89a58c114c99223edf639152c00"
+  integrity sha512-4LCcse/U2MHZ63HAJVE+v71o7yOdIe4cZ70Wpf8D/IyjDKYQLV5GD46B+hSTjJsvV5PztjvHoU580EftxjDZFQ==
 
 zalgo-promise@^1, zalgo-promise@^1.0.11, zalgo-promise@^1.0.3:
   version "1.0.48"

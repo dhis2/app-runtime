@@ -1,3 +1,4 @@
+import plimit from 'p-limit'
 import { LRUCache } from '../helpers/LRUCache'
 import type { DataEngineConfig } from '../types/DataEngineConfig'
 import type {
@@ -12,6 +13,8 @@ import { fetchData } from './RestAPILink/fetchData'
 import { joinPath } from './RestAPILink/path'
 import { queryToRequestOptions } from './RestAPILink/queryToRequestOptions'
 import { queryToResourcePath } from './RestAPILink/queryToResourcePath'
+
+const limit = plimit(100)
 
 export class RestAPILink implements DataEngineLink {
     public readonly config: DataEngineConfig
@@ -30,7 +33,9 @@ export class RestAPILink implements DataEngineLink {
     }
 
     private fetch(path: string, options: RequestInit): Promise<JsonValue> {
-        return fetchData(joinPath(this.config.baseUrl, path), options, this)
+        return limit(() =>
+            fetchData(joinPath(this.config.baseUrl, path), options, this)
+        )
     }
 
     public executeResourceQuery(

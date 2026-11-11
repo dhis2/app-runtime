@@ -1,4 +1,8 @@
 module.exports = {
+    transformIgnorePatterns: [
+        '/node_modules/(?!(moment/dist|p-limit|yocto-queue)/)',
+    ],
+
     collectCoverageFrom: [
         'src/**/*.(js|jsx|ts|tsx)',
         '!src/index.ts',
